@@ -34,150 +34,287 @@ Run `cat index.json` for the full machine-readable list.
 
 ## Gallery
 
-All 28 templates. Each tile is a clickable link to the live `template.html`. Templates with autoplay demo videos are recordings of the deck flipping through every slide; the rest are stills of the cover slide.
+All 28 templates. Three slides per template (cover · mid-deck · later) to give a sense of how each visual system handles different layouts. Click any template name to open its live `template.html`.
 
-<table>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="./templates/8-bit-orbit/template.html"><video src="./demos/8-bit-orbit.mp4" autoplay muted loop playsinline width="100%"></video></a>
-      <p><strong>8-Bit Orbit</strong> — Pixel-art neon arcade aesthetic on a deep navy void.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="./templates/block-frame/template.html"><video src="./demos/block-frame.mp4" autoplay muted loop playsinline width="100%"></video></a>
-      <p><strong>BlockFrame</strong> — Neobrutalist deck with pastel-neon color blocks and chunky black borders.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="./templates/blue-professional/template.html"><img src="./screenshots/blue-professional.png" alt="Blue Professional" width="100%" /></a>
-      <p><strong>Blue Professional</strong> — Cream paper background with electric cobalt blue accents; clean modern professional.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="./templates/bold-poster/template.html"><img src="./screenshots/bold-poster.png" alt="Bold Poster" width="100%" /></a>
-      <p><strong>Bold Poster</strong> — Editorial poster aesthetic with massive Shrikhand display and a single fire-engine red accent.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="./templates/broadside/template.html"><img src="./screenshots/broadside.png" alt="Broadside" width="100%" /></a>
-      <p><strong>Broadside</strong> — Dark editorial canvas with a single fire orange accent and bilingual Latin/Chinese type stack.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="./templates/capsule/template.html"><img src="./screenshots/capsule.png" alt="Capsule" width="100%" /></a>
-      <p><strong>Capsule</strong> — Modular pill-shaped cards on warm bone with a full pastel-pop palette.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="./templates/cartesian/template.html"><img src="./screenshots/cartesian.png" alt="Cartesian" width="100%" /></a>
-      <p><strong>Cartesian</strong> — Quiet warm-neutral palette with classical Playfair serifs; tasteful and unhurried.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="./templates/coral/template.html"><img src="./screenshots/coral.png" alt="Coral" width="100%" /></a>
-      <p><strong>Coral</strong> — Cream and coral on near-black, set in oversized Bebas Neue.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="./templates/creative-mode/template.html"><img src="./screenshots/creative-mode.png" alt="Creative Mode" width="100%" /></a>
-      <p><strong>Creative Mode</strong> — Cream paper canvas with confident multi-color (green, pink, orange, yellow) accents and Archivo Black display.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="./templates/daisy-days/template.html"><img src="./screenshots/daisy-days.png" alt="Daisy Days" width="100%" /></a>
-      <p><strong>Daisy Days</strong> — Cheerful pastel deck with hand-drawn daisies, stars, and rainbows. Friendly, soft, and warm.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="./templates/editorial-tri-tone/template.html"><img src="./screenshots/editorial-tri-tone.png" alt="Editorial Tri-Tone" width="100%" /></a>
-      <p><strong>Editorial Tri-Tone</strong> — Three-color editorial system: dusty pink, mustard cream, and deep burgundy, set in Bricolage + Instrument Serif.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="./templates/grove/template.html"><img src="./screenshots/grove.png" alt="Grove" width="100%" /></a>
-      <p><strong>Grove</strong> — Forest-green canvas with cream type, classical Playfair serifs, and a single rust accent.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="./templates/mat/template.html"><img src="./screenshots/mat.png" alt="Mat" width="100%" /></a>
-      <p><strong>Mat</strong> — Dark sage canvas with bone paper and burnt-orange accent; mid-century modern with wood undertones.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="./templates/monochrome/template.html"><img src="./screenshots/monochrome.png" alt="Monochrome" width="100%" /></a>
-      <p><strong>Monochrome</strong> — Ivory ledger paper with all-black type; Lora serif headlines, Jost body, no color at all.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="./templates/neo-grid-bold/template.html"><img src="./screenshots/neo-grid-bold.png" alt="Neo-Grid Bold" width="100%" /></a>
-      <p><strong>Neo-Grid Bold</strong> — Editorial neo-brutalism with a single neon yellow accent on off-white paper.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="./templates/peoples-platform/template.html"><img src="./screenshots/peoples-platform.png" alt="People's Platform (Block & Bold)" width="100%" /></a>
-      <p><strong>People's Platform (Block & Bold)</strong> — Activist poster energy: blue, orange, red on cream, with Alfa Slab + Caveat Brush.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="./templates/pin-and-paper/template.html"><img src="./screenshots/pin-and-paper.png" alt="Pin & Paper" width="100%" /></a>
-      <p><strong>Pin & Paper</strong> — Yellow paper with safety-pin illustrations, ink-blue handwritten Caveat, paper-grain texture.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="./templates/pink-script/template.html"><img src="./screenshots/pink-script.png" alt="Pink Script — After Hours" width="100%" /></a>
-      <p><strong>Pink Script — After Hours</strong> — Black canvas, hot pink accent, pearl-cream paper, Instrument Serif headlines: late-night editorial luxury.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="./templates/playful/template.html"><img src="./screenshots/playful.png" alt="Playful" width="100%" /></a>
-      <p><strong>Playful</strong> — Sun-warm peach background with Syne display: a friendly indie launch deck.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="./templates/raw-grid/template.html"><img src="./screenshots/raw-grid.png" alt="Raw Grid" width="100%" /></a>
-      <p><strong>Raw Grid</strong> — Neo-brutalist deck with thick borders, offset shadows, and a pink/sage/ink palette.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="./templates/retro-windows/template.html"><img src="./screenshots/retro-windows.png" alt="Retro Windows" width="100%" /></a>
-      <p><strong>Retro Windows</strong> — Windows 95 chrome: gray title bars, MS Sans Serif, pixel typography, full nostalgia.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="./templates/retro-zine/template.html"><img src="./screenshots/retro-zine.png" alt="Retro Zine" width="100%" /></a>
-      <p><strong>Retro Zine</strong> — Beige paper with green accent and Bebas Neue + Caveat: a riso-printed zine in HTML form.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="./templates/scatterbrain/template.html"><img src="./screenshots/scatterbrain.png" alt="Scatterbrain" width="100%" /></a>
-      <p><strong>Scatterbrain</strong> — Post-it inspired: pastel sticky notes, Caveat handwriting, Shrikhand and Zilla Slab type stack.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="./templates/signal/template.html"><img src="./screenshots/signal.png" alt="Signal" width="100%" /></a>
-      <p><strong>Signal</strong> — Deep navy canvas with bone paper and a single muted-gold accent; institutional with quiet weight.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="./templates/soft-editorial/template.html"><img src="./screenshots/soft-editorial.png" alt="Soft Editorial" width="100%" /></a>
-      <p><strong>Soft Editorial</strong> — Cormorant Garamond serif on warm paper with sage, blush, and lemon accents.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="./templates/stencil-tablet/template.html"><img src="./screenshots/stencil-tablet.png" alt="Stencil & Tablet" width="100%" /></a>
-      <p><strong>Stencil & Tablet</strong> — Bone paper with stencil-cut headlines and a six-color earth palette: archaeology meets brand.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="./templates/studio/template.html"><img src="./screenshots/studio.png" alt="Studio" width="100%" /></a>
-      <p><strong>Studio</strong> — Black canvas with electric-yellow type; high-voltage design studio aesthetic.</p>
-    </td>
-    <td width="50%" valign="top">
-      <a href="./templates/vellum/template.html"><img src="./screenshots/vellum.png" alt="Vellum" width="100%" /></a>
-      <p><strong>Vellum</strong> — Deep navy canvas with warm-yellow italic Cormorant serifs and a single dusty teal accent. A quiet, scholarly aesthetic.</p>
-    </td>
-  </tr>
-</table>
+### [8-Bit Orbit](./templates/8-bit-orbit/template.html)
+
+<p>
+  <img src="./screenshots/8-bit-orbit-1.png" width="32.5%" alt="8-Bit Orbit — slide 1" />
+  <img src="./screenshots/8-bit-orbit-4.png" width="32.5%" alt="8-Bit Orbit — slide 4" />
+  <img src="./screenshots/8-bit-orbit-8.png" width="32.5%" alt="8-Bit Orbit — slide 8" />
+</p>
+
+> Pixel-art neon arcade aesthetic on a deep navy void.
+
+### [BlockFrame](./templates/block-frame/template.html)
+
+<p>
+  <img src="./screenshots/block-frame-1.png" width="32.5%" alt="BlockFrame — slide 1" />
+  <img src="./screenshots/block-frame-4.png" width="32.5%" alt="BlockFrame — slide 4" />
+  <img src="./screenshots/block-frame-8.png" width="32.5%" alt="BlockFrame — slide 8" />
+</p>
+
+> Neobrutalist deck with pastel-neon color blocks and chunky black borders.
+
+### [Blue Professional](./templates/blue-professional/template.html)
+
+<p>
+  <img src="./screenshots/blue-professional-1.png" width="32.5%" alt="Blue Professional — slide 1" />
+  <img src="./screenshots/blue-professional-4.png" width="32.5%" alt="Blue Professional — slide 4" />
+  <img src="./screenshots/blue-professional-8.png" width="32.5%" alt="Blue Professional — slide 8" />
+</p>
+
+> Cream paper background with electric cobalt blue accents; clean modern professional.
+
+### [Bold Poster](./templates/bold-poster/template.html)
+
+<p>
+  <img src="./screenshots/bold-poster-1.png" width="32.5%" alt="Bold Poster — slide 1" />
+  <img src="./screenshots/bold-poster-4.png" width="32.5%" alt="Bold Poster — slide 4" />
+  <img src="./screenshots/bold-poster-8.png" width="32.5%" alt="Bold Poster — slide 8" />
+</p>
+
+> Editorial poster aesthetic with massive Shrikhand display and a single fire-engine red accent.
+
+### [Broadside](./templates/broadside/template.html)
+
+<p>
+  <img src="./screenshots/broadside-1.png" width="32.5%" alt="Broadside — slide 1" />
+  <img src="./screenshots/broadside-4.png" width="32.5%" alt="Broadside — slide 4" />
+  <img src="./screenshots/broadside-8.png" width="32.5%" alt="Broadside — slide 8" />
+</p>
+
+> Dark editorial canvas with a single fire orange accent and bilingual Latin/Chinese type stack.
+
+### [Capsule](./templates/capsule/template.html)
+
+<p>
+  <img src="./screenshots/capsule-1.png" width="32.5%" alt="Capsule — slide 1" />
+  <img src="./screenshots/capsule-4.png" width="32.5%" alt="Capsule — slide 4" />
+  <img src="./screenshots/capsule-8.png" width="32.5%" alt="Capsule — slide 8" />
+</p>
+
+> Modular pill-shaped cards on warm bone with a full pastel-pop palette.
+
+### [Cartesian](./templates/cartesian/template.html)
+
+<p>
+  <img src="./screenshots/cartesian-1.png" width="32.5%" alt="Cartesian — slide 1" />
+  <img src="./screenshots/cartesian-4.png" width="32.5%" alt="Cartesian — slide 4" />
+  <img src="./screenshots/cartesian-8.png" width="32.5%" alt="Cartesian — slide 8" />
+</p>
+
+> Quiet warm-neutral palette with classical Playfair serifs; tasteful and unhurried.
+
+### [Coral](./templates/coral/template.html)
+
+<p>
+  <img src="./screenshots/coral-1.png" width="32.5%" alt="Coral — slide 1" />
+  <img src="./screenshots/coral-4.png" width="32.5%" alt="Coral — slide 4" />
+  <img src="./screenshots/coral-8.png" width="32.5%" alt="Coral — slide 8" />
+</p>
+
+> Cream and coral on near-black, set in oversized Bebas Neue.
+
+### [Creative Mode](./templates/creative-mode/template.html)
+
+<p>
+  <img src="./screenshots/creative-mode-1.png" width="32.5%" alt="Creative Mode — slide 1" />
+  <img src="./screenshots/creative-mode-4.png" width="32.5%" alt="Creative Mode — slide 4" />
+  <img src="./screenshots/creative-mode-8.png" width="32.5%" alt="Creative Mode — slide 8" />
+</p>
+
+> Cream paper canvas with confident multi-color (green, pink, orange, yellow) accents and Archivo Black display.
+
+### [Daisy Days](./templates/daisy-days/template.html)
+
+<p>
+  <img src="./screenshots/daisy-days-1.png" width="32.5%" alt="Daisy Days — slide 1" />
+  <img src="./screenshots/daisy-days-4.png" width="32.5%" alt="Daisy Days — slide 4" />
+  <img src="./screenshots/daisy-days-8.png" width="32.5%" alt="Daisy Days — slide 8" />
+</p>
+
+> Cheerful pastel deck with hand-drawn daisies, stars, and rainbows. Friendly, soft, and warm.
+
+### [Editorial Tri-Tone](./templates/editorial-tri-tone/template.html)
+
+<p>
+  <img src="./screenshots/editorial-tri-tone-1.png" width="32.5%" alt="Editorial Tri-Tone — slide 1" />
+  <img src="./screenshots/editorial-tri-tone-4.png" width="32.5%" alt="Editorial Tri-Tone — slide 4" />
+  <img src="./screenshots/editorial-tri-tone-8.png" width="32.5%" alt="Editorial Tri-Tone — slide 8" />
+</p>
+
+> Three-color editorial system: dusty pink, mustard cream, and deep burgundy, set in Bricolage + Instrument Serif.
+
+### [Grove](./templates/grove/template.html)
+
+<p>
+  <img src="./screenshots/grove-1.png" width="32.5%" alt="Grove — slide 1" />
+  <img src="./screenshots/grove-4.png" width="32.5%" alt="Grove — slide 4" />
+  <img src="./screenshots/grove-8.png" width="32.5%" alt="Grove — slide 8" />
+</p>
+
+> Forest-green canvas with cream type, classical Playfair serifs, and a single rust accent.
+
+### [Mat](./templates/mat/template.html)
+
+<p>
+  <img src="./screenshots/mat-1.png" width="32.5%" alt="Mat — slide 1" />
+  <img src="./screenshots/mat-4.png" width="32.5%" alt="Mat — slide 4" />
+  <img src="./screenshots/mat-8.png" width="32.5%" alt="Mat — slide 8" />
+</p>
+
+> Dark sage canvas with bone paper and burnt-orange accent; mid-century modern with wood undertones.
+
+### [Monochrome](./templates/monochrome/template.html)
+
+<p>
+  <img src="./screenshots/monochrome-1.png" width="32.5%" alt="Monochrome — slide 1" />
+  <img src="./screenshots/monochrome-4.png" width="32.5%" alt="Monochrome — slide 4" />
+  <img src="./screenshots/monochrome-8.png" width="32.5%" alt="Monochrome — slide 8" />
+</p>
+
+> Ivory ledger paper with all-black type; Lora serif headlines, Jost body, no color at all.
+
+### [Neo-Grid Bold](./templates/neo-grid-bold/template.html)
+
+<p>
+  <img src="./screenshots/neo-grid-bold-1.png" width="32.5%" alt="Neo-Grid Bold — slide 1" />
+  <img src="./screenshots/neo-grid-bold-4.png" width="32.5%" alt="Neo-Grid Bold — slide 4" />
+  <img src="./screenshots/neo-grid-bold-8.png" width="32.5%" alt="Neo-Grid Bold — slide 8" />
+</p>
+
+> Editorial neo-brutalism with a single neon yellow accent on off-white paper.
+
+### [People's Platform (Block & Bold)](./templates/peoples-platform/template.html)
+
+<p>
+  <img src="./screenshots/peoples-platform-1.png" width="32.5%" alt="People's Platform (Block & Bold) — slide 1" />
+  <img src="./screenshots/peoples-platform-4.png" width="32.5%" alt="People's Platform (Block & Bold) — slide 4" />
+  <img src="./screenshots/peoples-platform-8.png" width="32.5%" alt="People's Platform (Block & Bold) — slide 8" />
+</p>
+
+> Activist poster energy: blue, orange, red on cream, with Alfa Slab + Caveat Brush.
+
+### [Pin & Paper](./templates/pin-and-paper/template.html)
+
+<p>
+  <img src="./screenshots/pin-and-paper-1.png" width="32.5%" alt="Pin & Paper — slide 1" />
+  <img src="./screenshots/pin-and-paper-4.png" width="32.5%" alt="Pin & Paper — slide 4" />
+  <img src="./screenshots/pin-and-paper-8.png" width="32.5%" alt="Pin & Paper — slide 8" />
+</p>
+
+> Yellow paper with safety-pin illustrations, ink-blue handwritten Caveat, paper-grain texture.
+
+### [Pink Script — After Hours](./templates/pink-script/template.html)
+
+<p>
+  <img src="./screenshots/pink-script-1.png" width="32.5%" alt="Pink Script — After Hours — slide 1" />
+  <img src="./screenshots/pink-script-4.png" width="32.5%" alt="Pink Script — After Hours — slide 4" />
+  <img src="./screenshots/pink-script-8.png" width="32.5%" alt="Pink Script — After Hours — slide 8" />
+</p>
+
+> Black canvas, hot pink accent, pearl-cream paper, Instrument Serif headlines: late-night editorial luxury.
+
+### [Playful](./templates/playful/template.html)
+
+<p>
+  <img src="./screenshots/playful-1.png" width="32.5%" alt="Playful — slide 1" />
+  <img src="./screenshots/playful-4.png" width="32.5%" alt="Playful — slide 4" />
+  <img src="./screenshots/playful-8.png" width="32.5%" alt="Playful — slide 8" />
+</p>
+
+> Sun-warm peach background with Syne display: a friendly indie launch deck.
+
+### [Raw Grid](./templates/raw-grid/template.html)
+
+<p>
+  <img src="./screenshots/raw-grid-1.png" width="32.5%" alt="Raw Grid — slide 1" />
+  <img src="./screenshots/raw-grid-4.png" width="32.5%" alt="Raw Grid — slide 4" />
+  <img src="./screenshots/raw-grid-8.png" width="32.5%" alt="Raw Grid — slide 8" />
+</p>
+
+> Neo-brutalist deck with thick borders, offset shadows, and a pink/sage/ink palette.
+
+### [Retro Windows](./templates/retro-windows/template.html)
+
+<p>
+  <img src="./screenshots/retro-windows-1.png" width="32.5%" alt="Retro Windows — slide 1" />
+  <img src="./screenshots/retro-windows-4.png" width="32.5%" alt="Retro Windows — slide 4" />
+  <img src="./screenshots/retro-windows-8.png" width="32.5%" alt="Retro Windows — slide 8" />
+</p>
+
+> Windows 95 chrome: gray title bars, MS Sans Serif, pixel typography, full nostalgia.
+
+### [Retro Zine](./templates/retro-zine/template.html)
+
+<p>
+  <img src="./screenshots/retro-zine-1.png" width="32.5%" alt="Retro Zine — slide 1" />
+  <img src="./screenshots/retro-zine-4.png" width="32.5%" alt="Retro Zine — slide 4" />
+  <img src="./screenshots/retro-zine-8.png" width="32.5%" alt="Retro Zine — slide 8" />
+</p>
+
+> Beige paper with green accent and Bebas Neue + Caveat: a riso-printed zine in HTML form.
+
+### [Scatterbrain](./templates/scatterbrain/template.html)
+
+<p>
+  <img src="./screenshots/scatterbrain-1.png" width="32.5%" alt="Scatterbrain — slide 1" />
+  <img src="./screenshots/scatterbrain-4.png" width="32.5%" alt="Scatterbrain — slide 4" />
+  <img src="./screenshots/scatterbrain-8.png" width="32.5%" alt="Scatterbrain — slide 8" />
+</p>
+
+> Post-it inspired: pastel sticky notes, Caveat handwriting, Shrikhand and Zilla Slab type stack.
+
+### [Signal](./templates/signal/template.html)
+
+<p>
+  <img src="./screenshots/signal-1.png" width="32.5%" alt="Signal — slide 1" />
+  <img src="./screenshots/signal-4.png" width="32.5%" alt="Signal — slide 4" />
+  <img src="./screenshots/signal-8.png" width="32.5%" alt="Signal — slide 8" />
+</p>
+
+> Deep navy canvas with bone paper and a single muted-gold accent; institutional with quiet weight.
+
+### [Soft Editorial](./templates/soft-editorial/template.html)
+
+<p>
+  <img src="./screenshots/soft-editorial-1.png" width="32.5%" alt="Soft Editorial — slide 1" />
+  <img src="./screenshots/soft-editorial-4.png" width="32.5%" alt="Soft Editorial — slide 4" />
+  <img src="./screenshots/soft-editorial-8.png" width="32.5%" alt="Soft Editorial — slide 8" />
+</p>
+
+> Cormorant Garamond serif on warm paper with sage, blush, and lemon accents.
+
+### [Stencil & Tablet](./templates/stencil-tablet/template.html)
+
+<p>
+  <img src="./screenshots/stencil-tablet-1.png" width="32.5%" alt="Stencil & Tablet — slide 1" />
+  <img src="./screenshots/stencil-tablet-4.png" width="32.5%" alt="Stencil & Tablet — slide 4" />
+  <img src="./screenshots/stencil-tablet-8.png" width="32.5%" alt="Stencil & Tablet — slide 8" />
+</p>
+
+> Bone paper with stencil-cut headlines and a six-color earth palette: archaeology meets brand.
+
+### [Studio](./templates/studio/template.html)
+
+<p>
+  <img src="./screenshots/studio-1.png" width="32.5%" alt="Studio — slide 1" />
+  <img src="./screenshots/studio-4.png" width="32.5%" alt="Studio — slide 4" />
+  <img src="./screenshots/studio-8.png" width="32.5%" alt="Studio — slide 8" />
+</p>
+
+> Black canvas with electric-yellow type; high-voltage design studio aesthetic.
+
+### [Vellum](./templates/vellum/template.html)
+
+<p>
+  <img src="./screenshots/vellum-1.png" width="32.5%" alt="Vellum — slide 1" />
+  <img src="./screenshots/vellum-4.png" width="32.5%" alt="Vellum — slide 4" />
+  <img src="./screenshots/vellum-8.png" width="32.5%" alt="Vellum — slide 8" />
+</p>
+
+> Deep navy canvas with warm-yellow italic Cormorant serifs and a single dusty teal accent. A quiet, scholarly aesthetic.
 
 ## License
 
