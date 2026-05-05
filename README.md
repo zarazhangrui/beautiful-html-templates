@@ -30,7 +30,7 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 
 <p>
   <img src="./screenshots/stencil-tablet-1.png" width="32.5%" alt="Stencil & Tablet — slide 1" />
-  <img src="./screenshots/stencil-tablet-4.png" width="32.5%" alt="Stencil & Tablet — slide 4" />
+  <img src="./screenshots/stencil-tablet-3.png" width="32.5%" alt="Stencil & Tablet — slide 3" />
   <img src="./screenshots/stencil-tablet-8.png" width="32.5%" alt="Stencil & Tablet — slide 8" />
 </p>
 
@@ -50,7 +50,7 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 
 <p>
   <img src="./screenshots/neo-grid-bold-1.png" width="32.5%" alt="Neo-Grid Bold — slide 1" />
-  <img src="./screenshots/neo-grid-bold-4.png" width="32.5%" alt="Neo-Grid Bold — slide 4" />
+  <img src="./screenshots/neo-grid-bold-3.png" width="32.5%" alt="Neo-Grid Bold — slide 3" />
   <img src="./screenshots/neo-grid-bold-8.png" width="32.5%" alt="Neo-Grid Bold — slide 8" />
 </p>
 
@@ -61,7 +61,7 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 <p>
   <img src="./screenshots/editorial-tri-tone-1.png" width="32.5%" alt="Editorial Tri-Tone — slide 1" />
   <img src="./screenshots/editorial-tri-tone-4.png" width="32.5%" alt="Editorial Tri-Tone — slide 4" />
-  <img src="./screenshots/editorial-tri-tone-8.png" width="32.5%" alt="Editorial Tri-Tone — slide 8" />
+  <img src="./screenshots/editorial-tri-tone-3.png" width="32.5%" alt="Editorial Tri-Tone — slide 3" />
 </p>
 
 > Three-color editorial system: dusty pink, mustard cream, and deep burgundy, set in Bricolage + Instrument Serif.
@@ -71,7 +71,7 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 <p>
   <img src="./screenshots/creative-mode-1.png" width="32.5%" alt="Creative Mode — slide 1" />
   <img src="./screenshots/creative-mode-4.png" width="32.5%" alt="Creative Mode — slide 4" />
-  <img src="./screenshots/creative-mode-8.png" width="32.5%" alt="Creative Mode — slide 8" />
+  <img src="./screenshots/creative-mode-6.png" width="32.5%" alt="Creative Mode — slide 6" />
 </p>
 
 > Cream paper canvas with confident multi-color (green, pink, orange, yellow) accents and Archivo Black display.
@@ -81,7 +81,7 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 <p>
   <img src="./screenshots/monochrome-1.png" width="32.5%" alt="Monochrome — slide 1" />
   <img src="./screenshots/monochrome-4.png" width="32.5%" alt="Monochrome — slide 4" />
-  <img src="./screenshots/monochrome-8.png" width="32.5%" alt="Monochrome — slide 8" />
+  <img src="./screenshots/monochrome-12.png" width="32.5%" alt="Monochrome — slide 12" />
 </p>
 
 > Ivory ledger paper with all-black type; Lora serif headlines, Jost body, no color at all.
@@ -295,34 +295,6 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 </p>
 
 > Black canvas with electric-yellow type; high-voltage design studio aesthetic.
-
-## Repo layout
-
-```
-beautiful-html-templates/
-  AGENTS.md              ← operating manual for agents using the library
-  README.md              ← this file
-  index.json             ← aggregate index — the agent reads this first
-  runtime/
-    deck-stage.js        ← shared web component used by some templates
-  templates/
-    <slug>/
-      template.html      ← the deck (multiple slides demonstrating the system)
-      template.json      ← metadata: mood, tone, palette, typography, etc.
-      styles.css         ← optional, when CSS lives separately
-      deck-stage.js      ← bundled if the template uses the runtime
-      assets/            ← optional: images, fonts, svg
-```
-
-A template folder is **self-contained**: copying a single folder out of the repo gives a working deck.
-
-## At a glance
-
-- 28 templates spanning many aesthetics: editorial, professional, playful, brutalist / graphic, retro, archival, scholarly.
-- Each template is matched to a user's brief by **tone**, not industry. A confident editorial deck can carry a tech talk; a playful pastel deck can carry a finance review. The user's taste wins. (See `AGENTS.md` §4.)
-- Total agent context cost per deck = `index.json` (~few KB) + one chosen template's HTML/CSS. Flat, regardless of library size.
-
-Run `cat index.json` for the full machine-readable list.
 
 ## License
 
