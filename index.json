@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-05T06:00:36.967Z",
-  "template_count": 28,
+  "generated_at": "2026-05-05T22:00:25.207Z",
+  "template_count": 29,
   "templates": [
     {
       "slug": "8-bit-orbit",
@@ -33,6 +33,39 @@
       "best_for": "Anything that should feel like a CRT screen at 2am: cyberpunk, gaming, web3, indie dev tools, hackathon demos. Just as good for a tech talk that wants to lean into nostalgic-digital craft, a synthwave brand deck, or a creative review that wants to feel like a console.",
       "avoid_for": "Contexts where the dark neon palette would actively work against the message — quiet institutional finance disclosures, healthcare patient-facing materials, traditional luxury.",
       "slide_count": 10
+    },
+    {
+      "slug": "biennale-yellow",
+      "name": "Biennale Yellow",
+      "tagline": "Solar yellow on warm parchment with deep indigo serif and atmospheric sun-glow gradients.",
+      "mood": [
+        "editorial",
+        "atmospheric",
+        "warm",
+        "cultural-institution",
+        "poster-like"
+      ],
+      "occasion": [
+        "exhibition or biennale",
+        "arts institution programme",
+        "design or typography conference",
+        "literary or curatorial publication",
+        "studio annual report",
+        "museum season announcement"
+      ],
+      "tone": [
+        "literary",
+        "considered",
+        "contemplative",
+        "warm-modern",
+        "Dutch-editorial"
+      ],
+      "formality": "high",
+      "density": "medium",
+      "scheme": "light",
+      "best_for": "Anything that should feel like an art-biennale poster or a museum's annual programme: exhibition decks, arts-institution announcements, design conference brochures, curatorial pitches, literary publications, studio retrospectives. Equally good for any deck wanting Dutch-editorial atmosphere with an unmistakable single-color signature.",
+      "avoid_for": "Decks that need visual punch or saturated multi-color energy — the warm-paper canvas and one-yellow palette are intentionally quiet and atmospheric.",
+      "slide_count": 8
     },
     {
       "slug": "block-frame",
