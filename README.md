@@ -19,9 +19,9 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 ### [Soft Editorial](./templates/soft-editorial/template.html)
 
 <p>
-  <img src="./screenshots/soft-editorial-1.png" width="32.5%" alt="Soft Editorial — slide 1" />
   <img src="./screenshots/soft-editorial-4.png" width="32.5%" alt="Soft Editorial — slide 4" />
-  <img src="./screenshots/soft-editorial-8.png" width="32.5%" alt="Soft Editorial — slide 8" />
+  <img src="./screenshots/soft-editorial-6.png" width="32.5%" alt="Soft Editorial — slide 6" />
+  <img src="./screenshots/soft-editorial-10.png" width="32.5%" alt="Soft Editorial — slide 10" />
 </p>
 
 > Cormorant Garamond serif on warm paper with sage, blush, and lemon accents.
