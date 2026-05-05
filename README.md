@@ -40,8 +40,8 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 
 <p>
   <img src="./screenshots/8-bit-orbit-1.png" width="32.5%" alt="8-Bit Orbit — slide 1" />
-  <img src="./screenshots/8-bit-orbit-4.png" width="32.5%" alt="8-Bit Orbit — slide 4" />
-  <img src="./screenshots/8-bit-orbit-8.png" width="32.5%" alt="8-Bit Orbit — slide 8" />
+  <img src="./screenshots/8-bit-orbit-6.png" width="32.5%" alt="8-Bit Orbit — slide 6" />
+  <img src="./screenshots/8-bit-orbit-5.png" width="32.5%" alt="8-Bit Orbit — slide 5" />
 </p>
 
 > Pixel-art neon arcade aesthetic on a deep navy void.
@@ -60,7 +60,7 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 
 <p>
   <img src="./screenshots/blue-professional-1.png" width="32.5%" alt="Blue Professional — slide 1" />
-  <img src="./screenshots/blue-professional-4.png" width="32.5%" alt="Blue Professional — slide 4" />
+  <img src="./screenshots/blue-professional-6.png" width="32.5%" alt="Blue Professional — slide 6" />
   <img src="./screenshots/blue-professional-8.png" width="32.5%" alt="Blue Professional — slide 8" />
 </p>
 
@@ -81,7 +81,7 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 <p>
   <img src="./screenshots/broadside-1.png" width="32.5%" alt="Broadside — slide 1" />
   <img src="./screenshots/broadside-4.png" width="32.5%" alt="Broadside — slide 4" />
-  <img src="./screenshots/broadside-8.png" width="32.5%" alt="Broadside — slide 8" />
+  <img src="./screenshots/broadside-13.png" width="32.5%" alt="Broadside — slide 13" />
 </p>
 
 > Dark editorial canvas with a single fire orange accent and bilingual Latin/Chinese type stack.
@@ -200,8 +200,8 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 
 <p>
   <img src="./screenshots/pin-and-paper-1.png" width="32.5%" alt="Pin & Paper — slide 1" />
-  <img src="./screenshots/pin-and-paper-4.png" width="32.5%" alt="Pin & Paper — slide 4" />
-  <img src="./screenshots/pin-and-paper-8.png" width="32.5%" alt="Pin & Paper — slide 8" />
+  <img src="./screenshots/pin-and-paper-11.png" width="32.5%" alt="Pin & Paper — slide 11" />
+  <img src="./screenshots/pin-and-paper-3.png" width="32.5%" alt="Pin & Paper — slide 3" />
 </p>
 
 > Yellow paper with safety-pin illustrations, ink-blue handwritten Caveat, paper-grain texture.
@@ -220,7 +220,7 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 
 <p>
   <img src="./screenshots/playful-1.png" width="32.5%" alt="Playful — slide 1" />
-  <img src="./screenshots/playful-4.png" width="32.5%" alt="Playful — slide 4" />
+  <img src="./screenshots/playful-6.png" width="32.5%" alt="Playful — slide 6" />
   <img src="./screenshots/playful-8.png" width="32.5%" alt="Playful — slide 8" />
 </p>
 
@@ -270,7 +270,7 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 
 <p>
   <img src="./screenshots/signal-1.png" width="32.5%" alt="Signal — slide 1" />
-  <img src="./screenshots/signal-4.png" width="32.5%" alt="Signal — slide 4" />
+  <img src="./screenshots/signal-18.png" width="32.5%" alt="Signal — slide 18" />
   <img src="./screenshots/signal-8.png" width="32.5%" alt="Signal — slide 8" />
 </p>
 
