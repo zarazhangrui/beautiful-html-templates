@@ -16,16 +16,6 @@ Clone https://github.com/zarazhangrui/beautiful-html-templates and follow the in
 
 All 29 templates. Three slides per template (cover · mid-deck · later) to give a sense of how each visual system handles different layouts. Click any template name to open its folder on GitHub — the HTML, metadata, and any sibling assets are all there.
 
-### [Biennale Yellow](./templates/biennale-yellow/)
-
-<p>
-  <img src="./screenshots/biennale-yellow-1.png" width="32.5%" alt="Biennale Yellow — slide 1" />
-  <img src="./screenshots/biennale-yellow-5.png" width="32.5%" alt="Biennale Yellow — slide 5" />
-  <img src="./screenshots/biennale-yellow-8.png" width="32.5%" alt="Biennale Yellow — slide 8" />
-</p>
-
-> Solar yellow on warm parchment with deep indigo serif and atmospheric sun-glow gradients. Dutch-editorial poster energy.
-
 ### [Soft Editorial](./templates/soft-editorial/)
 
 <p>
@@ -305,6 +295,16 @@ All 29 templates. Three slides per template (cover · mid-deck · later) to give
 </p>
 
 > Black canvas with electric-yellow type; high-voltage design studio aesthetic.
+
+### [Biennale Yellow](./templates/biennale-yellow/)
+
+<p>
+  <img src="./screenshots/biennale-yellow-1.png" width="32.5%" alt="Biennale Yellow — slide 1" />
+  <img src="./screenshots/biennale-yellow-5.png" width="32.5%" alt="Biennale Yellow — slide 5" />
+  <img src="./screenshots/biennale-yellow-8.png" width="32.5%" alt="Biennale Yellow — slide 8" />
+</p>
+
+> Solar yellow on warm parchment with deep indigo serif and atmospheric sun-glow gradients. Dutch-editorial poster energy.
 
 ## License
 
