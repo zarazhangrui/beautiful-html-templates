@@ -4,6 +4,14 @@ A library of reusable HTML slide templates designed so that any coding agent can
 
 Agents using the library should read [`AGENTS.md`](./AGENTS.md). It's the operating manual: how to read `index.json`, match the user's brief to a template, clone it, and adapt the content.
 
+## Get started
+
+Copy this to your coding agent:
+
+```
+Clone https://github.com/zarazhangrui/beautiful-html-templates and follow the instructions in AGENTS.md to build me a beautiful HTML slide deck.
+```
+
 ## Gallery
 
 All 28 templates. Three slides per template (cover · mid-deck · later) to give a sense of how each visual system handles different layouts. Click any template name to open its live `template.html`.
