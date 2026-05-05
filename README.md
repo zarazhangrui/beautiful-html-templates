@@ -36,6 +36,96 @@ Run `cat index.json` for the full machine-readable list.
 
 All 28 templates. Three slides per template (cover · mid-deck · later) to give a sense of how each visual system handles different layouts. Click any template name to open its live `template.html`.
 
+### [Soft Editorial](./templates/soft-editorial/template.html)
+
+<p>
+  <img src="./screenshots/soft-editorial-1.png" width="32.5%" alt="Soft Editorial — slide 1" />
+  <img src="./screenshots/soft-editorial-4.png" width="32.5%" alt="Soft Editorial — slide 4" />
+  <img src="./screenshots/soft-editorial-8.png" width="32.5%" alt="Soft Editorial — slide 8" />
+</p>
+
+> Cormorant Garamond serif on warm paper with sage, blush, and lemon accents.
+
+### [Stencil & Tablet](./templates/stencil-tablet/template.html)
+
+<p>
+  <img src="./screenshots/stencil-tablet-1.png" width="32.5%" alt="Stencil & Tablet — slide 1" />
+  <img src="./screenshots/stencil-tablet-4.png" width="32.5%" alt="Stencil & Tablet — slide 4" />
+  <img src="./screenshots/stencil-tablet-8.png" width="32.5%" alt="Stencil & Tablet — slide 8" />
+</p>
+
+> Bone paper with stencil-cut headlines and a six-color earth palette: archaeology meets brand.
+
+### [Vellum](./templates/vellum/template.html)
+
+<p>
+  <img src="./screenshots/vellum-1.png" width="32.5%" alt="Vellum — slide 1" />
+  <img src="./screenshots/vellum-4.png" width="32.5%" alt="Vellum — slide 4" />
+  <img src="./screenshots/vellum-8.png" width="32.5%" alt="Vellum — slide 8" />
+</p>
+
+> Deep navy canvas with warm-yellow italic Cormorant serifs and a single dusty teal accent. A quiet, scholarly aesthetic.
+
+### [Neo-Grid Bold](./templates/neo-grid-bold/template.html)
+
+<p>
+  <img src="./screenshots/neo-grid-bold-1.png" width="32.5%" alt="Neo-Grid Bold — slide 1" />
+  <img src="./screenshots/neo-grid-bold-4.png" width="32.5%" alt="Neo-Grid Bold — slide 4" />
+  <img src="./screenshots/neo-grid-bold-8.png" width="32.5%" alt="Neo-Grid Bold — slide 8" />
+</p>
+
+> Editorial neo-brutalism with a single neon yellow accent on off-white paper.
+
+### [Editorial Tri-Tone](./templates/editorial-tri-tone/template.html)
+
+<p>
+  <img src="./screenshots/editorial-tri-tone-1.png" width="32.5%" alt="Editorial Tri-Tone — slide 1" />
+  <img src="./screenshots/editorial-tri-tone-4.png" width="32.5%" alt="Editorial Tri-Tone — slide 4" />
+  <img src="./screenshots/editorial-tri-tone-8.png" width="32.5%" alt="Editorial Tri-Tone — slide 8" />
+</p>
+
+> Three-color editorial system: dusty pink, mustard cream, and deep burgundy, set in Bricolage + Instrument Serif.
+
+### [Creative Mode](./templates/creative-mode/template.html)
+
+<p>
+  <img src="./screenshots/creative-mode-1.png" width="32.5%" alt="Creative Mode — slide 1" />
+  <img src="./screenshots/creative-mode-4.png" width="32.5%" alt="Creative Mode — slide 4" />
+  <img src="./screenshots/creative-mode-8.png" width="32.5%" alt="Creative Mode — slide 8" />
+</p>
+
+> Cream paper canvas with confident multi-color (green, pink, orange, yellow) accents and Archivo Black display.
+
+### [Monochrome](./templates/monochrome/template.html)
+
+<p>
+  <img src="./screenshots/monochrome-1.png" width="32.5%" alt="Monochrome — slide 1" />
+  <img src="./screenshots/monochrome-4.png" width="32.5%" alt="Monochrome — slide 4" />
+  <img src="./screenshots/monochrome-8.png" width="32.5%" alt="Monochrome — slide 8" />
+</p>
+
+> Ivory ledger paper with all-black type; Lora serif headlines, Jost body, no color at all.
+
+### [People's Platform (Block & Bold)](./templates/peoples-platform/template.html)
+
+<p>
+  <img src="./screenshots/peoples-platform-1.png" width="32.5%" alt="People's Platform (Block & Bold) — slide 1" />
+  <img src="./screenshots/peoples-platform-4.png" width="32.5%" alt="People's Platform (Block & Bold) — slide 4" />
+  <img src="./screenshots/peoples-platform-8.png" width="32.5%" alt="People's Platform (Block & Bold) — slide 8" />
+</p>
+
+> Activist poster energy: blue, orange, red on cream, with Alfa Slab + Caveat Brush.
+
+### [Pink Script — After Hours](./templates/pink-script/template.html)
+
+<p>
+  <img src="./screenshots/pink-script-1.png" width="32.5%" alt="Pink Script — After Hours — slide 1" />
+  <img src="./screenshots/pink-script-4.png" width="32.5%" alt="Pink Script — After Hours — slide 4" />
+  <img src="./screenshots/pink-script-8.png" width="32.5%" alt="Pink Script — After Hours — slide 8" />
+</p>
+
+> Black canvas, hot pink accent, pearl-cream paper, Instrument Serif headlines: late-night editorial luxury.
+
 ### [8-Bit Orbit](./templates/8-bit-orbit/template.html)
 
 <p>
@@ -116,16 +206,6 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 
 > Cream and coral on near-black, set in oversized Bebas Neue.
 
-### [Creative Mode](./templates/creative-mode/template.html)
-
-<p>
-  <img src="./screenshots/creative-mode-1.png" width="32.5%" alt="Creative Mode — slide 1" />
-  <img src="./screenshots/creative-mode-4.png" width="32.5%" alt="Creative Mode — slide 4" />
-  <img src="./screenshots/creative-mode-8.png" width="32.5%" alt="Creative Mode — slide 8" />
-</p>
-
-> Cream paper canvas with confident multi-color (green, pink, orange, yellow) accents and Archivo Black display.
-
 ### [Daisy Days](./templates/daisy-days/template.html)
 
 <p>
@@ -135,16 +215,6 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 </p>
 
 > Cheerful pastel deck with hand-drawn daisies, stars, and rainbows. Friendly, soft, and warm.
-
-### [Editorial Tri-Tone](./templates/editorial-tri-tone/template.html)
-
-<p>
-  <img src="./screenshots/editorial-tri-tone-1.png" width="32.5%" alt="Editorial Tri-Tone — slide 1" />
-  <img src="./screenshots/editorial-tri-tone-4.png" width="32.5%" alt="Editorial Tri-Tone — slide 4" />
-  <img src="./screenshots/editorial-tri-tone-8.png" width="32.5%" alt="Editorial Tri-Tone — slide 8" />
-</p>
-
-> Three-color editorial system: dusty pink, mustard cream, and deep burgundy, set in Bricolage + Instrument Serif.
 
 ### [Grove](./templates/grove/template.html)
 
@@ -166,36 +236,6 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 
 > Dark sage canvas with bone paper and burnt-orange accent; mid-century modern with wood undertones.
 
-### [Monochrome](./templates/monochrome/template.html)
-
-<p>
-  <img src="./screenshots/monochrome-1.png" width="32.5%" alt="Monochrome — slide 1" />
-  <img src="./screenshots/monochrome-4.png" width="32.5%" alt="Monochrome — slide 4" />
-  <img src="./screenshots/monochrome-8.png" width="32.5%" alt="Monochrome — slide 8" />
-</p>
-
-> Ivory ledger paper with all-black type; Lora serif headlines, Jost body, no color at all.
-
-### [Neo-Grid Bold](./templates/neo-grid-bold/template.html)
-
-<p>
-  <img src="./screenshots/neo-grid-bold-1.png" width="32.5%" alt="Neo-Grid Bold — slide 1" />
-  <img src="./screenshots/neo-grid-bold-4.png" width="32.5%" alt="Neo-Grid Bold — slide 4" />
-  <img src="./screenshots/neo-grid-bold-8.png" width="32.5%" alt="Neo-Grid Bold — slide 8" />
-</p>
-
-> Editorial neo-brutalism with a single neon yellow accent on off-white paper.
-
-### [People's Platform (Block & Bold)](./templates/peoples-platform/template.html)
-
-<p>
-  <img src="./screenshots/peoples-platform-1.png" width="32.5%" alt="People's Platform (Block & Bold) — slide 1" />
-  <img src="./screenshots/peoples-platform-4.png" width="32.5%" alt="People's Platform (Block & Bold) — slide 4" />
-  <img src="./screenshots/peoples-platform-8.png" width="32.5%" alt="People's Platform (Block & Bold) — slide 8" />
-</p>
-
-> Activist poster energy: blue, orange, red on cream, with Alfa Slab + Caveat Brush.
-
 ### [Pin & Paper](./templates/pin-and-paper/template.html)
 
 <p>
@@ -205,16 +245,6 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 </p>
 
 > Yellow paper with safety-pin illustrations, ink-blue handwritten Caveat, paper-grain texture.
-
-### [Pink Script — After Hours](./templates/pink-script/template.html)
-
-<p>
-  <img src="./screenshots/pink-script-1.png" width="32.5%" alt="Pink Script — After Hours — slide 1" />
-  <img src="./screenshots/pink-script-4.png" width="32.5%" alt="Pink Script — After Hours — slide 4" />
-  <img src="./screenshots/pink-script-8.png" width="32.5%" alt="Pink Script — After Hours — slide 8" />
-</p>
-
-> Black canvas, hot pink accent, pearl-cream paper, Instrument Serif headlines: late-night editorial luxury.
 
 ### [Playful](./templates/playful/template.html)
 
@@ -276,26 +306,6 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 
 > Deep navy canvas with bone paper and a single muted-gold accent; institutional with quiet weight.
 
-### [Soft Editorial](./templates/soft-editorial/template.html)
-
-<p>
-  <img src="./screenshots/soft-editorial-1.png" width="32.5%" alt="Soft Editorial — slide 1" />
-  <img src="./screenshots/soft-editorial-4.png" width="32.5%" alt="Soft Editorial — slide 4" />
-  <img src="./screenshots/soft-editorial-8.png" width="32.5%" alt="Soft Editorial — slide 8" />
-</p>
-
-> Cormorant Garamond serif on warm paper with sage, blush, and lemon accents.
-
-### [Stencil & Tablet](./templates/stencil-tablet/template.html)
-
-<p>
-  <img src="./screenshots/stencil-tablet-1.png" width="32.5%" alt="Stencil & Tablet — slide 1" />
-  <img src="./screenshots/stencil-tablet-4.png" width="32.5%" alt="Stencil & Tablet — slide 4" />
-  <img src="./screenshots/stencil-tablet-8.png" width="32.5%" alt="Stencil & Tablet — slide 8" />
-</p>
-
-> Bone paper with stencil-cut headlines and a six-color earth palette: archaeology meets brand.
-
 ### [Studio](./templates/studio/template.html)
 
 <p>
@@ -305,16 +315,6 @@ All 28 templates. Three slides per template (cover · mid-deck · later) to give
 </p>
 
 > Black canvas with electric-yellow type; high-voltage design studio aesthetic.
-
-### [Vellum](./templates/vellum/template.html)
-
-<p>
-  <img src="./screenshots/vellum-1.png" width="32.5%" alt="Vellum — slide 1" />
-  <img src="./screenshots/vellum-4.png" width="32.5%" alt="Vellum — slide 4" />
-  <img src="./screenshots/vellum-8.png" width="32.5%" alt="Vellum — slide 8" />
-</p>
-
-> Deep navy canvas with warm-yellow italic Cormorant serifs and a single dusty teal accent. A quiet, scholarly aesthetic.
 
 ## License
 
