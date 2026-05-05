@@ -311,7 +311,7 @@ All 30 templates. Three slides per template (cover · mid-deck · later) to give
 <p>
   <img src="./screenshots/sakura-chroma-1.png" width="32.5%" alt="Sakura Chroma — slide 1" />
   <img src="./screenshots/sakura-chroma-3.png" width="32.5%" alt="Sakura Chroma — slide 3" />
-  <img src="./screenshots/sakura-chroma-5.png" width="32.5%" alt="Sakura Chroma — slide 5" />
+  <img src="./screenshots/sakura-chroma-4.png" width="32.5%" alt="Sakura Chroma — slide 4" />
 </p>
 
 > Vintage Japanese cassette-package aesthetic: cream paper, diagonal rainbow ribbons, condensed bold type, JIS-style spec checkboxes.

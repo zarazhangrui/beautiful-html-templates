@@ -122,9 +122,12 @@
     z-index: 3;
   }
   .petal {
+    /* Perfect circles. aspect-ratio: 1 forces height to match the
+       width set per-petal below, so percentages on the parent stay
+       useful but the shape is always round. */
     position: absolute;
-    width: 100%; height: 100%;
-    border-radius: 50% 45% 55% 50% / 55% 50% 60% 50%;
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
   }
 
   /* ─── DECORATIVE: diagonal stripe band ──────────────────────── */
@@ -183,18 +186,18 @@
     grid-template-rows: auto 1fr auto;
   }
 
-  /* Petal cluster top-left */
+  /* Petal cluster top-left — five overlapping perfect circles */
   .s-cover .petals {
-    top: clamp(40px, 4vh, 72px);
+    top: clamp(36px, 4vh, 64px);
     left: clamp(36px, 3.6vw, 72px);
-    width: clamp(220px, 22vw, 360px);
-    height: clamp(160px, 16vw, 260px);
+    width: clamp(280px, 22vw, 380px);
+    height: clamp(220px, 17.6vw, 304px);
   }
-  .s-cover .petals .p1 { background: var(--red);    width: 56%; height: 78%; left: 0;     top: 18%; }
-  .s-cover .petals .p2 { background: var(--orange); width: 50%; height: 70%; left: 8%;    top: 30%; }
-  .s-cover .petals .p3 { background: var(--blue);   width: 50%; height: 72%; left: 32%;   top: 0; }
-  .s-cover .petals .p4 { background: var(--green);  width: 56%; height: 78%; left: 44%;   top: 16%; }
-  .s-cover .petals .p5 { background: var(--yellow); width: 38%; height: 50%; left: 36%;   top: 38%; }
+  .s-cover .petals .p1 { background: var(--red);    width: 50%; left: 0;   top: 28%; }
+  .s-cover .petals .p2 { background: var(--orange); width: 38%; left: 14%; top: 50%; }
+  .s-cover .petals .p3 { background: var(--blue);   width: 44%; left: 28%; top: 0; }
+  .s-cover .petals .p4 { background: var(--green);  width: 50%; left: 50%; top: 22%; }
+  .s-cover .petals .p5 { background: var(--yellow); width: 32%; left: 36%; top: 50%; }
 
   /* Brand lockup next to petals */
   .s-cover .brand {
@@ -220,44 +223,50 @@
     letter-spacing: 0.02em;
   }
 
-  /* Hero number — gigantic red T-26 */
+  /* Hero number — gigantic ink-coloured T-26.
+     We anchor it well below the petal cluster so the two never collide
+     on shorter viewports, and use ink (not red) so it stays readable
+     where the diagonal ribbons sweep behind it. */
   .s-cover .hero {
     position: absolute;
     left: clamp(36px, 3.6vw, 72px);
-    top: clamp(220px, 26vh, 360px);
+    top: clamp(290px, 30vh, 440px);
     font-family: 'Big Shoulders Display', sans-serif;
     font-weight: 900;
-    font-size: clamp(160px, min(20vw, 30vh), 360px);
-    color: var(--red);
+    font-size: clamp(120px, min(14vw, 22vh), 280px);
+    color: var(--ink);
     line-height: 0.84;
     letter-spacing: -0.025em;
     z-index: 4;
   }
 
-  /* The big condensed lockup */
+  /* The big condensed lockup — pink bar with cream type, sitting between
+     the hero number and the footer row. */
   .s-cover .lockup {
     position: absolute;
     left: clamp(36px, 3.6vw, 72px);
-    bottom: clamp(220px, 22vh, 320px);
+    bottom: clamp(150px, 16vh, 240px);
     font-family: 'Big Shoulders Display', sans-serif;
     font-weight: 900;
-    font-size: clamp(70px, min(8.6vw, 14vh), 160px);
+    font-size: clamp(56px, min(7vw, 11vh), 130px);
     color: var(--paper);
     -webkit-text-stroke: 0;
     line-height: 0.9;
     letter-spacing: -0.015em;
     background: var(--pink);
-    padding: clamp(10px, 1.4vh, 22px) clamp(20px, 2vw, 34px) clamp(6px, 0.8vh, 14px);
+    padding: clamp(8px, 1.2vh, 18px) clamp(18px, 1.8vw, 32px) clamp(6px, 0.8vh, 12px);
     z-index: 4;
   }
 
-  /* Diagonal multi-colour stripe band that sweeps right and down */
+  /* Diagonal multi-colour stripe band that sweeps right and down.
+     Positioned in the right-half of the slide so the hero number on
+     the left can sit on clean cream paper. */
   .s-cover .ribbons {
     position: absolute;
     right: 0;
-    top: clamp(180px, 22vh, 300px);
-    bottom: clamp(140px, 14vh, 220px);
-    width: 60%;
+    top: clamp(160px, 18vh, 280px);
+    bottom: clamp(180px, 18vh, 280px);
+    width: 52%;
     z-index: 3;
     pointer-events: none;
     overflow: hidden;
@@ -390,16 +399,17 @@
   /* ─── SLIDE 2 — MANIFESTO (single bold statement, scattered blobs) ─ */
   .s-manifesto { background: var(--paper); }
   .s-manifesto .blob {
+    /* Perfect circles: width === height since we use vmin units. */
     position: absolute;
-    border-radius: 50% 45% 55% 50% / 55% 50% 60% 50%;
+    border-radius: 50%;
     z-index: 2;
   }
-  .s-manifesto .blob.b-red    { background: var(--red);    width: 18vmin; height: 14vmin; top: 8%; left: 6%; }
-  .s-manifesto .blob.b-orange { background: var(--orange); width: 14vmin; height: 12vmin; top: 18%; left: 16%; }
-  .s-manifesto .blob.b-yellow { background: var(--yellow); width: 13vmin; height: 11vmin; top: 75%; left: 8%; }
-  .s-manifesto .blob.b-green  { background: var(--green);  width: 16vmin; height: 13vmin; top: 70%; left: 78%; }
-  .s-manifesto .blob.b-blue   { background: var(--blue);   width: 14vmin; height: 12vmin; top: 14%; left: 78%; }
-  .s-manifesto .blob.b-pink   { background: var(--pink);   width: 12vmin; height: 10vmin; top: 28%; left: 86%; }
+  .s-manifesto .blob.b-red    { background: var(--red);    width: 16vmin; height: 16vmin; top: 8%;  left: 6%; }
+  .s-manifesto .blob.b-orange { background: var(--orange); width: 12vmin; height: 12vmin; top: 22%; left: 16%; }
+  .s-manifesto .blob.b-yellow { background: var(--yellow); width: 12vmin; height: 12vmin; top: 75%; left: 8%; }
+  .s-manifesto .blob.b-green  { background: var(--green);  width: 14vmin; height: 14vmin; top: 70%; left: 78%; }
+  .s-manifesto .blob.b-blue   { background: var(--blue);   width: 13vmin; height: 13vmin; top: 14%; left: 78%; }
+  .s-manifesto .blob.b-pink   { background: var(--pink);   width: 11vmin; height: 11vmin; top: 30%; left: 86%; }
 
   .s-manifesto .stmt-wrap {
     position: relative; z-index: 5;
@@ -724,12 +734,11 @@
     pointer-events: none;
     z-index: 3;
   }
-  .s-quote .qpetals .petal { position: absolute; }
-  .s-quote .qpetals .p1 { background: var(--pink);   width: 56%; height: 78%; left: 0;     top: 18%; border-radius: 50% 45% 55% 50% / 55% 50% 60% 50%; }
-  .s-quote .qpetals .p2 { background: var(--orange); width: 50%; height: 70%; left: 12%;   top: 30%; border-radius: 50% 45% 55% 50% / 55% 50% 60% 50%; }
-  .s-quote .qpetals .p3 { background: var(--yellow); width: 48%; height: 70%; left: 36%;   top: 0;   border-radius: 50% 45% 55% 50% / 55% 50% 60% 50%; }
-  .s-quote .qpetals .p4 { background: var(--blue);   width: 50%; height: 70%; left: 50%;   top: 22%; border-radius: 50% 45% 55% 50% / 55% 50% 60% 50%; }
-  .s-quote .qpetals .p5 { background: var(--green);  width: 38%; height: 50%; left: 36%;   top: 40%; border-radius: 50% 45% 55% 50% / 55% 50% 60% 50%; }
+  .s-quote .qpetals .p1 { background: var(--pink);   width: 50%; left: 0;   top: 28%; }
+  .s-quote .qpetals .p2 { background: var(--orange); width: 38%; left: 16%; top: 50%; }
+  .s-quote .qpetals .p3 { background: var(--yellow); width: 44%; left: 30%; top: 0; }
+  .s-quote .qpetals .p4 { background: var(--blue);   width: 50%; left: 50%; top: 26%; }
+  .s-quote .qpetals .p5 { background: var(--green);  width: 32%; left: 36%; top: 50%; }
 
   .s-quote .qframe {
     position: absolute;
@@ -887,11 +896,10 @@
     pointer-events: none;
     z-index: 4;
   }
-  .s-colophon .col-petals .petal { position: absolute; border-radius: 50% 45% 55% 50% / 55% 50% 60% 50%; }
-  .s-colophon .col-petals .p1 { background: var(--red);    width: 56%; height: 78%; left: 0;     top: 18%; }
-  .s-colophon .col-petals .p2 { background: var(--orange); width: 50%; height: 70%; left: 14%;   top: 30%; }
-  .s-colophon .col-petals .p3 { background: var(--green);  width: 50%; height: 72%; left: 32%;   top: 0; }
-  .s-colophon .col-petals .p4 { background: var(--blue);   width: 56%; height: 78%; left: 44%;   top: 16%; }
+  .s-colophon .col-petals .p1 { background: var(--red);    width: 50%; left: 0;   top: 28%; }
+  .s-colophon .col-petals .p2 { background: var(--orange); width: 38%; left: 16%; top: 50%; }
+  .s-colophon .col-petals .p3 { background: var(--green);  width: 44%; left: 30%; top: 0; }
+  .s-colophon .col-petals .p4 { background: var(--blue);   width: 50%; left: 50%; top: 22%; }
 
   .s-colophon .titlewrap {
     position: absolute;
@@ -917,7 +925,9 @@
     color: var(--ink);
     letter-spacing: -0.022em;
   }
-  .s-colophon .ttl em { color: var(--red); font-style: normal; }
+  /* Colophon emphasis stays ink — the ribbons behind the title are
+     too colour-saturated for a red em to clear contrast. */
+  .s-colophon .ttl em { color: var(--ink); font-style: italic; font-weight: 900; }
 
   .s-colophon .col-footer {
     position: absolute;
@@ -996,7 +1006,7 @@
 
       <!-- brand lockup -->
       <div class="brand">
-        <div class="b1">sakura<br/>chroma</div>
+        <div class="b1">tape<br/>garden</div>
         <div class="b2">CATALOGUE NO. 7</div>
       </div>
 
@@ -1023,7 +1033,7 @@
 
       <!-- footer -->
       <div class="cfooter">
-        <div class="made caption"><span class="jp caption">日本製</span>made in osaka</div>
+        <div class="made caption"><span class="jp caption">限定版</span>made in matsumoto</div>
         <div class="nr caption">
           <span class="caption">N.R. :</span>
           <span class="opt"><span class="b fill"></span><span class="caption">ON</span></span>
@@ -1032,7 +1042,7 @@
         <div class="seal caption">26</div>
         <div class="stamp caption">
           <div class="lab2 caption">AS SEEN ON</div>
-          <div>SK</div>
+          <div>TG</div>
         </div>
       </div>
 
@@ -1068,7 +1078,7 @@
               <div class="nm">SC-01<br/>BLOOM&nbsp;PEDAL</div>
               <div class="desc">A tape-saturation pedal voiced after the late-70s consumer cassette decks we grew up listening to. Three knobs, one switch, one extremely warm output that turns any clean signal into something that sounds like a memory.</div>
               <div class="extras">
-                <div>Hand-wired in our Osaka workshop, one batch at a time, with a small cream rosette stamped on the bottom plate.</div>
+                <div>Hand-wired in our Matsumoto workshop, one batch at a time, with a small cream rosette stamped on the bottom plate.</div>
               </div>
               <div class="specs">
                 <div class="row"><span class="k caption">FORMAT</span><span class="caption">9V pedal</span></div>
@@ -1117,7 +1127,7 @@
             <div class="topstrip"></div>
             <div class="body">
               <div class="nm">SC-04<br/>MIX&nbsp;CHAIR</div>
-              <div class="desc">A listening chair upholstered in cassette-loop fabric, woven from our own studio off-cuts in our Osaka workshop. Sells out before we finish photographing it; we keep making it anyway, slowly, one at a time.</div>
+              <div class="desc">A listening chair upholstered in cassette-loop fabric, woven from our own studio off-cuts in our Matsumoto workshop. Sells out before we finish photographing it; we keep making it anyway, slowly, one at a time.</div>
               <div class="extras">
                 <div>Each chair is signed on the underside by the maker and dated to the day it left the workshop.</div>
               </div>
@@ -1298,7 +1308,7 @@
           <div class="row">
             <div class="date-tag caption">03.10</div>
             <div class="ttl-row">Open studio &amp; listening night</div>
-            <div class="ven">Osaka workshop</div>
+            <div class="ven">Matsumoto workshop</div>
             <div><span class="chip c-green caption">EVENT</span></div>
             <div class="nr-cell"><span class="b"></span><span class="b fill"></span></div>
           </div>
@@ -1344,7 +1354,7 @@
       <div class="col-footer">
         <div>
           <div class="ftag caption">Studio</div>
-          <div class="ftxt">Sakura Chroma · Osaka<br/>est. 2017</div>
+          <div class="ftxt">Tape Garden · Matsumoto<br/>est. 2018</div>
         </div>
         <div>
           <div class="ftag caption">Designed</div>
