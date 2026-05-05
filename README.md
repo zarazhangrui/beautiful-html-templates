@@ -14,7 +14,7 @@ Clone https://github.com/zarazhangrui/beautiful-html-templates and follow the in
 
 ## Gallery
 
-All 29 templates. Three slides per template (cover · mid-deck · later) to give a sense of how each visual system handles different layouts. Click any template name to open its folder on GitHub — the HTML, metadata, and any sibling assets are all there.
+All 30 templates. Three slides per template (cover · mid-deck · later) to give a sense of how each visual system handles different layouts. Click any template name to open its folder on GitHub — the HTML, metadata, and any sibling assets are all there.
 
 ### [Soft Editorial](./templates/soft-editorial/)
 
@@ -305,6 +305,16 @@ All 29 templates. Three slides per template (cover · mid-deck · later) to give
 </p>
 
 > Solar yellow on warm parchment with deep indigo serif and atmospheric sun-glow gradients. Dutch-editorial poster energy.
+
+### [Sakura Chroma](./templates/sakura-chroma/)
+
+<p>
+  <img src="./screenshots/sakura-chroma-1.png" width="32.5%" alt="Sakura Chroma — slide 1" />
+  <img src="./screenshots/sakura-chroma-3.png" width="32.5%" alt="Sakura Chroma — slide 3" />
+  <img src="./screenshots/sakura-chroma-5.png" width="32.5%" alt="Sakura Chroma — slide 5" />
+</p>
+
+> Vintage Japanese cassette-package aesthetic: cream paper, diagonal rainbow ribbons, condensed bold type, JIS-style spec checkboxes.
 
 ## License
 

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-05T22:00:25.207Z",
-  "template_count": 29,
+  "generated_at": "2026-05-05T22:24:13.194Z",
+  "template_count": 30,
   "templates": [
     {
       "slug": "8-bit-orbit",
@@ -711,6 +711,40 @@
       "best_for": "Anything that should feel printed, lo-fi, and crafted: indie zines and publications, music / arts brands, creator portfolios, small-batch craft launches, community decks. Also a great underdog choice for tech, research, or business decks that want a riso-print warmth instead of digital polish.",
       "avoid_for": "Contexts that demand digital-native polish or fast modern-tech energy — the layered zine aesthetic intentionally feels handmade.",
       "slide_count": 10
+    },
+    {
+      "slug": "sakura-chroma",
+      "name": "Sakura Chroma",
+      "tagline": "Vintage Japanese cassette-package aesthetic: cream paper, diagonal rainbow ribbons, condensed bold type, JIS-style spec checkboxes.",
+      "mood": [
+        "retro",
+        "playful",
+        "kawaii-tech",
+        "warm",
+        "tactile",
+        "product-catalogue"
+      ],
+      "occasion": [
+        "product launch or catalogue",
+        "indie hardware or analog studio brand",
+        "music label or release schedule",
+        "creative studio annual report",
+        "magazine or zine pitch",
+        "vintage-flavored brand campaign"
+      ],
+      "tone": [
+        "playful",
+        "confident",
+        "warm",
+        "tactile",
+        "80s-Japanese-tech"
+      ],
+      "formality": "low",
+      "density": "medium",
+      "scheme": "light",
+      "best_for": "Anything that should feel like a vintage Japanese cassette package or a TDK / Sony / Sakura Color product catalogue: indie hardware brand decks, music-label release schedules, analog studio retrospectives, zine and magazine pitches, kawaii-tech product launches, creative-studio annual reports. Equally good for any deck wanting bold colour, condensed display type, and a tactile printed-product personality.",
+      "avoid_for": "Decks that need restrained, corporate, or quiet typography — the bold condensed lockups, ribbon stripes, and primary-colour palette are intentionally loud and product-page-y.",
+      "slide_count": 8
     },
     {
       "slug": "scatterbrain",
