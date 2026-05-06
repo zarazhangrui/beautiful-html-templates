@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-06T00:46:45.332Z",
-  "template_count": 31,
+  "generated_at": "2026-05-06T01:44:47.414Z",
+  "template_count": 32,
   "templates": [
     {
       "slug": "8-bit-orbit",
@@ -438,6 +438,43 @@
       "best_for": "Anything that should feel organic, considered, and grown-up: sustainability and wellness brands, outdoor / nature products, wineries and restaurants, literary or arts decks, advisory deliverables, bilingual EN/CN reports. Also a calm, distinctive choice for tech, research, or business decks that want patience over urgency.",
       "avoid_for": "Decks that need neon energy or rapid-fire pop — the forest-green canvas and Playfair serif commit to a slow, classical voice.",
       "slide_count": 12
+    },
+    {
+      "slug": "long-table",
+      "name": "Long Table",
+      "tagline": "Warm cream and rust-red supper-club aesthetic with bold uppercase grotesk headlines, italic Fraunces, and pill-shaped outlined buttons.",
+      "mood": [
+        "warm",
+        "intimate",
+        "modern",
+        "friendly",
+        "small-batch",
+        "social",
+        "hospitality"
+      ],
+      "occasion": [
+        "supper club or dinner series",
+        "event or community gathering",
+        "small hospitality / restaurant brand",
+        "creative studio open house",
+        "membership or subscription pitch",
+        "wine or food brand catalogue",
+        "modern lifestyle brand"
+      ],
+      "tone": [
+        "warm",
+        "playful",
+        "considered",
+        "social",
+        "magazine-friendly",
+        "modern-editorial"
+      ],
+      "formality": "medium",
+      "density": "medium",
+      "scheme": "light",
+      "best_for": "Anything that should feel like a warm, intimate, modern hospitality / community brand: supper clubs, dinner series, small restaurants, creative-studio events, membership pitches, lifestyle and wine brands. Equally good for any deck wanting a single warm accent colour, italic-meets-bold typography, and a social-media-aware modern-editorial voice.",
+      "avoid_for": "Decks that need corporate polish, technical density, or a cold / minimalist register — the rust-red palette and bold-italic mix are intentionally warm and people-facing.",
+      "slide_count": 8
     },
     {
       "slug": "mat",
