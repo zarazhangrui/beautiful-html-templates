@@ -14,7 +14,7 @@ Clone https://github.com/zarazhangrui/beautiful-html-templates and follow the in
 
 ## Gallery
 
-All 30 templates. Three slides per template (cover · mid-deck · later) to give a sense of how each visual system handles different layouts. Click any template name to open its folder on GitHub — the HTML, metadata, and any sibling assets are all there.
+All 31 templates. Three slides per template (cover · mid-deck · later) to give a sense of how each visual system handles different layouts. Click any template name to open its folder on GitHub — the HTML, metadata, and any sibling assets are all there.
 
 ### [Soft Editorial](./templates/soft-editorial/)
 
@@ -315,6 +315,16 @@ All 30 templates. Three slides per template (cover · mid-deck · later) to give
 </p>
 
 > Vintage Japanese cassette-package aesthetic: cream paper, diagonal rainbow ribbons, condensed bold type, JIS-style spec checkboxes.
+
+### [Cobalt Grid](./templates/cobalt-grid/)
+
+<p>
+  <img src="./screenshots/cobalt-grid-1.png" width="32.5%" alt="Cobalt Grid — slide 1" />
+  <img src="./screenshots/cobalt-grid-3.png" width="32.5%" alt="Cobalt Grid — slide 3" />
+  <img src="./screenshots/cobalt-grid-5.png" width="32.5%" alt="Cobalt Grid — slide 5" />
+</p>
+
+> Electric cobalt italic serifs on a graph-paper canvas, anchored by stair-stepped pixel-glitch decorations and slim hairline rules.
 
 ## License
 

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-05T22:24:13.194Z",
-  "template_count": 30,
+  "generated_at": "2026-05-06T00:46:45.332Z",
+  "template_count": 31,
   "templates": [
     {
       "slug": "8-bit-orbit",
@@ -249,6 +249,40 @@
       "best_for": "Anything that should feel quiet, considered, and grown-up: investment theses, white papers, advisory work, longform research, gallery / cultural decks. Also a strong choice for editorial features, founder reflections, or any deck where restraint is the message — including across tech and finance.",
       "avoid_for": "Decks that need visual heat, multiple accents, or a sense of urgency — the warm-neutral palette is intentionally low-energy.",
       "slide_count": 10
+    },
+    {
+      "slug": "cobalt-grid",
+      "name": "Cobalt Grid",
+      "tagline": "Electric cobalt italic serifs on a graph-paper canvas, anchored by stair-stepped pixel-glitch decorations and slim hairline rules.",
+      "mood": [
+        "editorial",
+        "design-research",
+        "studious",
+        "modernist",
+        "tech-print",
+        "monochrome"
+      ],
+      "occasion": [
+        "design trend or research report",
+        "studio annual or seasonal bulletin",
+        "creative agency capabilities deck",
+        "art or architecture publication",
+        "academic / curatorial publication",
+        "newsletter or zine pitch"
+      ],
+      "tone": [
+        "considered",
+        "literary",
+        "studious",
+        "quietly-modern",
+        "editorial"
+      ],
+      "formality": "high",
+      "density": "medium",
+      "scheme": "light",
+      "best_for": "Anything that should feel like a quietly serious design / research bulletin, art publication, or curated trend report. Strong for studio annuals, agency capabilities decks, design-research publications, architecture / art / academic decks, and any deck wanting one strict accent colour and a printed-ledger calmness rather than corporate polish.",
+      "avoid_for": "Decks that need warmth, multi-colour energy, or a casual / playful voice — the strict cobalt + cream + grid palette is intentionally austere.",
+      "slide_count": 8
     },
     {
       "slug": "coral",
