@@ -113,7 +113,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--c-bg);-webkit-
 .cover-meta{display:flex;justify-content:space-between;align-items:flex-end;margin-top:var(--gap-lg);padding-top:var(--gap-sm);border-top:1px solid var(--c-border);}
 
 /* ── PROFILE SPLIT ──────────────────────────────────────────────────── */
-.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--pad-x)*.8);align-items:start;height:100%;}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--pad-x)*.8);align-items:center;height:100%;}
 .profile-left{display:flex;flex-direction:column;gap:var(--gap-md);padding-top:var(--gap-sm);}
 .profile-right{display:flex;flex-direction:column;gap:var(--gap-md);padding-top:var(--gap-sm);border-left:1px solid var(--c-border);padding-left:calc(var(--pad-x)*.8);}
 .light .profile-right{border-color:var(--c-border-light);}
@@ -194,7 +194,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--c-bg);-webkit-
 .si-stat{font-family:var(--f-display);font-size:2.2vw;font-weight:600;color:var(--c-accent);}
 
 /* training pyramid */
-.training-diagram{display:flex;flex-direction:column;gap:var(--gap-sm);width:100%;}
+.training-diagram{display:flex;flex-direction:column;gap:calc(var(--gap-sm) * 1.8);width:100%;}
 .td-step{display:flex;align-items:center;gap:1vw;padding:.8vh 1vw;border-left:2px solid var(--c-accent);}
 .td-step:nth-child(1){background:rgba(200,168,112,.12);}
 .td-step:nth-child(2){background:rgba(200,168,112,.08);}
@@ -368,22 +368,22 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--c-bg);-webkit-
         Bilingual operator with a bias for <em>action</em> and a systems-first mindset.
       </h2>
       <p style="font-family:var(--f-body);font-size:var(--sz-body);color:var(--c-fg-light-2);line-height:1.72;max-width:90%;">
-        Proficient in leveraging AI LLMs for workflow optimisation,
-        structuring knowledge with Notion &amp; Obsidian, and driving
-        operational efficiency through Excel data modelling. Experienced
-        in process optimisation, risk control, and cross-functional
+        Proficient in leveraging <em>AI LLMs</em> for workflow optimisation,
+        structuring knowledge with <em>Notion</em> &amp; <em>Obsidian</em>, and driving
+        operational efficiency through <em>Excel</em> data modelling. Experienced
+        in process optimisation, <em>risk control</em>, and cross-functional
         coordination across international deployments.
       </p>
       <ul class="bullet-list" style="margin-top:var(--gap-sm);">
-        <li>Cross-cultural communicator — English &amp; Mandarin bilingual</li>
-        <li>AI-native workflow builder (n8n · Make · LLM APIs)</li>
-        <li>Proven team leader promoted through performance</li>
+        <li>Cross-cultural communicator — <em>English</em> &amp; <em>Mandarin</em> bilingual</li>
+        <li><em>AI-native</em> workflow builder (n8n · Make · LLM APIs)</li>
+        <li>Proven team leader <em>promoted through performance</em></li>
         <li>Global mindset, open to opportunities worldwide</li>
       </ul>
     </div>
 
     <!-- RIGHT: competency blocks -->
-    <div class="profile-right">
+    <div class="profile-right" style="align-self:center;">
       <div class="comp-row">
         <div class="comp-label">AI &amp; Automation</div>
         <div class="comp-tags">
@@ -566,7 +566,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--c-bg);-webkit-
         <div style="flex:1;display:flex;align-items:center;gap:.3vw;padding:0 .5vw;">
           <div style="flex:1;height:1px;background:rgba(200,168,112,.35);"></div>
           <span style="font-family:var(--f-mono);font-size:.6vw;color:#c8a870;">▶</span>
-          <div style="flex:0 0 3vw;height:1px;background:rgba(200,168,112,.35);"></div>
         </div>
         <!-- arrow label -->
 
@@ -1100,30 +1099,32 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--c-bg);-webkit-
     Open to roles in operations, project management, business development,
     and AI-adjacent functions — anywhere in the world.
   </p>
-  <div style="display:flex;gap:3vw;margin-top:var(--gap-lg);padding-top:var(--gap-md);border-top:1px solid var(--c-border);" data-anim="fade-in" data-delay="3">
+    <div style="display:flex;gap:3vw;margin-top:var(--gap-lg);padding-top:var(--gap-md);border-top:1px solid var(--c-border);align-items:flex-start;" data-anim="fade-in" data-delay="3">
     <div>
       <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Name</div>
       <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">Stephen Xu · 许烁锋</div>
     </div>
-    <div style="width:1px;background:var(--c-border);"></div>
+    <div style="width:1px;background:var(--c-border);align-self:stretch;"></div>
     <div>
       <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Availability</div>
       <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-accent);">Open · May 2026</div>
     </div>
-    <div style="width:1px;background:var(--c-border);"></div>
+    <div style="width:1px;background:var(--c-border);align-self:stretch;"></div>
     <div>
       <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Location Preference</div>
       <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">Global — Overseas preferred</div>
     </div>
-    <div style="width:1px;background:var(--c-border);"></div>
-    <div>
-      <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Email</div>
-      <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">1119117642xsf@gmail.com</div>
-    </div>
-    <div style="width:1px;background:var(--c-border);"></div>
-    <div>
-      <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Phone / WeChat</div>
-      <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">+86 131 1237 0893</div>
+    <div style="margin-left:auto;display:flex;gap:3vw;align-items:flex-start;">
+      <div style="width:1px;background:var(--c-border);align-self:stretch;"></div>
+      <div>
+        <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Email</div>
+        <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">1119117642xsf@gmail.com</div>
+      </div>
+      <div style="width:1px;background:var(--c-border);align-self:stretch;"></div>
+      <div>
+        <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Phone / WeChat</div>
+        <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">+86 131 1237 0893</div>
+      </div>
     </div>
   </div>
 </section>
