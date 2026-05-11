@@ -51,7 +51,7 @@
 html,body{width:100%;height:100%;overflow:hidden;background:var(--c-bg);-webkit-font-smoothing:antialiased;}
 #deck{display:flex;height:100vh;transition:transform var(--dur-slide) var(--ease-slide);will-change:transform;}
 .slide{flex:0 0 100vw;width:100vw;height:100vh;position:relative;padding:var(--pad-y) var(--pad-x);display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;}
-.slide-body{min-height:0;}
+.slide-body{min-height:0;height:100%;display:flex;flex-direction:column;}
 .slide.dark{background:var(--c-bg);color:var(--c-fg);}
 .slide.light{background:var(--c-bg-light);color:var(--c-fg-light);}
 .slide.dark::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;z-index:0;}
@@ -113,9 +113,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--c-bg);-webkit-
 .cover-meta{display:flex;justify-content:space-between;align-items:flex-end;margin-top:var(--gap-lg);padding-top:var(--gap-sm);border-top:1px solid var(--c-border);}
 
 /* ── PROFILE SPLIT ──────────────────────────────────────────────────── */
-.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--pad-x)*.8);align-items:center;height:100%;}
-.profile-left{display:flex;flex-direction:column;gap:var(--gap-md);padding-top:var(--gap-sm);}
-.profile-right{display:flex;flex-direction:column;gap:var(--gap-md);padding-top:var(--gap-sm);border-left:1px solid var(--c-border);padding-left:calc(var(--pad-x)*.8);}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--pad-x)*.8);align-items:center;height:100%;width:100%;}
+.profile-left{display:flex;flex-direction:column;gap:var(--gap-md);padding-top:0;justify-content:center;}
+.profile-right{display:flex;flex-direction:column;gap:var(--gap-md);padding-top:0;border-left:1px solid var(--c-border);padding-left:calc(var(--pad-x)*.8);justify-content:center;}
 .light .profile-right{border-color:var(--c-border-light);}
 .comp-row{display:flex;flex-direction:column;gap:var(--gap-sm);}
 .comp-label{font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-accent);padding-bottom:var(--gap-sm);border-bottom:1px solid var(--c-border);}
@@ -376,7 +376,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--c-bg);-webkit-
       </p>
       <ul class="bullet-list" style="margin-top:var(--gap-sm);">
         <li>Cross-cultural communicator — English &amp; Mandarin bilingual</li>
-        <li><em>AI-native</em> workflow builder (n8n · Make · LLM APIs)</li>
+        <li>AI-native workflow builder (n8n · Make · LLM APIs)</li>
         <li>Proven team leader promoted through performance</li>
         <li>Global mindset, open to opportunities worldwide</li>
       </ul>
@@ -1092,44 +1092,46 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--c-bg);-webkit-
 <!-- ═══════ SLIDE 9 · END dark ════════════════════════════════════════ -->
 <section class="slide dark slide--end">
   <div class="rule" data-anim="reveal-right" data-delay="0"></div>
-  <h1 class="h1" style="max-width:66%;" data-anim="fade-up" data-delay="1">
+  <h1 class="h1" style="max-width:80%;" data-anim="fade-up" data-delay="1">
     Let's build something <em>remarkable</em> together.
   </h1>
-  <p class="lead muted" style="max-width:50%;" data-anim="fade-up" data-delay="2">
+  <p class="lead muted" style="max-width:70%;" data-anim="fade-up" data-delay="2">
     Open to roles in operations, project management, business development,
     and AI-adjacent functions — anywhere in the world.
   </p>
-    <div style="display:flex;gap:3vw;margin-top:var(--gap-lg);padding-top:var(--gap-md);border-top:1px solid var(--c-border);align-items:flex-start;justify-content:space-between;" data-anim="fade-in" data-delay="3">
-    <!-- left group: identity fields -->
-    <div style="display:flex;gap:3vw;align-items:flex-start;">
-      <div>
-        <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Name</div>
-        <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">Stephen Xu · 许烁锋</div>
-      </div>
-      <div style="width:1px;background:var(--c-border);align-self:stretch;"></div>
-      <div>
-        <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Location Preference</div>
-        <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">Global — Overseas preferred</div>
-      </div>
-      <div style="width:1px;background:var(--c-border);align-self:stretch;"></div>
-      <div>
-        <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Availability</div>
-        <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-accent);">Open · May 2026</div>
-      </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2.5vw;margin-top:var(--gap-lg);padding-top:var(--gap-md);border-top:1px solid var(--c-border);width:100%;flex:1;align-content:start;" data-anim="fade-in" data-delay="3">
+
+    <!-- Name -->
+    <div style="display:flex;flex-direction:column;gap:.6vh;">
+      <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);">Name</div>
+      <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">Stephen Xu · 许烁锋</div>
     </div>
-    <!-- right group: contact -->
-    <div style="display:flex;gap:3vw;align-items:flex-start;">
-      <div style="width:1px;background:var(--c-border);align-self:stretch;"></div>
-      <div>
-        <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Email</div>
-        <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">1119117642xsf@gmail.com</div>
-      </div>
-      <div style="width:1px;background:var(--c-border);align-self:stretch;"></div>
-      <div>
-        <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Phone / WeChat</div>
-        <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">+86 131 1237 0893</div>
-      </div>
+
+    <!-- Location Preference -->
+    <div style="display:flex;flex-direction:column;gap:.6vh;">
+      <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);">Location</div>
+      <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">Global — Overseas</div>
     </div>
+
+    <!-- Availability -->
+    <div style="display:flex;flex-direction:column;gap:.6vh;">
+      <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);">Availability</div>
+      <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-accent);">Open · May 2026</div>
+    </div>
+
+    <!-- Email -->
+    <div style="display:flex;flex-direction:column;gap:.6vh;">
+      <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);">Email</div>
+      <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);word-break:break-all;">1119117642xsf@gmail.com</div>
+    </div>
+
+    <!-- Phone / WeChat -->
+    <div style="display:flex;flex-direction:column;gap:.6vh;">
+      <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);">Phone / WeChat</div>
+      <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">+86 131 1237 0893</div>
+    </div>
+
   </div>
 </section>
 
