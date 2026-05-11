@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Stephen Xu — Stencil &amp; Tablet Preview</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Stardos+Stencil:wght@400;700&family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bone:    #E2DCC9;
+    --black:   #000000;
+    --ink:     #0A0A0A;
+    --paper:   #F4EFE0;
+    --sienna:  #A06A3C;
+    --magenta: #C73B7A;
+    --orange:  #EE7A2E;
+    --teal:    #2D7E73;
+    --blue:    #3F73B7;
+    --mustard: #D8A93B;
+    --olive:   #6F7A2E;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body { background: var(--bone); font-family: "Inter", "Helvetica Neue", Arial, sans-serif; color: var(--ink); }
+
+  .slide {
+    width: 100vw; height: 100vh;
+    background: var(--bone);
+    position: relative; overflow: hidden;
+  }
+
+  /* chrome */
+  .top {
+    position: absolute; top: 48px; left: 64px; right: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 800; font-size: 26px;
+    letter-spacing: .04em; text-transform: uppercase;
+  }
+  .top .meta { display: flex; gap: 48px; font-size: 20px; font-weight: 600; letter-spacing: .06em; opacity: .7; }
+
+  .footer {
+    position: absolute; left: 64px; right: 64px; bottom: 36px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 600; font-size: 20px;
+    letter-spacing: .08em; text-transform: uppercase; opacity: .6;
+  }
+
+  /* cover stage */
+  .stage {
+    position: absolute; inset: 0;
+    display: grid; grid-template-rows: 1fr auto;
+    padding: 48px 64px;
+  }
+  .super {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 800; font-size: 26px; letter-spacing: .12em;
+    text-transform: uppercase; opacity: .65;
+    padding-top: 56px;
+  }
+  h1 {
+    font-family: "Stardos Stencil", serif;
+    font-weight: 700;
+    font-size: clamp(100px, 14vw, 190px);
+    line-height: .84;
+    letter-spacing: -.015em;
+    text-transform: uppercase;
+    color: var(--ink);
+    align-self: end;
+    margin: 0;
+  }
+  h1 em { font-style: normal; color: var(--teal); }
+
+  .row {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-top: 28px;
+  }
+  .lockup { display: flex; align-items: center; gap: 18px; }
+  .mark { width: 52px; height: 52px; border-radius: 13px; background: var(--orange); }
+  .who {
+    font-family: "Barlow Condensed", sans-serif; font-weight: 700;
+    font-size: 28px; text-transform: uppercase; letter-spacing: .04em;
+  }
+  .who small {
+    display: block; font-size: 20px; font-weight: 500;
+    letter-spacing: .07em; opacity: .6;
+  }
+  .date {
+    font-family: "Stardos Stencil", serif; font-weight: 700;
+    font-size: 32px; text-transform: uppercase;
+  }
+
+  /* teal SVG shape */
+  .shape {
+    position: absolute; right: 56px; top: 60px;
+    width: 280px; height: 340px;
+    color: var(--teal); opacity: .18;
+  }
+
+  /* Preview badge */
+  .badge {
+    position: absolute; top: 14px; right: 14px;
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 700; font-size: 16px;
+    letter-spacing: .08em; text-transform: uppercase;
+    background: var(--teal); color: var(--bone);
+    padding: 5px 14px; border-radius: 4px;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="badge">Option 1 · Stencil &amp; Tablet</div>
+
+  <svg class="shape" viewBox="0 0 100 120" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M50 0 C 80 0, 100 20, 100 40 C 100 60, 80 60, 50 60 C 20 60, 0 60, 0 80 C 0 100, 20 120, 50 120 C 80 120, 100 100, 100 80" fill="currentColor"/>
+  </svg>
+
+  <div class="stage">
+    <div>
+      <div class="super">Personal Portfolio · Open to Global Opportunities</div>
+    </div>
+    <div>
+      <h1>Stephen<br/><em>Xu.</em></h1>
+      <div class="row">
+        <div class="lockup">
+          <div class="mark"></div>
+          <div class="who">许烁锋
+            <small>Curious Builder · Global Mindset · 2026</small>
+          </div>
+        </div>
+        <div class="date">XI · V · 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer"><span>Stephen Xu · 许烁锋</span><span>01 / TBD</span></div>
+</div>
+</body>
+</html>
