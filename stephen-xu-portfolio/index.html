@@ -105,7 +105,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--c-bg);-webkit-
 .bullet-list li::before{content:"—";color:var(--c-accent);font-family:var(--f-mono);}
 .dark .bullet-list li{color:var(--c-fg-2);}
 .light .bullet-list li{color:var(--c-fg-light-2);}
-.bullet-list li em{font-style:italic;color:var(--c-accent);font-family:var(--f-heading);}
+.bullet-list li em{font-style:italic;color:var(--c-accent);}
 
 /* ── COVER ──────────────────────────────────────────────────────────── */
 .slide--cover{display:flex;flex-direction:column;justify-content:flex-end;}
@@ -375,9 +375,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--c-bg);-webkit-
         coordination across international deployments.
       </p>
       <ul class="bullet-list" style="margin-top:var(--gap-sm);">
-        <li>Cross-cultural communicator — <em>English</em> &amp; <em>Mandarin</em> bilingual</li>
+        <li>Cross-cultural communicator — English &amp; Mandarin bilingual</li>
         <li><em>AI-native</em> workflow builder (n8n · Make · LLM APIs)</li>
-        <li>Proven team leader <em>promoted through performance</em></li>
+        <li>Proven team leader promoted through performance</li>
         <li>Global mindset, open to opportunities worldwide</li>
       </ul>
     </div>
@@ -1099,22 +1099,26 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--c-bg);-webkit-
     Open to roles in operations, project management, business development,
     and AI-adjacent functions — anywhere in the world.
   </p>
-    <div style="display:flex;gap:3vw;margin-top:var(--gap-lg);padding-top:var(--gap-md);border-top:1px solid var(--c-border);align-items:flex-start;" data-anim="fade-in" data-delay="3">
-    <div>
-      <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Name</div>
-      <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">Stephen Xu · 许烁锋</div>
+    <div style="display:flex;gap:3vw;margin-top:var(--gap-lg);padding-top:var(--gap-md);border-top:1px solid var(--c-border);align-items:flex-start;justify-content:space-between;" data-anim="fade-in" data-delay="3">
+    <!-- left group: identity fields -->
+    <div style="display:flex;gap:3vw;align-items:flex-start;">
+      <div>
+        <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Name</div>
+        <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">Stephen Xu · 许烁锋</div>
+      </div>
+      <div style="width:1px;background:var(--c-border);align-self:stretch;"></div>
+      <div>
+        <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Location Preference</div>
+        <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">Global — Overseas preferred</div>
+      </div>
+      <div style="width:1px;background:var(--c-border);align-self:stretch;"></div>
+      <div>
+        <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Availability</div>
+        <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-accent);">Open · May 2026</div>
+      </div>
     </div>
-    <div style="width:1px;background:var(--c-border);align-self:stretch;"></div>
-    <div>
-      <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Availability</div>
-      <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-accent);">Open · May 2026</div>
-    </div>
-    <div style="width:1px;background:var(--c-border);align-self:stretch;"></div>
-    <div>
-      <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Location Preference</div>
-      <div style="font-family:var(--f-heading);font-size:var(--sz-h3);color:var(--c-fg);">Global — Overseas preferred</div>
-    </div>
-    <div style="margin-left:auto;display:flex;gap:3vw;align-items:flex-start;">
+    <!-- right group: contact -->
+    <div style="display:flex;gap:3vw;align-items:flex-start;">
       <div style="width:1px;background:var(--c-border);align-self:stretch;"></div>
       <div>
         <div style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:.14em;text-transform:uppercase;color:var(--c-fg-3);margin-bottom:.4vh;">Email</div>
