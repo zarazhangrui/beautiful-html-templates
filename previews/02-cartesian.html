@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stephen Xu — Cartesian Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #ede8e0;
+      --bg-secondary: #e2dbd1;
+      --text-primary: #1a1a1a;
+      --text-secondary: #5a5a5a;
+      --accent: #8a8178;
+      --line: #b8b0a4;
+    }
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+    }
+    .slide {
+      width: 100vw; height: 100vh;
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 4vh 4vw;
+    }
+    /* Geometric circle decoration — bottom right */
+    .geo-decoration {
+      position: absolute;
+      right: 5vw; bottom: 10vh;
+      width: 30vw; height: 30vw;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .geo-decoration::before {
+      content: '';
+      position: absolute;
+      top: 10%; left: 10%;
+      width: 80%; height: 80%;
+      border: 1px dashed var(--line);
+      border-radius: 50%;
+    }
+    /* Small inner circle */
+    .geo-decoration::after {
+      content: '';
+      position: absolute;
+      top: 30%; left: 30%;
+      width: 40%; height: 40%;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      opacity: 0.6;
+    }
+    /* Vertical hairline left */
+    .vertical-line {
+      position: absolute; left: 8vw; top: 0;
+      width: 1px; height: 100%;
+      background: var(--line); opacity: 0.3;
+    }
+    .content {
+      position: relative; z-index: 1;
+      max-width: 60vw;
+      padding-left: 8vw;
+    }
+    .label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 3vh;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 400; line-height: 1.05;
+      margin-bottom: 0.4rem;
+    }
+    .name-cn {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 2.2vw, 2rem);
+      font-weight: 400;
+      color: var(--accent);
+      font-style: italic;
+      margin-bottom: 2.5vh;
+      letter-spacing: 0.02em;
+    }
+    .subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+      color: var(--text-secondary);
+      max-width: 40vw;
+      line-height: 1.6;
+    }
+    /* Horizontal rule below subtitle */
+    .rule {
+      width: 48px; height: 1px;
+      background: var(--text-primary);
+      margin: 3vh 0 2vh;
+    }
+    .meta {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+    }
+    /* Template badge */
+    .template-badge {
+      position: absolute; top: 3vh; right: 3vw;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem; font-weight: 500;
+      color: var(--accent);
+      border: 1px solid var(--line);
+      padding: 0.35rem 0.9rem;
+      letter-spacing: 0.04em;
+    }
+    /* Slide counter style */
+    .slide-counter {
+      position: absolute; bottom: 3vh; right: 3vw;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem; color: var(--accent);
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide">
+    <div class="vertical-line"></div>
+    <div class="geo-decoration"></div>
+    <div class="template-badge">Option 2 · Cartesian</div>
+    <div class="content">
+      <div class="label">Personal Portfolio · 2026</div>
+      <h1>Stephen Xu</h1>
+      <p class="name-cn">许烁锋</p>
+      <p class="subtitle">A product-minded generalist with a passion for building things that matter — bridging creativity, strategy, and execution across global markets.</p>
+      <div class="rule"></div>
+      <p class="meta">Open to Opportunities Worldwide</p>
+    </div>
+    <div class="slide-counter">01 / 01</div>
+  </div>
+</body>
+</html>
