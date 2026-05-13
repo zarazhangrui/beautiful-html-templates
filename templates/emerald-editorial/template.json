@@ -1,0 +1,42 @@
+{
+  "slug": "emerald-editorial",
+  "name": "Emerald Editorial",
+  "tagline": "A magazine-cover business deck: emerald + navy + paper, double-rule masthead ornaments, and a bold Bodoni-style display serif.",
+  "mood": [
+    "editorial",
+    "considered",
+    "confident",
+    "magazine-cover"
+  ],
+  "occasion": [
+    "leadership presentation",
+    "quarterly review",
+    "strategy readout",
+    "planning office deck",
+    "executive briefing"
+  ],
+  "tone": [
+    "literary",
+    "authoritative",
+    "warm",
+    "designed"
+  ],
+  "formality": "medium-high",
+  "density": "medium",
+  "palette": {
+    "emerald": "#3CD896",
+    "navy": "#0F1A5C",
+    "paper": "#F1E9D6",
+    "description": "vivid emerald green field, deep navy ink, and warm paper cream; high-saturation magazine-cover palette grounded by the navy"
+  },
+  "typography": {
+    "display": "Bodoni Moda",
+    "sans": "Manrope",
+    "style": "heavy Bodoni-style display serif paired with a wide geometric sans for chrome and body"
+  },
+  "scheme": "mixed",
+  "best_for": "Anything that should feel like the front of a serious magazine, including but not limited to leadership readouts, planning-office reviews, and strategy briefings. The double-rule masthead ornament gives it editorial gravitas without making it stiff — also a great unexpected pick for product launches or research recaps that want to feel considered rather than corporate.",
+  "avoid_for": "Contexts that need to read as quiet, neutral, or institutionally restrained — the emerald field is too saturated to disappear into the background.",
+  "slide_count": 8,
+  "navigation": "deck-stage runtime (arrow keys, space, PgUp/PgDn, Home/End)"
+}

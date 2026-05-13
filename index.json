@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-06T01:44:47.414Z",
-  "template_count": 32,
+  "generated_at": "2026-05-13T22:07:57.226Z",
+  "template_count": 34,
   "templates": [
     {
       "slug": "8-bit-orbit",
@@ -377,6 +377,37 @@
       "slide_count": 10
     },
     {
+      "slug": "editorial-forest",
+      "name": "Editorial Forest",
+      "tagline": "Forest green, dusty pink, and warm cream meet Source Serif 4 in a quiet, intentional quarterly-review deck.",
+      "mood": [
+        "editorial",
+        "quiet",
+        "considered",
+        "warm",
+        "intentional"
+      ],
+      "occasion": [
+        "quarterly review",
+        "internal readout",
+        "studio update",
+        "creative agency deck",
+        "research recap"
+      ],
+      "tone": [
+        "literary",
+        "thoughtful",
+        "warm",
+        "low-pressure"
+      ],
+      "formality": "medium",
+      "density": "medium",
+      "scheme": "mixed",
+      "best_for": "Anything that should feel like a considered editorial — quarterly reviews, internal readouts, studio updates, creative-agency presentations. Equally good for any deck that wants to feel warm and unhurried rather than corporate, including research recaps, book or program announcements, and team retrospectives.",
+      "avoid_for": "Contexts that need to feel urgent, punchy, or sales-driven — the palette and rhythm are intentionally quiet.",
+      "slide_count": 8
+    },
+    {
       "slug": "editorial-tri-tone",
       "name": "Editorial Tri-Tone",
       "tagline": "Three-color editorial system: dusty pink, mustard cream, and deep burgundy, set in Bricolage + Instrument Serif.",
@@ -404,6 +435,36 @@
       "scheme": "mixed",
       "best_for": "Anything that should feel like a fashion-magazine spread: editorial pitches, fashion brand decks, lifestyle media, art direction reviews. Equally good for any deck — including tech, research, or business — that wants tri-tone discipline and serif/sans contrast instead of the usual neutrals.",
       "avoid_for": "Decks that need to read as soft or comforting — the burgundy/pink/cream tri-tone is intentionally high-contrast and styled.",
+      "slide_count": 8
+    },
+    {
+      "slug": "emerald-editorial",
+      "name": "Emerald Editorial",
+      "tagline": "A magazine-cover business deck: emerald + navy + paper, double-rule masthead ornaments, and a bold Bodoni-style display serif.",
+      "mood": [
+        "editorial",
+        "considered",
+        "confident",
+        "magazine-cover"
+      ],
+      "occasion": [
+        "leadership presentation",
+        "quarterly review",
+        "strategy readout",
+        "planning office deck",
+        "executive briefing"
+      ],
+      "tone": [
+        "literary",
+        "authoritative",
+        "warm",
+        "designed"
+      ],
+      "formality": "medium-high",
+      "density": "medium",
+      "scheme": "mixed",
+      "best_for": "Anything that should feel like the front of a serious magazine, including but not limited to leadership readouts, planning-office reviews, and strategy briefings. The double-rule masthead ornament gives it editorial gravitas without making it stiff — also a great unexpected pick for product launches or research recaps that want to feel considered rather than corporate.",
+      "avoid_for": "Contexts that need to read as quiet, neutral, or institutionally restrained — the emerald field is too saturated to disappear into the background.",
       "slide_count": 8
     },
     {

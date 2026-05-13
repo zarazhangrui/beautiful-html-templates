@@ -1,0 +1,1093 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Emerald Editorial Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;700;800;900&family=Playfair+Display:wght@700;800;900&family=DM+Serif+Display:wght@400&family=Rozha+One&family=Yeseva+One&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #3CD896;
+    --bg-2: #2DC684;
+    --bg-3: #25B377;
+    --ink: #0F1A5C;
+    --ink-2: #1B2774;
+    --ink-3: #3A4593;
+    --paper: #F1E9D6;
+    --rule: rgba(15, 26, 92, 0.22);
+    --rule-strong: rgba(15, 26, 92, 0.85);
+    --display-font: 'Bodoni Moda', serif;
+  }
+
+  html, body { margin: 0; padding: 0; background: #0a0a0a; }
+  deck-stage { background: #0a0a0a; }
+
+  section.slide {
+    width: 1920px;
+    height: 1080px;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Manrope', sans-serif;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  /* Bold display serif — Bodoni Moda heavy */
+  .display {
+    font-family: var(--display-font);
+    font-weight: 900;
+    font-style: normal;
+    letter-spacing: -0.005em;
+    line-height: 0.95;
+  }
+  .display-md {
+    font-family: var(--display-font);
+    font-weight: 800;
+    font-style: normal;
+  }
+
+  .sans {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+  }
+  .sans-b {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+
+  /* Double-rule decorative ornament — the signature treatment */
+  .ornament {
+    display: inline-flex;
+    align-items: center;
+    gap: 26px;
+    justify-content: center;
+    width: 100%;
+  }
+  .ornament .word {
+    font-family: var(--display-font);
+    font-weight: 800;
+    font-size: 0.42em;
+    letter-spacing: 0.02em;
+    padding: 0 4px;
+  }
+  .ornament .lines {
+    flex: 1;
+    height: 18px;
+    position: relative;
+  }
+  .ornament .lines::before,
+  .ornament .lines::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--ink);
+  }
+  .ornament .lines::before { top: 3px; }
+  .ornament .lines::after { bottom: 3px; }
+
+  /* Side double-rule for small inline words */
+  .of-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 22px;
+    font-family: var(--display-font);
+    font-weight: 700;
+  }
+  .of-mark::before, .of-mark::after {
+    content: "";
+    width: 64px;
+    height: 18px;
+    background:
+      linear-gradient(var(--ink), var(--ink)) 0 4px / 100% 4px no-repeat,
+      linear-gradient(var(--ink), var(--ink)) 0 12px / 100% 4px no-repeat;
+  }
+
+  /* Shared masthead / footline */
+  .masthead {
+    position: absolute;
+    top: 56px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .footline {
+    position: absolute;
+    bottom: 56px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+  }
+  .rule-h { height: 4px; background: var(--ink); }
+
+  /* ============== SLIDE 1 — COVER ============== */
+  .s1 {
+    padding: 56px 110px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  .s1-top {
+    display: flex; justify-content: space-between; align-items: center;
+    font-weight: 700; letter-spacing: 0.05em; font-size: 26px;
+    flex-shrink: 0;
+  }
+  .s1-stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 0;
+    min-height: 0;
+  }
+  .s1-line { color: var(--ink); }
+  .s1-the { font-family: var(--display-font); font-weight: 800; font-size: 76px; line-height: 1; margin-bottom: -2px; }
+  .s1-big {
+    font-family: var(--display-font);
+    font-weight: 900;
+    font-size: 184px;
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+  }
+  .s1-mid {
+    display: flex; align-items: center; justify-content: center;
+    gap: 32px;
+    width: 100%;
+    max-width: 1400px;
+  }
+  .s1-mid .rule {
+    flex: 1; height: 22px; position: relative;
+  }
+  .s1-mid .rule::before, .s1-mid .rule::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 5px; background: var(--ink);
+  }
+  .s1-mid .rule::before { top: 2px; }
+  .s1-mid .rule::after { bottom: 2px; }
+  .s1-mid .of {
+    font-family: var(--display-font); font-weight: 800;
+    font-size: 68px; line-height: 1; padding: 0 6px;
+  }
+
+  /* Ornament rule variants — controlled by :root[data-ornament] */
+  :root[data-ornament="single"] .s1-mid .rule::before,
+  :root[data-ornament="single"] .s4-state .ornament-row .rule::before,
+  :root[data-ornament="single"] .s8-mid .rule::before {
+    top: 50%; bottom: auto; transform: translateY(-50%); height: 7px;
+  }
+  :root[data-ornament="single"] .s1-mid .rule::after,
+  :root[data-ornament="single"] .s4-state .ornament-row .rule::after,
+  :root[data-ornament="single"] .s8-mid .rule::after { display: none; }
+
+  :root[data-ornament="none"] .s1-mid .rule,
+  :root[data-ornament="none"] .s4-state .ornament-row .rule,
+  :root[data-ornament="none"] .s8-mid .rule { display: none; }
+
+  .s1-credit {
+    margin-top: 30px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: 0.18em;
+  }
+
+  /* ============== SLIDE 2 — AGENDA ============== */
+  .s2 {
+    padding: 110px 110px 70px;
+    display: flex; flex-direction: column;
+  }
+  .s2-eyebrow { font-size: 28px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 30px; }
+  .s2-title {
+    font-family: var(--display-font);
+    font-weight: 900;
+    font-size: 200px;
+    line-height: 0.9;
+    letter-spacing: -0.015em;
+    margin: 0 0 70px;
+  }
+  .s2-list { display: flex; flex-direction: column; gap: 0; }
+  .s2-row {
+    display: grid;
+    grid-template-columns: 130px 1fr 320px;
+    align-items: center;
+    padding: 26px 0;
+    border-top: 4px solid var(--ink);
+    column-gap: 40px;
+  }
+  .s2-row:last-child { border-bottom: 4px solid var(--ink); }
+  .s2-row .num {
+    font-family: var(--display-font);
+    font-weight: 800;
+    font-size: 64px;
+    line-height: 1;
+  }
+  .s2-row .name {
+    font-family: var(--display-font);
+    font-weight: 800;
+    font-size: 64px;
+    line-height: 1;
+    letter-spacing: -0.005em;
+  }
+  .s2-row .kind {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: 0.1em;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* ============== SLIDE 3 — SECTION OPENER ============== */
+  .s3 {
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .s3-left {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 70px 90px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .s3-left .top {
+    position: absolute; top: 70px; left: 90px; right: 90px;
+    display: flex; justify-content: space-between;
+    font-size: 26px; font-weight: 700; letter-spacing: 0.08em;
+  }
+  .s3-numeral {
+    font-family: var(--display-font);
+    font-weight: 900;
+    font-size: 460px;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    text-align: center;
+  }
+  .s3-left .bot {
+    position: absolute; bottom: 70px; left: 90px; right: 90px;
+    display: flex; justify-content: space-between;
+    font-size: 26px; font-weight: 700; letter-spacing: 0.08em;
+  }
+  .s3-right {
+    padding: 70px 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+    overflow: hidden;
+  }
+  .s3-right .kicker {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    font-size: 28px;
+  }
+  .s3-right h2 {
+    font-family: var(--display-font);
+    font-weight: 900;
+    font-size: 128px;
+    line-height: 0.95;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+  .s3-right .lede {
+    font-family: 'Manrope', sans-serif;
+    font-size: 28px;
+    line-height: 1.5;
+    font-weight: 500;
+    max-width: 720px;
+  }
+  .s3-right .marks {
+    display: flex; gap: 14px; flex-wrap: wrap; padding-top: 20px;
+    border-top: 4px solid var(--ink);
+  }
+  .s3-right .mark {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 10px 22px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    font-size: 24px;
+  }
+
+  /* ============== SLIDE 4 — STATEMENT + SUPPORTING ============== */
+  .s4 {
+    padding: 110px 110px 70px;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 60px;
+  }
+  .s4-state {
+    font-family: var(--display-font);
+    font-weight: 900;
+    font-size: 130px;
+    line-height: 0.96;
+    letter-spacing: -0.015em;
+    text-align: center;
+    margin: 0;
+  }
+  .s4-state .ornament-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 32px;
+    margin: 14px 0;
+  }
+  .s4-state .ornament-row .of-word {
+    font-family: var(--display-font);
+    font-weight: 800;
+    font-size: 84px;
+    line-height: 1;
+  }
+  .s4-state .ornament-row .rule {
+    width: 220px; height: 18px; position: relative;
+  }
+  .s4-state .ornament-row .rule::before,
+  .s4-state .ornament-row .rule::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 4px; background: var(--ink);
+  }
+  .s4-state .ornament-row .rule::before { top: 1px; }
+  .s4-state .ornament-row .rule::after { bottom: 1px; }
+  .s4-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    border-top: 4px solid var(--ink);
+    padding-top: 36px;
+  }
+  .s4-cell .n {
+    font-family: var(--display-font);
+    font-weight: 800;
+    font-size: 64px;
+    line-height: 1;
+    margin-bottom: 18px;
+  }
+  .s4-cell h4 {
+    font-family: var(--display-font);
+    font-weight: 800;
+    font-size: 44px;
+    line-height: 1.05;
+    margin: 0 0 16px;
+    letter-spacing: -0.005em;
+  }
+  .s4-cell p {
+    font-size: 26px; line-height: 1.5; font-weight: 500;
+    margin: 0;
+  }
+
+  /* ============== SLIDE 5 — CHART ============== */
+  .s5 {
+    padding: 110px 110px 70px;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 40px;
+  }
+  .s5-head {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 80px;
+    align-items: end;
+  }
+  .s5-h {
+    font-family: var(--display-font);
+    font-weight: 900;
+    font-size: 104px;
+    line-height: 0.95;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+  .s5-sub {
+    font-size: 26px; line-height: 1.45; font-weight: 500;
+    margin: 0;
+  }
+  .s5-body {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 60px;
+    align-items: stretch;
+    min-height: 0;
+  }
+  .chart-card {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 36px 50px 30px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .chart-card .lbl {
+    font-weight: 800; letter-spacing: 0.14em; font-size: 24px;
+    margin-bottom: 24px;
+  }
+  .chart-area {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+  }
+  .chart-yaxis {
+    position: absolute; left: 0; top: 0; bottom: 60px; width: 80px;
+  }
+  .chart-yaxis span {
+    position: absolute; right: 14px; font-size: 26px;
+    font-family: var(--display-font); font-weight: 700;
+    transform: translateY(-50%);
+  }
+  .chart-grid {
+    position: absolute; left: 90px; right: 0; top: 0; bottom: 60px;
+  }
+  .chart-grid .gl {
+    position: absolute; left: 0; right: 0; height: 2px; background: rgba(60, 216, 150, 0.22);
+  }
+  .chart-bars {
+    position: absolute; left: 90px; right: 0; top: 0; bottom: 60px;
+    display: flex; gap: 24px; align-items: flex-end;
+  }
+  .grp { flex: 1; display: flex; gap: 10px; align-items: flex-end; height: 100%; }
+  .bar {
+    flex: 1;
+    background: var(--bg);
+    position: relative;
+  }
+  .bar.b2 { background: var(--paper); }
+  .bar .v {
+    position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+    font-family: var(--display-font); font-weight: 800;
+    font-size: 30px; color: var(--bg);
+  }
+  .bar.b2 .v { color: var(--paper); }
+  .chart-x {
+    position: absolute; left: 90px; right: 0; bottom: 20px;
+    display: flex; gap: 24px;
+  }
+  .chart-x span {
+    flex: 1; text-align: center; font-weight: 700;
+    letter-spacing: 0.06em; font-size: 24px;
+  }
+  .chart-legend {
+    display: flex; gap: 36px; margin-top: 20px;
+    font-size: 24px; font-weight: 700; letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .chart-legend .it { display: flex; align-items: center; gap: 14px; }
+  .chart-legend .sw { width: 22px; height: 22px; background: var(--bg); }
+  .chart-legend .sw.b2 { background: var(--paper); }
+
+  .s5-side {
+    display: flex; flex-direction: column;
+    gap: 22px;
+    border-top: 4px solid var(--ink);
+    padding-top: 26px;
+    overflow: hidden;
+  }
+  .s5-side .tag {
+    display: inline-block;
+    background: var(--ink); color: var(--bg);
+    padding: 8px 20px; font-weight: 700;
+    letter-spacing: 0.12em; font-size: 24px;
+    align-self: flex-start;
+    white-space: nowrap;
+  }
+  .s5-side .take {
+    font-family: var(--display-font);
+    font-weight: 800;
+    font-size: 48px;
+    line-height: 1.0;
+    letter-spacing: -0.005em;
+    margin: 0;
+  }
+  .s5-side .note {
+    font-size: 24px; line-height: 1.45; font-weight: 500; margin: 0;
+  }
+  .s5-side .stats {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 4px solid var(--ink);
+    gap: 24px;
+    padding-top: 28px;
+  }
+  .s5-side .stats .stat .num {
+    font-family: var(--display-font);
+    font-weight: 900;
+    font-size: 92px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .s5-side .stats .stat .num .u {
+    font-size: 48px;
+    margin-left: 2px;
+  }
+  .s5-side .stats .stat .lbl {
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    font-size: 24px;
+    margin-top: 12px;
+    line-height: 1.35;
+  }
+
+  /* ============== SLIDE 6 — PROCESS ============== */
+  .s6 {
+    padding: 110px 110px 70px;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 50px;
+  }
+  .s6-head {
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; align-items: end;
+  }
+  .s6-eyebrow { font-size: 28px; font-weight: 800; letter-spacing: 0.16em; }
+  .s6-h {
+    font-family: var(--display-font); font-weight: 900;
+    font-size: 120px; line-height: 0.95; letter-spacing: -0.015em;
+    margin: 18px 0 0;
+  }
+  .s6-sub {
+    font-size: 28px; line-height: 1.5; font-weight: 500; margin: 0;
+  }
+  .s6-flow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    align-items: stretch;
+  }
+  .step {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 32px 32px 26px;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .step.alt { background: var(--paper); color: var(--ink); }
+  .step .n {
+    font-family: var(--display-font); font-weight: 900;
+    font-size: 80px; line-height: 1;
+    margin-bottom: 14px;
+  }
+  .step h4 {
+    font-family: var(--display-font); font-weight: 800;
+    font-size: 40px; line-height: 1.0;
+    margin: 0 0 16px;
+    letter-spacing: -0.005em;
+    border-top: 4px solid currentColor;
+    padding-top: 16px;
+  }
+  .step p {
+    font-size: 24px; line-height: 1.4; font-weight: 500;
+    margin: 0 0 16px;
+  }
+  .step .meta {
+    margin-top: auto;
+    display: flex; justify-content: space-between;
+    font-weight: 700; letter-spacing: 0.08em; font-size: 24px;
+  }
+
+  /* ============== SLIDE 7 — KPI GRID ============== */
+  .s7 {
+    padding: 110px 110px 70px;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 40px;
+  }
+  .s7-head {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: end;
+    padding-right: 20px;
+  }
+  .s7-eyebrow { font-size: 28px; font-weight: 800; letter-spacing: 0.16em; margin-bottom: 14px; }
+  .s7-h {
+    font-family: var(--display-font); font-weight: 900;
+    font-size: 128px; line-height: 0.92; letter-spacing: -0.015em;
+    margin: 0;
+  }
+  .s7-sub {
+    font-size: 26px; line-height: 1.45; font-weight: 500; margin: 0;
+  }
+  .s7-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px;
+  }
+  .kpi {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    overflow: hidden;
+    min-width: 0;
+  }
+  .kpi.alt {
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .kpi .lbl {
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    font-size: 24px;
+  }
+  .kpi .val {
+    font-family: var(--display-font);
+    font-weight: 900;
+    font-size: 144px;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+  }
+  .kpi .val .u {
+    font-size: 60px;
+    margin-left: 4px;
+    font-weight: 800;
+  }
+  .kpi .desc {
+    font-size: 24px;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+  .kpi .delta {
+    display: inline-block;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    font-size: 24px;
+    padding: 6px 16px;
+    background: var(--bg);
+    color: var(--ink);
+    align-self: flex-start;
+    white-space: nowrap;
+  }
+  .kpi.alt .delta {
+    background: var(--ink);
+    color: var(--bg);
+  }
+
+  /* ============== SLIDE 8 — CLOSING ============== */
+  .s8 {
+    padding: 80px 110px;
+    display: flex; flex-direction: column;
+    text-align: center;
+  }
+  .s8-top {
+    display: flex; justify-content: space-between;
+    font-weight: 700; letter-spacing: 0.06em; font-size: 26px;
+  }
+  .s8-stage {
+    flex: 1;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+  }
+  .s8-kicker {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    font-size: 30px;
+    margin-bottom: 30px;
+  }
+  .s8-h {
+    font-family: var(--display-font);
+    font-weight: 900;
+    font-size: 180px;
+    line-height: 0.92;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+  .s8-mid {
+    display: flex; align-items: center; justify-content: center; gap: 32px;
+    width: 100%; max-width: 1500px; margin: 4px 0;
+  }
+  .s8-mid .rule {
+    flex: 1; height: 22px; position: relative;
+  }
+  .s8-mid .rule::before, .s8-mid .rule::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 5px; background: var(--ink);
+  }
+  .s8-mid .rule::before { top: 2px; }
+  .s8-mid .rule::after { bottom: 2px; }
+  .s8-mid .of {
+    font-family: var(--display-font); font-weight: 800;
+    font-size: 76px; line-height: 1;
+  }
+  .s8-foot {
+    margin-top: 70px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    border-top: 4px solid var(--ink);
+    padding-top: 32px;
+    width: 100%;
+    max-width: 1500px;
+    text-align: left;
+  }
+  .s8-foot .col .lbl { font-weight: 800; letter-spacing: 0.14em; font-size: 24px; margin-bottom: 10px; }
+  .s8-foot .col .val {
+    font-family: var(--display-font); font-weight: 800;
+    font-size: 38px; line-height: 1.1;
+  }
+
+</style>
+</head>
+<body>
+<deck-stage width="1920" height="1080" no-rail>
+
+  <!-- ============== SLIDE 1 — COVER ============== -->
+  <section class="slide s1" data-screen-label="01 Cover">
+    <div class="s1-stage">
+      <div class="s1-the">The</div>
+      <div class="s1-big">STATE</div>
+
+      <div class="s1-mid">
+        <span class="rule"></span>
+        <span class="of">of</span>
+        <span class="rule"></span>
+      </div>
+
+      <div class="s1-big">THE WORK AHEAD</div>
+
+      <div class="s1-credit">A PRESENTATION FOR THE LEADERSHIP TEAM</div>
+    </div>
+
+    <div class="s1-top">
+      <span>PREPARED BY THE PLANNING OFFICE</span>
+      <span>NOVEMBER · MMXXV</span>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 2 — AGENDA ============== -->
+  <section class="slide s2" data-screen-label="02 Agenda">
+    <div class="masthead">
+      <span>AGENDA</span>
+      <span>FORTY MINUTES</span>
+    </div>
+
+    <div class="s2-eyebrow">WHAT WE WILL COVER TODAY</div>
+    <h2 class="s2-title">The Programme</h2>
+
+    <div class="s2-list">
+      <div class="s2-row">
+        <span class="num">01</span>
+        <span class="name">The Quarter In Review</span>
+        <span class="kind">OVERVIEW · 8 MIN</span>
+      </div>
+      <div class="s2-row">
+        <span class="num">02</span>
+        <span class="name">A Reading Of The Data</span>
+        <span class="kind">STUDY · 10 MIN</span>
+      </div>
+      <div class="s2-row">
+        <span class="num">03</span>
+        <span class="name">Our Working Method</span>
+        <span class="kind">DIAGRAM · 6 MIN</span>
+      </div>
+      <div class="s2-row">
+        <span class="num">04</span>
+        <span class="name">Headline Indicators</span>
+        <span class="kind">METRICS · 8 MIN</span>
+      </div>
+      <div class="s2-row">
+        <span class="num">05</span>
+        <span class="name">What Comes Next</span>
+        <span class="kind">CLOSING · 8 MIN</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 3 — SECTION OPENER (split) ============== -->
+  <section class="slide s3" data-screen-label="03 Section Opener">
+    <div class="s3-left">
+      <div class="top">
+        <span>SECTION OPENER</span>
+        <span>EIGHT MINUTES</span>
+      </div>
+      <div class="s3-numeral">Q3</div>
+      <div class="bot">
+        <span>OVERVIEW</span>
+        <span>FOUR THEMES</span>
+      </div>
+    </div>
+    <div class="s3-right">
+      <div class="kicker">A READING OF THE PERIOD</div>
+      <h2>The Quarter, In Review.</h2>
+      <p class="lede">A short framing of what changed, what held steady, and where the team's attention is most needed in the weeks to come. The opener sets the tone for the data and decisions that follow.</p>
+      <div class="marks">
+        <span class="mark">THREE THEMES</span>
+        <span class="mark">TWO DECISIONS</span>
+        <span class="mark">ONE QUESTION</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 4 — STATEMENT + 3 SUPPORTING ============== -->
+  <section class="slide s4" data-screen-label="04 Statement And Three">
+    <div class="masthead">
+      <span>OVERVIEW · A READING OF THE PERIOD</span>
+      <span>THREE THREADS</span>
+    </div>
+
+    <h2 class="s4-state">
+      Three Threads<br>
+      <span class="ornament-row">
+        <span class="rule"></span><span class="of-word">worth</span><span class="rule"></span>
+      </span>
+      Following Closely.
+    </h2>
+
+    <div class="s4-grid">
+      <div class="s4-cell">
+        <div class="n">01</div>
+        <h4>A Wider Field Of Customers</h4>
+        <p>Expansion into adjacent segments held through the period, with new accounts arriving from regions that previously sat at the margins of our practice.</p>
+      </div>
+      <div class="s4-cell">
+        <div class="n">02</div>
+        <h4>Quieter, Steadier Operations</h4>
+        <p>Internal systems were rebuilt around fewer moving parts. Incidents fell, and the time spent on routine work fell with them, freeing capacity for longer projects.</p>
+      </div>
+      <div class="s4-cell">
+        <div class="n">03</div>
+        <h4>A Renewed Product Cadence</h4>
+        <p>Two releases shipped on the schedule we set in spring, and the team closed the period with a clearer view of the autumn roadmap than it began with.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 5 — CHART ============== -->
+  <section class="slide s5" data-screen-label="05 Data Study">
+    <div class="masthead">
+      <span>DATA STUDY · QUARTERLY MOVEMENT</span>
+      <span>SIX QUARTERS</span>
+    </div>
+
+    <div class="s5-head">
+      <h2 class="s5-h">How the<br>numbers moved.</h2>
+      <p class="s5-sub">Two indicators tracked side by side across six quarters. The lighter bars show what was committed; the bone bars show what was delivered against it.</p>
+    </div>
+
+    <div class="s5-body">
+      <div class="chart-card">
+        <div class="lbl">VOLUME · INDEXED TO ONE HUNDRED</div>
+        <div class="chart-area">
+          <div class="chart-yaxis">
+            <span style="top: 0%;">120</span>
+            <span style="top: 25%;">90</span>
+            <span style="top: 50%;">60</span>
+            <span style="top: 75%;">30</span>
+            <span style="top: 100%;">0</span>
+          </div>
+          <div class="chart-grid">
+            <div class="gl" style="top: 0%;"></div>
+            <div class="gl" style="top: 25%;"></div>
+            <div class="gl" style="top: 50%;"></div>
+            <div class="gl" style="top: 75%;"></div>
+            <div class="gl" style="top: 100%;"></div>
+          </div>
+          <div class="chart-bars">
+            <div class="grp">
+              <div class="bar" style="height: 42%;"><span class="v">52</span></div>
+              <div class="bar b2" style="height: 35%;"><span class="v">44</span></div>
+            </div>
+            <div class="grp">
+              <div class="bar" style="height: 51%;"><span class="v">61</span></div>
+              <div class="bar b2" style="height: 47%;"><span class="v">57</span></div>
+            </div>
+            <div class="grp">
+              <div class="bar" style="height: 58%;"><span class="v">70</span></div>
+              <div class="bar b2" style="height: 50%;"><span class="v">60</span></div>
+            </div>
+            <div class="grp">
+              <div class="bar" style="height: 64%;"><span class="v">77</span></div>
+              <div class="bar b2" style="height: 60%;"><span class="v">72</span></div>
+            </div>
+            <div class="grp">
+              <div class="bar" style="height: 75%;"><span class="v">90</span></div>
+              <div class="bar b2" style="height: 70%;"><span class="v">84</span></div>
+            </div>
+            <div class="grp">
+              <div class="bar" style="height: 88%;"><span class="v">106</span></div>
+              <div class="bar b2" style="height: 82%;"><span class="v">98</span></div>
+            </div>
+          </div>
+          <div class="chart-x">
+            <span>Q2·24</span>
+            <span>Q3·24</span>
+            <span>Q4·24</span>
+            <span>Q1·25</span>
+            <span>Q2·25</span>
+            <span>Q3·25</span>
+          </div>
+        </div>
+        <div class="chart-legend">
+          <div class="it"><span class="sw"></span><span>COMMITTED</span></div>
+          <div class="it"><span class="sw b2"></span><span>DELIVERED</span></div>
+        </div>
+      </div>
+
+      <aside class="s5-side">
+        <span class="tag">THE TAKEAWAY</span>
+        <h3 class="take">Delivery is closing the gap on commitment for the third quarter running.</h3>
+        <p class="note">The margin between committed and delivered work narrowed from fifteen percent to eight percent across the period.</p>
+        <div class="stats">
+          <div class="stat">
+            <div class="num">8<span class="u">%</span></div>
+            <div class="lbl">CURRENT GAP<br>WAS 15%</div>
+          </div>
+          <div class="stat">
+            <div class="num">+24<span class="u">%</span></div>
+            <div class="lbl">YEAR ON YEAR<br>DELIVERY GROWTH</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 6 — PROCESS ============== -->
+  <section class="slide s6" data-screen-label="06 Process Diagram">
+    <div class="masthead">
+      <span>DIAGRAM · THE WORKING METHOD</span>
+      <span>FOUR STEPS</span>
+    </div>
+
+    <div class="s6-head">
+      <div>
+        <div class="s6-eyebrow">FROM QUESTION TO DECISION</div>
+        <h2 class="s6-h">A four-step<br>working method.</h2>
+      </div>
+      <p class="s6-sub">A short loop the team runs every fortnight. Each step has a single owner and produces one artefact that the next step depends on. The cadence is the most important part.</p>
+    </div>
+
+    <div class="s6-flow">
+      <div class="step">
+        <div class="n">01</div>
+        <h4>Frame The Question</h4>
+        <p>Write down the decision we are making and who it affects. Keep the brief to a single page so the room can read it before the discussion.</p>
+        <div class="meta"><span>LEAD</span><span>2 DAYS</span></div>
+      </div>
+      <div class="step alt">
+        <div class="n">02</div>
+        <h4>Gather The Evidence</h4>
+        <p>Pull the numbers, talk to three customers, read the prior work. Note what is missing and where the picture is most uncertain.</p>
+        <div class="meta"><span>ANALYST</span><span>4 DAYS</span></div>
+      </div>
+      <div class="step">
+        <div class="n">03</div>
+        <h4>Draft A Position</h4>
+        <p>Write the recommendation in plain prose with two alternatives. Circulate it the day before the review so colleagues arrive with comments in hand.</p>
+        <div class="meta"><span>LEAD</span><span>3 DAYS</span></div>
+      </div>
+      <div class="step alt">
+        <div class="n">04</div>
+        <h4>Decide And Record</h4>
+        <p>Meet, decide, and write the decision into the log within a day. The log is the single record we return to when the question comes back.</p>
+        <div class="meta"><span>GROUP</span><span>1 DAY</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 7 — KPI GRID ============== -->
+  <section class="slide s7" data-screen-label="07 KPI Grid">
+    <div class="masthead">
+      <span>HEADLINE INDICATORS · Q3</span>
+      <span>FOUR NUMBERS</span>
+    </div>
+
+    <div class="s7-head">
+      <div>
+        <div class="s7-eyebrow">FOUR NUMBERS WORTH KEEPING IN VIEW</div>
+        <h2 class="s7-h">By the<br>numbers.</h2>
+      </div>
+      <p class="s7-sub">A short panel of indicators the team reviews each month. Variances are read against the plan agreed in March, not against the prior year.</p>
+    </div>
+
+    <div class="s7-grid">
+      <div class="kpi">
+        <div class="lbl">ACTIVE ACCOUNTS</div>
+        <div class="val">2,418</div>
+        <div class="delta">+ 12.4%</div>
+        <div class="desc">Net new accounts added across the three operating regions during the quarter.</div>
+      </div>
+      <div class="kpi alt">
+        <div class="lbl">RETENTION RATE</div>
+        <div class="val">94<span class="u">%</span></div>
+        <div class="delta">+ 3.1 PP</div>
+        <div class="desc">Trailing twelve-month retention across the renewing cohort of accounts.</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">CYCLE TIME</div>
+        <div class="val">11<span class="u">d</span></div>
+        <div class="delta">− 2 DAYS</div>
+        <div class="desc">Median time from intake to first delivery, weighted by project volume.</div>
+      </div>
+      <div class="kpi alt">
+        <div class="lbl">MARGIN ON REVENUE</div>
+        <div class="val">37<span class="u">%</span></div>
+        <div class="delta">+ 1.8 PP</div>
+        <div class="desc">Contribution margin after direct costs, before allocated overhead.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== SLIDE 8 — CLOSING ============== -->
+  <section class="slide s8" data-screen-label="08 Closing">
+    <div class="s8-top">
+      <span>CLOSING NOTES</span>
+      <span>END OF BRIEFING</span>
+    </div>
+
+    <div class="s8-stage">
+      <div class="s8-kicker">THE WORK THAT FOLLOWS</div>
+      <div class="s8-h">QUESTIONS</div>
+      <div class="s8-mid">
+        <span class="rule"></span>
+        <span class="of">and</span>
+        <span class="rule"></span>
+      </div>
+      <div class="s8-h">DISCUSSION</div>
+
+      <div class="s8-foot">
+        <div class="col">
+          <div class="lbl">NEXT REVIEW</div>
+          <div class="val">Friday<br>12 December</div>
+        </div>
+        <div class="col">
+          <div class="lbl">OWNER</div>
+          <div class="val">The Planning<br>Office</div>
+        </div>
+        <div class="col">
+          <div class="lbl">DISTRIBUTION</div>
+          <div class="val">Internal<br>Leadership</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="s8-top" style="margin-top: 10px;">
+      <span>PREPARED BY THE PLANNING OFFICE</span>
+      <span>VOLUME SEVEN · ISSUE TWO</span>
+    </div>
+  </section>
+
+</deck-stage>
+
+<script src="deck-stage.js"></script>
+
+</body>
+</html>

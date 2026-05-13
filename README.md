@@ -14,7 +14,27 @@ Clone https://github.com/zarazhangrui/beautiful-html-templates and follow the in
 
 ## Gallery
 
-All 32 templates. Three slides per template (cover · mid-deck · later) to give a sense of how each visual system handles different layouts. Click any template name to open its folder on GitHub — the HTML, metadata, and any sibling assets are all there.
+All 34 templates. Three slides per template (cover · mid-deck · later) to give a sense of how each visual system handles different layouts. Click any template name to open its folder on GitHub — the HTML, metadata, and any sibling assets are all there.
+
+### [Emerald Editorial](./templates/emerald-editorial/)
+
+<p>
+  <img src="./screenshots/emerald-editorial-1.png" width="32.5%" alt="Emerald Editorial — slide 1" />
+  <img src="./screenshots/emerald-editorial-3.png" width="32.5%" alt="Emerald Editorial — slide 3" />
+  <img src="./screenshots/emerald-editorial-6.png" width="32.5%" alt="Emerald Editorial — slide 6" />
+</p>
+
+> Magazine-cover business deck: emerald + navy + paper with double-rule masthead ornaments and a heavy Bodoni-style display serif.
+
+### [Editorial Forest](./templates/editorial-forest/)
+
+<p>
+  <img src="./screenshots/editorial-forest-1.png" width="32.5%" alt="Editorial Forest — slide 1" />
+  <img src="./screenshots/editorial-forest-2.png" width="32.5%" alt="Editorial Forest — slide 2" />
+  <img src="./screenshots/editorial-forest-5.png" width="32.5%" alt="Editorial Forest — slide 5" />
+</p>
+
+> Forest green, dusty pink, and warm cream in Source Serif 4 — quiet, intentional quarterly-review aesthetic.
 
 ### [Soft Editorial](./templates/soft-editorial/)
 
