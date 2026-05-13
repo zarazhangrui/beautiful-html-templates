@@ -16,15 +16,15 @@ Clone https://github.com/zarazhangrui/beautiful-html-templates and follow the in
 
 All 34 templates. Three slides per template (cover · mid-deck · later) to give a sense of how each visual system handles different layouts. Click any template name to open its folder on GitHub — the HTML, metadata, and any sibling assets are all there.
 
-### [Emerald Editorial](./templates/emerald-editorial/)
+### [Soft Editorial](./templates/soft-editorial/)
 
 <p>
-  <img src="./screenshots/emerald-editorial-1.png" width="32.5%" alt="Emerald Editorial — slide 1" />
-  <img src="./screenshots/emerald-editorial-3.png" width="32.5%" alt="Emerald Editorial — slide 3" />
-  <img src="./screenshots/emerald-editorial-6.png" width="32.5%" alt="Emerald Editorial — slide 6" />
+  <img src="./screenshots/soft-editorial-4.png" width="32.5%" alt="Soft Editorial — slide 4" />
+  <img src="./screenshots/soft-editorial-6.png" width="32.5%" alt="Soft Editorial — slide 6" />
+  <img src="./screenshots/soft-editorial-10.png" width="32.5%" alt="Soft Editorial — slide 10" />
 </p>
 
-> Magazine-cover business deck: emerald + navy + paper with double-rule masthead ornaments and a heavy Bodoni-style display serif.
+> Cormorant Garamond serif on warm paper with sage, blush, and lemon accents.
 
 ### [Editorial Forest](./templates/editorial-forest/)
 
@@ -36,15 +36,25 @@ All 34 templates. Three slides per template (cover · mid-deck · later) to give
 
 > Forest green, dusty pink, and warm cream in Source Serif 4 — quiet, intentional quarterly-review aesthetic.
 
-### [Soft Editorial](./templates/soft-editorial/)
+### [Pin & Paper](./templates/pin-and-paper/)
 
 <p>
-  <img src="./screenshots/soft-editorial-4.png" width="32.5%" alt="Soft Editorial — slide 4" />
-  <img src="./screenshots/soft-editorial-6.png" width="32.5%" alt="Soft Editorial — slide 6" />
-  <img src="./screenshots/soft-editorial-10.png" width="32.5%" alt="Soft Editorial — slide 10" />
+  <img src="./screenshots/pin-and-paper-1.png" width="32.5%" alt="Pin & Paper — slide 1" />
+  <img src="./screenshots/pin-and-paper-11.png" width="32.5%" alt="Pin & Paper — slide 11" />
+  <img src="./screenshots/pin-and-paper-3.png" width="32.5%" alt="Pin & Paper — slide 3" />
 </p>
 
-> Cormorant Garamond serif on warm paper with sage, blush, and lemon accents.
+> Yellow paper with safety-pin illustrations, ink-blue handwritten Caveat, paper-grain texture.
+
+### [Sakura Chroma](./templates/sakura-chroma/)
+
+<p>
+  <img src="./screenshots/sakura-chroma-1.png" width="32.5%" alt="Sakura Chroma — slide 1" />
+  <img src="./screenshots/sakura-chroma-3.png" width="32.5%" alt="Sakura Chroma — slide 3" />
+  <img src="./screenshots/sakura-chroma-4.png" width="32.5%" alt="Sakura Chroma — slide 4" />
+</p>
+
+> Vintage Japanese cassette-package aesthetic: cream paper, diagonal rainbow ribbons, condensed bold type, JIS-style spec checkboxes.
 
 ### [Stencil & Tablet](./templates/stencil-tablet/)
 
@@ -56,6 +66,16 @@ All 34 templates. Three slides per template (cover · mid-deck · later) to give
 
 > Bone paper with stencil-cut headlines and a six-color earth palette: archaeology meets brand.
 
+### [Cobalt Grid](./templates/cobalt-grid/)
+
+<p>
+  <img src="./screenshots/cobalt-grid-1.png" width="32.5%" alt="Cobalt Grid — slide 1" />
+  <img src="./screenshots/cobalt-grid-3.png" width="32.5%" alt="Cobalt Grid — slide 3" />
+  <img src="./screenshots/cobalt-grid-5.png" width="32.5%" alt="Cobalt Grid — slide 5" />
+</p>
+
+> Electric cobalt italic serifs on a graph-paper canvas, anchored by stair-stepped pixel-glitch decorations and slim hairline rules.
+
 ### [Vellum](./templates/vellum/)
 
 <p>
@@ -65,6 +85,16 @@ All 34 templates. Three slides per template (cover · mid-deck · later) to give
 </p>
 
 > Deep navy canvas with warm-yellow italic Cormorant serifs and a single dusty teal accent. A quiet, scholarly aesthetic.
+
+### [Emerald Editorial](./templates/emerald-editorial/)
+
+<p>
+  <img src="./screenshots/emerald-editorial-1.png" width="32.5%" alt="Emerald Editorial — slide 1" />
+  <img src="./screenshots/emerald-editorial-3.png" width="32.5%" alt="Emerald Editorial — slide 3" />
+  <img src="./screenshots/emerald-editorial-6.png" width="32.5%" alt="Emerald Editorial — slide 6" />
+</p>
+
+> Magazine-cover business deck: emerald + navy + paper with double-rule masthead ornaments and a heavy Bodoni-style display serif.
 
 ### [Neo-Grid Bold](./templates/neo-grid-bold/)
 
@@ -236,16 +266,6 @@ All 34 templates. Three slides per template (cover · mid-deck · later) to give
 
 > Dark sage canvas with bone paper and burnt-orange accent; mid-century modern with wood undertones.
 
-### [Pin & Paper](./templates/pin-and-paper/)
-
-<p>
-  <img src="./screenshots/pin-and-paper-1.png" width="32.5%" alt="Pin & Paper — slide 1" />
-  <img src="./screenshots/pin-and-paper-11.png" width="32.5%" alt="Pin & Paper — slide 11" />
-  <img src="./screenshots/pin-and-paper-3.png" width="32.5%" alt="Pin & Paper — slide 3" />
-</p>
-
-> Yellow paper with safety-pin illustrations, ink-blue handwritten Caveat, paper-grain texture.
-
 ### [Playful](./templates/playful/)
 
 <p>
@@ -325,26 +345,6 @@ All 34 templates. Three slides per template (cover · mid-deck · later) to give
 </p>
 
 > Solar yellow on warm parchment with deep indigo serif and atmospheric sun-glow gradients. Dutch-editorial poster energy.
-
-### [Sakura Chroma](./templates/sakura-chroma/)
-
-<p>
-  <img src="./screenshots/sakura-chroma-1.png" width="32.5%" alt="Sakura Chroma — slide 1" />
-  <img src="./screenshots/sakura-chroma-3.png" width="32.5%" alt="Sakura Chroma — slide 3" />
-  <img src="./screenshots/sakura-chroma-4.png" width="32.5%" alt="Sakura Chroma — slide 4" />
-</p>
-
-> Vintage Japanese cassette-package aesthetic: cream paper, diagonal rainbow ribbons, condensed bold type, JIS-style spec checkboxes.
-
-### [Cobalt Grid](./templates/cobalt-grid/)
-
-<p>
-  <img src="./screenshots/cobalt-grid-1.png" width="32.5%" alt="Cobalt Grid — slide 1" />
-  <img src="./screenshots/cobalt-grid-3.png" width="32.5%" alt="Cobalt Grid — slide 3" />
-  <img src="./screenshots/cobalt-grid-5.png" width="32.5%" alt="Cobalt Grid — slide 5" />
-</p>
-
-> Electric cobalt italic serifs on a graph-paper canvas, anchored by stair-stepped pixel-glitch decorations and slim hairline rules.
 
 ### [Long Table](./templates/long-table/)
 
