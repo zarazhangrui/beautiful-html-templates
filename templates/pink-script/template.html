@@ -67,7 +67,7 @@
   /* shared display script */
   .script {
     font-family: "Instrument Serif", serif;
-    font-style: italic;
+    
     font-weight: 400;
     color: var(--pink);
     letter-spacing: -.01em;
@@ -101,7 +101,7 @@
   .s-cover .pre { font-family: "JetBrains Mono", monospace; font-size: 28px; letter-spacing: .42em; text-transform: uppercase; color: var(--paper); opacity: .75; }
   .s-cover .title-wrap { position: relative; }
   .s-cover .title {
-    font-family: "Instrument Serif", serif; font-style: italic;
+    font-family: "Instrument Serif", serif; 
     color: var(--pink); font-size: 280px; line-height: 1.02; letter-spacing: -.015em;
     text-align: center;
     text-shadow: 0 0 80px rgba(237,61,140,.18);
@@ -116,17 +116,17 @@
   .s-cover .lower { position: absolute; left: 60px; right: 60px; bottom: 160px; display: flex; justify-content: space-between; align-items: end; gap: 32px; }
   .s-cover .lower .col { display: flex; flex-direction: column; gap: 6px; }
   .s-cover .lower .lab { font-family: "JetBrains Mono", monospace; font-size: 22px; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
-  .s-cover .lower .val { font-family: "Instrument Serif", serif; font-style: italic; font-size: 48px; color: var(--pink); line-height: 1.05; }
+  .s-cover .lower .val { font-family: "Instrument Serif", serif; font-size: 48px; color: var(--pink); line-height: 1.05; }
   .s-cover .lower .val.alt { color: var(--paper); }
 
   /* ============== 2. THE INDEX (TOC) ======================= */
   .s-toc .body { position: absolute; inset: 140px 60px 140px 60px; display: grid; grid-template-columns: 480px 1fr; gap: 80px; }
-  .s-toc h1 { font-family: "Instrument Serif", serif; font-style: italic; font-size: 220px; line-height: 1.04; color: var(--pink); padding-bottom: .12em; }
+  .s-toc h1 { font-family: "Instrument Serif", serif; font-size: 220px; line-height: 1.04; color: var(--pink); padding-bottom: .12em; }
   .s-toc h1 .small { display: block; font-size: 80px; color: var(--paper); margin-top: 16px; opacity: .8; }
   .s-toc .rows { display: flex; flex-direction: column; }
   .s-toc .row { display: grid; grid-template-columns: 110px 1fr 200px; gap: 32px; align-items: baseline; padding: 26px 0; border-bottom: 1px solid var(--hair); }
-  .s-toc .row .num { font-family: "Instrument Serif", serif; font-style: italic; font-size: 64px; color: var(--pink); line-height: 1; }
-  .s-toc .row .title { font-family: "Instrument Serif", serif; font-style: italic; font-size: 56px; color: var(--paper); line-height: 1.05; }
+  .s-toc .row .num { font-family: "Instrument Serif", serif; font-size: 64px; color: var(--pink); line-height: 1; }
+  .s-toc .row .title { font-family: "Instrument Serif", serif; font-size: 56px; color: var(--paper); line-height: 1.05; }
   .s-toc .row .desc { font-family: "Inter", sans-serif; font-size: 24px; color: var(--mute); margin-top: 8px; line-height: 1.4; font-style: normal; }
   .s-toc .row .meta { font-family: "JetBrains Mono", monospace; font-size: 24px; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); text-align: right; }
   .s-toc .row.cur .num, .s-toc .row.cur .title { color: var(--pink); }
@@ -135,13 +135,13 @@
   .s-stats .body { position: absolute; inset: 140px 60px 140px 60px; display: grid; grid-template-columns: 1fr 1.05fr; gap: 60px; }
   .s-stats .left { display: flex; flex-direction: column; justify-content: space-between; padding-right: 20px; }
   .s-stats .left .kicker { font-family: "JetBrains Mono", monospace; font-size: 24px; letter-spacing: .18em; text-transform: uppercase; color: var(--pink); }
-  .s-stats .left h2 { font-family: "Instrument Serif", serif; font-style: italic; font-size: 132px; line-height: 1.06; color: var(--paper); padding-bottom: .1em; }
-  .s-stats .left h2 em { color: var(--pink); font-style: italic; }
+  .s-stats .left h2 { font-family: "Instrument Serif", serif; font-size: 132px; line-height: 1.06; color: var(--paper); padding-bottom: .1em; }
+  .s-stats .left h2 em { color: var(--pink); }
   .s-stats .left p { font-family: "Inter", sans-serif; font-size: 24px; line-height: 1.55; color: var(--paper); opacity: .75; max-width: 36ch; font-weight: 300; }
   .s-stats .right { display: flex; flex-direction: column; gap: 18px; padding-top: 0; }
   .s-stats .stat { display: grid; grid-template-columns: 240px 1fr; align-items: center; gap: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--hair); }
   .s-stats .stat:last-child { border-bottom: 0; padding-bottom: 0; }
-  .s-stats .stat .figure { font-family: "Instrument Serif", serif; font-style: italic; font-size: 116px; line-height: .9; color: var(--pink); display: flex; align-items: baseline; }
+  .s-stats .stat .figure { font-family: "Instrument Serif", serif; font-size: 116px; line-height: .9; color: var(--pink); display: flex; align-items: baseline; }
   .s-stats .stat .figure sup { font-size: 36px; color: var(--paper); vertical-align: top; margin-left: 4px; line-height: 1; align-self: flex-start; padding-top: 18px; }
   .s-stats .stat .meta .lab { font-family: "JetBrains Mono", monospace; font-size: 22px; letter-spacing: .14em; text-transform: uppercase; color: var(--paper); }
   .s-stats .stat .meta .desc { font-family: "Inter", sans-serif; font-size: 24px; color: var(--mute); margin-top: 8px; line-height: 1.45; font-weight: 300; }
@@ -150,7 +150,7 @@
   .s-section .body { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
   .s-section .body { justify-content: flex-start; padding-left: 200px; }
   .s-section .num {
-    font-family: "Instrument Serif", serif; font-style: italic;
+    font-family: "Instrument Serif", serif; 
     color: var(--pink);
     font-size: 600px; line-height: .82; letter-spacing: -.02em;
     text-shadow: 0 0 120px rgba(237,61,140,.22);
@@ -158,13 +158,13 @@
   .s-section .label-l { position: absolute; left: 80px; top: auto; bottom: 140px; transform: rotate(-90deg); transform-origin: left bottom; font-family: "JetBrains Mono", monospace; font-size: 22px; letter-spacing: .42em; text-transform: uppercase; color: var(--mute); white-space: nowrap; }
   .s-section .right { position: absolute; right: 100px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 18px; max-width: 380px; }
   .s-section .right .kicker { font-family: "JetBrains Mono", monospace; font-size: 22px; letter-spacing: .14em; text-transform: uppercase; color: var(--pink); }
-  .s-section .right h2 { font-family: "Instrument Serif", serif; font-style: italic; font-size: 88px; line-height: 1.06; color: var(--paper); padding-bottom: .1em; }
+  .s-section .right h2 { font-family: "Instrument Serif", serif; font-size: 88px; line-height: 1.06; color: var(--paper); padding-bottom: .1em; }
   .s-section .right p  { font-family: "Inter", sans-serif; font-size: 24px; line-height: 1.55; color: var(--mute); font-weight: 300; }
 
   /* ============== 5. THE CURVE · CHART ===================== */
   .s-chart .head { position: absolute; left: 60px; right: 60px; top: 140px; display: flex; align-items: end; justify-content: space-between; gap: 80px; }
-  .s-chart .head h2 { font-family: "Instrument Serif", serif; font-style: italic; font-size: 90px; line-height: 1.06; color: var(--paper); max-width: 18ch; padding-bottom: .1em; }
-  .s-chart .head h2 em { color: var(--pink); font-style: italic; }
+  .s-chart .head h2 { font-family: "Instrument Serif", serif; font-size: 90px; line-height: 1.06; color: var(--paper); max-width: 18ch; padding-bottom: .1em; }
+  .s-chart .head h2 em { color: var(--pink); }
   .s-chart .head .legend { display: flex; flex-direction: column; gap: 14px; align-items: flex-end; }
   .s-chart .head .legend .li { display: flex; align-items: center; gap: 14px; font-family: "JetBrains Mono", monospace; font-size: 22px; letter-spacing: .12em; text-transform: uppercase; color: var(--paper); }
   .s-chart .head .legend .li i { width: 36px; height: 2px; background: var(--pink); }
@@ -180,19 +180,19 @@
     display: flex; flex-direction: column; gap: 8px; width: 360px; align-items: flex-end; text-align: right; justify-content: flex-start;
     border-left: 1px solid var(--pink); padding-left: 24px; padding-top: 4px;
   }
-  .s-chart .callout .num { font-family: "Instrument Serif", serif; font-style: italic; font-size: 120px; line-height: .9; color: var(--pink); }
+  .s-chart .callout .num { font-family: "Instrument Serif", serif; font-size: 120px; line-height: .9; color: var(--pink); }
   .s-chart .callout .lab { font-family: "JetBrains Mono", monospace; font-size: 22px; letter-spacing: .14em; text-transform: uppercase; color: var(--paper); }
   .s-chart .callout .desc { font-family: "Inter", sans-serif; font-size: 22px; color: var(--mute); line-height: 1.4; font-weight: 300; }
 
   /* ============== 6. PROCESS · DIAGRAM ===================== */
   .s-process .head { position: absolute; left: 60px; right: 60px; top: 140px; display: flex; align-items: end; justify-content: space-between; gap: 60px; }
-  .s-process .head h2 { font-family: "Instrument Serif", serif; font-style: italic; font-size: 156px; line-height: 1.04; color: var(--paper); max-width: 12ch; padding-bottom: .1em; }
-  .s-process .head h2 em { color: var(--pink); font-style: italic; }
+  .s-process .head h2 { font-family: "Instrument Serif", serif; font-size: 156px; line-height: 1.04; color: var(--paper); max-width: 12ch; padding-bottom: .1em; }
+  .s-process .head h2 em { color: var(--pink); }
   .s-process .head .lead { font-family: "Inter", sans-serif; font-size: 26px; color: var(--mute); max-width: 40ch; line-height: 1.55; font-weight: 300; padding-bottom: 18px; }
   .s-process .row { position: absolute; left: 60px; right: 60px; top: 540px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
   .s-process .step { position: relative; display: flex; flex-direction: column; gap: 18px; padding: 26px 0; border-top: 1px solid var(--pink); }
-  .s-process .step .n { font-family: "Instrument Serif", serif; font-style: italic; font-size: 96px; color: var(--pink); line-height: .8; }
-  .s-process .step h3 { font-family: "Instrument Serif", serif; font-style: italic; font-size: 38px; color: var(--paper); line-height: 1.05; }
+  .s-process .step .n { font-family: "Instrument Serif", serif; font-size: 96px; color: var(--pink); line-height: .8; }
+  .s-process .step h3 { font-family: "Instrument Serif", serif; font-size: 38px; color: var(--paper); line-height: 1.05; }
   .s-process .step p { font-family: "Inter", sans-serif; font-size: 22px; color: var(--mute); line-height: 1.5; font-weight: 300; }
   .s-process .step .arr {
     position: absolute; right: -16px; top: 60px; width: 24px; height: 24px;
@@ -204,13 +204,13 @@
 
   /* ============== 7. THE FIELD · COMPARISON ================ */
   .s-matrix .head { position: absolute; left: 60px; right: 60px; top: 140px; display: flex; align-items: end; justify-content: space-between; gap: 60px; }
-  .s-matrix .head h2 { font-family: "Instrument Serif", serif; font-style: italic; font-size: 132px; line-height: 1.04; color: var(--paper); max-width: 14ch; padding-bottom: .1em; }
-  .s-matrix .head h2 em { color: var(--pink); font-style: italic; }
+  .s-matrix .head h2 { font-family: "Instrument Serif", serif; font-size: 132px; line-height: 1.04; color: var(--paper); max-width: 14ch; padding-bottom: .1em; }
+  .s-matrix .head h2 em { color: var(--pink); }
   .s-matrix .head .source { font-family: "JetBrains Mono", monospace; font-size: 22px; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); padding-bottom: 18px; max-width: 30ch; line-height: 1.5; text-align: right; }
   .s-matrix .table { position: absolute; left: 60px; right: 60px; top: 460px; bottom: 140px; display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; grid-auto-rows: 1fr; }
   .s-matrix .cell { padding: 16px 24px; border-bottom: 1px solid var(--line); display: flex; align-items: center; font-family: "Inter", sans-serif; font-size: 22px; line-height: 1.4; color: var(--paper); font-weight: 300; }
   .s-matrix .cell.colhead { background: transparent; font-family: "JetBrains Mono", monospace; font-size: 22px; letter-spacing: .14em; text-transform: uppercase; color: var(--pink); border-bottom-color: var(--pink); }
-  .s-matrix .cell.label { font-family: "Instrument Serif", serif; font-style: italic; font-size: 32px; color: var(--paper); }
+  .s-matrix .cell.label { font-family: "Instrument Serif", serif; font-size: 32px; color: var(--paper); }
   .s-matrix .cell.us { background: rgba(237,61,140,.08); color: var(--paper); }
   .s-matrix .pill { display: inline-block; padding: 6px 14px; font-family: "JetBrains Mono", monospace; font-size: 16px; letter-spacing: .08em; text-transform: uppercase; border: 1px solid var(--pink); white-space: nowrap; line-height: 1.2; color: var(--pink); }
   .s-matrix .pill.dim { border-color: var(--hair); color: var(--mute); }
@@ -219,24 +219,24 @@
   /* ============== 8. VOICES · QUOTE ======================== */
   .s-quote .body { position: absolute; inset: 140px 60px 140px 60px; display: grid; grid-template-columns: 320px 1fr; gap: 80px; align-items: center; }
   .s-quote .left { display: flex; flex-direction: column; gap: 28px; }
-  .s-quote .left .qmark { font-family: "Instrument Serif", serif; font-style: italic; font-size: 320px; color: var(--pink); line-height: .65; }
+  .s-quote .left .qmark { font-family: "Instrument Serif", serif; font-size: 320px; color: var(--pink); line-height: .65; }
   .s-quote .left .lab { font-family: "JetBrains Mono", monospace; font-size: 22px; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
-  .s-quote .right blockquote { font-family: "Instrument Serif", serif; font-style: italic; font-size: 92px; line-height: 1.05; color: var(--paper); letter-spacing: -.005em; }
-  .s-quote .right blockquote em { color: var(--pink); font-style: italic; }
+  .s-quote .right blockquote { font-family: "Instrument Serif", serif; font-size: 92px; line-height: 1.05; color: var(--paper); letter-spacing: -.005em; }
+  .s-quote .right blockquote em { color: var(--pink); }
   .s-quote .attr { display: flex; align-items: baseline; gap: 24px; margin-top: 60px; padding-top: 28px; border-top: 1px solid var(--pink); }
-  .s-quote .attr .who { font-family: "Instrument Serif", serif; font-style: italic; font-size: 48px; color: var(--paper); }
+  .s-quote .attr .who { font-family: "Instrument Serif", serif; font-size: 48px; color: var(--paper); }
   .s-quote .attr .role { font-family: "JetBrains Mono", monospace; font-size: 22px; letter-spacing: .14em; text-transform: uppercase; color: var(--pink); }
 
   /* ============== 9. ENCORE · CTA ========================== */
   .s-cta .body { position: absolute; inset: 140px 60px 140px 60px; display: flex; flex-direction: column; justify-content: space-between; }
   .s-cta .top { display: flex; flex-direction: column; gap: 12px; }
   .s-cta .top .pre { font-family: "JetBrains Mono", monospace; font-size: 26px; letter-spacing: .24em; text-transform: uppercase; color: var(--pink); }
-  .s-cta .top h2 { font-family: "Instrument Serif", serif; font-style: italic; font-size: 140px; line-height: 1.04; color: var(--paper); letter-spacing: -.015em; padding-bottom: .1em; }
-  .s-cta .top h2 em { color: var(--pink); font-style: italic; }
+  .s-cta .top h2 { font-family: "Instrument Serif", serif; font-size: 140px; line-height: 1.04; color: var(--paper); letter-spacing: -.015em; padding-bottom: .1em; }
+  .s-cta .top h2 em { color: var(--pink); }
   .s-cta .bottom { display: grid; grid-template-columns: repeat(3, 1fr) 280px; gap: 48px; align-items: end; }
   .s-cta .step { display: flex; flex-direction: column; gap: 16px; padding-top: 22px; border-top: 1px solid var(--pink); }
-  .s-cta .step .n { font-family: "Instrument Serif", serif; font-style: italic; font-size: 64px; color: var(--pink); line-height: 1; }
-  .s-cta .step h3 { font-family: "Instrument Serif", serif; font-style: italic; font-size: 44px; color: var(--paper); line-height: 1.05; }
+  .s-cta .step .n { font-family: "Instrument Serif", serif; font-size: 64px; color: var(--pink); line-height: 1; }
+  .s-cta .step h3 { font-family: "Instrument Serif", serif; font-size: 44px; color: var(--paper); line-height: 1.05; }
   .s-cta .step p { font-family: "Inter", sans-serif; font-size: 22px; color: var(--mute); line-height: 1.5; font-weight: 300; }
   .s-cta .qr { display: flex; flex-direction: column; gap: 14px; align-items: flex-end; }
   .s-cta .qr .box { width: 180px; height: 180px; background: var(--paper); padding: 12px; }
@@ -247,8 +247,8 @@
   /* ============== 10. THE SYSTEM · DESIGN SYSTEM ============ */
   .s-system .body { position: absolute; inset: 140px 60px 140px 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
   .s-system .head { position: absolute; left: 60px; right: 60px; top: 140px; }
-  .s-system .head h2 { font-family: "Instrument Serif", serif; font-style: italic; font-size: 132px; color: var(--paper); }
-  .s-system .head h2 em { color: var(--pink); font-style: italic; }
+  .s-system .head h2 { font-family: "Instrument Serif", serif; font-size: 132px; color: var(--paper); }
+  .s-system .head h2 em { color: var(--pink); }
   .s-system .body { top: 320px; }
   .s-system .panel { display: flex; flex-direction: column; gap: 22px; padding-top: 22px; border-top: 1px solid var(--pink); }
   .s-system .panel h3 { font-family: "JetBrains Mono", monospace; font-size: 22px; letter-spacing: .14em; text-transform: uppercase; color: var(--pink); }
@@ -261,15 +261,15 @@
   .s-system .typerow { display: grid; grid-template-columns: 240px 1fr; gap: 24px; align-items: baseline; padding-bottom: 12px; border-bottom: 1px dashed var(--hair); }
   .s-system .typerow .meta { font-family: "JetBrains Mono", monospace; font-size: 22px; letter-spacing: .08em; color: var(--mute); text-transform: uppercase; }
   .s-system .typerow .sample { color: var(--paper); }
-  .s-system .typerow .sample.script { font-family: "Instrument Serif", serif; font-style: italic; color: var(--pink); }
-  .s-system .typerow .sample.disp { font-family: "Instrument Serif", serif; font-style: italic; }
+  .s-system .typerow .sample.script { font-family: "Instrument Serif", serif; color: var(--pink); }
+  .s-system .typerow .sample.disp { font-family: "Instrument Serif", serif; }
   .s-system .typerow .sample.body { font-family: "Inter", sans-serif; font-weight: 300; }
   .s-system .typerow .sample.mono { font-family: "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .12em; }
   .s-system .rules { display: flex; flex-direction: column; gap: 12px; }
   .s-system .rules .item { display: grid; grid-template-columns: 64px 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--hair); }
-  .s-system .rules .item .n { font-family: "Instrument Serif", serif; font-style: italic; font-size: 48px; color: var(--pink); line-height: .9; }
+  .s-system .rules .item .n { font-family: "Instrument Serif", serif; font-size: 48px; color: var(--pink); line-height: .9; }
   .s-system .rules .item p { font-family: "Inter", sans-serif; font-size: 22px; color: var(--paper); line-height: 1.45; font-weight: 300; }
-  .s-system .rules .item p strong { color: var(--pink); font-weight: 500; font-style: italic; font-family: "Instrument Serif", serif; font-size: 26px; padding-right: 6px; }
+  .s-system .rules .item p strong { color: var(--pink); font-weight: 500; font-family: "Instrument Serif", serif; font-size: 26px; padding-right: 6px; }
 </style>
 </head>
 <body>
@@ -308,7 +308,7 @@
     </div>
     <div class="footer">
       <span>Maison Nocturne · Confidential</span>
-      <span class="pageno"><em>01</em> / 09</span>
+      <span class="pageno">01 / 09</span>
     </div>
   </section>
 
@@ -360,7 +360,7 @@
         </div>
       </div>
     </div>
-    <div class="footer"><span>Maison Nocturne</span><span class="pageno"><em>02</em> / 09</span></div>
+    <div class="footer"><span>Maison Nocturne</span><span class="pageno">02 / 09</span></div>
   </section>
 
   <!-- ============== 3. BY THE NUMBERS ========================= -->
@@ -370,7 +370,7 @@
       <div class="left">
         <div class="kicker">By the Numbers</div>
         <div>
-          <h2>A season<br>told in<br><em>five</em> figures.</h2>
+          <h2>A season<br>told in<br>five figures.</h2>
         </div>
         <p>Read top to bottom. Every figure was reported by atelier directors during the eight-week previewing window and represents the house ledger only.</p>
       </div>
@@ -412,7 +412,7 @@
         </div>
       </div>
     </div>
-    <div class="footer"><span>Source · Atelier Ledger Q1</span><span class="pageno"><em>03</em> / 09</span></div>
+    <div class="footer"><span>Source · Atelier Ledger Q1</span><span class="pageno">03 / 09</span></div>
   </section>
 
   <!-- ============== 4. MOVEMENTS · SECTION DIVIDER ============= -->
@@ -427,14 +427,14 @@
       <h2>A study<br>in cuts<br>&amp; color.</h2>
       <p>Three silhouettes carry the season — the column, the cape, and the cinch. Each is annotated in the chapters that follow.</p>
     </div>
-    <div class="footer"><span>Chapter 02 of 05</span><span class="pageno"><em>04</em> / 09</span></div>
+    <div class="footer"><span>Chapter 02 of 05</span><span class="pageno">04 / 09</span></div>
   </section>
 
   <!-- ============== 5. THE CURVE · CHART ====================== -->
   <section class="slide s-chart" data-label="05 The Curve" data-om-validate="false">
     <div class="runner"><span class="brand">Chapter 03</span><span>The Curve</span></div>
     <div class="head">
-      <h2>Twelve weeks of <em>after-hours</em><br>behavior.</h2>
+      <h2>Twelve weeks of after-hours<br>behavior.</h2>
       <div class="legend">
         <div class="li"><i></i>House · A/W26</div>
         <div class="li b"><i></i>Sector benchmark</div>
@@ -471,14 +471,14 @@
         <span>W01</span><span>W02</span><span>W03</span><span>W04</span><span>W05</span><span>W06</span><span>W07</span><span>W08</span><span style="color:var(--pink)">W09</span><span>W10</span><span>W11</span><span>W12</span>
       </div>
     </div>
-    <div class="footer"><span>Source · House register · Index FY25=100</span><span class="pageno"><em>05</em> / 09</span></div>
+    <div class="footer"><span>Source · House register · Index FY25=100</span><span class="pageno">05 / 09</span></div>
   </section>
 
   <!-- ============== 6. PROCESS · DIAGRAM ====================== -->
   <section class="slide s-process" data-label="06 Process" data-om-validate="false">
     <div class="runner"><span class="brand">Chapter 04</span><span>The Method</span></div>
     <div class="head">
-      <h2>The<br><em>method.</em></h2>
+      <h2>The<br>method.</h2>
       <div class="lead">From sketchbook to runway in five movements. The atelier's tempo is dictated by the cloth, never the calendar.</div>
     </div>
     <div class="row">
@@ -513,20 +513,20 @@
       </div>
     </div>
     <div class="timeline">
-      <span>Wk 01–02 <em>Brief</em></span>
-      <span>Wk 03–06 <em>Pattern</em></span>
-      <span>Wk 07–10 <em>Atelier</em></span>
-      <span>Wk 11–12 <em>Fitting</em></span>
-      <span>Wk 13 <em>Runway</em></span>
+      <span>Wk 01–02 Brief</span>
+      <span>Wk 03–06 Pattern</span>
+      <span>Wk 07–10 Atelier</span>
+      <span>Wk 11–12 Fitting</span>
+      <span>Wk 13 Runway</span>
     </div>
-    <div class="footer"><span>Atelier Method · House Standard</span><span class="pageno"><em>06</em> / 09</span></div>
+    <div class="footer"><span>Atelier Method · House Standard</span><span class="pageno">06 / 09</span></div>
   </section>
 
   <!-- ============== 7. THE FIELD · COMPARISON MATRIX ========== -->
   <section class="slide s-matrix" data-label="07 The Field" data-om-validate="false">
     <div class="runner"><span class="brand">Chapter 05</span><span>The Field</span></div>
     <div class="head">
-      <h2>The<br><em>field</em>, in five rows.</h2>
+      <h2>The<br>field, in five rows.</h2>
       <div class="source">Sourced · house registers, public filings, three trade press indices · A/W 2026</div>
     </div>
     <div class="table">
@@ -551,7 +551,7 @@
       <div class="cell"><span class="pill">By appointment</span></div>
 
       <div class="cell label">Repeat client share</div>
-      <div class="cell us"><strong style="color:var(--pink);font-family:'Instrument Serif';font-style:italic;font-size:32px">42%</strong></div>
+      <div class="cell us"><strong style="color:var(--pink);font-family:'Instrument Serif';font-size:32px">42%</strong></div>
       <div class="cell">28%</div>
       <div class="cell">19%</div>
 
@@ -560,7 +560,7 @@
       <div class="cell" style="border-bottom:0">30 days post-show</div>
       <div class="cell" style="border-bottom:0">Same day</div>
     </div>
-    <div class="footer"><span>Comparison · A/W 2026 disclosed</span><span class="pageno"><em>07</em> / 09</span></div>
+    <div class="footer"><span>Comparison · A/W 2026 disclosed</span><span class="pageno">07 / 09</span></div>
   </section>
 
   <!-- ============== 8. VOICES · QUOTE ========================= -->
@@ -573,7 +573,7 @@
       </div>
       <div class="right">
         <blockquote>
-          The house dresses you for an <em>evening</em> that hasn't begun. You leave the fitting and somewhere a room is already <em>waiting</em>.
+          The house dresses you for an evening that hasn't begun. You leave the fitting and somewhere a room is already waiting.
         </blockquote>
         <div class="attr">
           <div class="who">— Camille Aubry</div>
@@ -581,7 +581,7 @@
         </div>
       </div>
     </div>
-    <div class="footer"><span>Voices · Le Soir Parisien</span><span class="pageno"><em>08</em> / 09</span></div>
+    <div class="footer"><span>Voices · Le Soir Parisien</span><span class="pageno">08 / 09</span></div>
   </section>
 
   <!-- ============== 9. ENCORE · CTA =========================== -->
@@ -590,7 +590,7 @@
     <div class="body">
       <div class="top">
         <div class="pre">An invitation</div>
-        <h2><em>Encore.</em><br>The list opens<br>this Friday.</h2>
+        <h2>Encore.<br>The list opens<br>this Friday.</h2>
       </div>
       <div class="bottom">
         <div class="step">
@@ -636,7 +636,7 @@
         </div>
       </div>
     </div>
-    <div class="footer"><span>RSVP closes 22 May · Strict</span><span class="pageno"><em>09</em> / 09</span></div>
+    <div class="footer"><span>RSVP closes 22 May · Strict</span><span class="pageno">09 / 09</span></div>
   </section>
 
 </deck-stage>

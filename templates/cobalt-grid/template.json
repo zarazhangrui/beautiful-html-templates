@@ -1,7 +1,7 @@
 {
   "slug": "cobalt-grid",
   "name": "Cobalt Grid",
-  "tagline": "Electric cobalt italic serifs on a graph-paper canvas, anchored by stair-stepped pixel-glitch decorations and slim hairline rules.",
+  "tagline": "Electric cobalt serifs on a graph-paper canvas, anchored by stair-stepped pixel-glitch decorations and slim hairline rules.",
   "mood": [
     "editorial",
     "design-research",
@@ -35,10 +35,10 @@
     "description": "warm cream / ivory paper canvas with one strict accent of electric cobalt royal blue. The grid is a faint cobalt overlay, and decorations (pixel stair-blocks, QR-style mini-grids, hairline rules) all use the same blue, keeping the deck strictly bichromatic"
   },
   "typography": {
-    "display": "Newsreader (italic)",
+    "display": "Newsreader",
     "body": "Hanken Grotesk",
     "mono": "DM Mono",
-    "style": "transitional italic serif for hero type and section heads, paired with a neutral grotesk for body and a clean mono for tabular data and micro-captions; strictly cobalt-on-cream"
+    "style": "transitional serif for hero type and section heads, paired with a neutral grotesk for body and a clean mono for tabular data and micro-captions; strictly cobalt-on-cream"
   },
   "scheme": "light",
   "best_for": "Anything that should feel like a quietly serious design / research bulletin, art publication, or curated trend report. Strong for studio annuals, agency capabilities decks, design-research publications, architecture / art / academic decks, and any deck wanting one strict accent colour and a printed-ledger calmness rather than corporate polish.",

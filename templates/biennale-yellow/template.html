@@ -46,7 +46,7 @@
 
   /* Type system — kept on a small set of utility classes */
   .display      { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; line-height: 0.9; letter-spacing: -0.012em; }
-  .display-it   { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400; line-height: 1.04; letter-spacing: -0.005em; }
+  .display-it   { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; line-height: 1.04; letter-spacing: -0.005em; }
   .micro-label  { font-family: 'Archivo', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; }
   .body-text    { font-family: 'Archivo', sans-serif; font-weight: 400; line-height: 1.5; }
   .mono-tab     { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 400; }
@@ -131,7 +131,7 @@
     color: var(--ink);
     letter-spacing: -0.018em;
   }
-  .s-cover .title em { font-style: italic; }
+  .s-cover .title em { }
   .s-cover .subline {
     margin-top: clamp(8px, 1vh, 18px);
     font-family: 'Archivo', sans-serif;
@@ -188,7 +188,7 @@
     max-width: min(86%, 1480px);
     padding: 0 clamp(40px, 6vw, 120px);
     font-family: 'Instrument Serif', Georgia, serif;
-    font-style: italic;
+    
     font-weight: 400;
     font-size: clamp(56px, min(7vw, 11vh), 120px);
     line-height: 1.04;
@@ -330,7 +330,7 @@
   .s-chapter .ttl {
     margin-top: clamp(12px, 1.6vh, 28px);
     font-family: 'Instrument Serif', Georgia, serif;
-    font-style: italic;
+    
     font-size: clamp(40px, min(4.4vw, 7vh), 90px);
     line-height: 1.05;
     color: var(--ink);
@@ -368,7 +368,7 @@
   .s-data .col-a { display: flex; flex-direction: column; justify-content: center; gap: clamp(18px, 2vh, 32px); }
   .s-data .stat { display: flex; flex-direction: column; gap: 4px; }
   .s-data .stat .v { font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(72px, min(7vw, 12vh), 144px); line-height: 0.92; color: var(--ink); letter-spacing: -0.01em; }
-  .s-data .stat .v sup { font-size: 0.42em; vertical-align: super; opacity: 0.7; font-style: italic; }
+  .s-data .stat .v sup { font-size: 0.42em; vertical-align: super; opacity: 0.7; }
   .s-data .stat .lab2 { font-family: 'Archivo', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: 0.18em; font-size: clamp(11px, 0.8vw, 13px); color: var(--ink); }
   .s-data .stat .desc { font-family: 'Archivo', sans-serif; font-size: clamp(14px, 0.95vw, 15px); line-height: 1.45; color: var(--ink); max-width: 32ch; margin-top: 4px; }
 
@@ -410,7 +410,7 @@
   }
   .s-quote .qbody {
     font-family: 'Instrument Serif', Georgia, serif;
-    font-style: italic;
+    
     font-size: clamp(40px, min(4.6vw, 7vh), 88px);
     line-height: 1.06;
     color: var(--ink);
@@ -477,7 +477,7 @@
   }
   .s-cal .row .date { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: clamp(13px, 0.95vw, 16px); color: var(--ink); letter-spacing: 0.02em; }
   .s-cal .row .ttl  { font-family: 'Instrument Serif', Georgia, serif; font-size: clamp(20px, 1.6vw, 30px); line-height: 1.15; color: var(--ink); }
-  .s-cal .row .ttl em { font-style: italic; }
+  .s-cal .row .ttl em { }
   .s-cal .row .ven  { font-family: 'Archivo', sans-serif; font-size: clamp(14px, 0.92vw, 15px); color: var(--ink); }
   .s-cal .row .dur  { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: clamp(12px, 0.84vw, 14px); color: var(--ink); text-align: right; letter-spacing: 0.04em; opacity: 0.78; }
   .s-cal .row.headrow { border-bottom: 1px solid var(--ink); padding-bottom: 8px; }
@@ -518,7 +518,7 @@
     color: var(--ink);
     letter-spacing: -0.018em;
   }
-  .s-colophon .ttl em { font-style: italic; }
+  .s-colophon .ttl em { }
 
   .s-colophon .colofo {
     position: absolute;
@@ -553,7 +553,7 @@
       <div class="date-rail">02.05—<br/>11.10.2026</div>
 
       <div class="titlewrap">
-        <h1 class="title">Aurora<br/><em>Programme</em></h1>
+        <h1 class="title">Aurora<br/>Programme</h1>
         <div class="caption subline">Annual Survey · Issue No. 04</div>
       </div>
 
@@ -710,7 +710,7 @@
           <div class="row headrow"><div class="caption">Date</div><div class="caption">Title</div><div class="caption">Venue</div><div class="caption">Length</div></div>
           <div class="row">
             <div class="caption date">02.05</div>
-            <div class="ttl"><em>The Long Yellow</em>, opening lecture</div>
+            <div class="ttl">The Long Yellow, opening lecture</div>
             <div class="ven">Pavilion of Quiet Form, Rotterdam</div>
             <div class="caption dur">90 min</div>
           </div>
@@ -722,7 +722,7 @@
           </div>
           <div class="row">
             <div class="caption date">06.06</div>
-            <div class="ttl"><em>Public Form 01</em> — opening</div>
+            <div class="ttl">Public Form 01 — opening</div>
             <div class="ven">Square of the Slow Sun, Antwerp</div>
             <div class="caption dur">All day</div>
           </div>
@@ -734,7 +734,7 @@
           </div>
           <div class="row">
             <div class="caption date">19.07</div>
-            <div class="ttl"><em>A Letter to the Sun</em>, evening reading</div>
+            <div class="ttl">A Letter to the Sun, evening reading</div>
             <div class="ven">Aurora Library, room 3</div>
             <div class="caption dur">75 min</div>
           </div>
@@ -752,7 +752,7 @@
           </div>
           <div class="row">
             <div class="caption date">11.10</div>
-            <div class="ttl"><em>The Last Window</em>, closing performance</div>
+            <div class="ttl">The Last Window, closing performance</div>
             <div class="ven">Pavilion of Quiet Form, Rotterdam</div>
             <div class="caption dur">60 min</div>
           </div>
@@ -770,7 +770,7 @@
 
       <div class="titlewrap">
         <div class="caption ktag">Colophon · Programme 04</div>
-        <h2 class="ttl">With thanks<br/>to the slow<br/><em>readers.</em></h2>
+        <h2 class="ttl">With thanks<br/>to the slow<br/>readers.</h2>
       </div>
 
       <div class="colofo">

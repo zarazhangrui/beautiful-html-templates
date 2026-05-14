@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-13T22:07:57.226Z",
+  "generated_at": "2026-05-14T23:03:11.859Z",
   "template_count": 34,
   "templates": [
     {
@@ -253,7 +253,7 @@
     {
       "slug": "cobalt-grid",
       "name": "Cobalt Grid",
-      "tagline": "Electric cobalt italic serifs on a graph-paper canvas, anchored by stair-stepped pixel-glitch decorations and slim hairline rules.",
+      "tagline": "Electric cobalt serifs on a graph-paper canvas, anchored by stair-stepped pixel-glitch decorations and slim hairline rules.",
       "mood": [
         "editorial",
         "design-research",
@@ -503,7 +503,7 @@
     {
       "slug": "long-table",
       "name": "Long Table",
-      "tagline": "Warm cream and rust-red supper-club aesthetic with bold uppercase grotesk headlines, italic Fraunces, and pill-shaped outlined buttons.",
+      "tagline": "Warm cream and rust-red supper-club aesthetic with bold uppercase grotesk headlines, Fraunces serifs, and pill-shaped outlined buttons.",
       "mood": [
         "warm",
         "intimate",
@@ -533,8 +533,8 @@
       "formality": "medium",
       "density": "medium",
       "scheme": "light",
-      "best_for": "Anything that should feel like a warm, intimate, modern hospitality / community brand: supper clubs, dinner series, small restaurants, creative-studio events, membership pitches, lifestyle and wine brands. Equally good for any deck wanting a single warm accent colour, italic-meets-bold typography, and a social-media-aware modern-editorial voice.",
-      "avoid_for": "Decks that need corporate polish, technical density, or a cold / minimalist register — the rust-red palette and bold-italic mix are intentionally warm and people-facing.",
+      "best_for": "Anything that should feel like a warm, intimate, modern hospitality / community brand: supper clubs, dinner series, small restaurants, creative-studio events, membership pitches, lifestyle and wine brands. Equally good for any deck wanting a single warm accent colour, mixed-weight typography, and a social-media-aware modern-editorial voice.",
+      "avoid_for": "Decks that need corporate polish, technical density, or a cold / minimalist register — the rust-red palette and bold serif mix are intentionally warm and people-facing.",
       "slide_count": 8
     },
     {
@@ -1038,7 +1038,7 @@
     {
       "slug": "vellum",
       "name": "Vellum",
-      "tagline": "Deep navy canvas with warm-yellow italic Cormorant serifs and a single dusty teal accent. A quiet, scholarly aesthetic.",
+      "tagline": "Deep navy canvas with warm-yellow Cormorant serifs and a single dusty teal accent. A quiet, scholarly aesthetic.",
       "mood": [
         "scholarly",
         "literary",
@@ -1065,7 +1065,7 @@
       "density": "low",
       "scheme": "dark",
       "best_for": "Anything that should feel scholarly, literary, and quietly intelligent: research synthesis, white papers, academic and policy briefs, advisory deliverables, longform editorial pieces, founder reflections. Equally strong for any deck — including tech, business, or creator work — that wants a calm, considered atmosphere instead of energetic visuals.",
-      "avoid_for": "Contexts that need visual heat or pop — the navy + warm-yellow italic-Cormorant aesthetic is intentionally low-tempo.",
+      "avoid_for": "Contexts that need visual heat or pop — the navy + warm-yellow Cormorant aesthetic is intentionally low-tempo.",
       "slide_count": 9
     }
   ]
