@@ -112,20 +112,12 @@ section.slide.ink .footer { color: var(--paper); opacity: .75; }
   font-family: "Space Grotesk", sans-serif;
   font-weight: 700;
   font-size: 196px;
-  line-height: .88;
+  line-height: 1.08;
   letter-spacing: -.04em;
   color: var(--ink);
   margin: 0;
   align-self: center;
   max-width: 14ch;
-}
-.s-cover h1 em {
-  font-family: "Caveat", cursive;
-  font-weight: 700;
-  font-style: normal;
-  color: var(--ink);
-  font-size: 1.05em;
-  letter-spacing: -.005em;
 }
 .s-cover .pin-1 {
   position: absolute; top: 130px; right: 80px;
@@ -173,11 +165,8 @@ section.slide.ink .footer { color: var(--paper); opacity: .75; }
 .s-agenda h2 {
   position: absolute; left: 64px; top: 110px;
   font-family: "Space Grotesk", sans-serif; font-weight: 700;
-  font-size: 96px; line-height: .92; letter-spacing: -.03em;
+  font-size: 96px; line-height: 1.05; letter-spacing: -.03em;
   margin: 0; color: var(--ink);
-}
-.s-agenda h2 em {
-  font-family: "Caveat", cursive; font-style: normal; font-weight: 700;
 }
 .s-agenda .list {
   position: absolute; left: 64px; right: 64px; top: 340px; bottom: 100px;
@@ -214,9 +203,8 @@ section.slide.ink .footer { color: var(--paper); opacity: .75; }
 .s-notes .head { position: absolute; left: 64px; right: 64px; top: 110px; }
 .s-notes h2 {
   font-family: "Space Grotesk", sans-serif; font-weight: 700;
-  font-size: 84px; line-height: .92; letter-spacing: -.03em; margin: 0;
+  font-size: 84px; line-height: 1.05; letter-spacing: -.03em; margin: 0;
 }
-.s-notes h2 em { font-family: "Caveat", cursive; font-style: normal; }
 .s-notes .sub {
   margin-top: 14px;
   font-size: 22px; line-height: 1.45; max-width: 60ch; opacity: .85;
@@ -279,11 +267,8 @@ section.slide.ink .footer { color: var(--paper); opacity: .75; }
   position: absolute;
   left: 64px; right: 480px; bottom: 180px;
   font-family: "Space Grotesk", sans-serif; font-weight: 700;
-  font-size: 168px; line-height: .88; letter-spacing: -.04em;
+  font-size: 168px; line-height: 1.05; letter-spacing: -.04em;
   color: var(--paper); margin: 0;
-}
-.s-sec h2 em {
-  font-family: "Caveat", cursive; font-style: normal; color: var(--paper);
 }
 .s-sec .pin-big {
   position: absolute; right: 64px; top: 280px;
@@ -312,7 +297,6 @@ section.slide.ink .footer { color: var(--paper); opacity: .75; }
   font-family: "Space Grotesk", sans-serif; font-weight: 700;
   font-size: 50px; line-height: 1.05; letter-spacing: -.02em; margin: 0;
 }
-.s-notice .head h2 em { font-family: "Caveat", cursive; font-style: normal; }
 .s-notice .grid {
   position: absolute; left: 64px; right: 64px; top: 320px; bottom: 90px;
   display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 28px;
@@ -353,10 +337,9 @@ section.slide.ink .footer { color: var(--paper); opacity: .75; }
 }
 .s-chart .left h2 {
   font-family: "Space Grotesk", sans-serif; font-weight: 700;
-  font-size: 110px; line-height: .9; letter-spacing: -.035em; margin: 0;
+  font-size: 110px; line-height: 1.05; letter-spacing: -.035em; margin: 0;
   color: var(--paper);
 }
-.s-chart .left h2 em { font-family: "Caveat", cursive; font-style: normal; color: var(--paper); }
 .s-chart .left p { font-size: 21px; line-height: 1.5; color: var(--paper); opacity: .85; max-width: 36ch; }
 .s-chart .left .legend { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
 .s-chart .left .legend .li {
@@ -405,9 +388,8 @@ section.slide.ink .footer { color: var(--paper); opacity: .75; }
 }
 .s-process .head h2 {
   font-family: "Space Grotesk", sans-serif; font-weight: 700;
-  font-size: 88px; line-height: .9; letter-spacing: -.035em; margin: 0;
+  font-size: 88px; line-height: 1.05; letter-spacing: -.035em; margin: 0;
 }
-.s-process .head h2 em { font-family: "Caveat", cursive; font-style: normal; }
 .s-process .head .sub {
   font-family: "Space Grotesk", sans-serif;
   font-size: 19px; line-height: 1.5; max-width: 36ch; opacity: .85; margin-top: 12px;
@@ -461,9 +443,8 @@ section.slide.ink .footer { color: var(--paper); opacity: .75; }
 }
 .s-matrix .head h2 {
   font-family: "Space Grotesk", sans-serif; font-weight: 700;
-  font-size: 88px; line-height: .9; letter-spacing: -.035em; margin: 0;
+  font-size: 88px; line-height: 1.05; letter-spacing: -.035em; margin: 0;
 }
-.s-matrix .head h2 em { font-family: "Caveat", cursive; font-style: normal; }
 .s-matrix .head .sub {
   font-size: 19px; line-height: 1.5; max-width: 36ch; opacity: .85; margin-top: 12px;
 }
@@ -517,9 +498,8 @@ section.slide.ink .footer { color: var(--paper); opacity: .75; }
 }
 .s-stats .head h2 {
   font-family: "Space Grotesk", sans-serif; font-weight: 700;
-  font-size: 92px; line-height: .9; letter-spacing: -.035em; margin: 0;
+  font-size: 92px; line-height: 1.05; letter-spacing: -.035em; margin: 0;
 }
-.s-stats .head h2 em { font-family: "Caveat", cursive; font-style: normal; }
 .s-stats .head .sub {
   font-size: 19px; line-height: 1.5; max-width: 36ch; opacity: .85; margin-top: 12px;
 }
@@ -586,10 +566,6 @@ section.slide.ink .footer { color: var(--paper); opacity: .75; }
   color: var(--ink);
   letter-spacing: -.02em;
 }
-.s-quote .panel blockquote em {
-  font-family: "Caveat", cursive; font-weight: 700; font-style: normal;
-  font-size: 1.05em;
-}
 .s-quote .panel .who {
   margin-top: 32px;
   font-family: "DM Mono", monospace; font-weight: 500;
@@ -634,10 +610,7 @@ section.slide.ink .footer { color: var(--paper); opacity: .75; }
 }
 .s-cta .pane.l h2 {
   font-family: "Space Grotesk", sans-serif; font-weight: 700;
-  font-size: 130px; line-height: .88; letter-spacing: -.035em; margin: 0;
-}
-.s-cta .pane.l h2 em {
-  font-family: "Caveat", cursive; font-style: normal;
+  font-size: 130px; line-height: 1.05; letter-spacing: -.035em; margin: 0;
 }
 .s-cta .pane.l p { font-size: 21px; line-height: 1.5; opacity: .9; max-width: 30ch; }
 .s-cta .pane.l .pin {
