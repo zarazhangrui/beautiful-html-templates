@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scatterbrain — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's three faces: Shrikhand (display) + Zilla Slab (body) + Caveat (hand-script) -->
+  <link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Zilla+Slab:wght@300;400;500;600;700&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- CJK pairing for §08: ZCOOL KuaiLe echoes Shrikhand; Noto Sans SC stands in for Yozai (reliable on Google Fonts) -->
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --yellow: #ffe066; --yellow-deep: #ffd43b;
+      --blue: #a5d8ff; --blue-deep: #74c0fc;
+      --pink: #ffc9c9; --pink-deep: #ff9f9f;
+      --green: #b2f2bb; --green-deep: #8ce99a;
+      --orange: #ffcc80; --purple: #d0bfff;
+      --cream: #faf8f3; --paper: #f7f5f0;
+      --ink: #2d2a26; --ink-light: #5c5750;
+      --shadow: rgba(45,42,38,0.15); --shadow-deep: rgba(45,42,38,0.25);
+      --f-disp: 'Shrikhand', cursive;
+      --f-body: 'Zilla Slab', serif;
+      --f-script: 'Caveat', cursive;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      color: var(--ink); font-family: var(--f-body);
+      background: var(--paper);
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='8' fill='%23c92a2a'/%3E%3Ccircle cx='12' cy='12' r='3' fill='white'/%3E%3C/svg%3E") 12 12, auto;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { cursor: inherit; }
+
+    /* ===== Grain overlay — always present ===== */
+    .grain { position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+    /* ===== Background variants ===== */
+    .bg-warm { background:
+      radial-gradient(ellipse at 15% 20%, rgba(255,224,102,0.35), transparent 45%),
+      radial-gradient(ellipse at 85% 25%, rgba(165,216,255,0.30), transparent 45%),
+      radial-gradient(ellipse at 70% 85%, rgba(255,201,201,0.30), transparent 45%),
+      linear-gradient(135deg, var(--cream), var(--paper)); }
+    .bg-paper { background:
+      linear-gradient(var(--cream), var(--paper)),
+      repeating-linear-gradient(0deg, rgba(45,42,38,0.05) 0 1px, transparent 1px 40px),
+      repeating-linear-gradient(90deg, rgba(45,42,38,0.05) 0 1px, transparent 1px 40px); }
+    .bg-cork { background:
+      radial-gradient(ellipse at 50% 40%, #d9b88a, #c9a574),
+      linear-gradient(135deg, #cda676, #bd9560); }
+    .bg-cork .post-it, .bg-cork .sec-label, .bg-cork .headline, .bg-cork .body { }
+
+    /* ===== Persistent chrome — sticky-note tags ===== */
+    .progress { position: fixed; top: 0; left: 0; height: 6px; width: 0; background: linear-gradient(90deg, var(--yellow-deep), var(--pink-deep)); z-index: 300; }
+    .back-link {
+      position: fixed; top: 20px; left: 22px; z-index: 200; text-decoration: none; color: var(--ink);
+      background: linear-gradient(135deg, var(--yellow), var(--yellow-deep)); padding: 8px 18px;
+      font-family: var(--f-script); font-weight: 600; font-size: 1.1rem; transform: rotate(-3deg);
+      box-shadow: 2px 3px 10px var(--shadow); }
+    .counter {
+      position: fixed; bottom: 18px; right: 22px; z-index: 200;
+      background: linear-gradient(135deg, var(--blue), var(--blue-deep)); padding: 8px 16px;
+      font-family: var(--f-script); font-weight: 600; font-size: 1.1rem; transform: rotate(2deg);
+      box-shadow: 2px 3px 10px var(--shadow); }
+
+    /* ===== Type ===== */
+    .display-hero { font-family: var(--f-disp); font-size: clamp(2.5rem,5.5vw,4.8rem); line-height: 1.1; letter-spacing: 0.02em; }
+    .statement { font-family: var(--f-disp); font-size: clamp(2rem,4vw,3.5rem); line-height: 1.1; letter-spacing: 0.02em; }
+    .headline { font-family: var(--f-disp); font-size: clamp(1.8rem,3.5vw,3rem); line-height: 1.1; letter-spacing: 0.02em; }
+    .title { font-family: var(--f-disp); font-size: clamp(1.3rem,2.5vw,1.9rem); line-height: 1.1; letter-spacing: 0.02em; }
+    .body { font-family: var(--f-body); font-size: clamp(1rem,1.4vw,1.2rem); line-height: 1.7; color: var(--ink-light); }
+    .body strong { color: var(--ink); font-weight: 700; }
+    .hand { font-family: var(--f-script); font-weight: 500; font-size: clamp(1.2rem,2vw,1.6rem); line-height: 1.4; color: var(--ink); }
+    .label-script { font-family: var(--f-script); font-weight: 600; font-size: 1.05rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-light); }
+    .stat-value { font-family: var(--f-disp); font-size: 1.8rem; }
+
+    /* ===== Sections ===== */
+    section, header, footer { position: relative; overflow: hidden; padding: clamp(40px,6vh,90px) clamp(24px,5vw,72px); }
+    .wrap { max-width: 1180px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+    .sec-head { text-align: center; margin-bottom: clamp(32px,4vh,56px); }
+    .sec-head .label-script { display: block; margin-bottom: 10px; }
+    .sec-head .body { max-width: 60ch; margin: 14px auto 0; }
+
+    /* ===== Post-it ===== */
+    .post-it { position: relative; padding: 2rem; box-shadow: 2px 3px 15px var(--shadow), 0 1px 3px var(--shadow-deep); background: var(--cream); }
+    .post-it.yellow { background: linear-gradient(135deg, var(--yellow), var(--yellow-deep)); }
+    .post-it.blue { background: linear-gradient(135deg, var(--blue), var(--blue-deep)); }
+    .post-it.pink { background: linear-gradient(135deg, var(--pink), var(--pink-deep)); }
+    .post-it.green { background: linear-gradient(135deg, var(--green), var(--green-deep)); }
+    .post-it.orange { background: var(--orange); }
+    .post-it.purple { background: var(--purple); }
+    .post-it.white { background: #fff; border: 2px solid var(--ink); }
+    .pin::before { content: ""; position: absolute; top: -11px; left: 50%; transform: translateX(-50%); width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ff8787, #c92a2a); box-shadow: 0 2px 4px var(--shadow-deep), inset -2px -2px 4px rgba(0,0,0,0.2); z-index: 3; }
+    .pin.blue-pin::before { background: radial-gradient(circle at 30% 30%, #4dabf7, #1864ab); }
+    .pin.green-pin::before { background: radial-gradient(circle at 30% 30%, #69db7c, #2f9e44); }
+    .pin.gold-pin::before { background: radial-gradient(circle at 30% 30%, #ffd43b, #f59f00); }
+    .tape::after { content: ""; position: absolute; top: -14px; left: 50%; transform: translateX(-50%) rotate(-2deg); width: 88px; height: 26px; background: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.35); box-shadow: 0 1px 2px var(--shadow); z-index: 2; }
+
+    /* ===== doodles ===== */
+    .doodle { position: absolute; opacity: 0.15; z-index: 1; pointer-events: none; }
+    .doodle svg { stroke: var(--ink); stroke-width: 3; fill: none; }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .hero-main { max-width: 720px; text-align: center; padding: clamp(2.5rem,5vw,4rem) clamp(2rem,5vw,4.5rem); transform: rotate(-1.5deg); z-index: 3; }
+    .hero-main .display-hero { margin: 8px 0 16px; }
+    .hero-sub { font-family: var(--f-body); font-size: clamp(1.05rem,1.6vw,1.35rem); color: var(--ink-light); line-height: 1.6; }
+    .hero-accent { position: absolute; padding: 1.1rem 1.4rem; z-index: 2; }
+    .contents { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 28px; }
+    .contents a { text-decoration: none; color: var(--ink); }
+    .contents .chip { padding: 0.7rem 1.3rem; box-shadow: 2px 3px 12px var(--shadow); font-family: var(--f-disp); font-size: 1rem; display: block; transition: transform 0.15s; }
+    .contents a:hover .chip { transform: translateY(-3px) rotate(-2deg); }
+
+    /* ===== grids ===== */
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px,3vw,44px); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px,3vw,44px); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(20px,2.5vw,36px); }
+    .feature-icon { width: 60px; height: 60px; border: 3px solid var(--ink); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--f-disp); font-size: 1.5rem; margin-bottom: 1rem; }
+    .card-body { font-family: var(--f-body); font-size: 1.02rem; line-height: 1.6; color: var(--ink); margin-top: 8px; }
+
+    /* ===== §02 colours ===== */
+    .sw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(20px,2.5vw,38px); }
+    .sw { padding: 1.4rem; min-height: 120px; display: flex; flex-direction: column; justify-content: flex-end; box-shadow: 2px 3px 15px var(--shadow); }
+    .sw .sw-name { font-family: var(--f-disp); font-size: 1.2rem; }
+    .sw .sw-hex { font-family: var(--f-body); font-size: 0.85rem; color: var(--ink); margin-top: 4px; opacity: 0.7; }
+
+    /* ===== §03 typography ===== */
+    .face-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px,2.5vw,36px); margin-bottom: 36px; }
+    .fc-shrikhand { font-family: var(--f-disp); font-size: clamp(2rem,3.5vw,3rem); }
+    .fc-zilla { font-family: var(--f-body); font-weight: 500; font-size: clamp(1.3rem,2vw,1.8rem); line-height: 1.4; }
+    .fc-caveat { font-family: var(--f-script); font-weight: 600; font-size: clamp(1.6rem,2.6vw,2.4rem); }
+    .fc-name { font-family: var(--f-script); font-weight: 600; font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); margin-top: 14px; }
+    .fc-desc { font-family: var(--f-body); font-size: 0.95rem; line-height: 1.55; color: var(--ink-light); margin-top: 8px; }
+    .scale-stack { display: flex; flex-direction: column; gap: 16px; }
+    .scale-row { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: center; padding: 1.2rem 1.6rem; }
+    .sm { font-family: var(--f-script); font-weight: 600; font-size: 1rem; color: var(--ink-light); }
+    .sm b { display: block; font-family: var(--f-body); font-weight: 600; font-size: 0.85rem; color: var(--ink); }
+
+    /* ===== §04 ===== */
+    .comp { margin-bottom: 40px; }
+    .comp-h { font-family: var(--f-script); font-weight: 600; font-size: 1.2rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 18px; text-align: center; }
+    .versus-circle { width: 64px; height: 64px; background: var(--ink); color: var(--paper); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--f-disp); font-size: 1.2rem; box-shadow: 0 2px 8px var(--shadow-deep); }
+    .stat-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.9rem 0; border-bottom: 1px dashed rgba(45,42,38,0.25); }
+    .stat-row:last-child { border-bottom: none; }
+    .photo-frame { background: #fff; padding: 1rem; box-shadow: 2px 3px 15px var(--shadow); transform: rotate(-1.5deg); }
+    .photo-inner { aspect-ratio: 4/3; background: linear-gradient(135deg, var(--blue), var(--pink)); display: flex; align-items: center; justify-content: center; font-family: var(--f-script); font-weight: 600; font-size: 1.2rem; color: var(--ink); }
+    .chart-card { background: #fff; padding: 2rem; box-shadow: 2px 3px 15px var(--shadow); transform: rotate(1deg); }
+    .chart { display: flex; align-items: flex-end; gap: clamp(14px,2vw,30px); height: 170px; }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 8px; }
+    .bar { width: 100%; border-radius: 3px 3px 0 0; }
+    .bar-lbl { font-family: var(--f-body); font-size: 0.8rem; color: var(--ink-light); }
+    .bar-val { font-family: var(--f-script); font-weight: 600; font-size: 1rem; color: var(--ink); }
+
+    /* ===== §07 do/don't ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px,3vw,44px); }
+    .dd-list { list-style: none; margin-top: 14px; }
+    .dd-list li { font-family: var(--f-body); font-size: 1.02rem; line-height: 1.5; padding: 0.6rem 0 0.6rem 1.8rem; position: relative; color: var(--ink); }
+    .do .dd-list li::before { content: "✓"; position: absolute; left: 0; font-family: var(--f-disp); color: #2f9e44; }
+    .dont .dd-list li::before { content: "✗"; position: absolute; left: 0; font-family: var(--f-disp); color: #c92a2a; }
+
+    /* ===== §08 cjk ===== */
+    .cjk-display { font-family: 'ZCOOL KuaiLe', var(--f-disp); font-size: clamp(2.2rem,4.5vw,3.6rem); line-height: 1.25; }
+    .cjk-body { font-family: 'Noto Sans SC', var(--f-body); font-weight: 400; font-size: clamp(1rem,1.3vw,1.15rem); line-height: 1.85; color: var(--ink); margin-top: 14px; }
+    .cjk-label { font-family: var(--f-script); font-weight: 600; font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-top: 14px; }
+
+    /* ===== close ===== */
+    .close { min-height: 80vh; display: flex; align-items: center; justify-content: center; }
+    .close-main { text-align: center; max-width: 640px; padding: clamp(2.5rem,5vw,4rem); transform: rotate(1.5deg); }
+    .close-links { margin-top: 24px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .close-links a { text-decoration: none; color: var(--ink); }
+    .close-links .chip { padding: 0.7rem 1.3rem; font-family: var(--f-disp); font-size: 0.95rem; box-shadow: 2px 3px 12px var(--shadow); display: block; }
+
+    /* ===== responsive ===== */
+    @media (max-width: 920px) {
+      .grid-3, .grid-4, .sw-grid, .face-row { grid-template-columns: 1fr 1fr; }
+      .grid-2, .dodont { grid-template-columns: 1fr; }
+      .scale-row { grid-template-columns: 1fr; gap: 8px; }
+      .hero-accent { display: none; }
+    }
+    @media (max-width: 560px) { .grid-3, .grid-4, .sw-grid, .face-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="grain"></div>
+  <a class="back-link" href="index.html">&larr; index</a>
+  <div class="counter" id="counter">01 / 10</div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero bg-warm" id="top">
+    <div class="doodle" style="top:8%;left:6%"><svg width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="34"/></svg></div>
+    <div class="doodle" style="bottom:10%;right:8%"><svg width="100" height="40" viewBox="0 0 100 40"><path d="M2 20 Q 20 2, 38 20 T 74 20 T 98 20"/></svg></div>
+    <div class="hero-accent post-it pink pin" style="top:14%;right:11%;transform:rotate(8deg);max-width:180px"><span class="hand">Jot it down before<br>you forget! :)</span></div>
+    <div class="hero-accent post-it green pin green-pin" style="bottom:16%;left:9%;transform:rotate(-6deg);max-width:160px"><span class="hand">workshop mode<br>= ON</span></div>
+
+    <div class="hero-main post-it yellow pin tape">
+      <span class="label-script">Design System Specification</span>
+      <h1 class="display-hero">Scatterbrain</h1>
+      <p class="hero-sub">A Post-it-note &amp; cork-board system &mdash; sticky notes, thumbtacks, masking tape, and handwritten doodles. A designer's whiteboard, pinned.</p>
+      <nav class="contents">
+        <a href="#overview"><span class="chip post-it blue">01 Overview</span></a>
+        <a href="#colours"><span class="chip post-it pink">02 Colours</span></a>
+        <a href="#typography"><span class="chip post-it green">03 Type</span></a>
+        <a href="#components"><span class="chip post-it orange">04 Components</span></a>
+        <a href="#layout"><span class="chip post-it purple">05 Layout</span></a>
+        <a href="#depth"><span class="chip post-it blue">06 Depth</span></a>
+        <a href="#dodont"><span class="chip post-it pink">07 Do &amp; Don't</span></a>
+        <a href="#cjk"><span class="chip post-it green">08 中文</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section class="bg-cork" id="overview">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-script">01 — Overview</span>
+        <h2 class="headline">A Designer's Whiteboard</h2>
+        <p class="body">Every content block is a colored sticky note pinned to cork, desk-paper, or warm-gradient surfaces, layered with thumbtacks, tape, and doodles. The metaphor is total: the deck is a brainstorm wall, and the content is the cluster of notes pinned across it.</p>
+      </div>
+      <div class="grid-4">
+        <div class="post-it yellow pin" style="transform:rotate(-2deg)"><div class="title">Low</div><div class="card-body">Formality</div></div>
+        <div class="post-it blue pin blue-pin" style="transform:rotate(2deg)"><div class="title">High</div><div class="card-body">Density</div></div>
+        <div class="post-it pink pin" style="transform:rotate(-1.5deg)"><div class="title">Light</div><div class="card-body">Scheme</div></div>
+        <div class="post-it green pin green-pin" style="transform:rotate(2.5deg)"><div class="title">10</div><div class="card-body">Slides</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section class="bg-paper" id="colours">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-script">02 — Colours</span>
+        <h2 class="headline">A Pastel Sticky Palette</h2>
+        <p class="body">Seven sticky-note colours (four gradient-filled, two flat, one bordered white) on warm paper, with soft warm-charcoal ink. The colours are <strong>categorical, never semantic</strong> &mdash; cycle through them for variety; pair gradient notes with flat ones for texture.</p>
+      </div>
+      <div class="sw-grid">
+        <div class="sw post-it yellow" style="transform:rotate(-2deg)"><div class="sw-name">Yellow</div><div class="sw-hex">#FFE066</div></div>
+        <div class="sw post-it blue" style="transform:rotate(1.5deg)"><div class="sw-name">Blue</div><div class="sw-hex">#A5D8FF</div></div>
+        <div class="sw post-it pink" style="transform:rotate(-1deg)"><div class="sw-name">Pink</div><div class="sw-hex">#FFC9C9</div></div>
+        <div class="sw post-it green" style="transform:rotate(2deg)"><div class="sw-name">Green</div><div class="sw-hex">#B2F2BB</div></div>
+        <div class="sw post-it orange" style="transform:rotate(1deg)"><div class="sw-name">Orange</div><div class="sw-hex">#FFCC80</div></div>
+        <div class="sw post-it purple" style="transform:rotate(-2deg)"><div class="sw-name">Purple</div><div class="sw-hex">#D0BFFF</div></div>
+        <div class="sw post-it white" style="transform:rotate(1.5deg)"><div class="sw-name">White</div><div class="sw-hex">#FFF · 2px ink</div></div>
+        <div class="sw" style="transform:rotate(-1deg);background:var(--ink);color:var(--paper)"><div class="sw-name" style="color:var(--paper)">Ink</div><div class="sw-hex" style="color:var(--paper)">#2D2A26</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section class="bg-warm" id="typography">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-script">03 — Typography</span>
+        <h2 class="headline">Three Voices On A Note</h2>
+        <p class="body">A chunky display serif for the loud moments, a friendly slab for steady reading, and a casual cursive for the scribbled asides. Using all three is workshop-correct; using one reads as monotonous.</p>
+      </div>
+      <div class="face-row">
+        <div class="post-it yellow pin" style="transform:rotate(-1.5deg)"><div class="fc-shrikhand">Shrikhand</div><div class="fc-name">Display</div><div class="fc-desc">Chunky decorative serif, weight 400. Every headline, stat value, and feature-icon glyph. The loud marker-pen voice.</div></div>
+        <div class="post-it blue pin blue-pin" style="transform:rotate(1.5deg)"><div class="fc-zilla">Zilla Slab body</div><div class="fc-name">Body</div><div class="fc-desc">Friendly humanist slab serif, 300–700. Every paragraph and list row. Warm-handed, never mechanical.</div></div>
+        <div class="post-it pink pin" style="transform:rotate(-1deg)"><div class="fc-caveat">handwritten!</div><div class="fc-name">Script</div><div class="fc-desc">Casual cursive Caveat for personal notes, quips, and tracked-caps eyebrows. The scribbled-in-pen voice.</div></div>
+      </div>
+      <div class="post-it white scale-stack" style="transform:rotate(-0.5deg);padding:2rem 2.5rem">
+        <div class="scale-row"><div class="sm"><b>display-hero · Shrikhand</b>2.5–4.5rem</div><div class="display-hero" style="font-size:clamp(2rem,3.5vw,3rem)">Scatterbrain</div></div>
+        <div class="scale-row"><div class="sm"><b>headline · Shrikhand</b>1.8–3rem</div><div class="headline" style="font-size:clamp(1.6rem,2.6vw,2.2rem)">Section Headline</div></div>
+        <div class="scale-row"><div class="sm"><b>body · Zilla Slab</b>1–1.25rem · 400</div><div class="body" style="margin:0;color:var(--ink)">A friendly slab-serif paragraph.</div></div>
+        <div class="scale-row"><div class="sm"><b>handwritten · Caveat</b>1.2–1.6rem</div><div class="hand">scribbled in the margin</div></div>
+        <div class="scale-row"><div class="sm"><b>label-script · Caveat</b>0.9rem · 0.15em caps</div><div class="label-script">Chapter One</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section class="bg-cork" id="components">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-script">04 — Components</span>
+        <h2 class="headline">The Pinboard Toolkit</h2>
+        <p class="body" style="color:var(--ink)">Every block below is rendered with the template's <strong>actual CSS</strong> &mdash; not a mockup. Pins, tape, soft shadows, rotations, and the three-voice type stack.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Feature notes — round icon + pin + rotation</div>
+        <div class="grid-3">
+          <div class="post-it yellow pin" style="transform:rotate(-2deg)"><div class="feature-icon">A</div><div class="title">Strategy</div><div class="card-body">Market analysis and roadmaps that bridge ambition with milestones.</div></div>
+          <div class="post-it blue pin tape blue-pin" style="transform:rotate(1.5deg)"><div class="feature-icon">B</div><div class="title">Build</div><div class="card-body">Scalable architecture and APIs that grow with demand.</div></div>
+          <div class="post-it green pin green-pin" style="transform:rotate(-1deg)"><div class="feature-icon">C</div><div class="title">Grow</div><div class="card-body">Activation, retention, and expansion across geographies.</div></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Compare, stats, photo &amp; chart</div>
+        <div class="grid-2" style="align-items:start">
+          <div style="position:relative">
+            <div class="post-it pink pin" style="transform:rotate(-1.5deg);margin-bottom:2.4rem"><div class="title">Before</div><div class="card-body">Twelve scattered docs, none talking to each other.</div></div>
+            <div class="versus-circle" style="position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);z-index:4">VS</div>
+            <div class="post-it green pin green-pin" style="transform:rotate(1.5deg)"><div class="title">After</div><div class="card-body">One pinned board, read one note at a time.</div></div>
+          </div>
+          <div class="post-it orange pin gold-pin" style="transform:rotate(1deg)">
+            <div class="title" style="margin-bottom:10px">By The Numbers</div>
+            <div class="stat-row"><span class="body" style="margin:0;color:var(--ink)">Revenue</span><span class="stat-value">$12.4M</span></div>
+            <div class="stat-row"><span class="body" style="margin:0;color:var(--ink)">Retention</span><span class="stat-value">94%</span></div>
+            <div class="stat-row"><span class="body" style="margin:0;color:var(--ink)">Growth</span><span class="stat-value">340%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Polaroid frame &amp; chart card</div>
+        <div class="grid-2" style="align-items:center">
+          <div class="photo-frame"><div class="photo-inner">Image / Polaroid</div></div>
+          <div class="chart-card">
+            <div class="chart">
+              <div class="bar-col"><span class="bar-val">2.7</span><div class="bar" data-h="34%" style="height:0;background:linear-gradient(var(--yellow),var(--yellow-deep))"></div><span class="bar-lbl">FY22</span></div>
+              <div class="bar-col"><span class="bar-val">5.1</span><div class="bar" data-h="52%" style="height:0;background:linear-gradient(var(--blue),var(--blue-deep))"></div><span class="bar-lbl">FY23</span></div>
+              <div class="bar-col"><span class="bar-val">8.9</span><div class="bar" data-h="74%" style="height:0;background:linear-gradient(var(--pink),var(--pink-deep))"></div><span class="bar-lbl">FY24</span></div>
+              <div class="bar-col"><span class="bar-val">12.4</span><div class="bar" data-h="100%" style="height:0;background:linear-gradient(var(--green),var(--green-deep))"></div><span class="bar-lbl">FY25</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section class="bg-paper" id="layout">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-script">05 — Layout</span>
+        <h2 class="headline">Pinned, Not Gridded</h2>
+        <p class="body">Notes sit on one of three textured backgrounds with small rotations and corner doodles. Composition is loose: a centered manifesto note, a 2–3 column grid, a free cluster, or alternating timeline rows. Density is 1–4 main notes plus 1–2 accents.</p>
+      </div>
+      <div class="grid-3">
+        <div class="post-it" style="background:radial-gradient(ellipse at 50% 40%,#d9b88a,#c9a574);transform:rotate(-1.5deg);color:var(--ink)"><div class="title">bg-cork</div><div class="card-body">Wall-of-notes energy.</div></div>
+        <div class="post-it white" style="transform:rotate(1deg);background:repeating-linear-gradient(0deg,rgba(45,42,38,0.06) 0 1px,#fff 1px 24px),repeating-linear-gradient(90deg,rgba(45,42,38,0.06) 0 1px,#fff 1px 24px)"><div class="title">bg-paper</div><div class="card-body">Desk-surface focus.</div></div>
+        <div class="post-it" style="background:radial-gradient(ellipse at 30% 30%,rgba(255,224,102,0.5),transparent),radial-gradient(ellipse at 80% 70%,rgba(165,216,255,0.5),transparent),var(--cream);transform:rotate(-1deg)"><div class="title">bg-warm</div><div class="card-body">Morning-light atmosphere.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH ============ -->
+  <section class="bg-warm" id="depth">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-script">06 — Depth &amp; Shape</span>
+        <h2 class="headline">Soft Lift, Hand-Placed</h2>
+        <p class="body">The one system in the library that <strong>embraces soft blurred shadows</strong> — every note lifts off the surface with a 15px-blur drop shadow. Add small rotations (alternating direction), thumbtacks, and tape for tactile layering.</p>
+      </div>
+      <div class="grid-3">
+        <div class="post-it yellow" style="transform:rotate(-4deg)"><div class="hand">soft drop shadow</div><div class="card-body" style="margin-top:6px">2px 3px 15px shadow + contact</div></div>
+        <div class="post-it blue pin" style="transform:rotate(3deg)"><div class="hand">+ thumbtack pin</div><div class="card-body" style="margin-top:6px">::before bead with highlight</div></div>
+        <div class="post-it pink pin tape" style="transform:rotate(-2deg)"><div class="hand">+ masking tape</div><div class="card-body" style="margin-top:6px">::after translucent strip</div></div>
+      </div>
+      <p class="body" style="text-align:center;margin-top:28px;color:var(--ink)">Corners 0 on notes · 50% on icons, pins &amp; versus circles · rotations ±1–3° (hero) to ±5–15° (accents)</p>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section class="bg-cork" id="dodont">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-script">07 — Do &amp; Don't</span>
+        <h2 class="headline">Keep It Hand-Placed</h2>
+      </div>
+      <div class="dodont">
+        <div class="post-it green do" style="transform:rotate(-1deg)">
+          <div class="title">Do</div>
+          <ul class="dd-list">
+            <li>Pick a background variant per slide; keep the grain overlay on every one.</li>
+            <li>Use Shrikhand for display, Zilla Slab for body, Caveat for scribbled notes.</li>
+            <li>Give every note a small rotation; alternate directions across neighbours.</li>
+            <li>Pin every primary note; combine pin + tape on hero / statement notes.</li>
+            <li>Drop 1–2 corner doodles at 0.15 opacity, and cycle note colours.</li>
+          </ul>
+        </div>
+        <div class="post-it pink dont" style="transform:rotate(1deg)">
+          <div class="title">Don't</div>
+          <ul class="dd-list">
+            <li>Let notes float on plain white — the textured backgrounds are the ground.</li>
+            <li>Swap Shrikhand or Caveat for another face, or use Zilla for headlines.</li>
+            <li>Assign semantic meaning to note colours — they're categorical only.</li>
+            <li>Rotate past ±15°, or rotate every note the same direction.</li>
+            <li>Crowd the canvas with overlapping notes, or skip the pin on a headline.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section class="bg-paper" id="cjk">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-script">08 — 中文 / CJK</span>
+        <h2 class="headline">Playful, In Chinese</h2>
+        <p class="body">Match the playful-tactile register: <strong>站酷快乐体 ZCOOL KuaiLe</strong> echoes Shrikhand's chunky marker-pen voice; <strong>悠哉字体 Yozai</strong> mirrors Zilla Slab's warm slab. Caveat has no CJK equivalent &mdash; keep handwritten asides in Latin as margin notes, a common convention in Chinese creative decks.</p>
+      </div>
+      <div class="grid-2" style="align-items:start">
+        <div class="post-it yellow pin tape" style="transform:rotate(-1.5deg)">
+          <div class="cjk-display">便利贴系统</div>
+          <div class="cjk-body">每个内容块都是一张彩色便利贴，钉在软木板、方格纸或暖光背景上，配以图钉、胶带与手绘涂鸦。站酷快乐体承载标题的圆润手作气质，悠哉字体处理正文。<span style="font-family:var(--f-script);font-weight:600">handwritten asides stay in Latin :)</span> 盘古之白：使用 Claude、2026 年。</div>
+          <div class="cjk-label">站酷快乐体 · 悠哉字体 Yozai</div>
+        </div>
+        <div class="post-it white" style="transform:rotate(1.5deg)">
+          <div class="title" style="margin-bottom:10px">Pairing</div>
+          <div class="stat-row"><span class="body" style="margin:0;color:var(--ink)">Display</span><span class="body" style="margin:0;color:var(--ink);font-weight:600">站酷快乐体</span></div>
+          <div class="stat-row"><span class="body" style="margin:0;color:var(--ink)">Body</span><span class="body" style="margin:0;color:var(--ink);font-weight:600">悠哉字体 Yozai</span></div>
+          <div class="stat-row"><span class="body" style="margin:0;color:var(--ink)">Script</span><span class="body" style="margin:0;color:var(--ink);font-weight:600">Caveat (Latin)</span></div>
+          <p class="body" style="margin-top:12px;font-size:0.92rem">Drop the 0.02em tracking on CJK display; open line-height to 1.2–1.3 for the rounded strokes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close bg-warm" id="close">
+    <div class="doodle" style="top:14%;right:12%"><svg width="70" height="70" viewBox="0 0 70 70"><path d="M10 10 L60 60 M60 10 L10 60"/></svg></div>
+    <div class="close-main post-it yellow pin tape">
+      <span class="label-script">That's a wrap</span>
+      <h2 class="display-hero" style="margin:8px 0 14px">Thanks!</h2>
+      <p class="body" style="color:var(--ink)">One of 34 systems in Beautiful HTML Templates. Warm, playful, in-progress thinking.</p>
+      <div class="close-links">
+        <a href="index.html"><span class="chip post-it blue">&larr; All Systems</span></a>
+        <a href="../templates/scatterbrain/template.html"><span class="chip post-it green">Open Live Deck</span></a>
+        <a href="../templates/scatterbrain/design.md"><span class="chip post-it pink">design.md</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var counter = document.getElementById('counter');
+      var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+      var total = ids.length;
+      function onScroll() {
+        var h = document.documentElement;
+        var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+        for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+        if (h.scrollTop / (h.scrollHeight - h.clientHeight) > 0.99) idx = total - 1;
+        counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+      var bars = Array.prototype.slice.call(document.querySelectorAll('.bar[data-h]'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.style.transition='height 0.8s cubic-bezier(0.16,1,0.3,1)'; e.target.style.height = e.target.getAttribute('data-h'); io.unobserve(e.target); } }); }, { threshold: 0.4 });
+        bars.forEach(function (b) { io.observe(b); });
+      } else { bars.forEach(function (b) { b.style.height = b.getAttribute('data-h'); }); }
+    })();
+  </script>
+</body>
+</html>

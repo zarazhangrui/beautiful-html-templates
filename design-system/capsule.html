@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capsule — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's two faces: Bodoni Moda (display) + Space Grotesk (body); ZCOOL XiaoWei for the CJK specimen -->
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Space+Grotesk:wght@300..700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #F5F5F0;
+      --ink: #1A1A1A;
+      --outline: #1E1E1E;
+      --white: #FFFFFF;
+      --coral: #E85D4E;
+      --lime: #C4D94E;
+      --lavender: #C5B5E0;
+      --sky: #8BB4F7;
+      --violet: #A06CE8;
+      --yellow: #F2D160;
+      --peach: #F5B895;
+      --mint: #A8E6CF;
+      --shadow: rgba(26, 26, 26, 0.08);
+
+      --f-disp: 'Bodoni Moda', Georgia, serif;
+      --f-body: 'Space Grotesk', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      color: var(--ink);
+      font-family: var(--f-body);
+      background:
+        radial-gradient(ellipse at 12% 18%, rgba(242,209,96,0.14), transparent 42%),
+        radial-gradient(ellipse at 88% 12%, rgba(139,180,247,0.12), transparent 40%),
+        radial-gradient(ellipse at 78% 88%, rgba(197,181,224,0.13), transparent 45%),
+        radial-gradient(ellipse at 20% 85%, rgba(168,230,207,0.12), transparent 42%),
+        var(--cream);
+      background-attachment: fixed;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Grain overlay — always present (the baseline atmospheric layer) ===== */
+    .grain {
+      position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+      opacity: 0.045; mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* ===== Pill primitives (the universal geometry) ===== */
+    .pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 9999px; border: 2px solid var(--outline);
+      font-family: var(--f-body); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+      white-space: nowrap; padding: 0.4rem 1.2rem; font-size: 0.78rem; background: var(--white);
+    }
+    .pill.lg { padding: 1.1rem 3rem; font-size: 0.85rem; }
+
+    /* ===== Persistent chrome — pills + a nav-dot column (the system's own) ===== */
+    .back-link {
+      position: fixed; top: 22px; left: 28px; z-index: 200; text-decoration: none; color: var(--ink);
+      background: var(--white); border: 2px solid var(--outline); border-radius: 9999px;
+      font-family: var(--f-body); font-weight: 600; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.45rem 1.1rem; box-shadow: 4px 4px 0 var(--shadow);
+    }
+    .back-link:hover { background: var(--yellow); }
+    .counter {
+      position: fixed; bottom: 22px; right: 28px; z-index: 200;
+      background: var(--ink); color: var(--cream); border-radius: 9999px;
+      font-family: var(--f-body); font-weight: 600; font-size: 0.72rem; letter-spacing: 0.12em;
+      padding: 0.45rem 1.1rem;
+    }
+    .navdots { position: fixed; top: 50%; right: 22px; transform: translateY(-50%); z-index: 200; display: flex; flex-direction: column; gap: 12px; }
+    .navdot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--outline); background: var(--cream); transition: background 0.2s; }
+    .navdot.active { background: var(--coral); }
+    .navdot:nth-child(2).active { background: var(--lime); }
+    .navdot:nth-child(3).active { background: var(--sky); }
+    .navdot:nth-child(4).active { background: var(--violet); }
+    .navdot:nth-child(5).active { background: var(--yellow); }
+    .navdot:nth-child(6).active { background: var(--lavender); }
+    .navdot:nth-child(7).active { background: var(--peach); }
+    .navdot:nth-child(8).active { background: var(--mint); }
+
+    /* ===== Section scaffold ===== */
+    section, header, footer { position: relative; overflow: hidden; padding: clamp(64px, 9vh, 120px) clamp(28px, 6vw, 96px); }
+    .wrap { max-width: 1140px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+
+    /* decorative floating pills (typographic confetti, flat / no shadow) */
+    .deco-pill {
+      position: absolute; z-index: 1; border-radius: 9999px; border: 2px solid var(--outline);
+      font-family: var(--f-body); font-weight: 600; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.35rem 1rem; pointer-events: none;
+    }
+    .deco-circle { position: absolute; z-index: 1; border-radius: 50%; border: 2px solid var(--outline); pointer-events: none; }
+
+    .tag-pill { background: var(--lavender); border: 2px solid var(--outline); border-radius: 9999px; font-family: var(--f-body); font-weight: 600; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.4rem 1.2rem; display: inline-block; }
+    .accent-line { width: 60px; height: 4px; background: var(--coral); border-radius: 9999px; margin: 1.4rem 0; }
+    .accent-line.center { margin-left: auto; margin-right: auto; }
+    .accent-line.lg { width: 80px; }
+
+    .section-headline { font-family: var(--f-disp); font-weight: 700; font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.05; letter-spacing: -0.01em; color: var(--ink); }
+    .headline { font-family: var(--f-disp); font-weight: 700; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.05; letter-spacing: -0.02em; color: var(--ink); }
+    .subtitle { font-family: var(--f-body); font-weight: 400; font-size: clamp(0.8rem, 1.5vw, 1.05rem); letter-spacing: 0.15em; text-transform: uppercase; color: rgba(26,26,26,0.6); }
+    .lead { font-family: var(--f-body); font-size: clamp(0.98rem, 1.2vw, 1.18rem); line-height: 1.6; color: rgba(26,26,26,0.7); max-width: 60ch; }
+    .body { font-family: var(--f-body); font-size: clamp(0.95rem, 1.1vw, 1.1rem); line-height: 1.6; color: rgba(26,26,26,0.7); }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+    .hero-inner { position: relative; z-index: 2; max-width: 880px; }
+    .display { font-family: var(--f-disp); font-weight: 800; font-size: clamp(3.4rem, 9vw, 7.5rem); line-height: 0.9; letter-spacing: -0.03em; color: var(--ink); margin: 1.4rem 0 0.8rem; }
+    .hero .subtitle { display: block; }
+    .contents { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-top: 2.6rem; }
+    .contents a {
+      text-decoration: none; color: var(--ink); border-radius: 9999px; border: 2px solid var(--outline);
+      font-family: var(--f-body); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.6rem 1.4rem; box-shadow: 4px 4px 0 var(--shadow); transition: transform 0.15s;
+    }
+    .contents a:hover { transform: translate(-1px,-1px); }
+    .ct-coral { background: var(--coral); } .ct-lime { background: var(--lime); } .ct-sky { background: var(--sky); }
+    .ct-violet { background: var(--violet); color: var(--white); } .ct-yellow { background: var(--yellow); }
+    .ct-lavender { background: var(--lavender); } .ct-peach { background: var(--peach); } .ct-mint { background: var(--mint); }
+
+    /* ===== generic blocks ===== */
+    .sec-head-wrap { text-align: center; margin-bottom: clamp(36px, 5vh, 64px); }
+    .sec-head-wrap .lead { margin: 1.2rem auto 0; text-align: center; }
+
+    .pill-card {
+      background: var(--white); border: 2px solid var(--outline); border-radius: 2rem;
+      padding: 2.4rem 2rem; box-shadow: 8px 8px 0 var(--shadow);
+    }
+    .card-icon {
+      width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--outline);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--f-disp); font-size: 1.5rem; font-weight: 700; color: var(--ink); margin-bottom: 1.2rem;
+    }
+    .card-headline { font-family: var(--f-disp); font-weight: 700; font-size: 1.5rem; line-height: 1.1; color: var(--ink); margin-bottom: 0.7rem; }
+
+    /* ===== §01 META — stat-pills ===== */
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .stat-pill {
+      background: var(--white); border: 2px solid var(--outline); border-radius: 2rem;
+      padding: 2rem 1.5rem; box-shadow: 6px 6px 0 var(--shadow); text-align: center;
+    }
+    .stat-number { font-family: var(--f-disp); font-weight: 800; font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1; letter-spacing: -0.03em; }
+    .stat-label { font-family: var(--f-body); font-weight: 500; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(26,26,26,0.6); margin-top: 0.7rem; }
+    .stat-bar { width: 40px; height: 4px; border-radius: 9999px; margin: 0.9rem auto 0; }
+
+    /* ===== §02 COLOURS ===== */
+    .sw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.2rem; }
+    .swatch { text-align: center; }
+    .sw-circle { width: 100%; aspect-ratio: 1; border-radius: 50%; border: 2px solid var(--outline); box-shadow: 6px 6px 0 var(--shadow); }
+    .sw-name { font-family: var(--f-disp); font-weight: 700; font-size: 1.15rem; margin-top: 0.8rem; }
+    .sw-hex { font-family: var(--f-body); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(26,26,26,0.55); margin-top: 0.2rem; }
+
+    /* ===== §03 TYPOGRAPHY ===== */
+    .face-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2.5rem; }
+    .face-card { background: var(--white); border: 2px solid var(--outline); border-radius: 2rem; padding: 2rem; box-shadow: 8px 8px 0 var(--shadow); }
+    .fc-bodoni { font-family: var(--f-disp); font-weight: 800; font-size: clamp(2.4rem,5vw,4rem); line-height: 0.95; color: var(--ink); }
+    .fc-grotesk { font-family: var(--f-body); font-weight: 500; font-size: clamp(1.4rem,2.4vw,2.2rem); color: var(--ink); }
+    .fc-name { font-family: var(--f-body); font-weight: 600; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--coral); margin-bottom: 1rem; }
+    .fc-desc { font-family: var(--f-body); font-size: 0.92rem; line-height: 1.55; color: rgba(26,26,26,0.65); margin-top: 1rem; }
+
+    .scale-list { background: var(--white); border: 2px solid var(--outline); border-radius: 2rem; padding: 1rem 2rem; box-shadow: 8px 8px 0 var(--shadow); }
+    .scale-row { display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: baseline; padding: 14px 0; border-bottom: 2px solid rgba(26,26,26,0.08); }
+    .scale-row:last-child { border-bottom: none; }
+    .sm { font-family: var(--f-body); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(26,26,26,0.5); }
+    .sm b { display: block; color: var(--ink); font-weight: 600; margin-bottom: 3px; }
+    .smp { font-family: var(--f-disp); color: var(--ink); overflow: hidden; }
+
+    /* ===== §04 COMPONENTS ===== */
+    .comp { margin-bottom: 2.6rem; }
+    .comp-h { font-family: var(--f-body); font-weight: 600; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--coral); margin-bottom: 1rem; }
+    .comp-h span { color: rgba(26,26,26,0.5); }
+    .demo { background: rgba(255,255,255,0.5); border: 2px dashed rgba(26,26,26,0.18); border-radius: 2rem; padding: 2rem; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
+
+    .bar-track { height: 36px; background: var(--cream); border: 2px solid var(--outline); border-radius: 9999px; overflow: hidden; margin-bottom: 1rem; }
+    .bar-fill { height: 100%; border-radius: 9999px; border-right: 2px solid var(--outline); display: flex; align-items: center; justify-content: flex-end; padding-right: 1rem; font-family: var(--f-body); font-weight: 600; font-size: 0.75rem; color: var(--ink); width: 0; transition: width 0.9s cubic-bezier(0.4,0,0.2,1); }
+
+    .orbit { position: relative; height: 280px; display: flex; align-items: center; justify-content: center; }
+    .orbit-center { width: 150px; height: 150px; border-radius: 50%; background: var(--lime); border: 2px solid var(--outline); display: flex; align-items: center; justify-content: center; font-family: var(--f-disp); font-weight: 700; font-size: 2.4rem; box-shadow: 8px 8px 0 var(--shadow); }
+    .orbit-sat { position: absolute; border-radius: 9999px; border: 2px solid var(--outline); font-family: var(--f-body); font-weight: 600; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.4rem 1.1rem; box-shadow: 6px 6px 0 var(--shadow); }
+
+    .diagram { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; }
+    .diagram-node { background: var(--white); border: 2px solid var(--outline); border-radius: 9999px; padding: 1rem 2rem; box-shadow: 6px 6px 0 var(--shadow); font-family: var(--f-body); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .connector { width: 50px; height: 4px; background: var(--outline); position: relative; flex-shrink: 0; }
+    .connector::after { content: ""; position: absolute; right: -2px; top: 50%; transform: translateY(-50%); border-left: 9px solid var(--outline); border-top: 6px solid transparent; border-bottom: 6px solid transparent; }
+
+    .visual-frame { border: 2px solid var(--outline); border-radius: 2rem; box-shadow: 12px 12px 0 var(--shadow); background: linear-gradient(135deg, var(--lavender), var(--sky) 55%, var(--mint)); min-height: 220px; padding: 1rem; }
+    .visual-frame .vf-inner { border: 2px dashed rgba(26,26,26,0.3); border-radius: 1.5rem; height: 100%; min-height: 196px; display: flex; align-items: center; justify-content: center; background-image: radial-gradient(rgba(26,26,26,0.15) 1.5px, transparent 1.5px); background-size: 16px 16px; }
+    .visual-frame .vf-inner span { font-family: var(--f-body); font-weight: 600; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(26,26,26,0.55); background: rgba(245,245,240,0.7); padding: 0.4rem 1rem; border-radius: 9999px; }
+
+    .quote-display { font-family: var(--f-disp); font-weight: 600; font-size: clamp(1.5rem,3vw,2.4rem); line-height: 1.4; color: var(--ink); text-align: center; }
+    .quote-hl { display: inline-block; background: var(--lime); border: 2px solid var(--outline); border-radius: 9999px; padding: 0.1em 0.7em; font-family: var(--f-body); font-weight: 600; font-size: 0.7em; letter-spacing: 0.02em; vertical-align: middle; }
+
+    /* ===== §05 LAYOUT ===== */
+    .spec-table { width: 100%; border-collapse: collapse; background: var(--white); border: 2px solid var(--outline); border-radius: 2rem; overflow: hidden; box-shadow: 8px 8px 0 var(--shadow); }
+    .spec-table th, .spec-table td { text-align: left; padding: 12px 18px; border-bottom: 2px solid rgba(26,26,26,0.08); }
+    .spec-table tr:last-child th, .spec-table tr:last-child td { border-bottom: none; }
+    .spec-table th { font-family: var(--f-body); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral); font-weight: 600; }
+    .spec-table td { font-family: var(--f-body); font-size: 0.92rem; color: rgba(26,26,26,0.75); }
+    .spec-table td.tok { font-weight: 600; color: var(--ink); }
+
+    /* ===== §06 DEPTH ===== */
+    .shadow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+    .shadow-demo { background: var(--white); border: 2px solid var(--outline); border-radius: 1.5rem; padding: 1.4rem 1rem; text-align: center; font-family: var(--f-body); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(26,26,26,0.65); }
+    .sd-1 { box-shadow: 4px 4px 0 var(--shadow); } .sd-2 { box-shadow: 6px 6px 0 var(--shadow); } .sd-3 { box-shadow: 8px 8px 0 var(--shadow); } .sd-4 { box-shadow: 12px 12px 0 var(--shadow); }
+    .radius-row { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; }
+    .radius-demo { width: 110px; height: 80px; border: 2px solid var(--outline); background: var(--peach); display: flex; align-items: center; justify-content: center; font-family: var(--f-body); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* ===== §07 DO / DON'T ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .dd-head { font-family: var(--f-disp); font-weight: 700; font-size: 1.6rem; color: var(--ink); margin-bottom: 1.2rem; display: inline-flex; align-items: center; gap: 0.6rem; }
+    .dd-list { list-style: none; }
+    .dd-list li { font-family: var(--f-body); font-size: 0.95rem; line-height: 1.5; color: rgba(26,26,26,0.78); padding: 0.6rem 0 0.6rem 1.8rem; position: relative; border-bottom: 2px solid rgba(26,26,26,0.06); }
+    .dd-list li:last-child { border-bottom: none; }
+    .do-card .dd-list li::before { content: ""; position: absolute; left: 0; top: 0.95rem; width: 12px; height: 12px; border-radius: 50%; background: var(--lime); border: 2px solid var(--outline); }
+    .dont-card .dd-list li::before { content: ""; position: absolute; left: 0; top: 0.95rem; width: 12px; height: 12px; border-radius: 50%; background: var(--coral); border: 2px solid var(--outline); }
+
+    /* ===== §08 CJK ===== */
+    .cjk-specimen { background: var(--white); border: 2px solid var(--outline); border-radius: 2rem; padding: 2.4rem; box-shadow: 8px 8px 0 var(--shadow); margin-bottom: 2rem; text-align: center; }
+    .cjk-display { font-family: 'ZCOOL XiaoWei', serif; font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.2; color: var(--ink); }
+    .cjk-body { font-family: 'Noto Sans SC', sans-serif; font-weight: 400; font-size: clamp(0.95rem,1.2vw,1.1rem); line-height: 1.8; color: rgba(26,26,26,0.7); max-width: 44ch; margin: 1rem auto 0; }
+    .cjk-label { font-family: var(--f-body); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--coral); margin-top: 1.2rem; }
+
+    /* ===== CLOSE ===== */
+    .close { min-height: 86vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .closing-display { font-family: var(--f-disp); font-weight: 800; font-size: clamp(2.6rem, 6vw, 5rem); line-height: 0.95; letter-spacing: -0.03em; color: var(--ink); margin: 1.2rem 0; }
+    .close-sub { font-family: var(--f-body); font-size: clamp(0.95rem,1.2vw,1.15rem); color: rgba(26,26,26,0.7); max-width: 46ch; line-height: 1.6; }
+    .close-links { margin-top: 2.2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .navdots { display: none; }
+      .grid-4, .grid-3, .face-row, .dodont, .shadow-grid { grid-template-columns: 1fr 1fr; }
+      .scale-row { grid-template-columns: 1fr; gap: 8px; }
+    }
+    @media (max-width: 560px) {
+      .grid-4, .grid-3, .face-row, .dodont, .shadow-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grain"></div>
+  <a class="back-link" href="index.html">&larr; Index</a>
+  <div class="counter" id="counter">01 / 10</div>
+  <div class="navdots" id="navdots">
+    <a href="#top" class="navdot" aria-label="Cover"></a>
+    <a href="#overview" class="navdot"></a>
+    <a href="#colours" class="navdot"></a>
+    <a href="#typography" class="navdot"></a>
+    <a href="#components" class="navdot"></a>
+    <a href="#layout" class="navdot"></a>
+    <a href="#depth" class="navdot"></a>
+    <a href="#dodont" class="navdot"></a>
+    <a href="#cjk" class="navdot"></a>
+    <a href="#close" class="navdot"></a>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <span class="deco-pill" style="top:13%;left:9%;background:var(--coral);transform:rotate(-12deg)">Vision</span>
+    <span class="deco-pill" style="top:20%;right:11%;background:var(--sky);transform:rotate(9deg)">Modular</span>
+    <span class="deco-circle" style="top:30%;left:18%;width:46px;height:46px;background:var(--yellow)"></span>
+    <span class="deco-pill" style="bottom:22%;left:13%;background:var(--mint);transform:rotate(7deg)">Pop</span>
+    <span class="deco-pill" style="bottom:16%;right:14%;background:var(--lavender);transform:rotate(-8deg)">Fresh</span>
+    <span class="deco-circle" style="bottom:28%;right:20%;width:34px;height:34px;background:var(--peach)"></span>
+    <span class="deco-pill" style="top:46%;right:7%;background:var(--violet);color:var(--white);transform:rotate(14deg)">Next</span>
+    <div class="hero-inner">
+      <span class="tag-pill" style="background:var(--yellow)">Design System Specification</span>
+      <h1 class="display">Capsule</h1>
+      <span class="subtitle">Modular pill-shaped editorial &middot; Memphis meets the magazine</span>
+      <div class="accent-line center"></div>
+      <nav class="contents">
+        <a href="#overview" class="ct-coral">01 Overview</a>
+        <a href="#colours" class="ct-lime">02 Colours</a>
+        <a href="#typography" class="ct-sky">03 Typography</a>
+        <a href="#components" class="ct-violet">04 Components</a>
+        <a href="#layout" class="ct-yellow">05 Layout</a>
+        <a href="#depth" class="ct-lavender">06 Depth</a>
+        <a href="#dodont" class="ct-peach">07 Do &amp; Don't</a>
+        <a href="#cjk" class="ct-mint">08 中文 / CJK</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section id="overview">
+    <span class="deco-pill" style="top:10%;right:9%;background:var(--peach);transform:rotate(11deg)">Editorial</span>
+    <div class="wrap">
+      <div class="sec-head-wrap">
+        <span class="tag-pill">01 — Overview</span>
+        <h2 class="section-headline" style="margin-top:1.2rem">A magazine that took a holiday<br>at an ice-cream parlor</h2>
+        <p class="lead">Capsule is a playful editorial system whose defining premise is the <strong>pill</strong>: every text container, every icon, every bar, every node is a pill with a 2px ink stroke. Confident Bodoni serif headlines, a nine-color candy palette, and floating decorative pills as atmospheric wallpaper.</p>
+      </div>
+      <div class="grid-4">
+        <div class="stat-pill"><div class="stat-number" style="color:var(--coral)">Med-Lo</div><div class="stat-label">Formality</div><div class="stat-bar" style="background:var(--coral)"></div></div>
+        <div class="stat-pill"><div class="stat-number" style="color:var(--lime)">Med</div><div class="stat-label">Density</div><div class="stat-bar" style="background:var(--lime)"></div></div>
+        <div class="stat-pill"><div class="stat-number" style="color:var(--sky)">Light</div><div class="stat-label">Scheme</div><div class="stat-bar" style="background:var(--sky)"></div></div>
+        <div class="stat-pill"><div class="stat-number" style="color:var(--violet)">10</div><div class="stat-label">Slides</div><div class="stat-bar" style="background:var(--violet)"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section id="colours">
+    <div class="wrap">
+      <div class="sec-head-wrap">
+        <span class="tag-pill" style="background:var(--lime)">02 — Colours</span>
+        <h2 class="section-headline" style="margin-top:1.2rem">Nine Candies, Three Neutrals</h2>
+        <p class="lead">A warm bone canvas, ink structure, and a nine-color candy palette used <strong>interchangeably</strong> — no semantic mapping. Pair warm + cool adjacently; never two same-family accents side by side. Headlines stay ink; colour lives on stat numerals and pill fills.</p>
+      </div>
+      <div class="sw-grid">
+        <div class="swatch"><div class="sw-circle" style="background:var(--coral)"></div><div class="sw-name">Coral</div><div class="sw-hex">#E85D4E</div></div>
+        <div class="swatch"><div class="sw-circle" style="background:var(--lime)"></div><div class="sw-name">Lime</div><div class="sw-hex">#C4D94E</div></div>
+        <div class="swatch"><div class="sw-circle" style="background:var(--sky)"></div><div class="sw-name">Sky</div><div class="sw-hex">#8BB4F7</div></div>
+        <div class="swatch"><div class="sw-circle" style="background:var(--violet)"></div><div class="sw-name">Violet</div><div class="sw-hex">#A06CE8</div></div>
+        <div class="swatch"><div class="sw-circle" style="background:var(--yellow)"></div><div class="sw-name">Yellow</div><div class="sw-hex">#F2D160</div></div>
+        <div class="swatch"><div class="sw-circle" style="background:var(--lavender)"></div><div class="sw-name">Lavender</div><div class="sw-hex">#C5B5E0</div></div>
+        <div class="swatch"><div class="sw-circle" style="background:var(--peach)"></div><div class="sw-name">Peach</div><div class="sw-hex">#F5B895</div></div>
+        <div class="swatch"><div class="sw-circle" style="background:var(--mint)"></div><div class="sw-name">Mint</div><div class="sw-hex">#A8E6CF</div></div>
+        <div class="swatch"><div class="sw-circle" style="background:var(--cream);"></div><div class="sw-name">Cream</div><div class="sw-hex">#F5F5F0</div></div>
+        <div class="swatch"><div class="sw-circle" style="background:var(--ink)"></div><div class="sw-name">Ink</div><div class="sw-hex">#1A1A1A</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section id="typography">
+    <span class="deco-pill" style="bottom:12%;left:8%;background:var(--sky);transform:rotate(-10deg)">Serif</span>
+    <div class="wrap">
+      <div class="sec-head-wrap">
+        <span class="tag-pill" style="background:var(--sky)">03 — Typography</span>
+        <h2 class="section-headline" style="margin-top:1.2rem">A Two-Face Conversation</h2>
+        <p class="lead">Glamorous didone serif statements + clean grotesk supporting structure. Bodoni headlines are sentence-case and always ink; Space Grotesk small text is always uppercase with 0.08em+ tracking.</p>
+      </div>
+      <div class="face-row">
+        <div class="face-card">
+          <div class="fc-name">Bodoni Moda · display / headline / stat</div>
+          <div class="fc-bodoni">Editorial<br>Glamour</div>
+          <div class="fc-desc">A high-contrast didone serif. Thin-thick stroke modulation gives headlines fashion-magazine weight. Weights 700–800 with negative tracking. Never colored, never uppercase.</div>
+        </div>
+        <div class="face-card">
+          <div class="fc-name">Space Grotesk · body / label / pill</div>
+          <div class="fc-grotesk">Clean modern body &amp; UPPERCASE PILLS</div>
+          <div class="fc-desc">A geometric grotesque carrying body, labels, and every pill text. Small text runs uppercase with 0.08–0.15em tracking — the small-text identity signal.</div>
+        </div>
+      </div>
+      <div class="scale-list">
+        <div class="scale-row"><div class="sm"><b>display</b>Bodoni 800 · 3–7rem</div><div class="smp" style="font-weight:800;font-size:clamp(2.4rem,5vw,4rem);line-height:0.9;letter-spacing:-0.03em">Capsule</div></div>
+        <div class="scale-row"><div class="sm"><b>headline</b>Bodoni 700 · 2–3.5rem</div><div class="smp" style="font-weight:700;font-size:clamp(1.8rem,3.5vw,2.6rem);letter-spacing:-0.02em">Primary Headline</div></div>
+        <div class="scale-row"><div class="sm"><b>stat-number</b>Bodoni 800 · 2–3rem</div><div class="smp" style="font-weight:800;font-size:clamp(1.8rem,3vw,2.4rem);color:var(--coral);letter-spacing:-0.03em">340%</div></div>
+        <div class="scale-row"><div class="sm"><b>card-headline</b>Bodoni 700 · 1.5rem</div><div class="smp" style="font-weight:700;font-size:1.5rem">Card Title</div></div>
+        <div class="scale-row"><div class="sm"><b>body</b>Space Grotesk 400 · 0.95–1.15rem</div><div class="smp" style="font-family:var(--f-body);font-size:1.05rem;color:rgba(26,26,26,0.7);line-height:1.5">Clean grotesk body copy in a quiet supporting role.</div></div>
+        <div class="scale-row"><div class="sm"><b>label</b>Space Grotesk 500 · 0.75rem · UPPER</div><div class="smp"><span class="pill" style="background:var(--yellow)">Header Tag</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section id="components">
+    <div class="wrap">
+      <div class="sec-head-wrap">
+        <span class="tag-pill" style="background:var(--violet);color:var(--white)">04 — Components</span>
+        <h2 class="section-headline" style="margin-top:1.2rem">Everything Is A Pill</h2>
+        <p class="lead">Every block below is rendered with the template's <strong>actual CSS</strong> — not a mockup. Pill geometry, 2px ink outline, and soft hard-offset shadows throughout.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Pills &amp; tags <span>— the universal container, any candy fill</span></div>
+        <div class="demo"><div class="pill-row">
+          <span class="pill" style="background:var(--coral)">Coral</span>
+          <span class="pill" style="background:var(--lime)">Lime</span>
+          <span class="pill" style="background:var(--sky)">Sky</span>
+          <span class="pill" style="background:var(--yellow)">Featured</span>
+          <span class="pill" style="background:var(--white)">White</span>
+          <span class="pill lg" style="background:var(--lavender)">Large Pill</span>
+        </div></div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Pillar cards <span>— white 2rem card, circular icon, 8px shadow</span></div>
+        <div class="grid-3">
+          <div class="pill-card"><div class="card-icon" style="background:var(--coral)">I</div><div class="card-headline">Strategy</div><div class="body">Market analysis and multi-year roadmaps that bridge ambition with milestones.</div></div>
+          <div class="pill-card"><div class="card-icon" style="background:var(--lime)">II</div><div class="card-headline">Build</div><div class="body">Scalable architecture and infrastructure that grows with demand.</div></div>
+          <div class="pill-card"><div class="card-icon" style="background:var(--sky)">III</div><div class="card-headline">Grow</div><div class="body">Activation, retention, and expansion across new geographies.</div></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Stat-pills &amp; bar chart <span>— colored Bodoni numerals · pill-shaped bars</span></div>
+        <div class="grid-3" style="margin-bottom:1.5rem">
+          <div class="stat-pill"><div class="stat-number" style="color:var(--coral)">$12.4M</div><div class="stat-label">Revenue</div><div class="stat-bar" style="background:var(--coral)"></div></div>
+          <div class="stat-pill"><div class="stat-number" style="color:var(--violet)">94%</div><div class="stat-label">Retention</div><div class="stat-bar" style="background:var(--violet)"></div></div>
+          <div class="stat-pill"><div class="stat-number" style="color:var(--sky)">4.2&times;</div><div class="stat-label">LTV / CAC</div><div class="stat-bar" style="background:var(--sky)"></div></div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" data-w="86%" style="background:var(--coral)">86%</div></div>
+        <div class="bar-track"><div class="bar-fill" data-w="64%" style="background:var(--lime)">64%</div></div>
+        <div class="bar-track"><div class="bar-fill" data-w="48%" style="background:var(--sky)">48%</div></div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Orbit &amp; flow diagram <span>— circular anchor + satellites · pill nodes + arrows</span></div>
+        <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+          <div class="demo orbit">
+            <div class="orbit-center">01</div>
+            <span class="orbit-sat" style="top:8%;left:14%;background:var(--coral);transform:rotate(-10deg)">Plan</span>
+            <span class="orbit-sat" style="top:18%;right:10%;background:var(--sky);transform:rotate(8deg)">Make</span>
+            <span class="orbit-sat" style="bottom:14%;left:10%;background:var(--yellow);transform:rotate(6deg)">Ship</span>
+            <span class="orbit-sat" style="bottom:10%;right:14%;background:var(--mint);transform:rotate(-7deg)">Grow</span>
+          </div>
+          <div class="demo" style="display:flex;align-items:center;justify-content:center">
+            <div class="diagram">
+              <span class="diagram-node" style="background:var(--lavender)">Input</span>
+              <span class="connector"></span>
+              <span class="diagram-node" style="background:var(--yellow)">Process</span>
+              <span class="connector"></span>
+              <span class="diagram-node" style="background:var(--mint)">Output</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Visual frame &amp; quote-highlight <span>— gradient + dot grid · inline pill emphasis</span></div>
+        <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:center">
+          <div class="visual-frame"><div class="vf-inner"><span>Image Placeholder</span></div></div>
+          <div class="quote-display">Emphasis is a <span class="quote-hl" style="background:var(--lime)">pill</span>, not a bold &mdash; wrap the phrase that should <span class="quote-hl" style="background:var(--sky)">pop</span>.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section id="layout">
+    <div class="wrap">
+      <div class="sec-head-wrap">
+        <span class="tag-pill" style="background:var(--yellow)">05 — Layout</span>
+        <h2 class="section-headline" style="margin-top:1.2rem">Populated, Never Bare</h2>
+        <p class="lead">Slides feel populated: one or two content blocks paired with 5–8 floating decorative pills and 1–3 radial glows. Empty corners read as broken — the candy palette wants to participate.</p>
+      </div>
+      <table class="spec-table">
+        <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td class="tok">pad-lg</td><td>3rem 4rem</td><td>Default slide outer padding</td></tr>
+          <tr><td class="tok">gap-xl / lg / md</td><td>4 / 3 / 2 rem</td><td>Gutters &amp; section spacing</td></tr>
+          <tr><td class="tok">card-pad</td><td>2.5rem 2rem</td><td>Pillar-card padding</td></tr>
+          <tr><td class="tok">pill-pad-lg</td><td>1.5rem 3.5rem</td><td>Title / closing pill padding</td></tr>
+          <tr><td class="tok">grain</td><td>4% · multiply</td><td>Baseline noise overlay (always on)</td></tr>
+          <tr><td class="tok">radial glow</td><td>6–15% opacity</td><td>Candy accent atmosphere washes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH & SHAPE ============ -->
+  <section id="depth">
+    <div class="wrap">
+      <div class="sec-head-wrap">
+        <span class="tag-pill" style="background:var(--lavender)">06 — Depth &amp; Shape</span>
+        <h2 class="section-headline" style="margin-top:1.2rem">Soft Offset, Never Blur</h2>
+        <p class="lead">The only depth technique is a <strong>solid hard-offset shadow</strong> in low-opacity ink at 8% — it reads as a soft lift, not a stamp. Always bottom-right. The 2px outline does the rest. Decorative pills stay flat.</p>
+      </div>
+      <div class="shadow-grid" style="margin-bottom:2.5rem">
+        <div class="shadow-demo sd-1">4px · small nodes</div>
+        <div class="shadow-demo sd-2">6px · stat / orbit</div>
+        <div class="shadow-demo sd-3">8px · cards</div>
+        <div class="shadow-demo sd-4">12px · visual frame</div>
+      </div>
+      <div class="comp-h">Radius ladder <span>— 9999px pills, 2rem cards, 50% circles, 0 only for grain</span></div>
+      <div class="radius-row">
+        <div class="radius-demo" style="border-radius:9999px">9999px</div>
+        <div class="radius-demo" style="border-radius:2rem;background:var(--sky)">2rem</div>
+        <div class="radius-demo" style="border-radius:50%;width:80px;background:var(--lime)">50%</div>
+        <div class="radius-demo" style="border-radius:0;background:var(--lavender)">0 · grain</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section id="dodont">
+    <div class="wrap">
+      <div class="sec-head-wrap">
+        <span class="tag-pill" style="background:var(--peach)">07 — Do &amp; Don't</span>
+        <h2 class="section-headline" style="margin-top:1.2rem">Keep It Candy, Keep It Sharp</h2>
+      </div>
+      <div class="dodont">
+        <div class="pill-card do-card">
+          <div class="dd-head"><span class="card-icon" style="width:40px;height:40px;font-size:1rem;margin:0;background:var(--lime)">✓</span> Do</div>
+          <ul class="dd-list">
+            <li>Make every text container a pill — 9999px small, 2rem cards — with the 2px ink outline.</li>
+            <li>Set every Bodoni headline in ink; put colour on stat numerals and pill fills.</li>
+            <li>Render shadows as solid offsets at 4/6/8/12px in the 8%-ink shadow colour.</li>
+            <li>Populate backgrounds with 5–8 tilted decorative pills and radial glows.</li>
+            <li>Wrap inline emphasis in a candy quote-highlight pill, not bold.</li>
+          </ul>
+        </div>
+        <div class="pill-card dont-card">
+          <div class="dd-head"><span class="card-icon" style="width:40px;height:40px;font-size:1rem;margin:0;background:var(--coral)">✕</span> Don't</div>
+          <ul class="dd-list">
+            <li>Render any sharp-cornered text container, or any pill without its 2px stroke.</li>
+            <li>Colour a Bodoni headline, or uppercase it — serifs are sentence case.</li>
+            <li>Use blurred drop shadows, or re-colour the offset shadow.</li>
+            <li>Pair Bodoni with a different sans, or add a tenth accent colour.</li>
+            <li>Leave a declarative slide's corners empty — bare cream reads as broken.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section id="cjk">
+    <span class="deco-pill" style="top:12%;right:10%;background:var(--mint);transform:rotate(-9deg)">未来</span>
+    <div class="wrap">
+      <div class="sec-head-wrap">
+        <span class="tag-pill" style="background:var(--mint)">08 — 中文 / CJK</span>
+        <h2 class="section-headline" style="margin-top:1.2rem">Candy In Chinese</h2>
+        <p class="lead">Strategy A — a single font-stack with CJK fallback after the Latin face. <strong>站酷小薇体 ZCOOL XiaoWei</strong> echoes Bodoni's didone modulation for headlines; <strong>悠哉字体 Yozai</strong> mirrors Space Grotesk for body. Both sit cleanly inside candy pills with the ink outline.</p>
+      </div>
+      <div class="cjk-specimen">
+        <div class="cjk-display">胶囊设计系统</div>
+        <div class="cjk-body">每一个容器都是一颗药丸：圆角、墨黑描边、柔和的偏移投影。站酷小薇体承载标题的高反差气质，悠哉字体处理正文与药丸文字。装饰药丸换成单字氛围词（愿景、未来、下一步），糖果配色照常运转。盘古之白：在中文与 Latin 之间留一个空格，如 AI 产品、2026 年。</div>
+        <div class="cjk-label">站酷小薇体 ZCOOL XiaoWei · 悠哉字体 Yozai</div>
+      </div>
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Latin (default)</th><th>Chinese counterpart</th></tr></thead>
+        <tbody>
+          <tr><td class="tok">Display / headline / stat</td><td>Bodoni Moda 700–800</td><td>站酷小薇体 ZCOOL XiaoWei</td></tr>
+          <tr><td class="tok">Body / pill / label</td><td>Space Grotesk 400–600</td><td>悠哉字体 Yozai</td></tr>
+        </tbody>
+      </table>
+      <p class="body" style="max-width:68ch;margin:1.4rem auto 0;text-align:center">Adjustments: line-height to ~1.7, zero letter-spacing on Hanzi, drop uppercase on Chinese pills, full-width punctuation, pangu spacing. Keep the rule "Bodoni headlines never coloured" — ZCOOL XiaoWei stays ink.</p>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close" id="close">
+    <span class="deco-pill" style="top:18%;left:12%;background:var(--coral);transform:rotate(-11deg)">Thanks</span>
+    <span class="deco-pill" style="bottom:20%;right:13%;background:var(--lime);transform:rotate(9deg)">Pop</span>
+    <span class="deco-circle" style="top:26%;right:18%;width:40px;height:40px;background:var(--sky)"></span>
+    <span class="tag-pill" style="background:var(--yellow)">End of Deck</span>
+    <h2 class="closing-display">Capsule</h2>
+    <div class="accent-line center lg"></div>
+    <p class="close-sub">One of 34 systems in Beautiful HTML Templates. Modular, modern, and a little Y2K.</p>
+    <div class="close-links">
+      <a href="index.html" style="text-decoration:none"><span class="pill" style="background:var(--white)">&larr; All Systems</span></a>
+      <a href="../templates/capsule/template.html" style="text-decoration:none"><span class="pill" style="background:var(--lime)">Open Live Deck</span></a>
+      <a href="../templates/capsule/design.md" style="text-decoration:none"><span class="pill" style="background:var(--sky)">design.md</span></a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var counter = document.getElementById('counter');
+      var dots = Array.prototype.slice.call(document.querySelectorAll('.navdot'));
+      var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+      var total = ids.length;
+
+      function onScroll() {
+        var h = document.documentElement;
+        var mid = h.scrollTop + window.innerHeight * 0.4;
+        var idx = 0;
+        for (var i = 0; i < ids.length; i++) {
+          var el = document.getElementById(ids[i]);
+          if (el && el.offsetTop <= mid) idx = i;
+        }
+        if (h.scrollTop / (h.scrollHeight - h.clientHeight) > 0.99) idx = total - 1;
+        counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+        dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+
+      // Fill bar charts on scroll-into-view
+      var bars = Array.prototype.slice.call(document.querySelectorAll('.bar-fill[data-w]'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.style.width = e.target.getAttribute('data-w'); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.4 });
+        bars.forEach(function (b) { io.observe(b); });
+      } else {
+        bars.forEach(function (b) { b.style.width = b.getAttribute('data-w'); });
+      }
+    })();
+  </script>
+</body>
+</html>

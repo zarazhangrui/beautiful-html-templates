@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's two faces: Barlow (everything) + IBM Plex Mono (metadata only) -->
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- CJK pairing, loaded only for the live Chinese specimen in §08 (Strategy A: replace, not stack) -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --c-bg: #1c1c1c;
+      --c-bg-alt: #242422;
+      --c-bg-light: #f5d200;
+      --c-bg-light-alt: #f0cc00;
+      --c-fg: #f5d200;
+      --c-fg-light: #1c1c1c;
+
+      --f-disp: 'Barlow', sans-serif;
+      --f-mono: 'IBM Plex Mono', monospace;
+
+      /* vw scale, clamped for a scrolling document */
+      --sz-display: clamp(72px, 12vw, 220px);
+      --sz-h1:      clamp(52px, 7.5vw, 140px);
+      --sz-stat:    clamp(42px, 5.5vw, 104px);
+      --sz-h2:      clamp(34px, 4.8vw, 88px);
+      --sz-quote:   clamp(26px, 3.8vw, 70px);
+      --sz-h3:      clamp(19px, 2.8vw, 50px);
+      --sz-lead:    clamp(15px, 1.6vw, 26px);
+      --sz-body:    clamp(13px, 1.15vw, 18px);
+      --sz-cap:     clamp(11px, 0.9vw, 14px);
+      --sz-label:   clamp(10px, 0.78vw, 13px);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--c-bg);
+      font-family: var(--f-disp);
+      color: var(--c-fg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Surface system — every section sets one; components read the vars ===== */
+    .s-dark {
+      background: var(--c-bg); color: var(--c-fg);
+      --fg: #f5d200; --fg2: rgba(245,210,0,0.58); --fg3: rgba(245,210,0,0.32);
+      --bd: #2e2e2c; --surf-alt: #242422; --rule-anchor: #f5d200;
+    }
+    .s-light {
+      background: var(--c-bg-light); color: var(--c-fg-light);
+      --fg: #1c1c1c; --fg2: rgba(28,28,28,0.62); --fg3: rgba(28,28,28,0.35);
+      --bd: rgba(28,28,28,0.18); --surf-alt: #f0cc00; --rule-anchor: #1c1c1c;
+    }
+
+    /* ===== Persistent chrome — mono, blended to stay visible on either surface ===== */
+    .progress {
+      position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 200;
+      background: #f5d200; mix-blend-mode: difference; transition: width 0.12s linear;
+    }
+    .chrome-fixed {
+      position: fixed; z-index: 200; color: #f5d200; mix-blend-mode: difference;
+      font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .back-link { top: 18px; left: 5vw; text-decoration: none; }
+    .back-link:hover { opacity: 0.6; }
+    .counter { bottom: 16px; right: 5vw; font-weight: 500; }
+
+    /* ===== Section scaffold ===== */
+    section, header, footer { padding: clamp(60px, 8vh, 120px) 5vw; }
+    .wrap { width: 100%; }
+
+    /* chrome / foot bars */
+    .chrome-bar, .foot-bar { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+    .chrome-bar { border-bottom: 1px solid var(--bd); padding-bottom: 10px; margin-bottom: clamp(20px, 2vh, 32px); }
+    .foot-bar { border-top: 1px solid var(--bd); padding-top: 10px; margin-top: clamp(28px, 3.5vh, 56px); }
+    .mono { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; }
+    .mono-2 { color: var(--fg2); }
+    .mono-3 { color: var(--fg3); }
+
+    /* headings */
+    .h2 { font-size: var(--sz-h2); font-weight: 900; line-height: 0.95; letter-spacing: -0.01em; text-transform: uppercase; color: var(--fg); }
+    .h3 { font-size: var(--sz-h3); font-weight: 700; line-height: 1.1; text-transform: uppercase; color: var(--fg); }
+    .lead { font-size: var(--sz-lead); font-weight: 500; line-height: 1.45; color: var(--fg); max-width: 50ch; }
+    .lead.muted { color: var(--fg2); }
+    .body { font-size: var(--sz-body); font-weight: 400; line-height: 1.6; color: var(--fg2); max-width: 62ch; }
+    .body strong { font-weight: 900; color: var(--fg); }
+
+    /* ===== HERO / COVER ===== */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; gap: clamp(24px, 4vh, 56px); }
+    .cover-top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+    .cover-type { }
+    .cover-display { font-size: var(--sz-display); font-weight: 900; line-height: 0.86; letter-spacing: -0.03em; text-transform: uppercase; color: var(--fg); }
+    .cover-sub { font-size: var(--sz-h3); font-weight: 900; line-height: 0.98; letter-spacing: -0.01em; text-transform: uppercase; color: var(--fg2); margin-top: clamp(12px,2vh,28px); max-width: 22ch; }
+
+    /* contents — mono index list */
+    .contents { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 5vw; margin-top: clamp(16px,2vh,28px); }
+    .contents a {
+      display: flex; align-items: baseline; gap: 1em; text-decoration: none; color: var(--fg);
+      font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 10px 0; border-bottom: 1px solid var(--bd);
+    }
+    .contents a .ci-num { color: var(--fg3); }
+    .contents a:hover { color: var(--fg2); }
+
+    /* cover-meta — the signature three-column lockup */
+    .cover-meta {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;
+      border-top: 1px solid rgba(245,210,0,0.25); padding-top: 14px;
+    }
+    .cover-meta .cm-col { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.7; color: var(--fg2); }
+    .cover-meta .cm-col.center { text-align: center; }
+    .cover-meta .cm-col.right { text-align: right; }
+    .cover-meta .cm-col b { color: var(--fg); font-weight: 500; }
+
+    /* ===== §01 META — stat cards ===== */
+    .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(20px, 2.5vw, 44px); }
+    .stat-card { border-top: 2px solid var(--rule-anchor); padding: 16px 16px 0 0; }
+    .stat-card .sc-value { font-size: var(--sz-stat); font-weight: 900; line-height: 0.9; letter-spacing: -0.03em; text-transform: uppercase; color: var(--fg); }
+    .stat-card .sc-label { font-size: var(--sz-body); font-weight: 500; line-height: 1.2; color: var(--fg); margin-top: 8px; }
+    .stat-card .sc-note { font-family: var(--f-mono); font-size: var(--sz-cap); letter-spacing: 0.04em; color: var(--fg3); margin-top: 8px; text-transform: uppercase; }
+
+    /* ===== §02 COLOURS ===== */
+    .pal-binary { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px,2vw,28px); margin-bottom: clamp(28px,3.5vh,52px); }
+    .pal-cell { aspect-ratio: 16/9; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(18px,2vw,30px); }
+    .pal-cell.on-dark { background: #1c1c1c; }
+    .pal-cell.on-light { background: #f5d200; }
+    .pal-cell .pc-big { font-size: var(--sz-h2); font-weight: 900; line-height: 0.9; letter-spacing: -0.02em; text-transform: uppercase; }
+    .pal-cell.on-dark .pc-big { color: #f5d200; }
+    .pal-cell.on-light .pc-big { color: #1c1c1c; }
+    .pal-cell .pc-meta { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.6; }
+    .pal-cell.on-dark .pc-meta { color: rgba(245,210,0,0.58); }
+    .pal-cell.on-light .pc-meta { color: rgba(28,28,28,0.62); }
+
+    .opacity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: clamp(12px,1.5vw,22px); }
+    .op-chip { border-top: 1px solid var(--bd); padding-top: 10px; }
+    .op-chip .oc-swatch { height: 48px; }
+    .op-chip .oc-meta { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg2); margin-top: 8px; line-height: 1.5; }
+
+    /* ===== §03 TYPOGRAPHY ===== */
+    .face-row { display: grid; grid-template-columns: 1fr; gap: clamp(28px,3.5vh,48px); margin-bottom: clamp(32px,4vh,56px); }
+    .face-block { border-top: 1px solid var(--bd); padding-top: clamp(16px,2vh,24px); }
+    .fb-name { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg2); margin-bottom: clamp(10px,1.5vh,18px); }
+    .fb-barlow { font-size: var(--sz-h1); font-weight: 900; line-height: 0.9; letter-spacing: -0.02em; text-transform: uppercase; color: var(--fg); }
+    .fb-mono-sample { font-family: var(--f-mono); font-size: clamp(20px,2.4vw,40px); letter-spacing: 0.04em; color: var(--fg); }
+    .fb-desc { font-size: var(--sz-body); font-weight: 400; line-height: 1.55; color: var(--fg2); max-width: 58ch; margin-top: 14px; }
+
+    .weights { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(16px,2vw,28px); margin-bottom: clamp(32px,4vh,56px); }
+    .wt { border-top: 2px solid var(--rule-anchor); padding-top: 12px; }
+    .wt .wt-glyph { font-size: clamp(48px,6vw,110px); line-height: 0.85; color: var(--fg); }
+    .wt-900 { font-weight: 900; } .wt-700 { font-weight: 700; } .wt-500 { font-weight: 500; } .wt-400 { font-weight: 400; }
+    .wt .wt-lbl { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg2); margin-top: 10px; }
+
+    .scale-list { display: flex; flex-direction: column; }
+    .scale-row { display: grid; grid-template-columns: 230px 1fr; gap: 28px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--bd); }
+    .scale-row:last-child { border-bottom: none; }
+    .sm { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg2); }
+    .sm b { display: block; color: var(--fg); font-weight: 500; margin-bottom: 3px; }
+    .smp { color: var(--fg); overflow: hidden; }
+    .smp.upper { text-transform: uppercase; }
+
+    /* ===== §04 COMPONENTS ===== */
+    .comp { margin-bottom: clamp(34px,4.5vh,60px); }
+    .comp-h { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg2); margin-bottom: 14px; display: flex; gap: 1.2em; }
+    .comp-h b { color: var(--fg); font-weight: 500; }
+    .demo-frame { border: 1px solid var(--bd); padding: clamp(20px,2.5vw,40px); }
+
+    .dash-list { list-style: none; }
+    .dash-list li { font-size: var(--sz-body); line-height: 1.5; color: var(--fg); padding-left: 1.6em; position: relative; margin-bottom: 10px; }
+    .dash-list li::before { content: "\2014"; position: absolute; left: 0; color: var(--fg); }
+
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px,3vw,48px); }
+    .compare .cmp-l { border-right: 2px solid var(--fg3); padding-right: clamp(24px,3vw,48px); }
+    .cmp-title { font-size: var(--sz-h3); font-weight: 900; text-transform: uppercase; line-height: 1; color: var(--fg); letter-spacing: -0.01em; }
+    .cmp-body { font-size: var(--sz-body); color: var(--fg2); line-height: 1.55; margin-top: 12px; }
+
+    .chart { }
+    .chart-bars { display: flex; align-items: flex-end; gap: clamp(14px,2vw,36px); height: 200px; }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 8px; }
+    .bar-num { font-family: var(--f-mono); font-size: var(--sz-cap); color: var(--fg3); }
+    .bar-col.hi .bar-num { color: var(--fg); font-family: var(--f-disp); font-weight: 900; font-size: var(--sz-body); }
+    .bar { width: 100%; background: var(--fg3); }
+    .bar-col.hi .bar { background: var(--fg); }
+    .bar-lbl { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg2); margin-top: 10px; }
+    .chart-baseline { height: 2px; background: var(--fg3); margin-top: -1px; }
+
+    .img-ph { background: var(--surf-alt); aspect-ratio: 16/7; display: flex; align-items: center; justify-content: center; border: 0; }
+    .s-light .img-ph { border: 1px solid var(--bd); }
+    .img-ph span { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg3); }
+
+    /* ===== §05 LAYOUT ===== */
+    .spec-table { width: 100%; border-collapse: collapse; }
+    .spec-table th, .spec-table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--bd); }
+    .spec-table th { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg2); font-weight: 500; }
+    .spec-table td { font-size: var(--sz-body); color: var(--fg); }
+    .spec-table td.mono-val { font-family: var(--f-mono); color: var(--fg); }
+    .spec-table td.use { color: var(--fg2); }
+
+    /* ===== §06 DEPTH ===== */
+    .rule-ladder { display: flex; flex-direction: column; gap: 0; margin-bottom: clamp(28px,3.5vh,48px); }
+    .rl-row { display: grid; grid-template-columns: 200px 1fr; gap: 28px; align-items: center; padding: 20px 0; }
+    .rl-spec { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg2); }
+    .rl-spec b { display: block; color: var(--fg); font-weight: 500; font-size: 1.15em; margin-bottom: 3px; }
+    .rl-1 { height: 1px; background: var(--bd); }
+    .rl-2 { height: 2px; background: var(--rule-anchor); }
+    .flat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px,2vw,28px); }
+    .flat-cell { border: 1px solid var(--bd); padding: clamp(18px,2vw,28px); }
+    .flat-cell .fc-x { font-size: var(--sz-h3); font-weight: 900; text-transform: uppercase; color: var(--fg); line-height: 1; letter-spacing: -0.01em; }
+    .flat-cell .fc-d { font-size: var(--sz-body); color: var(--fg2); line-height: 1.5; margin-top: 10px; }
+
+    /* ===== §07 DO / DON'T ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,3.5vw,56px); }
+    .dd-head { font-size: var(--sz-h3); font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; color: var(--fg); margin-bottom: 18px; border-bottom: 2px solid var(--rule-anchor); padding-bottom: 12px; }
+    .dd-list { list-style: none; }
+    .dd-list li { font-size: var(--sz-body); line-height: 1.5; color: var(--fg); padding-left: 1.6em; position: relative; margin-bottom: 14px; }
+    .do-col .dd-list li::before { content: "\2014"; position: absolute; left: 0; color: var(--fg); }
+    .dont-col .dd-list li::before { content: "\00D7"; position: absolute; left: 0; color: var(--fg2); font-family: var(--f-mono); }
+
+    /* ===== §08 CJK ===== */
+    .cjk-specimen { border-top: 2px solid var(--rule-anchor); padding-top: clamp(18px,2.5vh,32px); margin-bottom: clamp(28px,3.5vh,48px); }
+    .cjk-display { font-family: 'Noto Serif SC', serif; font-weight: 900; font-size: var(--sz-h1); line-height: 1.15; color: var(--fg); }
+    .cjk-body { font-family: 'Noto Serif SC', serif; font-weight: 400; font-size: var(--sz-lead); line-height: 1.8; color: var(--fg2); max-width: 40ch; margin-top: 18px; }
+    .cjk-label { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg3); margin-top: 16px; }
+
+    /* ===== CLOSE ===== */
+    .close { min-height: 86vh; display: flex; flex-direction: column; justify-content: center; }
+    .close-big { font-size: var(--sz-display); font-weight: 900; line-height: 0.84; letter-spacing: -0.04em; text-transform: uppercase; color: var(--fg); }
+    .close-sub { font-size: var(--sz-lead); font-weight: 500; color: var(--fg2); margin-top: clamp(20px,3vh,40px); max-width: 44ch; line-height: 1.4; }
+    .close-links { margin-top: clamp(28px,4vh,56px); display: flex; gap: clamp(20px,3vw,48px); flex-wrap: wrap; }
+    .close-links a { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg); text-decoration: none; border-bottom: 2px solid var(--rule-anchor); padding-bottom: 6px; }
+    .close-links a:hover { color: var(--fg2); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 820px) {
+      .contents, .stat-row, .weights, .pal-binary, .compare, .flat-grid, .dodont { grid-template-columns: 1fr; }
+      .cover-meta { grid-template-columns: 1fr; gap: 6px; }
+      .cover-meta .cm-col.center, .cover-meta .cm-col.right { text-align: left; }
+      .scale-row, .rl-row { grid-template-columns: 1fr; gap: 10px; }
+      .compare .cmp-l { border-right: none; border-bottom: 2px solid var(--fg3); padding-right: 0; padding-bottom: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <a class="chrome-fixed back-link" href="index.html">&larr; Index</a>
+  <div class="chrome-fixed counter" id="counter">01 / 10</div>
+
+  <!-- ============ HERO / COVER ============ -->
+  <header class="hero s-dark" id="top">
+    <div class="cover-top">
+      <span class="mono mono-2">Design System Specification</span>
+      <span class="mono mono-2">Beautiful HTML Templates</span>
+    </div>
+
+    <div class="cover-type">
+      <div class="cover-display">Studio</div>
+      <div class="cover-sub">Type as graphic mass.</div>
+      <nav class="contents">
+        <a href="#overview"><span class="ci-num">01</span> Overview</a>
+        <a href="#colours"><span class="ci-num">02</span> Colours</a>
+        <a href="#typography"><span class="ci-num">03</span> Typography</a>
+        <a href="#components"><span class="ci-num">04</span> Components</a>
+        <a href="#layout"><span class="ci-num">05</span> Layout</a>
+        <a href="#depth"><span class="ci-num">06</span> Depth &amp; Shape</a>
+        <a href="#dodont"><span class="ci-num">07</span> Do &amp; Don't</a>
+        <a href="#cjk"><span class="ci-num">08</span> 中文 / CJK</a>
+      </nav>
+    </div>
+
+    <div class="cover-meta">
+      <div class="cm-col"><b>Beautiful HTML &times; 34 Systems</b><br>2026</div>
+      <div class="cm-col center">Design System Specification</div>
+      <div class="cm-col right">Studio &mdash; N&deg;02</div>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section class="s-light" id="overview" data-counter="Overview">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono">01 &mdash; Overview</span><span class="mono mono-2">Studio / Design System</span></div>
+      <h2 class="h2">The Headline Is The Design</h2>
+      <p class="lead muted" style="margin: clamp(18px,2.5vh,32px) 0 clamp(28px,3.5vh,48px);">Studio is a <strong style="font-weight:900;color:var(--fg)">type-as-graphic-mass</strong> system &mdash; the register of contemporary design-studio decks. A single typeface, a single weight, strict uppercase, at scales so large that type stops behaving like type and starts behaving like a shape. Remove everything but the headline and the slide still reads as Studio.</p>
+
+      <div class="stat-row">
+        <div class="stat-card"><div class="sc-value">Med</div><div class="sc-label">Formality</div><div class="sc-note">Loud but intentional</div></div>
+        <div class="stat-card"><div class="sc-value">Low</div><div class="sc-label">Density</div><div class="sc-note">One massive thing, said once</div></div>
+        <div class="stat-card"><div class="sc-value">Bin</div><div class="sc-label">Scheme</div><div class="sc-note">Dark / yellow, nothing else</div></div>
+        <div class="stat-card"><div class="sc-value">12</div><div class="sc-label">Slides</div><div class="sc-note">Cover &rarr; chapter &rarr; end</div></div>
+      </div>
+      <div class="foot-bar"><span class="mono mono-2">Pentagram &middot; Anti &middot; Order</span><span class="mono mono-2">Boring Studios aesthetic</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section class="s-dark" id="colours" data-counter="Colours">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono">02 &mdash; Colours</span><span class="mono mono-2">Binary + opacity</span></div>
+      <h2 class="h2">Binary, Plus One</h2>
+      <p class="lead muted" style="margin: clamp(18px,2.5vh,32px) 0 clamp(28px,3.5vh,48px);">The entire system is <strong>dark / yellow, yellow / dark</strong>. The same acid yellow is the type on dark slides <em>and</em> the background of light slides. No third colour, no greys &mdash; muted text is just the same colour at reduced opacity.</p>
+
+      <div class="pal-binary">
+        <div class="pal-cell on-dark"><div class="pc-big">Aa</div><div class="pc-meta">Near-Black #1C1C1C<br>field &middot; acid-yellow type</div></div>
+        <div class="pal-cell on-light"><div class="pc-big">Aa</div><div class="pc-meta">Acid-Yellow #F5D200<br>field &middot; near-black type</div></div>
+      </div>
+
+      <div class="opacity-grid">
+        <div class="op-chip"><div class="oc-swatch" style="background:#f5d200"></div><div class="oc-meta">FG &middot; #F5D200<br>yellow 100%</div></div>
+        <div class="op-chip"><div class="oc-swatch" style="background:rgba(245,210,0,0.58)"></div><div class="oc-meta">FG-2 &middot; 58%<br>secondary on dark</div></div>
+        <div class="op-chip"><div class="oc-swatch" style="background:rgba(245,210,0,0.32)"></div><div class="oc-meta">FG-3 &middot; 32%<br>tertiary / chart</div></div>
+        <div class="op-chip"><div class="oc-swatch" style="background:#242422"></div><div class="oc-meta">BG-ALT &middot; #242422<br>image placeholder</div></div>
+        <div class="op-chip"><div class="oc-swatch" style="background:#2e2e2c"></div><div class="oc-meta">BORDER &middot; #2E2E2C<br>1px hairline on dark</div></div>
+      </div>
+      <div class="foot-bar"><span class="mono mono-2">No semantic colour roles</span><span class="mono mono-2">Choice is rhythmic, not meaningful</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section class="s-light" id="typography" data-counter="Typography">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono">03 &mdash; Typography</span><span class="mono mono-2">Barlow + IBM Plex Mono</span></div>
+      <h2 class="h2">One Face, One Weight</h2>
+
+      <div class="face-row" style="margin-top: clamp(28px,3.5vh,48px);">
+        <div class="face-block">
+          <div class="fb-name">Barlow &middot; Content (display &rarr; body)</div>
+          <div class="fb-barlow">Graphic Mass</div>
+          <div class="fb-desc">A contemporary grotesque. At weight 900, display scale, the counters become structural negative space and the headline reads as a block before it reads as words. Carries every headline, numeral, quote, lead and body line.</div>
+        </div>
+        <div class="face-block">
+          <div class="fb-name">IBM Plex Mono &middot; Metadata only</div>
+          <div class="fb-mono-sample">STUDIO &times; CLIENT / 2026 / N&deg;02</div>
+          <div class="fb-desc">A precision monospace at 0.06em tracking &mdash; the system's "spec-sheet voice". Used <em>only</em> for chrome bars, counters, chapter numbers, the cover lockup and stat notes. Mono in any content role breaks the separation.</div>
+        </div>
+      </div>
+
+      <div class="chrome-bar"><span class="mono">The Weight Ladder &mdash; 900 / 700 / 500 / 400</span></div>
+      <div class="weights">
+        <div class="wt"><div class="wt-glyph wt-900">Aa</div><div class="wt-lbl">900 &middot; Display / head</div></div>
+        <div class="wt"><div class="wt-glyph wt-700">Aa</div><div class="wt-lbl">700 &middot; h3 / sub-head</div></div>
+        <div class="wt"><div class="wt-glyph wt-500">Aa</div><div class="wt-lbl">500 &middot; Lead / bullet</div></div>
+        <div class="wt"><div class="wt-glyph wt-400">Aa</div><div class="wt-lbl">400 &middot; Body / caption</div></div>
+      </div>
+
+      <div class="chrome-bar"><span class="mono">Type Scale &mdash; rendered at real size</span></div>
+      <div class="scale-list">
+        <div class="scale-row"><div class="sm"><b>display</b>Barlow 900 &middot; 12vw &middot; -0.02em</div><div class="smp upper" style="font-size:var(--sz-display);font-weight:900;line-height:0.85;letter-spacing:-0.03em">Studio</div></div>
+        <div class="scale-row"><div class="sm"><b>h1</b>Barlow 900 &middot; 7.5vw</div><div class="smp upper" style="font-size:var(--sz-h1);font-weight:900;line-height:0.9;letter-spacing:-0.02em">Statement</div></div>
+        <div class="scale-row"><div class="sm"><b>stat-value</b>Barlow 900 &middot; 5.5vw &middot; -0.03em</div><div class="smp upper" style="font-size:var(--sz-stat);font-weight:900;line-height:0.9;letter-spacing:-0.03em">340%</div></div>
+        <div class="scale-row"><div class="sm"><b>h2</b>Barlow 900 &middot; 4.8vw</div><div class="smp upper" style="font-size:var(--sz-h2);font-weight:900;line-height:0.95;letter-spacing:-0.01em">Section Head</div></div>
+        <div class="scale-row"><div class="sm"><b>h3</b>Barlow 700 &middot; 2.8vw</div><div class="smp upper" style="font-size:var(--sz-h3);font-weight:700;line-height:1.1">Sub-Headline</div></div>
+        <div class="scale-row"><div class="sm"><b>lead</b>Barlow 500 &middot; 1.6vw</div><div class="smp" style="font-size:var(--sz-lead);font-weight:500;line-height:1.4">A lead paragraph, set in Barlow 500.</div></div>
+        <div class="scale-row"><div class="sm"><b>body</b>Barlow 400 &middot; 1.15vw</div><div class="smp" style="font-size:var(--sz-body);font-weight:400;line-height:1.6;color:var(--fg2)">Default body copy runs in Barlow 400 at 1.6 line-height.</div></div>
+        <div class="scale-row"><div class="sm"><b>label</b>IBM Plex Mono 500 &middot; 0.72vw &middot; 0.06em</div><div class="smp" style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:0.06em;text-transform:uppercase">Mono Metadata Label</div></div>
+      </div>
+      <div class="foot-bar"><span class="mono mono-2">Italic: never &middot; Underline: never</span><span class="mono mono-2">Emphasis = weight contrast only</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section class="s-dark" id="components" data-counter="Components">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono">04 &mdash; Components</span><span class="mono mono-2">Rendered with the template's actual CSS</span></div>
+      <h2 class="h2" style="margin-bottom: clamp(28px,3.5vh,48px);">Live Parts</h2>
+
+      <div class="comp">
+        <div class="comp-h"><b>Cover-meta lockup</b><span>the signature three-column mono footer</span></div>
+        <div class="demo-frame">
+          <div class="cover-meta" style="border-top-color: var(--fg3);">
+            <div class="cm-col"><b>Studio &times; Client</b><br>2026.06</div>
+            <div class="cm-col center">Annual Brand Review</div>
+            <div class="cm-col right">Studio Name</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h"><b>Stat cards</b><span>2px top rule &middot; 900 numeral &middot; mono note</span></div>
+        <div class="demo-frame">
+          <div class="stat-row">
+            <div class="stat-card"><div class="sc-value">$12.4M</div><div class="sc-label">Annual Recurring Revenue</div><div class="sc-note">Up from $2.7M</div></div>
+            <div class="stat-card"><div class="sc-value">340%</div><div class="sc-label">YoY Growth</div><div class="sc-note">24-month run</div></div>
+            <div class="stat-card"><div class="sc-value">94%</div><div class="sc-label">Gross Retention</div><div class="sc-note">Top quartile</div></div>
+            <div class="stat-card"><div class="sc-value">4.2&times;</div><div class="sc-label">LTV / CAC</div><div class="sc-note">Enterprise 6.8&times;</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h"><b>Em-dash bullets &amp; compare</b><span>surface-accent markers &middot; 2px divider</span></div>
+        <div class="demo-frame">
+          <div class="compare">
+            <div class="cmp-l">
+              <div class="cmp-title">Strategy</div>
+              <ul class="dash-list" style="margin-top:16px;">
+                <li>Market sizing and TAM analysis</li>
+                <li>Competitive landscape mapping</li>
+                <li>Pricing strategy and packaging</li>
+              </ul>
+            </div>
+            <div>
+              <div class="cmp-title">Build</div>
+              <ul class="dash-list" style="margin-top:16px;">
+                <li>Cloud-native architecture</li>
+                <li>API and developer experience</li>
+                <li>CI/CD and observability</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h"><b>Chart</b><span>muted default bars &middot; one accent &middot; 2px baseline</span></div>
+        <div class="demo-frame">
+          <div class="chart">
+            <div class="chart-bars">
+              <div class="bar-col"><span class="bar-num">$2.7M</span><div class="bar" data-h="32%" style="height:0"></div><span class="bar-lbl">FY22</span></div>
+              <div class="bar-col"><span class="bar-num">$5.1M</span><div class="bar" data-h="48%" style="height:0"></div><span class="bar-lbl">FY23</span></div>
+              <div class="bar-col"><span class="bar-num">$8.9M</span><div class="bar" data-h="72%" style="height:0"></div><span class="bar-lbl">FY24</span></div>
+              <div class="bar-col hi"><span class="bar-num">$12.4M</span><div class="bar" data-h="100%" style="height:0"></div><span class="bar-lbl">FY25</span></div>
+            </div>
+            <div class="chart-baseline"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h"><b>Image placeholder</b><span>flat near-black-alt &middot; centered mono</span></div>
+        <div class="img-ph"><span>Image Placeholder</span></div>
+      </div>
+      <div class="foot-bar"><span class="mono mono-2">Flat &middot; severe &middot; no elevation</span><span class="mono mono-2">04 / Components</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section class="s-light" id="layout" data-counter="Layout">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono">05 &mdash; Layout</span><span class="mono mono-2">100vw &times; 100vh &middot; tight pad</span></div>
+      <h2 class="h2" style="margin-bottom: clamp(24px,3vh,40px);">Tight By Design</h2>
+      <p class="lead muted" style="margin-bottom: clamp(28px,3.5vh,48px);">Padding runs tighter than its peers (5vw / 5vh) precisely so display type runs to the near-edge &mdash; the heading <em>is</em> the spatial fill, not the margin. Standard slides carry a top chrome bar and a mirrored foot bar; cover, chapter, statement and quote slides go chromeless.</p>
+      <table class="spec-table">
+        <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td class="mono-val">pad-x</td><td class="mono-val">5vw</td><td class="use">Horizontal slide padding</td></tr>
+          <tr><td class="mono-val">pad-y</td><td class="mono-val">5vh</td><td class="use">Vertical slide padding</td></tr>
+          <tr><td class="mono-val">gap-lg</td><td class="mono-val">3.5vh</td><td class="use">Between major sections</td></tr>
+          <tr><td class="mono-val">gap-md</td><td class="mono-val">2vh</td><td class="use">Between related elements</td></tr>
+          <tr><td class="mono-val">gap-sm</td><td class="mono-val">1vh</td><td class="use">Between coupled elements</td></tr>
+          <tr><td class="mono-val">chrome rule</td><td class="mono-val">1px</td><td class="use">Top / foot hairline</td></tr>
+        </tbody>
+      </table>
+      <div class="foot-bar"><span class="mono mono-2">~60% max fill</span><span class="mono mono-2">Empty surface is structural</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH & SHAPE ============ -->
+  <section class="s-dark" id="depth" data-counter="Depth">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono">06 &mdash; Depth &amp; Shape</span><span class="mono mono-2">Flat &middot; severe</span></div>
+      <h2 class="h2" style="margin-bottom: clamp(24px,3vh,40px);">No Elevation</h2>
+      <p class="lead muted" style="margin-bottom: clamp(28px,3.5vh,48px);">No drop shadows. No rounded corners. No gradients. Apparent depth comes from <strong>surface contrast</strong>, <strong>hairline separation</strong>, and <strong>heavy type</strong>. Two line weights only.</p>
+
+      <div class="rule-ladder">
+        <div class="rl-row"><div class="rl-spec"><b>1px hairline</b>chrome bars &middot; foot bars &middot; cover-meta</div><div class="rl-1"></div></div>
+        <div class="rl-row"><div class="rl-spec"><b>2px anchor</b>stat-tops &middot; chart baselines &middot; dividers</div><div class="rl-2"></div></div>
+      </div>
+
+      <div class="flat-grid">
+        <div class="flat-cell"><div class="fc-x">0px</div><div class="fc-d">Border-radius everywhere. Only nav dots are circles.</div></div>
+        <div class="flat-cell"><div class="fc-x">None</div><div class="fc-d">Drop shadows, gradients, elevation &mdash; all absent by design.</div></div>
+        <div class="flat-cell"><div class="fc-x">Solid</div><div class="fc-d">Every border is solid. No dashed lines anywhere.</div></div>
+      </div>
+      <div class="foot-bar"><span class="mono mono-2">Architectural drawing, not UI</span><span class="mono mono-2">Every line is intentional</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section class="s-light" id="dodont" data-counter="Do &amp; Don't">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono">07 &mdash; Do &amp; Don't</span><span class="mono mono-2">Hold the register</span></div>
+      <h2 class="h2" style="margin-bottom: clamp(28px,3.5vh,48px);">Hold The Register</h2>
+      <div class="dodont">
+        <div class="do-col">
+          <div class="dd-head">Do</div>
+          <ul class="dd-list">
+            <li>Set every headline in Barlow 900 uppercase with at least -0.01em tracking.</li>
+            <li>Alternate near-black and acid-yellow surfaces freely &mdash; both are first-class.</li>
+            <li>Colour every headline in the surface accent: yellow on dark, near-black on yellow.</li>
+            <li>Use IBM Plex Mono only for metadata; mute secondary text with opacity, not grey.</li>
+            <li>Apply 2px rules to stat-tops, baselines, and dividers; 1px to chrome.</li>
+            <li>Pad tight and leave statement slides deliberately sparse.</li>
+          </ul>
+        </div>
+        <div class="dont-col">
+          <div class="dd-head">Don't</div>
+          <ul class="dd-list">
+            <li>Lowercase a headline, or use weight 800 / 700 at display scale.</li>
+            <li>Add a third colour &mdash; the palette is binary plus opacity.</li>
+            <li>Round any corner, add a drop shadow, or introduce a gradient.</li>
+            <li>Use Barlow for chrome metadata, or Mono for headlines / body.</li>
+            <li>Add italic, underline, or colour variants for emphasis.</li>
+            <li>Fill more than ~60% of a slide; crowding reads as broken.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bar"><span class="mono mono-2">Source: design.md</span><span class="mono mono-2">Canonical</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section class="s-dark" id="cjk" data-counter="CJK">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono">08 &mdash; 中文 / CJK</span><span class="mono mono-2">Strategy A &middot; replace, not stack</span></div>
+      <h2 class="h2" style="margin-bottom: clamp(24px,3vh,40px);">Woodblock, Not Signage</h2>
+      <p class="lead muted" style="margin-bottom: clamp(28px,3.5vh,48px);">Barlow 900 has no CJK coverage, so Chinese elements <strong>replace</strong> the entire font-family with 思源宋体 Noto Serif SC &mdash; never a stack fallback (the metric mismatch breaks the single-weight register). The "type-as-graphic-mass" effect survives, but shifts from industrial signage toward <strong>Chinese woodblock / letterpress poster</strong>.</p>
+
+      <div class="cjk-specimen">
+        <div class="cjk-display">工作室</div>
+        <div class="cjk-body">标题即设计。思源宋体 700 在酸性黄与近黑的二元表面上，于 12vw 显示尺度承载与 Barlow 900 等同的视觉重量 &mdash; 同样严苛、同样图形化，只是文化语境不同。盘古之白：在中文与 Latin 之间插入空格，如 使用 Claude、2026 年。</div>
+        <div class="cjk-label">思源宋体 Noto Serif SC &middot; 700 / 400</div>
+      </div>
+
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Latin (default)</th><th>Chinese counterpart</th></tr></thead>
+        <tbody>
+          <tr><td class="use">Display / h1 / h2 / stat</td><td class="mono-val">Barlow 900 upper</td><td>思源宋体 700</td></tr>
+          <tr><td class="use">Lead / body / caption</td><td class="mono-val">Barlow 500 / 400</td><td>思源宋体 400</td></tr>
+          <tr><td class="use">Metadata / chrome</td><td class="mono-val">IBM Plex Mono 500</td><td>+ Noto Sans Mono CJK fallback</td></tr>
+        </tbody>
+      </table>
+      <p class="body" style="margin-top:20px;">Adjustments: line-height opens (body 1.75&ndash;1.85, display 1.15&ndash;1.25), letter-spacing drops to 0 (negative tracking overlaps Han glyphs), no uppercase, full-width punctuation, pangu spacing. The system loses ~30% of its Latin character in pure-Chinese mode &mdash; accept the register change, or scope Chinese to specific slides.</p>
+      <div class="foot-bar"><span class="mono mono-2">Binary palette unchanged</span><span class="mono mono-2">Locale: zh-CN</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close s-light">
+    <div class="close-big">Studio</div>
+    <div class="close-sub">One of 34 systems in Beautiful HTML Templates. The loudest in the library.</div>
+    <div class="close-links">
+      <a href="index.html">&larr; All Systems</a>
+      <a href="../templates/studio/template.html">Open Live Deck</a>
+      <a href="../templates/studio/design.md">design.md</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var counter = document.getElementById('counter');
+      var sections = Array.prototype.slice.call(document.querySelectorAll('[data-counter]'));
+      var total = sections.length + 2; // hero + 8 + close = 10
+
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var idx = 1, mid = h.scrollTop + window.innerHeight * 0.4;
+        for (var i = 0; i < sections.length; i++) { if (sections[i].offsetTop <= mid) idx = i + 2; }
+        if (scrolled > 0.985) idx = total;
+        counter.textContent = String(idx).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+
+      // Animate chart bars + stat reveal on scroll-into-view
+      var bars = Array.prototype.slice.call(document.querySelectorAll('.bar[data-h]'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.style.transition = 'height 0.7s cubic-bezier(0.16,1,0.3,1)'; e.target.style.height = e.target.getAttribute('data-h'); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.3 });
+        bars.forEach(function (b) { io.observe(b); });
+      } else {
+        bars.forEach(function (b) { b.style.height = b.getAttribute('data-h'); });
+      }
+    })();
+  </script>
+</body>
+</html>

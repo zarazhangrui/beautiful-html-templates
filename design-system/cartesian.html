@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cartesian — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's two faces: Playfair Display 400 (serif) + Inter (body) -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <!-- CJK pairing for §08 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #EDE8E0; --bg2: #E2DBD1; --ink: #1A1A1A; --gray: #5A5A5A; --accent: #8A8178; --line: #B8B0A4;
+      --f-serif: 'Playfair Display', 'Noto Serif SC', serif;
+      --f-body: 'Inter', 'Noto Serif SC', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--f-body); -webkit-font-smoothing: antialiased; }
+
+    /* ===== Persistent chrome ===== */
+    .progress { position: fixed; top: 0; left: 0; height: 1px; width: 0; background: var(--ink); z-index: 300; }
+    .back-link { position: fixed; top: 26px; left: 4vw; z-index: 200; text-decoration: none; color: var(--accent);
+      font-family: var(--f-body); font-weight: 500; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; }
+    .back-link:hover { color: var(--ink); }
+    .counter { position: fixed; bottom: 24px; right: 4vw; z-index: 200;
+      font-family: var(--f-body); font-weight: 400; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+
+    /* ===== Sections ===== */
+    section, header, footer { position: relative; overflow: hidden; padding: clamp(56px,7vh,100px) clamp(40px,7vw,120px); }
+    .wrap { max-width: 1140px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+
+    /* compass geometry */
+    .geo { position: absolute; border-radius: 50%; border: 1px solid var(--line); pointer-events: none; z-index: 0; }
+    .geo::before { content: ""; position: absolute; inset: 12%; border-radius: 50%; border: 1px dashed var(--line); opacity: 0.7; }
+    .vline { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--line); opacity: 0.3; z-index: 0; pointer-events: none; }
+    .haccent { width: 20vw; max-width: 280px; height: 1px; background: var(--ink); margin: 24px 0; }
+
+    /* ===== Type ===== */
+    .label { font-family: var(--f-body); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+    .display { font-family: var(--f-serif); font-weight: 400; font-size: clamp(3rem,6vw,5.5rem); line-height: 1.1; }
+    .h1 { font-family: var(--f-serif); font-weight: 400; font-size: clamp(2.4rem,5vw,4.2rem); line-height: 1.1; }
+    .h2 { font-family: var(--f-serif); font-weight: 400; font-size: clamp(1.8rem,3.5vw,3rem); line-height: 1.12; }
+    .h3 { font-family: var(--f-serif); font-weight: 400; font-size: clamp(1.2rem,2vw,1.6rem); line-height: 1.2; }
+    .subtitle { font-family: var(--f-body); font-weight: 400; font-size: clamp(1rem,1.5vw,1.3rem); line-height: 1.5; color: var(--gray); }
+    .body { font-family: var(--f-body); font-weight: 400; font-size: clamp(0.92rem,1.2vw,1.1rem); line-height: 1.6; color: var(--gray); }
+    .stat-figure { font-family: var(--f-serif); font-weight: 400; font-size: clamp(2rem,3.5vw,3rem); line-height: 1; color: var(--ink); }
+    .attribution { font-family: var(--f-body); font-weight: 400; font-size: 0.85rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+
+    .sec-head { margin-bottom: clamp(36px,5vh,64px); }
+    .sec-head .label { display: block; margin-bottom: 18px; }
+    .sec-head .body { max-width: 60ch; margin-top: 18px; }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+    .hero .display { margin: 6px 0 4px; }
+    .hero-sub { font-family: var(--f-body); font-weight: 400; font-size: clamp(1.05rem,1.5vw,1.4rem); line-height: 1.5; color: var(--gray); max-width: 44ch; margin-top: 10px; }
+    .agenda { margin-top: clamp(30px,4vh,48px); max-width: 720px; }
+    .agenda a { display: grid; grid-template-columns: 48px 1fr auto; gap: 20px; align-items: baseline; text-decoration: none; padding: 16px 0; border-bottom: 1px solid var(--line); }
+    .agenda a:first-child { border-top: 1px solid var(--line); }
+    .agenda .ag-num { font-family: var(--f-serif); font-size: 1.3rem; color: var(--accent); }
+    .agenda .ag-title { font-family: var(--f-serif); font-size: clamp(1.1rem,1.8vw,1.5rem); color: var(--ink); }
+    .agenda .ag-meta { font-family: var(--f-body); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+    .agenda a:hover .ag-title { font-style: italic; }
+
+    /* ===== components ===== */
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: clamp(24px,3vw,44px); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px,5vw,72px); }
+    .card { border: 1px solid var(--line); background: rgba(255,255,255,0.3); padding: clamp(28px,4vh,40px) clamp(20px,2.5vw,32px); }
+    .card-icon { width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--f-serif); font-size: 1rem; color: var(--accent); margin-bottom: 18px; }
+    .card .h3 { margin-bottom: 8px; }
+    .stats-row { display: flex; gap: clamp(24px,4vw,56px); border-top: 1px solid var(--line); padding-top: 24px; }
+    .stat .s-label { font-family: var(--f-body); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-top: 8px; }
+    .img-ph { background: var(--bg2); border: 1px solid var(--line); min-height: 30vh; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .img-ph::before, .img-ph::after { content: ""; position: absolute; left: 50%; top: 50%; width: 150%; height: 1px; background: var(--line); }
+    .img-ph::before { transform: translate(-50%,-50%) rotate(30deg); }
+    .img-ph::after { transform: translate(-50%,-50%) rotate(-30deg); }
+    .img-ph span { position: relative; z-index: 2; background: var(--bg2); padding: 4px 12px; font-family: var(--f-body); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+    .team-photo { width: 90px; height: 90px; border-radius: 50%; border: 1px solid var(--line); background: var(--bg2); display: flex; align-items: center; justify-content: center; font-family: var(--f-serif); font-size: 2rem; color: var(--accent); }
+
+    /* ===== §02 swatches ===== */
+    .sw-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: clamp(20px,2.5vw,36px); }
+    .sw { border: 1px solid var(--line); }
+    .sw-chip { height: 90px; border-bottom: 1px solid var(--line); }
+    .sw-info { padding: 14px 16px; }
+    .sw-name { font-family: var(--f-serif); font-size: 1.2rem; }
+    .sw-hex { font-family: var(--f-body); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-top: 4px; }
+
+    /* ===== §03 typography ===== */
+    .scale-stack { display: flex; flex-direction: column; }
+    .scale-row { display: grid; grid-template-columns: 220px 1fr; gap: 28px; align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--line); }
+    .scale-row:last-child { border-bottom: none; }
+    .sm { font-family: var(--f-body); font-weight: 500; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+    .sm b { display: block; color: var(--gray); margin-bottom: 4px; font-weight: 500; }
+
+    /* ===== §04 ===== */
+    .comp { margin-bottom: 44px; }
+    .comp-h { font-family: var(--f-body); font-weight: 500; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+    .quote-mark { font-family: var(--f-serif); font-size: 5rem; line-height: 0.8; color: var(--line); }
+    .timeline { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; border-top: 1px solid var(--line); padding-top: 24px; }
+    .timeline .tl-year { font-family: var(--f-body); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+    .timeline .h3 { margin: 8px 0; }
+
+    /* ===== §07 ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px,5vw,72px); }
+    .dd-list { list-style: none; margin-top: 16px; }
+    .dd-list li { font-family: var(--f-body); font-size: clamp(0.9rem,1.1vw,1.05rem); line-height: 1.6; color: var(--gray); padding: 12px 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 2em 1fr; }
+    .dd-list li:last-child { border-bottom: none; }
+    .do .dd-list li::before { content: "+"; font-family: var(--f-serif); color: var(--accent); }
+    .dont .dd-list li::before { content: "—"; color: var(--accent); }
+
+    /* ===== §08 cjk ===== */
+    .cjk-display { font-family: 'Noto Serif SC', var(--f-serif); font-weight: 700; font-size: clamp(2.4rem,4.5vw,4rem); line-height: 1.25; }
+    .cjk-body { font-family: 'Noto Serif SC', var(--f-body); font-weight: 400; font-size: clamp(0.95rem,1.2vw,1.1rem); line-height: 1.8; color: var(--gray); margin-top: 16px; }
+    .cjk-label { font-family: var(--f-body); font-weight: 500; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-top: 16px; }
+
+    /* ===== close ===== */
+    .close { min-height: 84vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    .close .geo { z-index: 0; }
+    .close-inner { position: relative; z-index: 2; }
+    .close-links { margin-top: 28px; display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; }
+    .close-links a { text-decoration: none; font-family: var(--f-body); font-weight: 500; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); border-bottom: 1px solid var(--line); padding-bottom: 5px; }
+    .close-links a:hover { color: var(--ink); border-color: var(--ink); }
+
+    @media (max-width: 900px) {
+      .grid-3, .grid-2, .sw-grid, .dodont, .timeline { grid-template-columns: 1fr; }
+      .scale-row { grid-template-columns: 1fr; gap: 8px; }
+      .stats-row { flex-direction: column; gap: 24px; }
+    }
+    @media (max-width: 560px) { .sw-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <a class="back-link" href="index.html">&larr; Index</a>
+  <div class="counter" id="counter">01 / 10</div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="geo" style="width:46vw;height:46vw;max-width:640px;max-height:640px;top:-8vw;right:-8vw;opacity:0.5"></div>
+    <div class="vline" style="left:8vw"></div>
+    <div class="wrap">
+      <span class="label">Design System Specification</span>
+      <h1 class="display">Cartesian</h1>
+      <div class="haccent"></div>
+      <p class="hero-sub">A quiet, museum-catalog editorial system &mdash; warm-stone neutrals, classical Playfair never bold, and a single 1px taupe line as the entire structural vocabulary. Drafting paper and compass work.</p>
+      <nav class="agenda">
+        <a href="#overview"><span class="ag-num">I</span><span class="ag-title">Overview</span><span class="ag-meta">01</span></a>
+        <a href="#colours"><span class="ag-num">II</span><span class="ag-title">Colours</span><span class="ag-meta">02</span></a>
+        <a href="#typography"><span class="ag-num">III</span><span class="ag-title">Typography</span><span class="ag-meta">03</span></a>
+        <a href="#components"><span class="ag-num">IV</span><span class="ag-title">Components</span><span class="ag-meta">04</span></a>
+        <a href="#layout"><span class="ag-num">V</span><span class="ag-title">Layout</span><span class="ag-meta">05</span></a>
+        <a href="#depth"><span class="ag-num">VI</span><span class="ag-title">Depth &amp; Shape</span><span class="ag-meta">06</span></a>
+        <a href="#dodont"><span class="ag-num">VII</span><span class="ag-title">Do &amp; Don't</span><span class="ag-meta">07</span></a>
+        <a href="#cjk"><span class="ag-num">VIII</span><span class="ag-title">中文 / CJK</span><span class="ag-meta">08</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section id="overview">
+    <div class="geo" style="width:30vw;height:30vw;max-width:420px;max-height:420px;bottom:-10vw;left:-6vw;opacity:0.4"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">01 — Overview</span>
+        <h2 class="h2">Restraint Through 1px Lines</h2>
+        <p class="body">Every structural element &mdash; list separators, agenda rules, timeline connectors, card borders &mdash; is a single 1px line in muted taupe. No thick borders, no fills, no shadows. Hierarchy is built through type contrast and negative space. The reference is Vignelli, the Cooper Hewitt catalog, pencil-and-tracing-paper planning.</p>
+      </div>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-figure">High</div><div class="s-label">Formality</div></div>
+        <div class="stat"><div class="stat-figure">Low</div><div class="s-label">Density</div></div>
+        <div class="stat"><div class="stat-figure">Light</div><div class="s-label">Scheme</div></div>
+        <div class="stat"><div class="stat-figure">10</div><div class="s-label">Slides</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section id="colours">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">02 — Colours</span>
+        <h2 class="h2">Five Warm Stones, Plus Ink</h2>
+        <p class="body">There are no accent colours in the populist sense &mdash; no red, no blue, no green. The palette is stone, stone, stone, ink, ink. The only &ldquo;colour&rdquo; in the system is type contrast; emphasis comes from size, from serif-vs-sans, or from a single ink hairline.</p>
+      </div>
+      <div class="sw-grid">
+        <div class="sw"><div class="sw-chip" style="background:#EDE8E0"></div><div class="sw-info"><div class="sw-name">BG Primary</div><div class="sw-hex">#EDE8E0 — sandstone</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#E2DBD1"></div><div class="sw-info"><div class="sw-name">BG Secondary</div><div class="sw-hex">#E2DBD1 — deeper stone</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#1A1A1A"></div><div class="sw-info"><div class="sw-name">Ink</div><div class="sw-hex">#1A1A1A — headlines</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#5A5A5A"></div><div class="sw-info"><div class="sw-name">Gray</div><div class="sw-hex">#5A5A5A — body</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#8A8178"></div><div class="sw-info"><div class="sw-name">Accent Taupe</div><div class="sw-hex">#8A8178 — labels</div></div></div>
+        <div class="sw"><div class="sw-chip" style="background:#B8B0A4"></div><div class="sw-info"><div class="sw-name">Line</div><div class="sw-hex">#B8B0A4 — 1px lines</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section id="typography">
+    <div class="geo" style="width:34vw;height:34vw;max-width:460px;max-height:460px;top:-12vw;right:-10vw;opacity:0.35"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">03 — Typography</span>
+        <h2 class="h2">Serif Statements, Sans Structure</h2>
+        <p class="body">Playfair Display carries every headline, stat, and quote mark &mdash; at <em>weight 400 only</em>. The thin-stroke didone aesthetic depends on letting the letterforms breathe; bold Playfair does not exist here. Inter carries every body, label, and attribution.</p>
+      </div>
+      <div class="scale-stack">
+        <div class="scale-row"><div class="sm"><b>display · Playfair 400</b>3–5.5rem</div><div><span class="display" style="font-size:clamp(2.4rem,4vw,3.6rem)">Cartesian</span></div></div>
+        <div class="scale-row"><div class="sm"><b>h2 · Playfair 400</b>1.8–3rem</div><div><span class="h2">Primary Headline</span></div></div>
+        <div class="scale-row"><div class="sm"><b>stat-figure · Playfair 400</b>2rem</div><div><span class="stat-figure">68%</span></div></div>
+        <div class="scale-row"><div class="sm"><b>body · Inter 400</b>0.9–1.1rem</div><div><span class="body" style="margin:0">A Sunday-newspaper-essay body voice in Inter.</span></div></div>
+        <div class="scale-row"><div class="sm"><b>label · Inter 500</b>0.75rem · 3px</div><div><span class="label">Section Label</span></div></div>
+        <div class="scale-row"><div class="sm"><b>attribution · Inter 400</b>0.85rem · 2px</div><div><span class="attribution">Considered &amp; Unhurried</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section id="components">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">04 — Components</span>
+        <h2 class="h2">Hairlines &amp; Compass Work</h2>
+        <p class="body">Every block below is rendered with the template's <em>actual CSS</em> &mdash; not a mockup. Tracing-paper cards, ringed icons, agenda hairlines, and the signature crossed-diagonal image placeholder.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Tracing-paper cards — 1px taupe + white overlay</div>
+        <div class="grid-3">
+          <div class="card"><div class="card-icon">I</div><h3 class="h3">Strategy</h3><p class="body">Market analysis and roadmaps that bridge ambition with milestones.</p></div>
+          <div class="card"><div class="card-icon">II</div><h3 class="h3">Build</h3><p class="body">Scalable architecture and APIs that grow with demand.</p></div>
+          <div class="card"><div class="card-icon">III</div><h3 class="h3">Grow</h3><p class="body">Activation, retention, and expansion across geographies.</p></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Image placeholder (crossed X), team frame &amp; quote</div>
+        <div class="grid-2" style="align-items:center">
+          <div class="img-ph"><span>Visual Reference</span></div>
+          <div>
+            <span class="quote-mark">&ldquo;</span>
+            <h3 class="h2" style="font-size:clamp(1.4rem,2.4vw,2.2rem)">One clear idea, well-framed, on stone paper.</h3>
+            <div style="display:flex;gap:16px;align-items:center;margin-top:20px">
+              <div class="team-photo" style="width:60px;height:60px;font-size:1.4rem">C</div>
+              <div><div class="attribution">The Cartesian thesis</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Timeline — a single 1px taupe rule, no nodes</div>
+        <div class="timeline">
+          <div><div class="tl-year">2022</div><h3 class="h3">Foundation</h3><p class="body" style="font-size:0.9rem">The thesis is set.</p></div>
+          <div><div class="tl-year">2023</div><h3 class="h3">Build</h3><p class="body" style="font-size:0.9rem">Architecture laid.</p></div>
+          <div><div class="tl-year">2024</div><h3 class="h3">Expand</h3><p class="body" style="font-size:0.9rem">New geographies.</p></div>
+          <div><div class="tl-year">2025</div><h3 class="h3">Scale</h3><p class="body" style="font-size:0.9rem">Compounding returns.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section id="layout">
+    <div class="vline" style="left:8vw"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">05 — Layout</span>
+        <h2 class="h2">Sparse, And Breathing</h2>
+        <p class="body">Cartesian reads as elegant when sparse and broken when crowded. The correct density is &ldquo;one clear idea, well-framed.&rdquo; Most slides use centered or asymmetric two-column layouts with 5–6vw gutters and significant vertical breathing room.</p>
+      </div>
+      <div class="grid-3">
+        <div style="border-top:1px solid var(--line);padding-top:16px"><h3 class="h3">Padding</h3><p class="body" style="margin-top:8px">4vh / 4vw default; 5–6vw column gutters.</p></div>
+        <div style="border-top:1px solid var(--line);padding-top:16px"><h3 class="h3">Geometry</h3><p class="body" style="margin-top:8px">One or two compass rings per slide, never more.</p></div>
+        <div style="border-top:1px solid var(--line);padding-top:16px"><h3 class="h3">Chrome</h3><p class="body" style="margin-top:8px">Right-edge dots, corner counter — minimal.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH ============ -->
+  <section id="depth">
+    <div class="geo" style="width:40vw;height:40vw;max-width:520px;max-height:520px;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.3"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">06 — Depth &amp; Shape</span>
+        <h2 class="h2">A Single Flat Plane</h2>
+        <p class="body">No shadows, no elevated cards, no rounded surfaces, no gradients. Atmosphere is created by geometric line decorations &mdash; thin solid and dashed circles drifting behind content as if drawn with a compass on tracing paper, like the concentric ring centred on this slide. They create mood, not hierarchy.</p>
+      </div>
+      <div class="grid-3">
+        <div style="border-top:1px solid var(--line);padding-top:16px"><h3 class="h3">1px solid</h3><p class="body" style="margin-top:8px">The universal taupe divider.</p></div>
+        <div style="border-top:1px solid var(--line);padding-top:16px"><h3 class="h3">1px dashed</h3><p class="body" style="margin-top:8px">Compass arcs &amp; construction lines.</p></div>
+        <div style="border-top:1px solid var(--ink);padding-top:16px"><h3 class="h3">1px ink</h3><p class="body" style="margin-top:8px">The rare horizontal-accent rule.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section id="dodont">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">07 — Do &amp; Don't</span>
+        <h2 class="h2">Restraint Is The Message</h2>
+      </div>
+      <div class="dodont">
+        <div class="do">
+          <h3 class="h3" style="margin-bottom:8px">Do</h3>
+          <ul class="dd-list">
+            <li>Use a single 1px taupe line for every structural separator.</li>
+            <li>Set every Playfair headline at weight 400 in ink.</li>
+            <li>Render labels &amp; attributions in uppercase taupe with 2–3px tracking.</li>
+            <li>Layer one or two compass rings at 20–50% opacity for atmosphere.</li>
+            <li>Let slides breathe — sparse is elegant.</li>
+          </ul>
+        </div>
+        <div class="dont">
+          <h3 class="h3" style="margin-bottom:8px">Don't</h3>
+          <ul class="dd-list">
+            <li>Introduce a populist accent colour — no red, blue, or green.</li>
+            <li>Bold any Playfair, or render headlines in taupe.</li>
+            <li>Add shadows, elevated cards, or gradient fills.</li>
+            <li>Round corners, or use borders thicker than 1px.</li>
+            <li>Crowd the canvas, or add more than two geo decorations.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section id="cjk">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">08 — 中文 / CJK</span>
+        <h2 class="h2">A Museum Catalog, In Chinese</h2>
+        <p class="body"><em>思源宋体 Noto Serif SC</em> is the only mainstream Hanzi serif with the same restrained editorial register &mdash; its modulated strokes echo Playfair's didone. Use weight 700 for headlines, 400 for body, and never bold beyond that. The five-stone palette absorbs Hanzi cleanly.</p>
+      </div>
+      <div class="grid-2" style="align-items:start">
+        <div>
+          <div class="cjk-display">笛卡尔体系</div>
+          <div class="cjk-body">一套安静的博物馆图录式系统：暖石中性色、Playfair 永不加粗、以一道 1px 灰褐细线作为全部结构语言。罗盘几何在内容之后轻轻浮现，如同制图纸与圆规作业。中文以思源宋体承载，标题 700、正文 400，零饱和色彩。盘古之白：使用 Claude、2026 年。</div>
+          <div class="cjk-label">思源宋体 Noto Serif SC · 700 / 400</div>
+        </div>
+        <div class="card">
+          <h3 class="h3" style="margin-bottom:12px">Pairing</h3>
+          <p class="body" style="line-height:2">Display → 思源宋体 700<br>Body → 思源宋体 400<br>Label → Inter 大写 + 字距<br>Emphasis → 字号或灰褐色，不加粗</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close" id="close">
+    <div class="geo" style="width:46vw;height:46vw;max-width:560px;max-height:560px;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.3"></div>
+    <div class="close-inner">
+      <span class="label">End of Catalog</span>
+      <div class="haccent" style="margin:18px auto"></div>
+      <h2 class="h1">Cartesian</h2>
+      <p class="body" style="margin:16px auto 0;max-width:44ch">One of 34 systems in Beautiful HTML Templates. Quiet, considered, grown-up.</p>
+      <div class="close-links">
+        <a href="index.html">&larr; All Systems</a>
+        <a href="../templates/cartesian/template.html">Open Live Deck</a>
+        <a href="../templates/cartesian/design.md">design.md</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var counter = document.getElementById('counter');
+      var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+      var total = ids.length;
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+        for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+        if (scrolled > 0.99) idx = total - 1;
+        counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+    })();
+  </script>
+</body>
+</html>

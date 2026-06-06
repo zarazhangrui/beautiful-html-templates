@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editorial Forest — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=JetBrains+Mono:wght@400;500;700&family=LXGW+WenKai+TC&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#2e4a2a;
+    --green-deep:#243a21;
+    --green-lite:#3a5a36;
+    --pink:#e89cb1;
+    --pink-deep:#d27e96;
+    --cream:#efe7d4;
+    --cream-2:#e6dcc4;
+    --ink:#1a1a17;
+    --serif:'Source Serif 4','Source Serif Pro','LXGW WenKai TC','Noto Serif SC',Georgia,serif;
+    --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--pink);color:var(--green-deep);}
+
+  /* ---------- fixed chrome ---------- */
+  #progress{
+    position:fixed;top:0;left:0;height:2px;width:0%;
+    background:var(--green);z-index:100;
+  }
+  .chrome{
+    position:fixed;z-index:99;
+    font-family:var(--mono);font-weight:500;font-size:12px;
+    letter-spacing:0.18em;text-transform:uppercase;
+  }
+  .chrome a{color:var(--green);text-decoration:none;}
+  #backlink{
+    top:26px;left:30px;
+    background:var(--cream-2);border:2px solid var(--green);
+    border-radius:6px;padding:9px 14px;
+  }
+  #counter{
+    top:26px;right:30px;color:var(--green);
+    background:var(--cream-2);border:2px solid var(--green);
+    border-radius:6px;padding:9px 14px;
+    letter-spacing:0.14em;
+  }
+
+  /* ---------- layout primitives ---------- */
+  section{
+    max-width:1240px;margin:0 auto;
+    padding:clamp(80px,11vw,150px) clamp(28px,6vw,120px);
+    position:relative;
+  }
+  .label{
+    font-family:var(--mono);font-weight:500;font-size:clamp(12px,1.1vw,15px);
+    letter-spacing:0.18em;text-transform:uppercase;color:var(--green);
+  }
+  .topbar{
+    display:flex;justify-content:space-between;align-items:baseline;
+    border-bottom:2px solid var(--green);
+    padding-bottom:18px;margin-bottom:clamp(40px,6vw,72px);
+  }
+  .topbar .ord{font-family:var(--mono);font-weight:500;font-size:clamp(12px,1.1vw,15px);letter-spacing:0.14em;color:var(--green);}
+  h2{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(40px,7vw,90px);line-height:0.96;letter-spacing:-0.02em;
+    color:var(--green);
+  }
+  .lede{
+    font-size:clamp(19px,2vw,26px);line-height:1.45;font-weight:400;
+    max-width:60ch;margin-top:clamp(22px,3vw,34px);color:var(--ink);
+  }
+  .foot{
+    font-family:var(--mono);font-weight:500;font-size:12px;
+    letter-spacing:0.14em;text-transform:uppercase;color:var(--green);
+    display:flex;justify-content:space-between;
+    border-top:2px solid var(--green);margin-top:clamp(48px,6vw,80px);padding-top:18px;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{padding-top:clamp(110px,14vw,180px);}
+  .hero .kicker{
+    font-family:var(--mono);font-weight:500;font-size:clamp(12px,1.2vw,15px);
+    letter-spacing:0.22em;text-transform:uppercase;color:var(--green);
+    margin-bottom:clamp(20px,3vw,30px);
+  }
+  .hero-head{display:flex;justify-content:space-between;align-items:flex-start;gap:30px;}
+  h1{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(64px,14vw,184px);line-height:0.9;letter-spacing:-0.025em;
+    color:var(--green);
+  }
+  .monogram{
+    flex:none;width:clamp(86px,9vw,130px);height:clamp(86px,9vw,130px);
+    border-radius:50%;border:2px solid var(--pink);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-weight:500;font-size:clamp(15px,1.7vw,24px);
+    letter-spacing:0.1em;color:var(--green);text-align:center;line-height:1.1;
+    margin-top:10px;
+  }
+  .hero-lede{
+    font-size:clamp(20px,2.3vw,30px);line-height:1.42;font-weight:400;
+    max-width:46ch;margin-top:clamp(34px,4.5vw,56px);color:var(--ink);
+  }
+
+  /* nav grid */
+  .nav{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,24px);
+    margin-top:clamp(54px,7vw,96px);
+  }
+  .nav a{
+    text-decoration:none;border-radius:6px;
+    padding:clamp(22px,2.4vw,34px) clamp(18px,2vw,28px) clamp(20px,2.2vw,30px);
+    display:flex;flex-direction:column;justify-content:space-between;
+    min-height:clamp(118px,12vw,168px);
+    transition:transform .18s ease;
+  }
+  .nav a:hover{transform:translateY(-4px);}
+  .nav .n-ord{font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:0.14em;}
+  .nav .n-ttl{font-family:var(--serif);font-weight:500;font-size:clamp(21px,2.3vw,32px);line-height:1.0;letter-spacing:-0.01em;}
+  .f-green{background:var(--green);} .f-green .n-ttl{color:var(--cream);} .f-green .n-ord{color:var(--pink);}
+  .f-lite{background:var(--green-lite);} .f-lite .n-ttl{color:var(--pink);} .f-lite .n-ord{color:var(--cream);}
+  .f-pink{background:var(--pink);} .f-pink .n-ttl{color:var(--green-deep);} .f-pink .n-ord{color:var(--green-deep);}
+  .f-cream{background:var(--cream-2);border:2px solid var(--green);} .f-cream .n-ttl{color:var(--green);} .f-cream .n-ord{color:var(--green);}
+
+  /* ---------- §01 overview ---------- */
+  .meta-dl{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,40px);
+    border-top:2px solid var(--green);padding-top:clamp(24px,3vw,36px);
+    margin-top:clamp(40px,5vw,64px);
+  }
+  .meta-dl dt{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);}
+  .meta-dl dd{font-family:var(--serif);font-weight:500;font-size:clamp(20px,2.2vw,32px);line-height:1.2;margin-top:12px;color:var(--ink);}
+  .char-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,2.4vw,32px);
+    margin-top:clamp(44px,5.5vw,72px);
+  }
+  .char{border-top:2px solid var(--green);padding-top:18px;}
+  .char .c-n{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.14em;color:var(--pink-deep);}
+  .char .c-t{font-family:var(--serif);font-weight:500;font-size:clamp(20px,2vw,28px);line-height:1.1;margin:10px 0 8px;color:var(--green);}
+  .char p{font-size:clamp(15px,1.5vw,19px);line-height:1.5;color:var(--ink);}
+
+  /* ---------- §02 colours ---------- */
+  .swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,26px);margin-top:clamp(40px,5vw,64px);}
+  .sw{border-radius:6px;overflow:hidden;border:2px solid var(--green);}
+  .sw .chip{height:clamp(120px,15vw,210px);display:flex;align-items:flex-end;padding:18px;}
+  .sw .chip .tag{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;}
+  .sw .info{background:var(--cream);padding:16px 18px 20px;}
+  .sw .info .nm{font-family:var(--serif);font-weight:500;font-size:clamp(18px,1.9vw,24px);color:var(--green);}
+  .sw .info .hex{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.1em;color:var(--ink);margin-top:4px;}
+  .sw .info .use{font-size:14px;line-height:1.45;color:var(--ink);margin-top:10px;opacity:.85;}
+
+  /* ---------- §03 typography ---------- */
+  .specimen{border-top:2px solid var(--green);margin-top:clamp(40px,5vw,64px);padding-top:clamp(30px,4vw,48px);}
+  .spec-meta{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);}
+  .spec-big{font-family:var(--serif);font-weight:500;font-size:clamp(88px,20vw,260px);line-height:0.86;letter-spacing:-0.03em;color:var(--green);margin-top:10px;}
+  .ladder{margin-top:clamp(40px,5vw,64px);}
+  .ladder .row{display:flex;align-items:baseline;gap:clamp(16px,2.5vw,40px);border-bottom:2px solid var(--cream-2);padding:clamp(14px,1.8vw,26px) 0;}
+  .ladder .row .sz{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.1em;color:var(--pink-deep);flex:none;width:96px;}
+  .ladder .row .smp{font-family:var(--serif);font-weight:500;color:var(--green);line-height:1;letter-spacing:-0.02em;white-space:nowrap;}
+  .mono-block{margin-top:clamp(44px,5.5vw,72px);background:var(--green);border-radius:8px;padding:clamp(28px,3.5vw,48px);}
+  .mono-block .mb-h{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--pink);}
+  .mono-block .mb-s{font-family:var(--mono);font-weight:500;font-size:clamp(20px,2.6vw,38px);letter-spacing:0.1em;text-transform:uppercase;color:var(--cream);margin-top:18px;line-height:1.5;}
+  .mono-block .mb-n{font-family:var(--serif);font-weight:400;font-size:clamp(15px,1.5vw,19px);line-height:1.5;color:var(--pink);margin-top:20px;max-width:60ch;}
+
+  /* ---------- §04 components ---------- */
+  .comp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,2.6vw,36px);margin-top:clamp(40px,5vw,64px);}
+  .comp-cell{}
+  .comp-cap{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green);margin-bottom:16px;border-bottom:2px solid var(--green);padding-bottom:12px;}
+  /* topic tiles */
+  .topics{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .topic{border-radius:6px;padding:22px 22px 20px;min-height:140px;display:flex;flex-direction:column;justify-content:space-between;}
+  .topic .t-ord{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.14em;}
+  .topic .t-ttl{font-family:var(--serif);font-weight:500;font-size:clamp(20px,2.1vw,28px);line-height:1.0;letter-spacing:-0.01em;}
+  .topic .t-foot{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;}
+  /* step tile */
+  .step{border:2.5px solid var(--green);border-radius:8px;padding:24px 22px 22px;background:var(--cream);min-height:100%;display:flex;flex-direction:column;}
+  .step .s-ord{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.14em;color:var(--pink-deep);}
+  .step .s-ttl{font-family:var(--serif);font-weight:500;font-size:clamp(24px,2.6vw,36px);line-height:0.98;letter-spacing:-0.01em;color:var(--green);margin:14px 0 12px;}
+  .step .s-body{font-size:16px;line-height:1.5;color:var(--ink);flex:1;}
+  .step .s-mark{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);border-top:2px solid var(--green);margin-top:18px;padding-top:14px;}
+  /* kpi */
+  .kpi-row{background:var(--green);border-radius:8px;padding:clamp(30px,4vw,52px);display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3vw,48px);}
+  .kpi{border-top:2px solid var(--pink);padding-top:20px;}
+  .kpi .k-tag{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--pink);}
+  .kpi .k-fig{font-family:var(--serif);font-weight:500;font-size:clamp(64px,9vw,140px);line-height:0.9;letter-spacing:-0.03em;color:var(--cream);margin-top:8px;}
+  .kpi .k-fig sub{font-size:0.5em;vertical-align:baseline;color:var(--pink);}
+  .kpi .k-desc{font-size:15px;line-height:1.45;color:var(--cream);opacity:.85;margin-top:12px;}
+  /* bars */
+  .chart{background:var(--green);border-radius:8px;padding:clamp(28px,3.5vw,48px);}
+  .chart .plot{display:flex;align-items:flex-end;gap:clamp(14px,2vw,30px);height:260px;border-left:2px solid var(--pink);border-bottom:2px solid var(--pink);padding:0 8px 0 16px;}
+  .chart .bar{width:clamp(34px,4vw,56px);border-radius:3px 3px 0 0;position:relative;}
+  .chart .bar span{position:absolute;top:-30px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.06em;color:var(--cream);}
+  .chart .legend{display:flex;gap:24px;margin-top:24px;}
+  .chart .legend span{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--cream);display:flex;align-items:center;gap:8px;}
+  .chart .legend i{width:18px;height:18px;border-radius:2px;display:inline-block;}
+  /* monogram showcase */
+  .mono-show{display:flex;align-items:center;gap:30px;flex-wrap:wrap;}
+  .mono-show .monogram{margin-top:0;}
+  .mono-show p{font-size:16px;line-height:1.5;color:var(--ink);max-width:32ch;}
+
+  /* ---------- §05 layout ---------- */
+  .pad-table{border-top:2px solid var(--green);margin-top:clamp(40px,5vw,64px);}
+  .pad-table .pr{display:grid;grid-template-columns:200px 1fr;gap:24px;border-bottom:2px solid var(--cream-2);padding:clamp(16px,2vw,26px) 0;align-items:baseline;}
+  .pad-table .pr .pk{font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:0.1em;color:var(--green);}
+  .pad-table .pr .pv{font-size:clamp(16px,1.6vw,20px);line-height:1.4;color:var(--ink);}
+  .pad-table .pr .pv b{font-family:var(--serif);font-weight:500;color:var(--green);}
+  .radii{display:flex;flex-wrap:wrap;gap:clamp(18px,2.4vw,32px);margin-top:clamp(44px,5.5vw,72px);}
+  .radii .rd{text-align:center;}
+  .radii .rd .box{width:clamp(86px,10vw,130px);height:clamp(86px,10vw,130px);background:var(--green);border:2px solid var(--green);}
+  .radii .rd.circle .box{border-radius:50%;background:none;border:2px solid var(--pink);}
+  .radii .rd .lbl{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:0.1em;color:var(--green);margin-top:12px;}
+
+  /* ---------- §06 depth ---------- */
+  .depth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.4vw,32px);margin-top:clamp(40px,5vw,64px);}
+  .depth-card{border:2px solid var(--green);border-radius:8px;padding:clamp(24px,3vw,40px);background:var(--cream-2);min-height:clamp(200px,24vw,300px);display:flex;flex-direction:column;justify-content:space-between;}
+  .depth-card .d-n{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--pink-deep);}
+  .depth-card .d-t{font-family:var(--serif);font-weight:500;font-size:clamp(24px,2.6vw,38px);line-height:1.0;color:var(--green);margin-top:14px;}
+  .depth-card p{font-size:15px;line-height:1.5;color:var(--ink);margin-top:14px;}
+  /* surface demo */
+  .surf-demo{display:flex;gap:0;margin-top:14px;border-radius:6px;overflow:hidden;border:2px solid var(--green);}
+  .surf-demo div{flex:1;height:70px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;}
+
+  /* ---------- §07 do & don't ---------- */
+  .dd{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,3vw,44px);margin-top:clamp(40px,5vw,64px);}
+  .dd .col h3{font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:0.16em;text-transform:uppercase;padding-bottom:14px;border-bottom:2px solid var(--green);}
+  .dd .do h3{color:var(--green);} .dd .dont h3{color:var(--pink-deep);}
+  .dd ul{list-style:none;margin-top:8px;}
+  .dd li{font-size:clamp(16px,1.6vw,20px);line-height:1.45;padding:16px 0;border-bottom:2px solid var(--cream-2);display:flex;gap:14px;color:var(--ink);}
+  .dd li .mk{font-family:var(--mono);font-weight:500;flex:none;}
+  .dd .do .mk{color:var(--green);} .dd .dont .mk{color:var(--pink-deep);}
+
+  /* ---------- §08 cjk ---------- */
+  .cjk-head{font-family:var(--serif);font-weight:400;font-size:clamp(54px,11vw,150px);line-height:1.04;letter-spacing:0;color:var(--green);}
+  .cjk-head .lx{font-family:'LXGW WenKai TC','Noto Serif SC',var(--serif);}
+  .cjk-body{font-family:'Noto Serif SC',var(--serif);font-weight:400;font-size:clamp(17px,1.8vw,22px);line-height:1.6;color:var(--ink);max-width:46ch;margin-top:clamp(28px,3.5vw,44px);}
+  .cjk-pair{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,2.4vw,32px);margin-top:clamp(40px,5vw,64px);}
+  .cjk-pair .cp{border-top:2px solid var(--green);padding-top:18px;}
+  .cjk-pair .cp .role{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--pink-deep);}
+  .cjk-pair .cp .face{font-family:'LXGW WenKai TC','Noto Serif SC',var(--serif);font-size:clamp(28px,3.4vw,48px);color:var(--green);margin:10px 0 6px;line-height:1.1;}
+  .cjk-pair .cp.serif .face{font-family:'Noto Serif SC',var(--serif);font-weight:400;}
+  .cjk-pair .cp .meta{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:0.1em;color:var(--ink);}
+  .cjk-rules{margin-top:clamp(40px,5vw,64px);background:var(--green);border-radius:8px;padding:clamp(28px,3.5vw,48px);}
+  .cjk-rules h3{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--pink);margin-bottom:18px;}
+  .cjk-rules ul{list-style:none;}
+  .cjk-rules li{font-family:'Noto Serif SC',var(--serif);font-size:clamp(15px,1.6vw,19px);line-height:1.5;color:var(--cream);padding:12px 0;border-bottom:1px solid rgba(239,231,212,.18);}
+  .cjk-rules li:last-child{border-bottom:none;}
+
+  /* ---------- close ---------- */
+  .close{background:var(--green);max-width:none;text-align:center;padding:clamp(110px,16vw,220px) clamp(28px,6vw,120px);}
+  .close .c-mono{font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:0.2em;text-transform:uppercase;color:var(--pink);}
+  .close h2{color:var(--cream);font-size:clamp(64px,15vw,200px);line-height:0.9;letter-spacing:-0.03em;margin:clamp(24px,3vw,40px) 0;}
+  .close .c-foot{display:flex;justify-content:space-between;max-width:1000px;margin:clamp(48px,6vw,84px) auto 0;border-top:2px solid var(--pink);padding-top:20px;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--pink);}
+  .close .c-foot a{color:var(--cream);text-decoration:none;}
+
+  @media(max-width:860px){
+    .nav{grid-template-columns:repeat(2,1fr);}
+    .swatches,.depth-grid,.kpi-row{grid-template-columns:1fr;}
+    .comp-grid,.char-grid,.meta-dl,.dd,.cjk-pair,.topics{grid-template-columns:1fr;}
+    .meta-dl{gap:24px;}
+    .pad-table .pr{grid-template-columns:1fr;gap:6px;}
+    .hero-head{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="chrome" id="backlink"><a href="index.html">← Index</a></div>
+<div class="chrome" id="counter">01 / 10</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="top">
+  <div class="kicker">Design System Specification</div>
+  <div class="hero-head">
+    <h1>Editorial<br>Forest</h1>
+    <div class="monogram">EF<br>·24</div>
+  </div>
+  <p class="hero-lede">A serif-led editorial presentation system in the register of a literary quarterly. Source Serif 4 at weight 500, JetBrains Mono chrome, and a tight forest-green / dusty-pink / oat-cream triad. Printed, not glassy.</p>
+
+  <nav class="nav">
+    <a href="#overview" class="f-cream"><span class="n-ord">01</span><span class="n-ttl">Overview</span></a>
+    <a href="#colours" class="f-green"><span class="n-ord">02</span><span class="n-ttl">Colours</span></a>
+    <a href="#typography" class="f-pink"><span class="n-ord">03</span><span class="n-ttl">Typography</span></a>
+    <a href="#components" class="f-lite"><span class="n-ord">04</span><span class="n-ttl">Components</span></a>
+    <a href="#layout" class="f-cream"><span class="n-ord">05</span><span class="n-ttl">Layout</span></a>
+    <a href="#depth" class="f-pink"><span class="n-ord">06</span><span class="n-ttl">Depth</span></a>
+    <a href="#dodont" class="f-green"><span class="n-ord">07</span><span class="n-ttl">Do &amp; Don't</span></a>
+    <a href="#cjk" class="f-lite"><span class="n-ord">08</span><span class="n-ttl">中文</span></a>
+  </nav>
+</section>
+
+<!-- ========== §01 OVERVIEW ========== -->
+<section id="overview">
+  <div class="topbar"><span class="label">Overview</span><span class="ord">§ 01 / Editorial Forest</span></div>
+  <h2>One serif voice,<br>used with conviction.</h2>
+  <p class="lede">The foundational premise is a single, confident typographic voice — Source Serif 4 — used at extreme scale for headlines and stat figures, with JetBrains Mono playing the supporting role of editorial chrome. The serif runs at weight 500 for nearly every display moment: heavy enough to feel authored, light enough to keep the page calm.</p>
+
+  <dl class="meta-dl">
+    <div><dt>Register</dt><dd>Penguin classic, quiet annual report, art-book spread</dd></div>
+    <div><dt>Surfaces</dt><dd>Forest green · dusty pink · oat cream paper</dd></div>
+    <div><dt>Depth model</dt><dd>Flat — colour-block contrast and 2px rules only</dd></div>
+  </dl>
+
+  <div class="char-grid">
+    <div class="char"><div class="c-n">A</div><div class="c-t">Two faces, never three</div><p>Source Serif 4 carries every editorial moment. JetBrains Mono carries every label, caption, axis tick, and footline. The system never mixes a third typeface.</p></div>
+    <div class="char"><div class="c-n">B</div><div class="c-t">Weight 500 display</div><p>The serif runs at 500 — never the familiar 400 or 700. Optical-size axis engaged, so the same face renders with size-aware letterforms from 26px caption to 220px display.</p></div>
+    <div class="char"><div class="c-n">C</div><div class="c-t">Spacious &amp; committed</div><p>One strong subject per slide, surrounded by deep negative space. Padding runs 96–160px. Fewer elements at larger sizes, never more elements at smaller ones.</p></div>
+    <div class="char"><div class="c-n">D</div><div class="c-t">Printed, not glassy</div><p>No drop shadows, no glows, no gradients. Elevation is communicated entirely through colour-block contrast and the difference between a filled region and a bordered one.</p></div>
+  </div>
+  <div class="foot"><span>Editorial Forest</span><span>Quarterly · Internal readout · Studio update</span></div>
+</section>
+
+<!-- ========== §02 COLOURS ========== -->
+<section id="colours">
+  <div class="topbar"><span class="label">Colours</span><span class="ord">§ 02 / Tri-tone</span></div>
+  <h2>Three surfaces,<br>two near-duplicates.</h2>
+  <p class="lede">A tight five-colour editorial set built around three primary surfaces. Two surface tones per slide is typical; three is loud. Introducing a fourth chromatic family breaks the editorial discipline — the green / pink / cream triad does all the work.</p>
+
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#2e4a2a"><span class="tag" style="color:#e89cb1">Surface · Tile · Border</span></div><div class="info"><div class="nm">Forest Green</div><div class="hex">#2E4A2A</div><div class="use">The deep primary — slide surface, tile fill, card border, rule colour, and headline on cream.</div></div></div>
+    <div class="sw"><div class="chip" style="background:#e89cb1"><span class="tag" style="color:#243a21">Accent · Surface</span></div><div class="info"><div class="nm">Dusty Pink</div><div class="hex">#E89CB1</div><div class="use">The dusty rose. Slide surface, tile fill, on-green text, bar series, and the monogram circle border.</div></div></div>
+    <div class="sw"><div class="chip" style="background:#efe7d4;border-bottom:2px solid #2e4a2a"><span class="tag" style="color:#2e4a2a">Paper ground</span></div><div class="info"><div class="nm">Oat Cream</div><div class="hex">#EFE7D4</div><div class="use">The paper surface. Default content background, on-green body text, and cream bar series.</div></div></div>
+    <div class="sw"><div class="chip" style="background:#243a21"><span class="tag" style="color:#e89cb1">Text on pink</span></div><div class="info"><div class="nm">Green Deep</div><div class="hex">#243A21</div><div class="use">Darker green for text on pink surfaces where pure green would lack contrast.</div></div></div>
+    <div class="sw"><div class="chip" style="background:#3a5a36"><span class="tag" style="color:#e89cb1">Secondary tile</span></div><div class="info"><div class="nm">Green Lite</div><div class="hex">#3A5A36</div><div class="use">A lighter green for when two greens sit beside each other in one grid. Carries pink text.</div></div></div>
+    <div class="sw"><div class="chip" style="background:#e6dcc4;border-bottom:2px solid #2e4a2a"><span class="tag" style="color:#2e4a2a">Tile on cream</span></div><div class="info"><div class="nm">Cream 2</div><div class="hex">#E6DCC4</div><div class="use">A subtly darker cream for tiles on the cream ground, paired with a 2px green border.</div></div></div>
+  </div>
+  <div class="foot"><span>Ink #1A1A17 — warm near-black, never pure #000</span><span>Solid ink-on-paper · no rgba surfaces</span></div>
+</section>
+
+<!-- ========== §03 TYPOGRAPHY ========== -->
+<section id="typography">
+  <div class="topbar"><span class="label">Typography</span><span class="ord">§ 03 / Serif + Mono</span></div>
+  <h2>Source Serif 4 at 500.</h2>
+  <p class="lede">The weight 500 + optical-size + tight-tracking combination is the system's display voice. Switch any of those three — weight 700, default tracking, no opsz — and it reads as a different design system. The role split is strict: mono never appears at headline scale, serif never at axis-tick scale.</p>
+
+  <div class="specimen">
+    <div class="spec-meta">Source Serif 4 · Weight 500 · opsz 8..60 · tracking -0.03em</div>
+    <div class="spec-big">Aa</div>
+  </div>
+
+  <div class="ladder">
+    <div class="row"><span class="sz">220px</span><span class="smp" style="font-size:clamp(40px,8vw,108px)">Display hero</span></div>
+    <div class="row"><span class="sz">140px</span><span class="smp" style="font-size:clamp(34px,6vw,80px)">Big-idea statement</span></div>
+    <div class="row"><span class="sz">96px</span><span class="smp" style="font-size:clamp(28px,4.6vw,60px)">Section headline</span></div>
+    <div class="row"><span class="sz">68px</span><span class="smp" style="font-size:clamp(24px,3.4vw,46px)">Step-tile title</span></div>
+    <div class="row"><span class="sz">32px</span><span class="smp" style="font-size:clamp(18px,2vw,28px);font-weight:400">Body paragraph — weight 400</span></div>
+  </div>
+
+  <div class="mono-block">
+    <div class="mb-h">JetBrains Mono · Weight 500 · uppercase · 0.18em</div>
+    <div class="mb-s">Labels · Captions · Axis Ticks · Footlines</div>
+    <p class="mb-n">Every mono element is uppercase with at least 0.08em letter-spacing. The wide tracking is what makes mono feel like a caption row in a magazine, not a terminal. The roles are inverted from the usual stack — mono for chrome, serif for body and display. Italics and underline are never used; emphasis is size and colour.</p>
+  </div>
+  <div class="foot"><span>No third typeface</span><span>Body 400 · Display 500 · Name 600</span></div>
+</section>
+
+<!-- ========== §04 COMPONENTS ========== -->
+<section id="components">
+  <div class="topbar"><span class="label">Components</span><span class="ord">§ 04 / Tiles, KPI, charts</span></div>
+  <h2>Filled or bordered —<br>that is the variation.</h2>
+  <p class="lede">A single grid mixes three of four tile treatments: solid green, solid pink, green-lite, and cream-2-with-green-border. The contrast between a filled region and a bordered region does the elevation work that shadow would do elsewhere.</p>
+
+  <div class="comp-grid">
+    <div class="comp-cell">
+      <div class="comp-cap">Topic tiles · 6px radius · fill rotation</div>
+      <div class="topics">
+        <div class="topic f-green"><span class="t-ord">01</span><span class="t-ttl">Context</span><span class="t-foot">Q3 Review</span></div>
+        <div class="topic f-pink"><span class="t-ord">02</span><span class="t-ttl">Findings</span><span class="t-foot">12 themes</span></div>
+        <div class="topic f-lite"><span class="t-ord">03</span><span class="t-ttl">Signals</span><span class="t-foot">Field notes</span></div>
+        <div class="topic f-cream"><span class="t-ord">04</span><span class="t-ttl">Next</span><span class="t-foot">Roadmap</span></div>
+      </div>
+    </div>
+    <div class="comp-cell">
+      <div class="comp-cap">Step tile · 8px · 2.5px border · top-rule marker</div>
+      <div class="step">
+        <span class="s-ord">Step 02</span>
+        <span class="s-ttl">Synthesise</span>
+        <p class="s-body">A vertical card carrying a mono ordinal, a serif title, a body paragraph, and a mono marker row separated by a top rule. A row of three to four is the framework pattern.</p>
+        <span class="s-mark">→ Owner · Research</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="comp-cell" style="margin-top:clamp(20px,2.6vw,36px)">
+    <div class="comp-cap">KPI block · 220px serif figure · pink rule above</div>
+    <div class="kpi-row">
+      <div class="kpi"><div class="k-tag">Retention</div><div class="k-fig">94<sub>%</sub></div><div class="k-desc">Quarter-over-quarter, up from 88 last cycle.</div></div>
+      <div class="kpi"><div class="k-tag">Throughput</div><div class="k-fig">2.4<sub>×</sub></div><div class="k-desc">Median cycle time halved across the studio.</div></div>
+      <div class="kpi"><div class="k-tag">Themes</div><div class="k-fig">12</div><div class="k-desc">Distinct field signals clustered from raw notes.</div></div>
+    </div>
+  </div>
+
+  <div class="comp-grid" style="margin-top:clamp(20px,2.6vw,36px)">
+    <div class="comp-cell">
+      <div class="comp-cap">Bar chart · pink / cream / green · 2px axes</div>
+      <div class="chart">
+        <div class="plot">
+          <div class="bar" style="height:55%;background:var(--pink)"><span>42</span></div>
+          <div class="bar" style="height:72%;background:var(--cream)"><span>58</span></div>
+          <div class="bar" style="height:90%;background:var(--pink)"><span>74</span></div>
+          <div class="bar" style="height:64%;background:var(--cream)"><span>51</span></div>
+          <div class="bar" style="height:100%;background:var(--pink)"><span>82</span></div>
+        </div>
+        <div class="legend"><span><i style="background:var(--pink)"></i>Series A</span><span><i style="background:var(--cream)"></i>Series B</span></div>
+      </div>
+    </div>
+    <div class="comp-cell">
+      <div class="comp-cap">Monogram circle · 130px · 2px pink border</div>
+      <div class="mono-show">
+        <div class="monogram">EF<br>·24</div>
+        <p>The system's identity stamp. A 130px outlined circle holding a short mono monogram. Reserved for cover and summary moments — using it on every slide dilutes its function.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>No box-shadow on any element</span><span>Topic 6px · Step 8px · Circle 50%</span></div>
+</section>
+
+<!-- ========== §05 LAYOUT ========== -->
+<section id="layout">
+  <div class="topbar"><span class="label">Layout</span><span class="ord">§ 05 / 1920 × 1080</span></div>
+  <h2>The topbar is the spine.</h2>
+  <p class="lede">A fixed 1920×1080 canvas, scaled to fit by the deck runtime. Every slide carries a topbar — a mono label on one edge, a monogram or counter on the other. Heavier slides also carry a footline. Without the topbar, a slide reads as untreated.</p>
+
+  <div class="pad-table">
+    <div class="pr"><span class="pk">slide-pad-default</span><span class="pv"><b>96px 120px</b> — standard slide padding</span></div>
+    <div class="pr"><span class="pk">slide-pad-narrow</span><span class="pv"><b>100px 120px</b> — data, framework, stats slides</span></div>
+    <div class="pr"><span class="pk">slide-pad-wide</span><span class="pv"><b>100px 140px</b> — cover &amp; summary; extra side padding for hero headlines</span></div>
+    <div class="pr"><span class="pk">slide-pad-statement</span><span class="pv"><b>130px 160px</b> — the display-quote moment; most generous</span></div>
+  </div>
+
+  <div class="radii">
+    <div class="rd"><div class="box" style="border-radius:2px"></div><div class="lbl">2px · swatch</div></div>
+    <div class="rd"><div class="box" style="border-radius:6px"></div><div class="lbl">6px · topic tile</div></div>
+    <div class="rd"><div class="box" style="border-radius:8px"></div><div class="lbl">8px · step tile</div></div>
+    <div class="rd circle"><div class="box"></div><div class="lbl">50% · monogram</div></div>
+  </div>
+  <div class="foot"><span>deck-stage.js scales the canvas</span><span>Cards subtly rounded — paper, not plastic</span></div>
+</section>
+
+<!-- ========== §06 DEPTH ========== -->
+<section id="depth">
+  <div class="topbar"><span class="label">Depth &amp; Shape</span><span class="ord">§ 06 / Flat</span></div>
+  <h2>The absence of shadow<br>is the elevation language.</h2>
+  <p class="lede">There are no shadows in this system — not on cards, not on tiles, not on text, not on the monogram circle. Adding a box-shadow would shatter the paper feel. Elevation lives in three places only.</p>
+
+  <div class="depth-grid">
+    <div class="depth-card">
+      <div><div class="d-n">01</div><div class="d-t">Colour-block contrast</div><p>A green tile on a cream slide reads as elevated because the dark block separates from the paper ground.</p></div>
+      <div class="surf-demo"><div style="background:var(--cream-2);color:var(--green)">cream</div><div style="background:var(--green);color:var(--cream)">green</div></div>
+    </div>
+    <div class="depth-card">
+      <div><div class="d-n">02</div><div class="d-t">2px hairline rules</div><p>Section separators sit on a 2px line in the region's accent. Never 1px (reads as web app), never 3px+ (reads as poster).</p></div>
+      <div style="border-top:2px solid var(--green);margin-top:14px"></div>
+    </div>
+    <div class="depth-card">
+      <div><div class="d-n">03</div><div class="d-t">Border vs fill</div><p>A cream-2 tile with a 2px green border reads as a different elevation than a solid-fill tile beside it.</p></div>
+      <div class="surf-demo" style="border:none;gap:10px"><div style="background:var(--green);border-radius:6px">fill</div><div style="background:var(--cream-2);border:2px solid var(--green);border-radius:6px;color:var(--green)">border</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>No glow · no gradient · no rgba</span><span>Border weights: 2px hairline · 2.5px step tile</span></div>
+</section>
+
+<!-- ========== §07 DO & DON'T ========== -->
+<section id="dodont">
+  <div class="topbar"><span class="label">Do &amp; Don't</span><span class="ord">§ 07 / Discipline</span></div>
+  <h2>Keep the triad tight.</h2>
+  <div class="dd">
+    <div class="col do">
+      <h3>Do</h3>
+      <ul>
+        <li><span class="mk">+</span>Run every headline in Source Serif 4 at 500 with negative tracking and tight line-height.</li>
+        <li><span class="mk">+</span>Run every label, tag, and footline in JetBrains Mono 500 uppercase, 0.08–0.18em.</li>
+        <li><span class="mk">+</span>Place a topbar on every slide — it is the system's spine.</li>
+        <li><span class="mk">+</span>Pick one dominant surface per slide; two colours is the maximum.</li>
+        <li><span class="mk">+</span>Rotate tile fills: green + pink + green-lite + cream-2-with-border.</li>
+        <li><span class="mk">+</span>Scale display type to 140–220px for statement, hero, and closing moments.</li>
+      </ul>
+    </div>
+    <div class="col dont">
+      <h3>Don't</h3>
+      <ul>
+        <li><span class="mk">–</span>Don't add box-shadow to any element — it shatters the paper feel.</li>
+        <li><span class="mk">–</span>Don't introduce a third typeface, or a fourth chromatic family.</li>
+        <li><span class="mk">–</span>Don't run serif in italic or underline — emphasis is size and colour.</li>
+        <li><span class="mk">–</span>Don't render mono in sentence case or without letter-spacing.</li>
+        <li><span class="mk">–</span>Don't run body text at weight 500 — it reads heavy. Body is 400.</li>
+        <li><span class="mk">–</span>Don't pile two competing content blocks on one slide.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>One subject per slide</span><span>Expand or split — never crowd</span></div>
+</section>
+
+<!-- ========== §08 CJK ========== -->
+<section id="cjk">
+  <div class="topbar"><span class="label">中文 / CJK</span><span class="ord">§ 08 / Strategy C</span></div>
+  <h2 class="cjk-head"><span class="lx">安静的</span><br><span class="lx">编辑气质</span></h2>
+  <p class="cjk-body">保持 Source Serif 4 作为拉丁字面,中文按字形回退到霞鹜文楷(标题、展示)或思源宋体(正文、数字)。霞鹜文楷与 500 字重的衬线同样有手作般的温度,正是这套系统「企鹅经典」气质的中文对应。</p>
+
+  <div class="cjk-pair">
+    <div class="cp"><div class="role">Display · headline</div><div class="face">霞鹜文楷</div><div class="meta">LXGW WenKai TC · 400 · 文学、手写感</div></div>
+    <div class="cp serif"><div class="role">Body · paragraph</div><div class="face">思源宋体</div><div class="meta">Noto Serif SC · 400 · 安静的明朝体正文</div></div>
+  </div>
+
+  <div class="cjk-rules">
+    <h3>Universal CJK adjustments</h3>
+    <ul>
+      <li>放宽行高 0.05–0.08:中文是全宽方块,比拉丁字母视觉更重 —— 展示提到 1.0–1.1,正文提到 1.5–1.6。</li>
+      <li>去掉中文标题的负字距:衬线展示用的 -0.03em 会让汉字相互挤压,中文设为 letter-spacing 0。</li>
+      <li>使用中文全角标点(,。:;「」),不与拉丁标点混用;标题结尾不加句号。</li>
+      <li>在中英文边界加盘古之白:「2026 年 5 月」而非「2026年5月」。</li>
+      <li>chrome 标签仍用等宽体 —— 不要让中文标签退回文楷或宋体,否则会失去打字机般的编辑质感。</li>
+    </ul>
+  </div>
+  <div class="foot"><span>One font per sentence</span><span>展示 = 文楷 · 正文 = 宋体</span></div>
+</section>
+
+<!-- ========== CLOSE ========== -->
+<section class="close" id="close">
+  <div class="c-mono">End of specification</div>
+  <h2>Editorial<br>Forest</h2>
+  <div class="c-foot">
+    <span>Source Serif 4 · JetBrains Mono</span>
+    <a href="index.html">← Back to index</a>
+  </div>
+</section>
+
+<script>
+(function () {
+  var progress = document.getElementById('progress');
+  var counter = document.getElementById('counter');
+  var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+  var total = ids.length;
+  function onScroll() {
+    var h = document.documentElement;
+    var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+    var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+    for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+    if (scrolled > 0.99) idx = total - 1;
+    counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  var bars = document.querySelectorAll('.chart .bar');
+  bars.forEach(function (b) { var h = b.style.height; b.style.height = '0%'; b.dataset.h = h; });
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.style.transition = 'height .9s cubic-bezier(.2,.7,.2,1)'; e.target.style.height = e.target.dataset.h; io.unobserve(e.target); }
+    });
+  }, { threshold: 0.3 });
+  bars.forEach(function (b) { io.observe(b); });
+})();
+</script>
+</body>
+</html>

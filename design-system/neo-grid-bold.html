@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neo-Grid Bold — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's two faces: Space Grotesk (display/body) + JetBrains Mono (labels) -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- CJK pairing, loaded only for the live Chinese specimen in §08 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F5F4EF;
+      --bg: #ECECE8;
+      --ink: #0A0A0A;
+      --lemon: #E6FF3D;
+      --muted: #8A8A85;
+      --f-disp: 'Space Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --f-mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--f-disp); -webkit-font-smoothing: antialiased; }
+
+    /* ===== Persistent chrome ===== */
+    .progress { position: fixed; top: 0; left: 0; height: 5px; width: 0; background: var(--lemon); border-bottom: 1.5px solid var(--ink); z-index: 300; }
+    .back-link {
+      position: fixed; top: 20px; right: 22px; z-index: 200; text-decoration: none; color: var(--ink);
+      background: var(--lemon); padding: 8px 16px; font-family: var(--f-mono); font-size: 13px;
+      letter-spacing: 0.1em; text-transform: uppercase; border: 1.5px solid var(--ink);
+    }
+    .back-link:hover { background: var(--ink); color: var(--paper); }
+    .pagenum {
+      position: fixed; bottom: 20px; left: 22px; z-index: 200;
+      background: var(--ink); color: var(--paper); padding: 12px 20px;
+      font-family: var(--f-mono); font-size: 16px; letter-spacing: 0.04em;
+    }
+
+    /* ===== Type ===== */
+    .label { font-family: var(--f-mono); font-size: clamp(12px,1.2vw,16px); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
+    .label.on-ink { color: var(--paper); }
+    .display { font-family: var(--f-disp); font-weight: 700; font-size: clamp(48px,8vw,128px); line-height: 0.92; letter-spacing: -0.03em; text-transform: uppercase; }
+    .title { font-family: var(--f-disp); font-weight: 700; font-size: clamp(36px,5.5vw,84px); line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase; }
+    .subtitle { font-family: var(--f-disp); font-weight: 700; font-size: clamp(26px,4vw,54px); line-height: 1; letter-spacing: -0.01em; text-transform: uppercase; }
+    .card-headline { font-family: var(--f-disp); font-weight: 700; font-size: clamp(24px,3vw,44px); line-height: 1; letter-spacing: -0.01em; text-transform: uppercase; }
+    .card-h3 { font-family: var(--f-disp); font-weight: 700; font-size: clamp(19px,2.2vw,30px); line-height: 1.05; text-transform: uppercase; }
+    .body { font-family: var(--f-disp); font-weight: 400; font-size: clamp(15px,1.4vw,20px); line-height: 1.4; }
+    .stat-num { font-family: var(--f-disp); font-weight: 700; font-size: clamp(56px,9vw,150px); line-height: 0.9; letter-spacing: -0.03em; }
+    .stat-num-lg { font-family: var(--f-disp); font-weight: 700; font-size: clamp(70px,13vw,220px); line-height: 0.85; letter-spacing: -0.04em; }
+    .section-num { font-family: var(--f-disp); font-weight: 700; font-size: clamp(120px,20vw,300px); line-height: 0.82; letter-spacing: -0.05em; }
+    mark, .mark { background: var(--lemon); color: var(--ink); padding: 0 6px; }
+    .display em, .title em, .subtitle em, .card-headline em { color: var(--lemon); font-style: normal; }
+
+    /* ===== Sections ===== */
+    section, header, footer { padding: clamp(28px,4vw,56px); }
+    .wrap { max-width: 1280px; margin: 0 auto; width: 100%; }
+    .sec-head { margin-bottom: clamp(24px,3vw,40px); }
+    .sec-head .label { display: block; margin-bottom: 16px; }
+    .sec-head .body { max-width: 64ch; margin-top: 14px; }
+    .sec-head .body strong { font-weight: 700; }
+
+    /* panel system — no borders, no shadows; depth from colour adjacency, gap shows putty */
+    .panel-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; }
+    .card { background: var(--paper); padding: clamp(22px,2.4vw,36px); position: relative; overflow: hidden; }
+    .card.ink { background: var(--ink); color: var(--paper); }
+    .card.lemon { background: var(--lemon); color: var(--ink); }
+    .card.putty { background: var(--bg); }
+
+    /* blockmark / corner-mark stamps */
+    .blockmark { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; width: 56px; height: 56px; }
+    .blockmark i { background: currentColor; }
+    .blockmark i:nth-child(2), .blockmark i:nth-child(3) { background: transparent; }
+    .corner-mark { position: absolute; top: 18px; right: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 3px; width: 30px; height: 30px; }
+    .corner-mark i { background: currentColor; }
+    .corner-mark i:nth-child(2) { background: transparent; }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; align-items: center; }
+    .hero .panel-grid { width: 100%; grid-auto-rows: minmax(0, auto); }
+    .h-title { grid-column: 1 / span 8; }
+    .h-mark { grid-column: 9 / span 4; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; }
+    .h-premise { grid-column: 1 / span 5; }
+    .h-contents { grid-column: 6 / span 7; }
+    .toc { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .toc a { text-decoration: none; }
+    .toc .card { padding: 18px 18px; min-height: 88px; display: flex; flex-direction: column; justify-content: space-between; transition: background 0.15s, color 0.15s; }
+    .toc .toc-num { font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.08em; opacity: 0.7; }
+    .toc .toc-name { font-family: var(--f-disp); font-weight: 700; font-size: clamp(13px,1.3vw,17px); text-transform: uppercase; letter-spacing: -0.01em; line-height: 1; margin-top: 12px; }
+    .toc a:hover .card { background: var(--lemon); color: var(--ink); }
+
+    /* ===== generic stat/pill/table/bar ===== */
+    .pill { display: inline-block; font-family: var(--f-mono); font-size: clamp(11px,1.1vw,14px); letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 14px; }
+    .pill-yes { background: var(--lemon); color: var(--ink); }
+    .pill-part { background: var(--paper); color: var(--ink); border: 1.5px solid var(--ink); }
+    .pill-no { background: var(--ink); color: var(--paper); }
+    .qr-tile { display: grid; grid-template-columns: repeat(5,1fr); gap: 3px; width: 90px; height: 90px; }
+    .qr-tile i { background: var(--ink); } .qr-tile i.on { background: var(--lemon); } .qr-tile i.off { background: transparent; }
+
+    .matrix { width: 100%; border-collapse: collapse; }
+    .matrix th, .matrix td { padding: 14px 18px; border-bottom: 1.5px solid var(--ink); border-right: 1.5px solid var(--ink); text-align: left; font-size: clamp(13px,1.3vw,18px); }
+    .matrix th { background: var(--ink); color: var(--paper); font-family: var(--f-mono); font-size: clamp(11px,1vw,14px); letter-spacing: 0.1em; text-transform: uppercase; }
+    .matrix td:last-child, .matrix th:last-child { border-right: none; }
+
+    .chart { display: flex; align-items: flex-end; gap: clamp(14px,2vw,34px); height: 220px; border-left: 2px solid var(--ink); border-bottom: 2px solid var(--ink); padding: 0 20px 0 20px; }
+    .bar-group { flex: 1; display: flex; align-items: flex-end; justify-content: center; gap: 8px; height: 100%; }
+    .bar { width: 30px; }
+    .bar.a { background: var(--ink); }
+    .bar.b { background: var(--lemon); border: 1.5px solid var(--ink); }
+    .chart-labels { display: flex; gap: clamp(14px,2vw,34px); padding: 10px 20px 0; }
+    .chart-labels span { flex: 1; text-align: center; font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* ===== §02 colours ===== */
+    .sw-grid { display: grid; grid-template-columns: repeat(12,1fr); gap: 12px; }
+    .sw { padding: 0; min-height: 150px; display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; }
+    .sw .sw-name { font-family: var(--f-disp); font-weight: 700; font-size: 20px; text-transform: uppercase; letter-spacing: -0.01em; }
+    .sw .sw-hex { font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.06em; margin-top: 4px; }
+
+    /* ===== §03 typography ===== */
+    .scale-list { display: flex; flex-direction: column; gap: 12px; }
+    .scale-row { background: var(--paper); padding: 18px clamp(20px,2.5vw,32px); display: grid; grid-template-columns: 240px 1fr; gap: 24px; align-items: baseline; }
+    .sm { font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .sm b { display: block; color: var(--ink); margin-bottom: 3px; }
+    .smp { overflow: hidden; }
+
+    /* ===== §04 ===== */
+    .comp { margin-bottom: 32px; }
+    .comp-h { font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+
+    /* ===== §06 depth ===== */
+    .adj-demo { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; height: 150px; margin-bottom: 16px; }
+    .adj-demo > div { display: flex; align-items: flex-end; padding: 16px; font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* ===== §07 do/don't ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .dd-list { list-style: none; margin-top: 16px; }
+    .dd-list li { font-family: var(--f-disp); font-weight: 400; font-size: clamp(14px,1.4vw,18px); line-height: 1.4; padding: 10px 0 10px 26px; position: relative; }
+    .dd-list li + li { border-top: 1.5px solid currentColor; }
+    .do .dd-list li::before { content: "+"; position: absolute; left: 0; font-weight: 700; }
+    .dont .dd-list li::before { content: "\00D7"; position: absolute; left: 0; font-weight: 700; }
+
+    /* ===== §08 cjk ===== */
+    .cjk-display { font-family: 'Noto Sans SC', var(--f-disp); font-weight: 900; font-size: clamp(40px,6vw,96px); line-height: 1.2; letter-spacing: 0; }
+    .cjk-body { font-family: 'Noto Sans SC', var(--f-disp); font-weight: 400; font-size: clamp(15px,1.4vw,20px); line-height: 1.8; max-width: 46ch; }
+    .cjk-label { font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 16px; }
+
+    /* ===== close ===== */
+    .close { min-height: 84vh; display: flex; align-items: center; }
+    .close .panel-grid { width: 100%; }
+
+    /* ===== responsive ===== */
+    @media (max-width: 1024px) {
+      .panel-grid, .sw-grid { grid-template-columns: repeat(6, 1fr); }
+      .h-title, .h-mark, .h-premise, .h-contents { grid-column: 1 / -1; }
+      .toc { grid-template-columns: repeat(2, 1fr); }
+      .dodont { grid-template-columns: 1fr; }
+      .scale-row { grid-template-columns: 1fr; gap: 8px; }
+    }
+    @media (max-width: 560px) {
+      .panel-grid, .sw-grid { grid-template-columns: 1fr; }
+      .toc { grid-template-columns: 1fr 1fr; }
+      .adj-demo { grid-template-columns: 1fr; height: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <a class="back-link" href="index.html">&larr; Index</a>
+  <div class="pagenum" id="counter">01 / 10</div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="panel-grid">
+      <div class="card h-title">
+        <span class="label">Design System Specification</span>
+        <h1 class="display" style="margin-top:18px">Neo-Grid<br><mark>Bold</mark></h1>
+      </div>
+      <div class="card lemon h-mark">
+        <div class="blockmark" style="width:64px;height:64px"><i></i><i></i><i></i><i></i></div>
+        <div class="label">Beautiful HTML<br>Templates &mdash; N&deg;07</div>
+      </div>
+      <div class="card ink h-premise">
+        <p class="body">A heavy editorial poster system on a strict 12&times;8 block grid &mdash; paper-ecru, ink-black, and electric lemon trading roles across cells. No borders, no shadows; depth is colour adjacency.</p>
+      </div>
+      <div class="h-contents">
+        <nav class="toc">
+          <a href="#overview"><div class="card"><div class="toc-num">01</div><div class="toc-name">Overview</div></div></a>
+          <a href="#colours"><div class="card ink"><div class="toc-num">02</div><div class="toc-name">Colours</div></div></a>
+          <a href="#typography"><div class="card"><div class="toc-num">03</div><div class="toc-name">Typography</div></div></a>
+          <a href="#components"><div class="card lemon"><div class="toc-num">04</div><div class="toc-name">Components</div></div></a>
+          <a href="#layout"><div class="card ink"><div class="toc-num">05</div><div class="toc-name">Layout</div></div></a>
+          <a href="#depth"><div class="card"><div class="toc-num">06</div><div class="toc-name">Depth</div></div></a>
+          <a href="#dodont"><div class="card"><div class="toc-num">07</div><div class="toc-name">Do &amp; Don't</div></div></a>
+          <a href="#cjk"><div class="card lemon"><div class="toc-num">08</div><div class="toc-name">中文 / CJK</div></div></a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section id="overview">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">01 — Overview</span>
+        <h2 class="title">Magazine Spread,<br><mark>Block Grid</mark></h2>
+        <p class="body">Every slide is a 12-column &times; 8-row grid inset 40px from the edges, with 12px gaps. Composition happens by assigning <strong>paper</strong>, <strong>ink</strong>, and <strong>lemon</strong> panels to grid spans. The grid is rigid; variety comes from how the three colours trade roles across cells.</p>
+      </div>
+      <div class="panel-grid">
+        <div class="card" style="grid-column:1/span 3"><div class="stat-num" style="font-size:clamp(40px,5vw,72px)">Med</div><span class="label" style="display:block;margin-top:8px">Formality</span></div>
+        <div class="card ink" style="grid-column:4/span 3"><div class="stat-num" style="font-size:clamp(40px,5vw,72px)">High</div><span class="label on-ink" style="display:block;margin-top:8px">Density</span></div>
+        <div class="card lemon" style="grid-column:7/span 3"><div class="stat-num" style="font-size:clamp(40px,5vw,72px)">Light</div><span class="label" style="display:block;margin-top:8px">Scheme</span></div>
+        <div class="card" style="grid-column:10/span 3"><div class="corner-mark"><i></i><i></i><i></i><i></i></div><div class="stat-num" style="font-size:clamp(40px,5vw,72px)">13</div><span class="label" style="display:block;margin-top:8px">Slides</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section id="colours">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">02 — Colours</span>
+        <h2 class="title">Three Working <mark>Colours</mark></h2>
+        <p class="body">Three working colours plus a putty surface. Paper is the default fill, ink is the structure, and one electric lemon is the only chromatic accent &mdash; never substituted, never used as text. The putty frame shows through every 12px gap.</p>
+      </div>
+      <div class="sw-grid">
+        <div class="card sw" style="grid-column:1/span 4;background:var(--paper)"><div class="sw-name">Paper</div><div class="sw-hex">#F5F4EF</div></div>
+        <div class="card sw" style="grid-column:5/span 4;background:var(--bg)"><div class="sw-name">Putty BG</div><div class="sw-hex">#ECECE8</div></div>
+        <div class="card sw" style="grid-column:9/span 4;background:var(--ink);color:var(--paper)"><div class="sw-name">Ink</div><div class="sw-hex">#0A0A0A</div></div>
+        <div class="card sw" style="grid-column:1/span 6;background:var(--lemon)"><div class="sw-name">Accent Lemon</div><div class="sw-hex">#E6FF3D — the only signal</div></div>
+        <div class="card sw" style="grid-column:7/span 6;background:var(--muted);color:var(--paper)"><div class="sw-name">Muted Graphite</div><div class="sw-hex">#8A8A85 — reserved</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section id="typography">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">03 — Typography</span>
+        <h2 class="title">Heavy Caps + <mark>Mono</mark></h2>
+        <p class="body"><strong>Space Grotesk 700</strong> uppercase with negative tracking carries every display moment; <strong>JetBrains Mono</strong> uppercase with wide tracking carries every label. Body is Space Grotesk 400 mixed case. No third face. Emphasis is the <mark>yellow swatch</mark> or an <em>em colour-switch</em> &mdash; never italic.</p>
+      </div>
+      <div class="scale-list">
+        <div class="scale-row"><div class="sm"><b>section-num</b>Space Grotesk 700 · 320px</div><div class="smp"><span class="section-num" style="font-size:clamp(64px,9vw,130px)">07</span></div></div>
+        <div class="scale-row"><div class="sm"><b>display</b>Space Grotesk 700 · 132px</div><div class="smp"><span class="display" style="font-size:clamp(40px,5vw,72px)">Display</span></div></div>
+        <div class="scale-row"><div class="sm"><b>stat-num</b>Space Grotesk 700 · 156px</div><div class="smp"><span class="stat-num" style="font-size:clamp(48px,6vw,96px)">340%</span></div></div>
+        <div class="scale-row"><div class="sm"><b>title</b>Space Grotesk 700 · 88px</div><div class="smp"><span class="title" style="font-size:clamp(30px,4vw,56px)">Headline</span></div></div>
+        <div class="scale-row"><div class="sm"><b>card-headline</b>Space Grotesk 700 · 44px</div><div class="smp"><span class="card-headline">Card Title</span></div></div>
+        <div class="scale-row"><div class="sm"><b>body</b>Space Grotesk 400 · 28px</div><div class="smp"><span class="body">Mixed-case body at weight 400.</span></div></div>
+        <div class="scale-row"><div class="sm"><b>label</b>JetBrains Mono · 24px · 0.1em</div><div class="smp"><span class="label">Mono Label / 01 — Tag</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section id="components">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">04 — Components</span>
+        <h2 class="title">The Panel <mark>Toolkit</mark></h2>
+        <p class="body">Every block below is rendered with the template's <strong>actual CSS</strong> &mdash; not a mockup. Borderless panels, mono labels, yellow signals, and the block-stamp marks.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Panels (paper / ink / lemon), stamps &amp; QR tile</div>
+        <div class="panel-grid">
+          <div class="card" style="grid-column:1/span 3"><div class="corner-mark"><i></i><i></i><i></i><i></i></div><span class="label">Paper</span><div class="card-h3" style="margin-top:10px">Default fill</div></div>
+          <div class="card ink" style="grid-column:4/span 3"><span class="label on-ink">Ink</span><div class="card-h3" style="margin-top:10px">Contrast block</div></div>
+          <div class="card lemon" style="grid-column:7/span 3"><span class="label">Lemon</span><div class="card-h3" style="margin-top:10px">Loud signal</div></div>
+          <div class="card" style="grid-column:10/span 3;display:flex;align-items:center;justify-content:center;gap:18px">
+            <div class="blockmark"><i></i><i></i><i></i><i></i></div>
+            <div class="qr-tile"><i></i><i class="on"></i><i></i><i></i><i class="off"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i class="off"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i></i><i class="off"></i><i></i><i></i><i class="on"></i><i></i><i></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Stat panels — type allowed to dominate</div>
+        <div class="panel-grid">
+          <div class="card lemon" style="grid-column:1/span 5"><span class="label">Annual Recurring Revenue</span><div class="stat-num-lg" style="font-size:clamp(56px,8vw,130px);margin-top:8px">$12.4M</div></div>
+          <div class="card" style="grid-column:6/span 4"><span class="label">YoY Growth</span><div class="stat-num" style="font-size:clamp(48px,6vw,96px);margin-top:8px">340%</div></div>
+          <div class="card ink" style="grid-column:10/span 3"><span class="label on-ink">Retention</span><div class="stat-num" style="font-size:clamp(40px,5vw,72px);margin-top:8px">94%</div></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Comparison matrix &amp; pills</div>
+        <div class="card">
+          <table class="matrix">
+            <thead><tr><th>Feature</th><th>Us</th><th>Legacy</th><th>DIY</th></tr></thead>
+            <tbody>
+              <tr><td>Block grid</td><td><span class="pill pill-yes">Yes</span></td><td><span class="pill pill-no">No</span></td><td><span class="pill pill-part">Part</span></td></tr>
+              <tr><td>Neon accent</td><td><span class="pill pill-yes">Yes</span></td><td><span class="pill pill-part">Part</span></td><td><span class="pill pill-no">No</span></td></tr>
+              <tr><td>Zero shadows</td><td><span class="pill pill-yes">Yes</span></td><td><span class="pill pill-no">No</span></td><td><span class="pill pill-no">No</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Bar chart — ink series A, lemon series B</div>
+        <div class="card">
+          <div class="chart">
+            <div class="bar-group"><div class="bar a" data-h="50%" style="height:0"></div><div class="bar b" data-h="62%" style="height:0"></div></div>
+            <div class="bar-group"><div class="bar a" data-h="64%" style="height:0"></div><div class="bar b" data-h="78%" style="height:0"></div></div>
+            <div class="bar-group"><div class="bar a" data-h="78%" style="height:0"></div><div class="bar b" data-h="92%" style="height:0"></div></div>
+            <div class="bar-group"><div class="bar a" data-h="88%" style="height:0"></div><div class="bar b" data-h="100%" style="height:0"></div></div>
+          </div>
+          <div class="chart-labels"><span>FY22</span><span>FY23</span><span>FY24</span><span>FY25</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section id="layout">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">05 — Layout</span>
+        <h2 class="title">12 Columns, <mark>8 Rows</mark></h2>
+        <p class="body">The universal frame is a 12-column &times; 8-row CSS grid, inset 40px from the slide edge, 12px gaps. Composition is pure <strong>grid-column / grid-row</strong> spans — flexbox is used only inside a single cell. Fill the grid corner to corner; sparse grids read as broken.</p>
+      </div>
+      <div class="panel-grid">
+        <div class="card ink" style="grid-column:1/span 7;grid-row:span 2;display:flex;align-items:center"><div><span class="label on-ink">The Frame</span><div class="card-headline" style="margin-top:10px">inset 40px · 12px gap · repeat(12,1fr) / repeat(8,1fr)</div></div></div>
+        <div class="card lemon" style="grid-column:8/span 5"><span class="label">grid-gap</span><div class="card-h3" style="margin-top:8px">12–18px</div></div>
+        <div class="card" style="grid-column:8/span 5"><span class="label">card-pad</span><div class="card-h3" style="margin-top:8px">24–40px</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH ============ -->
+  <section id="depth">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">06 — Depth &amp; Shape</span>
+        <h2 class="title">Adjacency, <mark>Not Shadow</mark></h2>
+        <p class="body">Zero box-shadows. Zero rounded corners. Zero gradients (except photo-region noise). Depth is entirely a function of which colour sits next to which &mdash; a paper panel beside ink reads as forward; a lemon panel beside ink is the loudest signal. The only borders are 1.5px ink on tables &amp; pills.</p>
+      </div>
+      <div class="adj-demo">
+        <div style="background:var(--paper)">Paper · forward</div>
+        <div style="background:var(--ink);color:var(--paper)">Ink · recedes</div>
+        <div style="background:var(--lemon)">Lemon · signal</div>
+      </div>
+      <p class="body" style="opacity:0.7">Border-radius: <strong>0</strong> everywhere · Borders: <strong>1.5px / 2px ink</strong> on tables, pills, chart axes only · Shadows: <strong>none</strong>.</p>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section id="dodont">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">07 — Do &amp; Don't</span>
+        <h2 class="title">Hold The <mark>Grid</mark></h2>
+      </div>
+      <div class="dodont">
+        <div class="card do">
+          <div class="card-headline">Do</div>
+          <ul class="dd-list">
+            <li>Compose every slide on the 12&times;8 grid; fill it corner to corner.</li>
+            <li>Use paper as default, ink for contrast, lemon for 1–3 signal panels.</li>
+            <li>Set display in Space Grotesk 700 uppercase with negative tracking.</li>
+            <li>Use &lt;mark&gt; for a yellow swatch or &lt;em&gt; for a yellow colour-switch.</li>
+            <li>Label everything in JetBrains Mono uppercase with 0.08em+ tracking.</li>
+          </ul>
+        </div>
+        <div class="card ink dont">
+          <div class="card-headline">Don't</div>
+          <ul class="dd-list">
+            <li>Add box-shadow, round a corner, or use a gradient on a panel.</li>
+            <li>Introduce a second accent colour, or use lemon as text.</li>
+            <li>Put display in mixed case, or body in uppercase.</li>
+            <li>Use italic letterforms — &lt;em&gt; is a colour switch, not a slant.</li>
+            <li>Sparsely populate the grid — density is the editorial identity.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section id="cjk">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">08 — 中文 / CJK</span>
+        <h2 class="title">Weight, <mark>Not Caps</mark></h2>
+        <p class="body">Chinese has no uppercase, so the brutalist signature transfers through <strong>weight</strong>: set every display moment in 思源黑体 Noto Sans SC 900 to match Space Grotesk 700 ALL CAPS, and drop the negative tracking entirely (CJK glyphs collide when tightened). The yellow &lt;mark&gt; swatch transfers perfectly.</p>
+      </div>
+      <div class="panel-grid">
+        <div class="card" style="grid-column:1/span 7">
+          <div class="cjk-display">新栅格<mark>系统</mark></div>
+          <div class="cjk-body" style="margin-top:16px">12 列 &times; 8 行的色块栅格，纸白、墨黑与一抹电光柠檬黄在格子间互换角色。无边框、无投影，深度全靠色块相邻。中文务必使用 Noto Sans SC 900 以匹配 Space Grotesk 700 全大写的视觉重量，并将 letter-spacing 归零。盘古之白：使用 Claude、2026 年。</div>
+          <div class="cjk-label">思源黑体 Noto Sans SC · 900 / 400</div>
+        </div>
+        <div class="card ink" style="grid-column:8/span 5">
+          <table class="matrix" style="--c:var(--paper)">
+            <tbody style="color:var(--paper)">
+              <tr><td style="border-color:var(--paper)">Display</td><td style="border-color:var(--paper)">思源黑体 900</td></tr>
+              <tr><td style="border-color:var(--paper)">Body</td><td style="border-color:var(--paper)">思源黑体 400</td></tr>
+              <tr><td style="border-color:var(--paper);border-bottom:none">Label</td><td style="border-color:var(--paper);border-bottom:none">Mono + 思源黑体</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close" id="close">
+    <div class="panel-grid">
+      <div class="card ink" style="grid-column:1/span 8;display:flex;flex-direction:column;justify-content:center;min-height:300px">
+        <span class="label on-ink">End of Deck</span>
+        <h2 class="display" style="margin-top:16px">Neo-Grid<br><em>Bold</em></h2>
+        <p class="body" style="margin-top:18px;max-width:46ch">One of 34 systems in Beautiful HTML Templates. Confident, editorial, unmistakably design-led.</p>
+      </div>
+      <div class="card lemon" style="grid-column:9/span 4;display:flex;flex-direction:column;justify-content:space-between;gap:20px">
+        <div class="blockmark" style="width:72px;height:72px"><i></i><i></i><i></i><i></i></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <a class="pill pill-no" href="index.html" style="text-align:center;text-decoration:none">&larr; All Systems</a>
+          <a class="pill pill-no" href="../templates/neo-grid-bold/template.html" style="text-align:center;text-decoration:none">Open Live Deck</a>
+          <a class="pill pill-no" href="../templates/neo-grid-bold/design.md" style="text-align:center;text-decoration:none">design.md</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var counter = document.getElementById('counter');
+      var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+      var total = ids.length;
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+        for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+        if (scrolled > 0.99) idx = total - 1;
+        counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+      var bars = Array.prototype.slice.call(document.querySelectorAll('.bar[data-h]'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.style.transition='height 0.8s cubic-bezier(0.16,1,0.3,1)'; e.target.style.height = e.target.getAttribute('data-h'); io.unobserve(e.target); } }); }, { threshold: 0.4 });
+        bars.forEach(function (b) { io.observe(b); });
+      } else { bars.forEach(function (b) { b.style.height = b.getAttribute('data-h'); }); }
+    })();
+  </script>
+</body>
+</html>

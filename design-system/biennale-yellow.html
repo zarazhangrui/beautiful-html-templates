@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biennale Yellow — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's three faces: Instrument Serif (display) + Archivo (body/label) + JetBrains Mono (data) -->
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <!-- CJK pairing for §08 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #E9E5DB; --paper-deep: #DCD6C4; --sun: #F1EE2E; --sun-soft: #F8F39B; --haze: #F0DA7C;
+      --ink: #1B2566; --ember: #E26B4A;
+      --f-serif: 'Instrument Serif', 'Noto Serif SC', Georgia, serif;
+      --f-sans: 'Archivo', 'Noto Sans SC', sans-serif;
+      --f-mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--f-sans); -webkit-font-smoothing: antialiased; }
+
+    /* ===== Persistent chrome ===== */
+    .progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--ink); z-index: 300; }
+    .back-link { position: fixed; top: 26px; left: clamp(28px,4vw,60px); z-index: 200; text-decoration: none; color: var(--ink);
+      font-family: var(--f-sans); font-weight: 600; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; }
+    .back-link:hover { color: var(--ember); }
+    .pagenum { position: fixed; bottom: clamp(22px,2.4vh,42px); right: clamp(24px,2.4vw,48px); z-index: 200;
+      font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.08em; color: var(--ink); opacity: 0.75; }
+
+    /* ===== Sections ===== */
+    section, header, footer { position: relative; overflow: hidden; padding: clamp(48px,5vw,90px) clamp(40px,4.5vw,80px); }
+    .wrap { max-width: 1200px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+    .sun-bloom { position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
+      background: radial-gradient(circle, rgba(241,238,46,0.85) 0%, rgba(248,243,155,0.5) 34%, rgba(240,218,124,0.2) 60%, transparent 80%); }
+    .ember-bloom { position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
+      background: radial-gradient(circle, rgba(226,107,74,0.22) 0%, transparent 70%); }
+
+    /* ===== Type ===== */
+    .micro { font-family: var(--f-sans); font-weight: 600; font-size: clamp(11px,0.85vw,14px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink); }
+    .display { font-family: var(--f-serif); font-weight: 400; font-size: clamp(56px,12vw,180px); line-height: 0.86; letter-spacing: -0.018em; }
+    .display-it { font-family: var(--f-serif); font-style: italic; font-weight: 400; font-size: clamp(40px,7vw,110px); line-height: 1.04; letter-spacing: -0.005em; }
+    .numeral-jumbo { font-family: var(--f-serif); font-weight: 400; font-size: clamp(120px,22vw,340px); line-height: 0.84; letter-spacing: -0.04em; }
+    .numeral-md { font-family: var(--f-serif); font-weight: 400; font-size: clamp(60px,7vw,130px); line-height: 0.92; letter-spacing: -0.01em; }
+    .headline { font-family: var(--f-serif); font-weight: 400; font-size: clamp(32px,4.6vw,80px); line-height: 1.06; letter-spacing: -0.005em; }
+    .headline-sm { font-family: var(--f-serif); font-weight: 400; font-size: clamp(26px,3.4vw,52px); line-height: 1.05; }
+    .date-rail { font-family: var(--f-serif); font-weight: 400; font-size: clamp(40px,5vw,88px); line-height: 0.96; letter-spacing: -0.005em; text-align: right; }
+    .body-lede { font-family: var(--f-sans); font-weight: 400; font-size: clamp(15px,1.05vw,18px); line-height: 1.55; }
+    .body { font-family: var(--f-sans); font-weight: 400; font-size: clamp(14px,0.95vw,16px); line-height: 1.5; }
+    .mono-data { font-family: var(--f-mono); font-size: clamp(12px,0.85vw,14px); letter-spacing: 0.04em; }
+
+    .hairline { border: 0; border-top: 1px solid var(--ink); }
+    .sec-head { margin-bottom: clamp(32px,4vh,56px); }
+    .sec-head .micro { display: block; margin-bottom: 18px; }
+    .sec-head .body-lede { max-width: 64ch; margin-top: 18px; }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+    .hero .sun-bloom { width: 60vw; height: 60vw; max-width: 800px; max-height: 800px; top: -6vw; right: -4vw; }
+    .hero .ember-bloom { width: 36vw; height: 36vw; bottom: -8vw; left: -6vw; }
+    .hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: clamp(20px,3vh,40px); }
+    .hero .display { margin: 4px 0; }
+    .hero-lede { font-family: var(--f-sans); font-weight: 400; font-size: clamp(15px,1.2vw,20px); line-height: 1.55; max-width: 50ch; margin-top: 20px; }
+    .strands { margin-top: clamp(30px,4vh,52px); max-width: 760px; }
+    .strand { display: grid; grid-template-columns: 56px 1fr auto; gap: clamp(14px,1.4vw,24px); align-items: baseline; text-decoration: none; padding: 16px 0; border-bottom: 1px solid rgba(27,37,102,0.2); }
+    .strand:first-child { border-top: 1px solid var(--ink); }
+    .strand .st-num { font-family: var(--f-serif); font-size: clamp(28px,2vw,38px); color: var(--ink); }
+    .strand .st-title { font-family: var(--f-serif); font-size: clamp(22px,1.7vw,32px); color: var(--ink); }
+    .strand .st-meta { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--ink); opacity: 0.6; }
+    .strand:hover .st-title { font-style: italic; }
+
+    /* ===== components ===== */
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: clamp(20px,2.5vw,48px); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px,3vw,56px); }
+    .footer-band { display: grid; grid-template-columns: repeat(4,1fr); gap: clamp(20px,2.4vw,44px); }
+    .fb-cell { border-top: 1px solid var(--ink); padding-top: 14px; }
+    .fb-cell .micro { display: block; margin-bottom: 8px; }
+    .yellow-panel { background: var(--sun); color: var(--ink); padding: clamp(28px,3vw,48px); }
+    .ledger-row { display: grid; grid-template-columns: 92px 1.6fr 0.9fr 80px; gap: clamp(14px,1.4vw,28px); align-items: baseline; padding: 14px 0; border-bottom: 1px solid rgba(27,37,102,0.2); }
+    .ledger-row .lr-date, .ledger-row .lr-dur { font-family: var(--f-mono); font-size: clamp(12px,0.85vw,14px); }
+    .ledger-row .lr-dur { text-align: right; opacity: 0.7; }
+    .ledger-row .lr-title { font-family: var(--f-serif); font-size: clamp(18px,1.4vw,26px); }
+    .ledger-row .lr-venue { font-family: var(--f-sans); font-size: clamp(13px,0.9vw,15px); opacity: 0.7; }
+
+    /* bar chart */
+    .bar-chart { display: flex; flex-direction: column; gap: 14px; }
+    .bar-row { display: grid; grid-template-columns: 60px 1fr 60px; gap: 16px; align-items: center; }
+    .bar-row .bk { font-family: var(--f-mono); font-size: 13px; }
+    .bar-track { height: 20px; position: relative; }
+    .bar { height: 100%; background: var(--ink); width: 0; transition: width 0.9s cubic-bezier(0.16,1,0.3,1); }
+    .bar.lit { background: var(--sun); border: 1px solid var(--ink); }
+    .bar-row .bv { font-family: var(--f-mono); font-size: 13px; text-align: right; }
+
+    /* ===== §02 swatches ===== */
+    .sw-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; border: 1px solid var(--ink); }
+    .sw { min-height: 140px; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; border: 1px solid var(--ink); }
+    .sw .sw-name { font-family: var(--f-serif); font-size: 22px; }
+    .sw .sw-hex { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.04em; margin-top: 4px; }
+
+    /* ===== §03 typography ===== */
+    .scale-stack { display: flex; flex-direction: column; }
+    .scale-row { display: grid; grid-template-columns: 220px 1fr; gap: 28px; align-items: baseline; padding: 18px 0; border-bottom: 1px solid rgba(27,37,102,0.2); }
+    .scale-row:last-child { border-bottom: none; }
+    .sm { font-family: var(--f-sans); font-weight: 600; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); opacity: 0.7; }
+    .sm b { display: block; opacity: 1; margin-bottom: 4px; }
+
+    /* ===== §04 ===== */
+    .comp { margin-bottom: 44px; }
+    .comp-h { font-family: var(--f-sans); font-weight: 600; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink); margin-bottom: 20px; }
+
+    /* ===== §07 ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,4vw,64px); }
+    .dd-list { list-style: none; margin-top: 16px; }
+    .dd-list li { font-family: var(--f-sans); font-size: clamp(13px,1vw,16px); line-height: 1.6; padding: 12px 0; border-bottom: 1px solid rgba(27,37,102,0.2); display: grid; grid-template-columns: 1.6em 1fr; }
+    .dd-list li:last-child { border-bottom: none; }
+    .do .dd-list li::before { content: "+"; font-family: var(--f-serif); }
+    .dont .dd-list li::before { content: "—"; }
+
+    /* ===== §08 cjk ===== */
+    .cjk-display { font-family: 'Noto Serif SC', var(--f-serif); font-weight: 700; font-size: clamp(40px,6vw,96px); line-height: 1.15; letter-spacing: 0; }
+    .cjk-body { font-family: 'Noto Serif SC', var(--f-sans); font-weight: 400; font-size: clamp(15px,1.2vw,18px); line-height: 1.8; margin-top: 16px; }
+    .cjk-label { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); margin-top: 16px; }
+
+    /* ===== close ===== */
+    .close { min-height: 84vh; display: flex; flex-direction: column; justify-content: center; }
+    .close .sun-bloom { width: 60vw; height: 50vw; max-width: 760px; bottom: -16vw; left: 50%; transform: translateX(-50%); }
+    .close-links { margin-top: 28px; display: flex; gap: 28px; flex-wrap: wrap; }
+    .close-links a { text-decoration: none; font-family: var(--f-sans); font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 5px; }
+    .close-links a:hover { color: var(--ember); border-color: var(--ember); }
+
+    @media (max-width: 920px) {
+      .grid-3, .grid-2, .sw-grid, .footer-band, .dodont { grid-template-columns: 1fr; }
+      .ledger-row { grid-template-columns: 70px 1fr; gap: 8px 14px; }
+      .ledger-row .lr-dur { display: none; }
+      .scale-row { grid-template-columns: 1fr; gap: 8px; }
+      .date-rail { text-align: left; }
+    }
+    @media (max-width: 560px) { .sw-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <a class="back-link" href="index.html">&larr; Index</a>
+  <div class="pagenum" id="counter">01 / 10</div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="sun-bloom"></div>
+    <div class="ember-bloom"></div>
+    <div class="wrap">
+      <div class="hero-top">
+        <span class="micro">Design System Specification</span>
+        <div class="date-rail">2026 &mdash;<br>34 Systems</div>
+      </div>
+      <h1 class="display">Biennale<br>Yellow</h1>
+      <p class="hero-lede">A literary-editorial system in the register of an art-biennale catalogue &mdash; warm parchment flooded with soft solar-yellow blooms, a single deep-indigo ink, and Instrument Serif at poster scale.</p>
+      <nav class="strands">
+        <a class="strand" href="#overview"><span class="st-num">01</span><span class="st-title">Overview</span><span class="st-meta">SEC.01</span></a>
+        <a class="strand" href="#colours"><span class="st-num">02</span><span class="st-title">Colours</span><span class="st-meta">SEC.02</span></a>
+        <a class="strand" href="#typography"><span class="st-num">03</span><span class="st-title">Typography</span><span class="st-meta">SEC.03</span></a>
+        <a class="strand" href="#components"><span class="st-num">04</span><span class="st-title">Components</span><span class="st-meta">SEC.04</span></a>
+        <a class="strand" href="#layout"><span class="st-num">05</span><span class="st-title">Layout</span><span class="st-meta">SEC.05</span></a>
+        <a class="strand" href="#depth"><span class="st-num">06</span><span class="st-title">Depth &amp; Shape</span><span class="st-meta">SEC.06</span></a>
+        <a class="strand" href="#dodont"><span class="st-num">07</span><span class="st-title">Do &amp; Don't</span><span class="st-meta">SEC.07</span></a>
+        <a class="strand" href="#cjk"><span class="st-num">08</span><span class="st-title">中文 / CJK</span><span class="st-meta">SEC.08</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section id="overview">
+    <div class="sun-bloom" style="width:40vw;height:40vw;max-width:520px;top:-12vw;right:-8vw"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="micro">01 — Overview</span>
+        <h2 class="headline">Paper, Ink, and Yellow</h2>
+        <p class="body-lede">No cards, no buttons, no shadows, no rounded corners. The structural vocabulary is just three things: warm parchment, deep-indigo ink, and solar yellow. The mood sits between a folded museum brochure, a slow literary quarterly, and a Mediterranean exhibition poster.</p>
+      </div>
+      <div class="footer-band">
+        <div class="fb-cell"><span class="micro">Formality</span><div class="numeral-md" style="font-size:clamp(40px,4vw,64px)">High</div></div>
+        <div class="fb-cell"><span class="micro">Density</span><div class="numeral-md" style="font-size:clamp(40px,4vw,64px)">Med</div></div>
+        <div class="fb-cell"><span class="micro">Scheme</span><div class="numeral-md" style="font-size:clamp(40px,4vw,64px)">Light</div></div>
+        <div class="fb-cell"><span class="micro">Slides</span><div class="numeral-md" style="font-size:clamp(40px,4vw,64px)">08</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section id="colours">
+    <div class="ember-bloom" style="width:34vw;height:34vw;bottom:-10vw;right:-6vw"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="micro">02 — Colours</span>
+        <h2 class="headline">One Yellow, One Ink</h2>
+        <p class="body-lede">Warm parchment is the universal ground; deep-indigo ink is the single text and line colour; solar yellow is the signature &mdash; as a flooded panel, a soft radial bloom, or a translucent tile underprint. A subordinate ember peach balances the bloom. The system never inverts.</p>
+      </div>
+      <div class="sw-grid">
+        <div class="sw" style="background:#E9E5DB"><div class="sw-name">Paper</div><div class="sw-hex">#E9E5DB</div></div>
+        <div class="sw" style="background:#DCD6C4"><div class="sw-name">Paper Deep</div><div class="sw-hex">#DCD6C4</div></div>
+        <div class="sw" style="background:#F1EE2E"><div class="sw-name">Sun</div><div class="sw-hex">#F1EE2E</div></div>
+        <div class="sw" style="background:#F0DA7C"><div class="sw-name">Haze</div><div class="sw-hex">#F0DA7C</div></div>
+        <div class="sw" style="background:#1B2566;color:#E9E5DB;border-color:#E9E5DB"><div class="sw-name">Ink</div><div class="sw-hex">#1B2566</div></div>
+        <div class="sw" style="background:#E26B4A;color:#E9E5DB;border-color:#1B2566"><div class="sw-name">Ember</div><div class="sw-hex">#E26B4A</div></div>
+        <div class="sw" style="background:#F8F39B"><div class="sw-name">Sun Soft</div><div class="sw-hex">#F8F39B</div></div>
+        <div class="sw yellow-panel" style="min-height:140px;justify-content:flex-end;display:flex;flex-direction:column"><div class="sw-name">Yellow Panel</div><div class="sw-hex">ink on sun</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section id="typography">
+    <div class="sun-bloom" style="width:38vw;height:38vw;max-width:480px;top:-14vw;left:40%"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="micro">03 — Typography</span>
+        <h2 class="headline">Serif, Sans, <span style="font-style:italic">Mono</span></h2>
+        <p class="body-lede"><strong style="font-weight:400;font-style:italic">Instrument Serif</strong> carries every display moment from 40px to 720px &mdash; weight 400 only, tight line-height, negative tracking. <strong style="font-weight:600">Archivo</strong> is body and the wide-tracked uppercase label. <strong style="font-weight:400">JetBrains Mono</strong> is reserved for dates and numerals.</p>
+      </div>
+      <div class="scale-stack">
+        <div class="scale-row"><div class="sm"><b>display · Instrument 400</b>120–240px</div><div><span class="display" style="font-size:clamp(44px,6vw,84px)">Biennale</span></div></div>
+        <div class="scale-row"><div class="sm"><b>display-it · italic</b>56–120px</div><div><span class="display-it" style="font-size:clamp(32px,4vw,60px)">a manifesto</span></div></div>
+        <div class="scale-row"><div class="sm"><b>numeral · Instrument 400</b>up to 720px</div><div><span class="numeral-jumbo" style="font-size:clamp(64px,9vw,140px)">7</span></div></div>
+        <div class="scale-row"><div class="sm"><b>headline · Instrument 400</b>40–88px</div><div><span class="headline" style="font-size:clamp(28px,3.4vw,52px)">Section Headline</span></div></div>
+        <div class="scale-row"><div class="sm"><b>body · Archivo 400</b>14–16px</div><div><span class="body" style="margin:0">A quiet Archivo body paragraph, line-height 1.5.</span></div></div>
+        <div class="scale-row"><div class="sm"><b>micro-label · Archivo 600</b>0.18em UPPER</div><div><span class="micro">Universal Eyebrow Label</span></div></div>
+        <div class="scale-row"><div class="sm"><b>mono-data · JetBrains</b>dates &amp; numerals</div><div><span class="mono-data">2026.06 / NN — NN</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section id="components">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="micro">04 — Components</span>
+        <h2 class="headline">The Catalogue Kit</h2>
+        <p class="body-lede">Every block below is rendered with the template's <span style="font-style:italic">actual CSS</span> &mdash; not a mockup. Strand rows, ledger rows, yellow panels, and ink/lit bar charts.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Yellow panel — the strongest colour statement</div>
+        <div class="yellow-panel">
+          <span class="micro">On Solar Yellow</span>
+          <div class="headline-sm" style="margin-top:10px">Ink text sits on top of a flooded sun panel &mdash; the only &ldquo;hard&rdquo; colour treatment.</div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Ledger rows — mono date, serif title, sans venue, mono duration</div>
+        <div class="ledger-row"><span class="lr-date">06.12</span><span class="lr-title">Opening Lecture</span><span class="lr-venue">Main Hall</span><span class="lr-dur">90′</span></div>
+        <div class="ledger-row"><span class="lr-date">06.14</span><span class="lr-title">Curatorial Walk</span><span class="lr-venue">Gallery 2</span><span class="lr-dur">45′</span></div>
+        <div class="ledger-row"><span class="lr-date">06.18</span><span class="lr-title">Typography Panel</span><span class="lr-venue">Studio West</span><span class="lr-dur">60′</span></div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Bar chart — ink bars, one lit (yellow + ink stroke)</div>
+        <div class="bar-chart">
+          <div class="bar-row"><span class="bk">FY22</span><div class="bar-track"><div class="bar" data-w="44%"></div></div><span class="bv">2.7</span></div>
+          <div class="bar-row"><span class="bk">FY23</span><div class="bar-track"><div class="bar" data-w="60%"></div></div><span class="bv">5.1</span></div>
+          <div class="bar-row"><span class="bk">FY24</span><div class="bar-track"><div class="bar" data-w="80%"></div></div><span class="bv">8.9</span></div>
+          <div class="bar-row"><span class="bk">FY25</span><div class="bar-track"><div class="bar lit" data-w="100%"></div></div><span class="bv">12.4</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section id="layout">
+    <div class="sun-bloom" style="width:40vw;height:40vw;max-width:520px;bottom:-14vw;right:-6vw"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="micro">05 — Layout</span>
+        <h2 class="headline">Editorial-Restrained</h2>
+        <p class="body-lede">Elegant when sparse, broken when crowded. One large display moment plus a handful of supporting elements. Even dense surfaces achieve density through tabular repetition &mdash; many quiet hairline-separated rows, not many bordered cells. Generous 40–76px edge padding.</p>
+      </div>
+      <div class="grid-3">
+        <div style="border-top:1px solid var(--ink);padding-top:14px"><span class="micro">Edge</span><div class="body" style="margin-top:8px">40–76px inset; the canvas breathes.</div></div>
+        <div style="border-top:1px solid var(--ink);padding-top:14px"><span class="micro">Bloom</span><div class="body" style="margin-top:8px">One sun-bloom per surface, minimum.</div></div>
+        <div style="border-top:1px solid var(--ink);padding-top:14px"><span class="micro">Pagenum</span><div class="body" style="margin-top:8px">Mono NN / NN, bottom-right, 75%.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH ============ -->
+  <section id="depth">
+    <div class="sun-bloom" style="width:46vw;height:46vw;max-width:600px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+    <div class="ember-bloom" style="width:30vw;height:30vw;bottom:-6vw;left:-4vw"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="micro">06 — Depth &amp; Shape</span>
+        <h2 class="headline">Atmospheric, Not Structural</h2>
+        <p class="body-lede">Zero drop shadows. Depth comes from layered radial blooms of yellow &mdash; the sun-bloom centred here &mdash; with an optional ember counter-bloom. Cards have no borders; regions separate only by 1px hairline rules. The lack of border weight is itself the aesthetic.</p>
+      </div>
+      <div class="grid-3">
+        <div style="border-top:1px solid var(--ink);padding-top:14px"><span class="micro">Sun bloom</span><div class="body" style="margin-top:8px">42–70% radial, the primary depth.</div></div>
+        <div style="border-top:1px solid var(--ink);padding-top:14px"><span class="micro">Ember bloom</span><div class="body" style="margin-top:8px">15–22%, opposite corner.</div></div>
+        <div style="border-top:1px solid var(--ink);padding-top:14px"><span class="micro">1px hairline</span><div class="body" style="margin-top:8px">The only border, ever.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section id="dodont">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="micro">07 — Do &amp; Don't</span>
+        <h2 class="headline">Confident Restraint</h2>
+      </div>
+      <div class="dodont">
+        <div class="do">
+          <h3 class="headline-sm" style="margin-bottom:8px">Do</h3>
+          <ul class="dd-list">
+            <li>Start every surface on warm parchment; add at least one sun-bloom.</li>
+            <li>Set every line of text in deep-indigo ink — one colour, full opacity.</li>
+            <li>Use Instrument Serif 400 with tight line-height and negative tracking.</li>
+            <li>Set labels in Archivo 600 uppercase with 0.16–0.32em tracking.</li>
+            <li>Reserve JetBrains Mono for dates, numerals, and page numbers.</li>
+          </ul>
+        </div>
+        <div class="dont">
+          <h3 class="headline-sm" style="margin-bottom:8px">Don't</h3>
+          <ul class="dd-list">
+            <li>Add drop shadows, round corners, or borders thicker than 1px.</li>
+            <li>Set Instrument Serif bold, or introduce a second text colour.</li>
+            <li>Invert — yellow or paper text on an ink ground does not exist.</li>
+            <li>Crowd the canvas with cards, buttons, or panel grids.</li>
+            <li>Omit the bloom — a flat parchment slide reads as a CMS template.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section id="cjk">
+    <div class="sun-bloom" style="width:36vw;height:36vw;max-width:460px;top:-12vw;right:-6vw"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="micro">08 — 中文 / CJK</span>
+        <h2 class="headline">A Biennale, In Chinese</h2>
+        <p class="body-lede">The closest register is <span style="font-style:italic">思源宋体 Noto Serif SC</span> for editorial display and body, with 得意黑 Smiley Sans reserved for the loudest poster-scale moments. The single-ink, single-bloom discipline transfers cleanly &mdash; ink on paper, sun-bloom atmosphere, hairline rules.</p>
+      </div>
+      <div class="grid-2" style="align-items:start">
+        <div>
+          <div class="cjk-display">黄色双年展</div>
+          <div class="cjk-body">一套艺术双年展图录式的文学编辑系统：暖羊皮纸为底，柔和的太阳黄径向光晕，单一的深靛蓝墨色贯穿所有文字与线条。思源宋体承载编辑标题与正文；中文 letter-spacing 归零，行高适度放开。盘古之白：2026 春季双年展、AI 产品。</div>
+          <div class="cjk-label">思源宋体 Noto Serif SC · 思源黑体标签</div>
+        </div>
+        <div class="yellow-panel">
+          <span class="micro">Pairing</span>
+          <p class="body" style="margin-top:12px;line-height:2">Display → 思源宋体 700 / 得意黑<br>Body → 思源宋体 400<br>Label → 思源黑体 600（0 字距）<br>Numerals → keep Latin (NN / NN)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close" id="close">
+    <div class="sun-bloom"></div>
+    <div class="wrap">
+      <span class="micro">End of Programme</span>
+      <h2 class="display" style="font-size:clamp(48px,9vw,140px);margin-top:12px">Biennale<br><span style="font-style:italic">Yellow</span></h2>
+      <p class="body-lede" style="margin-top:18px;max-width:46ch">One of 34 systems in Beautiful HTML Templates. Confident, atmospheric, deeply restrained.</p>
+      <div class="close-links">
+        <a href="index.html">&larr; All Systems</a>
+        <a href="../templates/biennale-yellow/template.html">Open Live Deck</a>
+        <a href="../templates/biennale-yellow/design.md">design.md</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var counter = document.getElementById('counter');
+      var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+      var total = ids.length;
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+        for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+        if (scrolled > 0.99) idx = total - 1;
+        counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+      var bars = Array.prototype.slice.call(document.querySelectorAll('.bar[data-w]'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.style.width = e.target.getAttribute('data-w'); io.unobserve(e.target); } }); }, { threshold: 0.4 });
+        bars.forEach(function (b) { io.observe(b); });
+      } else { bars.forEach(function (b) { b.style.width = b.getAttribute('data-w'); }); }
+    })();
+  </script>
+</body>
+</html>

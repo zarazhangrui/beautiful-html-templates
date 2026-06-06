@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bold Poster — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Latin trio: the system's own faces -->
+  <link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- CJK pairing, loaded only to render the live Chinese specimen in §08 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --dark: #1C1410;
+      --red: #D8000F;
+      --light: #F5F2EF;
+      --doc-max: 1100px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      font-family: 'Libre Baskerville', serif;
+      color: var(--dark);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============ FONT ROLE UTILITIES (the system's three faces) ============ */
+    .font-display { font-family: 'Shrikhand', cursive; font-weight: 400; }
+    .font-serif   { font-family: 'Libre Baskerville', serif; }
+    .font-sans    { font-family: 'Space Grotesk', sans-serif; }
+
+    /* ============ PERSISTENT CHROME (ported from the template) ============ */
+    /* The system's most prominent chrome: a 5px red progress strip pinned to
+       the bottom edge. Here it tracks scroll position instead of slide index. */
+    .progress {
+      position: fixed; bottom: 0; left: 0; height: 5px; width: 0;
+      background: var(--red); z-index: 200;
+      transition: width 0.15s linear;
+    }
+    /* Section counter, bottom-right, Space Grotesk uppercase at 50% — the
+       template's "stamped metadata" voice. */
+    .counter {
+      position: fixed; bottom: 16px; right: 22px; z-index: 200;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      font-weight: 600; color: var(--dark); opacity: 0.5;
+      mix-blend-mode: multiply;
+    }
+    /* Back-to-index link, top-left — footer-link treatment (2px red underline). */
+    .back-link {
+      position: fixed; top: 20px; left: 24px; z-index: 200;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      font-weight: 600; color: var(--dark); text-decoration: none;
+      border-bottom: 2px solid var(--red); padding-bottom: 3px;
+      transition: color 0.3s;
+      background: rgba(255,255,255,0.7); backdrop-filter: blur(2px);
+    }
+    .back-link:hover { color: var(--red); }
+
+    /* ============ DOCUMENT SECTION SCAFFOLD ============ */
+    .section { padding: 88px 56px; }
+    .section.light { background: var(--light); }        /* striping signature */
+    .section.dark  { background: var(--dark); color: var(--bg); }
+    .section.red   { background: var(--red); color: var(--bg); }
+    .wrap { max-width: var(--doc-max); margin: 0 auto; width: 100%; }
+
+    /* Section eyebrow — Space Grotesk 600 uppercase, 3px tracking, RED.
+       Non-optional treatment per the system's spec. */
+    .eyebrow {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--red); margin-bottom: 14px;
+    }
+    .section.dark .eyebrow, .section.red .eyebrow { color: var(--red); }
+    .section.red .eyebrow { color: var(--dark); }
+
+    /* Section header — Shrikhand, dark, no rotation (per the Don't list:
+       most section headers are dark Shrikhand, not red). */
+    .sec-header {
+      font-family: 'Shrikhand', cursive;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 1; color: var(--dark);
+      margin-bottom: 10px;
+    }
+    .section.dark .sec-header, .section.red .sec-header { color: var(--bg); }
+    .sec-header-lg { font-size: clamp(38px, 6vw, 72px); }
+
+    .sec-intro {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(14px, 1.3vw, 17px);
+      line-height: 1.75; color: var(--dark);
+      max-width: 720px; margin-bottom: 44px;
+    }
+    .section.dark .sec-intro { color: var(--bg); opacity: 0.78; }
+    /* Inline face-switch is the system's emphasis mechanism: <strong> in body
+       switches to Space Grotesk 600 rather than a serif bold. */
+    .sec-intro strong, .doc-body strong {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600; font-size: 0.94em; letter-spacing: 0.3px;
+    }
+    .doc-body {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(13px, 1.2vw, 16px);
+      line-height: 1.75; color: var(--dark);
+    }
+
+    /* ============ HERO (the signature three-line Shrikhand stack) ============ */
+    .hero {
+      min-height: 100vh; background: var(--bg);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 80px 7vw; position: relative; overflow: hidden;
+    }
+    .hero-meta {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(11px, 1vw, 14px);
+      color: var(--dark); opacity: 0.6;
+      margin-bottom: 2.4vh; letter-spacing: 0.5px;
+    }
+    .hero-title-group { position: relative; }
+    .hero-title {
+      font-family: 'Shrikhand', cursive;
+      font-size: clamp(72px, 16vw, 220px);
+      line-height: 0.88; color: var(--dark); letter-spacing: 1px;
+    }
+    .hero-title.red {                       /* middle line: red + rotate -4° */
+      color: var(--red);
+      font-size: clamp(84px, 18vw, 260px);
+      line-height: 0.85; transform: rotate(-4deg);
+      display: inline-block; margin-left: -0.5vw; margin-top: -1.5vh;
+    }
+    .hero-title.bottom {                     /* bottom line: rotate +2° */
+      font-size: clamp(64px, 14vw, 200px);
+      line-height: 0.9; transform: rotate(2deg);
+      display: inline-block; margin-top: -0.5vh;
+    }
+    .hero-tagline {
+      margin-top: 5vh; max-width: 460px;
+      border-left: 4px solid var(--red); padding-left: 18px;
+    }
+    .hero-tagline .tag-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(10px, 0.9vw, 12px);
+      letter-spacing: 3px; text-transform: uppercase;
+      font-weight: 600; color: var(--red); margin-bottom: 8px;
+    }
+    .hero-tagline .tag-body {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(14px, 1.3vw, 17px);
+      line-height: 1.6; color: var(--dark);
+    }
+
+    /* Contents index — the deck's "metadata voice" used as a clickable TOC */
+    .contents {
+      margin-top: 6vh; display: grid;
+      grid-template-columns: repeat(2, minmax(0, 280px));
+      gap: 4px 48px;
+    }
+    .contents a {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+      font-weight: 600; color: var(--dark); text-decoration: none;
+      padding: 7px 0; border-bottom: 1px solid rgba(28,20,16,0.12);
+      display: flex; gap: 14px; transition: color 0.2s;
+    }
+    .contents a span { color: var(--red); }
+    .contents a:hover { color: var(--red); }
+
+    /* ============ META STRIP (formality / mood / occasion at a glance) ====== */
+    .meta-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; border: 3px solid var(--dark); margin-top: 8px;
+    }
+    .meta-cell {
+      padding: 20px 22px; border: 1.5px solid var(--dark);
+      display: flex; flex-direction: column;
+    }
+    .meta-cell .mc-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      font-weight: 600; color: var(--red); margin-bottom: 8px;
+    }
+    .meta-cell .mc-value {
+      font-family: 'Shrikhand', cursive;
+      font-size: clamp(20px, 2.4vw, 30px);
+      color: var(--dark); line-height: 1.05;
+    }
+    .meta-cell .mc-sub {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 12px; line-height: 1.5; color: var(--dark);
+      opacity: 0.7; margin-top: 8px;
+    }
+
+    /* ============ §02 COLOURS — poster-scale swatch chips ============ */
+    .swatches { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border: 3px solid var(--dark); }
+    .swatch { border: 1.5px solid var(--dark); padding: 28px 24px; min-height: 200px; display: flex; flex-direction: column; justify-content: space-between; }
+    .swatch.on-dark { color: var(--bg); }
+    .swatch .sw-name {
+      font-family: 'Shrikhand', cursive;
+      font-size: clamp(26px, 3.4vw, 44px); line-height: 1;
+    }
+    .swatch .sw-meta { display: flex; flex-direction: column; gap: 10px; }
+    .swatch .sw-hex {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600;
+    }
+    .swatch .sw-role {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 13px; line-height: 1.55;
+    }
+    .swatch.sw-bg   { background: var(--bg); }
+    .swatch.sw-light{ background: var(--light); }
+    .swatch.sw-dark { background: var(--dark); }
+    .swatch.sw-red  { background: var(--red); }
+    .swatch.sw-bg .sw-role, .swatch.sw-light .sw-role { opacity: 0.72; }
+    .swatch.sw-dark .sw-role, .swatch.sw-red .sw-role { opacity: 0.85; }
+    .swatch.sw-bg .sw-name, .swatch.sw-light .sw-name { color: var(--red); }
+    .swatch.sw-dark .sw-name, .swatch.sw-red .sw-name { color: var(--bg); }
+
+    /* ============ §03 TYPOGRAPHY ============ */
+    .face-grid { display: grid; grid-template-columns: 1fr; gap: 0; border: 3px solid var(--dark); margin-bottom: 48px; }
+    .face-row { border: 1.5px solid var(--dark); padding: 26px 28px; display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 28px; align-items: center; }
+    .face-row .fr-sample { line-height: 0.95; }
+    .face-row .fr-info .fr-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--red); margin-bottom: 8px;
+    }
+    .face-row .fr-info .fr-desc { font-family: 'Libre Baskerville', serif; font-size: 13px; line-height: 1.6; opacity: 0.8; }
+    .fr-shrikhand { font-family: 'Shrikhand', cursive; font-size: clamp(40px, 6vw, 76px); color: var(--dark); }
+    .fr-baskerville { font-family: 'Libre Baskerville', serif; font-size: clamp(22px, 2.6vw, 34px); color: var(--dark); line-height: 1.3; }
+    .fr-grotesk { font-family: 'Space Grotesk', sans-serif; font-size: clamp(20px, 2.4vw, 30px); letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--dark); }
+
+    /* Type scale — each row renders at the token's real size/colour/rotation */
+    .scale-row { display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: baseline; padding: 22px 0; border-bottom: 1px solid rgba(28,20,16,0.12); }
+    .scale-row:last-child { border-bottom: none; }
+    .scale-meta .sm-token { font-family: 'Space Grotesk', sans-serif; font-size: 12px; letter-spacing: 1px; font-weight: 600; color: var(--dark); }
+    .scale-meta .sm-spec { font-family: 'Space Grotesk', sans-serif; font-size: 10px; letter-spacing: 1px; color: var(--dark); opacity: 0.5; margin-top: 4px; text-transform: uppercase; }
+    .scale-sample { font-family: 'Shrikhand', cursive; color: var(--dark); overflow: hidden; }
+    .smp-stat-big   { font-size: clamp(70px,12vw,150px); color: var(--red); transform: rotate(-6deg); display: inline-block; line-height: 0.82; }
+    .smp-hero-red   { font-size: clamp(54px,9vw,120px); color: var(--red); transform: rotate(-4deg); display: inline-block; line-height: 0.85; }
+    .smp-section-lg { font-size: clamp(36px,6vw,72px); line-height: 1; }
+    .smp-section    { font-size: clamp(32px,5vw,64px); line-height: 1; }
+    .smp-cell-num   { font-size: clamp(28px,3.5vw,52px); color: var(--red); line-height: 1; }
+    .smp-card-title { font-size: clamp(22px,3vw,36px); line-height: 1.1; }
+    .smp-body       { font-family: 'Libre Baskerville', serif; font-size: clamp(13px,1.2vw,16px); line-height: 1.75; color: var(--dark); }
+    .smp-label      { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--red); }
+
+    /* ============ §04 COMPONENTS — live, using the template's real CSS ====== */
+    .comp-block { margin-bottom: 56px; }
+    .comp-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 4px; }
+    .comp-head .ch-name { font-family: 'Shrikhand', cursive; font-size: clamp(22px, 3vw, 34px); color: var(--dark); }
+    .comp-head .ch-tag { font-family: 'Space Grotesk', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--red); }
+    .comp-desc { font-family: 'Libre Baskerville', serif; font-size: 14px; line-height: 1.65; color: var(--dark); opacity: 0.8; max-width: 680px; margin-bottom: 22px; }
+
+    /* -- real template components, ported verbatim -- */
+    .fin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 3px solid var(--dark); }
+    .fin-cell { padding: 22px 20px; border: 1.5px solid var(--dark); display: flex; flex-direction: column; }
+    .fin-cell .fc-num { font-family: 'Shrikhand', cursive; font-size: clamp(28px, 3.5vw, 52px); color: var(--red); line-height: 1; margin-bottom: 8px; }
+    .fin-cell .fc-label { font-family: 'Space Grotesk', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--dark); margin-bottom: 6px; }
+    .fin-cell .fc-body { font-family: 'Libre Baskerville', serif; font-size: clamp(11px, 1vw, 13px); line-height: 1.55; color: var(--dark); opacity: 0.8; margin-bottom: 10px; }
+    .fin-cell .fc-micro { font-family: 'Space Grotesk', sans-serif; font-size: 10px; color: var(--dark); opacity: 0.5; line-height: 1.4; margin-top: auto; }
+
+    .svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 32px; }
+    .svc-card { border-left: 4px solid var(--red); padding-left: 18px; }
+    .svc-card .svc-title { font-family: 'Shrikhand', cursive; font-size: clamp(22px, 3vw, 36px); line-height: 1.1; color: var(--dark); margin-bottom: 8px; }
+    .svc-card .svc-body { font-family: 'Libre Baskerville', serif; font-size: clamp(12px, 1.1vw, 14px); line-height: 1.6; color: var(--dark); opacity: 0.8; margin-bottom: 10px; }
+    .svc-card .svc-bullets { list-style: none; padding: 0; margin: 0; }
+    .svc-card .svc-bullets li { font-family: 'Space Grotesk', sans-serif; font-size: clamp(10px, 0.9vw, 12px); line-height: 1.45; color: var(--dark); opacity: 0.7; padding-left: 12px; position: relative; margin-bottom: 3px; }
+    .svc-card .svc-bullets li::before { content: '\2022'; position: absolute; left: 0; color: var(--red); }
+
+    .summary-highlights { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 2px solid var(--dark); }
+    .summary-hl { padding: 20px 24px; border: 1px solid var(--dark); display: flex; flex-direction: column; }
+    .summary-hl .hl-num { font-family: 'Shrikhand', cursive; font-size: clamp(28px, 3.5vw, 48px); color: var(--red); line-height: 1; margin-bottom: 6px; }
+    .summary-hl .hl-label { font-family: 'Space Grotesk', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
+    .summary-hl .hl-body { font-family: 'Libre Baskerville', serif; font-size: clamp(11px, 1vw, 13px); line-height: 1.5; color: var(--dark); opacity: 0.75; }
+
+    .red-quote-demo { background: var(--red); padding: 56px 48px; text-align: center; }
+    .red-quote-demo .red-quote { font-family: 'Shrikhand', cursive; font-size: clamp(28px, 5vw, 64px); line-height: 1.15; color: var(--bg); text-shadow: 2px 2px 0 rgba(28,20,16,0.25), 4px 4px 0 rgba(28,20,16,0.2), 6px 6px 0 rgba(28,20,16,0.15); max-width: 760px; margin: 0 auto; }
+    .red-quote-demo .red-cite { font-family: 'Libre Baskerville', serif; font-size: clamp(13px, 1.3vw, 16px); margin-top: 24px; opacity: 0.85; color: var(--bg); }
+
+    .dark-demo { background: var(--dark); padding: 40px 44px; }
+    .rm-phase { border-left: 3px solid var(--red); padding-left: 16px; max-width: 520px; }
+    .rm-phase .rm-label { font-family: 'Space Grotesk', sans-serif; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; color: var(--red); margin-bottom: 6px; }
+    .rm-phase .rm-title { font-family: 'Shrikhand', cursive; font-size: clamp(18px, 2.5vw, 32px); line-height: 1.1; color: var(--bg); margin-bottom: 8px; }
+    .rm-phase .rm-body { font-family: 'Libre Baskerville', serif; font-size: clamp(11px, 1vw, 13px); line-height: 1.6; color: var(--bg); opacity: 0.65; margin-bottom: 10px; }
+    .rm-phase .rm-bullets { list-style: none; padding: 0; margin: 0; }
+    .rm-phase .rm-bullets li { font-family: 'Space Grotesk', sans-serif; font-size: clamp(10px, 0.85vw, 11px); line-height: 1.4; color: var(--bg); opacity: 0.55; padding-left: 12px; position: relative; margin-bottom: 3px; }
+    .rm-phase .rm-bullets li::before { content: '\2022'; position: absolute; left: 0; color: var(--red); }
+
+    .pillars-demo { display: flex; border: 3px solid var(--dark); }
+    .pillar { flex: 1; padding: 28px 22px; border-right: 3px solid var(--dark); }
+    .pillar:last-child { border-right: none; }
+    .pillar:nth-child(odd) { background: var(--light); }
+    .pillar .p-num { font-family: 'Shrikhand', cursive; font-size: clamp(32px, 5vw, 56px); color: var(--red); line-height: 1; margin-bottom: 10px; }
+    .pillar .p-title { font-family: 'Shrikhand', cursive; font-size: clamp(18px, 2.2vw, 26px); color: var(--dark); line-height: 1.15; margin-bottom: 12px; }
+    .pillar .p-lead { font-family: 'Libre Baskerville', serif; font-size: clamp(12px, 1.1vw, 14px); line-height: 1.6; color: var(--dark); margin-bottom: 12px; }
+    .pillar .p-bullets { list-style: none; padding: 0; margin: 0; }
+    .pillar .p-bullets li { font-family: 'Space Grotesk', sans-serif; font-size: clamp(10px, 0.9vw, 12px); line-height: 1.45; color: var(--dark); opacity: 0.75; padding: 5px 0; border-bottom: 1px solid rgba(28,20,16,0.08); }
+    .pillar .p-bullets li:last-child { border-bottom: none; }
+
+    .global-card { border: 2px solid var(--dark); padding: 24px; max-width: 360px; }
+    .global-card .gc-label { font-family: 'Space Grotesk', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--red); margin-bottom: 10px; }
+    .global-card .gc-title { font-family: 'Shrikhand', cursive; font-size: clamp(20px, 2.5vw, 32px); color: var(--dark); line-height: 1.1; margin-bottom: 10px; }
+    .global-card .gc-body { font-family: 'Libre Baskerville', serif; font-size: clamp(12px, 1.1vw, 14px); line-height: 1.65; color: var(--dark); opacity: 0.8; }
+    .global-card .gc-stats { display: flex; gap: 20px; margin-top: 14px; }
+    .global-card .gc-stat { font-family: 'Space Grotesk', sans-serif; font-size: 10px; color: var(--dark); opacity: 0.6; line-height: 1.4; }
+    .global-card .gc-stat strong { font-family: 'Shrikhand', cursive; font-size: clamp(18px, 2vw, 28px); color: var(--red); display: block; line-height: 1; margin-bottom: 2px; }
+
+    /* bullet specimens */
+    .bullet-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .em-list, .dot-list { list-style: none; padding: 0; margin: 0; }
+    .em-list li { font-family: 'Space Grotesk', sans-serif; font-size: 13px; line-height: 1.5; color: var(--dark); padding-left: 16px; position: relative; margin-bottom: 8px; }
+    .em-list li::before { content: '\2014'; position: absolute; left: 0; color: var(--red); font-weight: 700; }
+    .dot-list li { font-family: 'Space Grotesk', sans-serif; font-size: 13px; line-height: 1.5; color: var(--dark); padding-left: 14px; position: relative; margin-bottom: 8px; }
+    .dot-list li::before { content: '\2022'; position: absolute; left: 0; color: var(--red); }
+
+    .link-demo { display: flex; gap: 28px; }
+    .link-demo a { font-family: 'Space Grotesk', sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--dark); text-decoration: none; border-bottom: 2px solid var(--red); padding-bottom: 4px; transition: color 0.3s; }
+    .link-demo a:hover { color: var(--red); }
+
+    /* ============ §05 SPACING ============ */
+    .spec-table { width: 100%; border: 3px solid var(--dark); border-collapse: collapse; }
+    .spec-table th, .spec-table td { border: 1.5px solid var(--dark); padding: 14px 18px; text-align: left; }
+    .spec-table th { font-family: 'Space Grotesk', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--red); }
+    .spec-table td.tok { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; color: var(--dark); }
+    .spec-table td.val { font-family: 'Space Grotesk', sans-serif; font-size: 12px; color: var(--red); font-weight: 600; }
+    .spec-table td.use { font-family: 'Libre Baskerville', serif; font-size: 13px; color: var(--dark); opacity: 0.8; }
+
+    /* ============ §06 DEPTH — border ladder ============ */
+    .ladder { display: grid; gap: 0; border: 3px solid var(--dark); }
+    .rung { border: 1.5px solid var(--dark); padding: 18px 22px; display: grid; grid-template-columns: 150px 1fr; gap: 24px; align-items: center; }
+    .rung .rung-spec { font-family: 'Space Grotesk', sans-serif; font-size: 11px; letter-spacing: 1px; font-weight: 600; color: var(--dark); }
+    .rung .rung-spec b { color: var(--red); display: block; font-size: 13px; margin-bottom: 2px; }
+    .rung .rung-vis { height: 0; width: 100%; }
+    .rl-1 { border-top: 1px solid rgba(28,20,16,0.12); }
+    .rl-15 { border-top: 1.5px solid var(--dark); }
+    .rl-2 { border-top: 2px solid var(--red); }
+    .rl-3 { border-top: 3px solid var(--dark); }
+    .rl-4 { border-top: 4px solid var(--red); }
+    .rl-5 { border-top: 5px solid var(--red); }
+
+    .tilt-demo { display: flex; gap: 48px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+    .tilt-chip { font-family: 'Shrikhand', cursive; font-size: clamp(40px,6vw,72px); color: var(--red); display: inline-block; }
+    .tilt-6 { transform: rotate(-6deg); }
+    .tilt-5 { transform: rotate(-5deg); }
+    .tilt-4 { transform: rotate(-4deg); }
+    .tilt-2 { transform: rotate(2deg); }
+    .tilt-cap { font-family: 'Space Grotesk', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--dark); opacity: 0.6; text-align: center; margin-top: 10px; }
+
+    /* ============ §07 DO / DON'T ============ */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .do-col { background: var(--bg); padding: 40px 40px; border: 3px solid var(--dark); }
+    .dont-col { background: var(--red); padding: 40px 40px; border: 3px solid var(--dark); border-left: none; }
+    .dd-head { font-family: 'Shrikhand', cursive; font-size: clamp(28px,4vw,48px); line-height: 1; margin-bottom: 22px; }
+    .do-col .dd-head { color: var(--dark); }
+    .dont-col .dd-head { color: var(--bg); text-shadow: 2px 2px 0 rgba(28,20,16,0.22), 4px 4px 0 rgba(28,20,16,0.16); transform: rotate(-2deg); display: inline-block; }
+    .dd-list { list-style: none; padding: 0; margin: 0; }
+    .dd-list li { font-family: 'Libre Baskerville', serif; font-size: 14px; line-height: 1.55; padding-left: 18px; position: relative; margin-bottom: 14px; }
+    .do-col .dd-list li { color: var(--dark); }
+    .do-col .dd-list li::before { content: '\2014'; position: absolute; left: 0; color: var(--red); font-weight: 700; }
+    .dont-col .dd-list li { color: var(--bg); }
+    .dont-col .dd-list li::before { content: '\00D7'; position: absolute; left: 0; color: var(--bg); font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
+
+    /* ============ §08 CJK ============ */
+    .cjk-specimen { border-left: 4px solid var(--red); padding-left: 22px; margin-bottom: 40px; }
+    .cjk-display { font-family: 'Noto Serif SC', serif; font-weight: 900; font-size: clamp(40px, 7vw, 90px); line-height: 1.05; color: var(--dark); }
+    .cjk-display .red { color: var(--red); }
+    .cjk-body { font-family: 'Noto Serif SC', serif; font-weight: 400; font-size: clamp(14px, 1.4vw, 18px); line-height: 1.85; color: var(--dark); max-width: 640px; margin-top: 18px; }
+    .cjk-label { font-family: 'Noto Sans SC', sans-serif; font-weight: 500; font-size: 13px; color: var(--red); margin-top: 16px; letter-spacing: 1px; }
+
+    /* ============ CLOSE ============ */
+    .close {
+      min-height: 80vh; background: var(--bg);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center; padding: 80px 56px;
+    }
+    .close-big { font-family: 'Shrikhand', cursive; font-size: clamp(64px, 14vw, 200px); line-height: 0.88; color: var(--red); transform: rotate(-5deg); display: inline-block; }
+    .close-sub { font-family: 'Libre Baskerville', serif; font-size: clamp(14px, 1.5vw, 18px); color: var(--dark); margin-top: 4vh; max-width: 540px; line-height: 1.6; }
+    .close-links { margin-top: 5vh; display: flex; gap: 32px; }
+    .close-links a { font-family: 'Space Grotesk', sans-serif; font-size: clamp(10px, 0.9vw, 12px); letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: var(--dark); text-decoration: none; border-bottom: 2px solid var(--red); padding-bottom: 4px; transition: color 0.3s; }
+    .close-links a:hover { color: var(--red); }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 860px) {
+      .section { padding: 64px 28px; }
+      .hero { padding: 64px 7vw; }
+      .contents, .meta-strip, .swatches, .svc-grid, .dodont, .bullet-demo { grid-template-columns: 1fr; }
+      .dont-col { border-left: 3px solid var(--dark); border-top: none; }
+      .fin-grid { grid-template-columns: 1fr 1fr; }
+      .summary-highlights { grid-template-columns: 1fr; }
+      .face-row, .scale-row, .rung { grid-template-columns: 1fr; gap: 14px; }
+      .pillars-demo { flex-direction: column; }
+      .pillar { border-right: none; border-bottom: 3px solid var(--dark); }
+      .pillar:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <a class="back-link" href="index.html">&#8592; Index</a>
+  <div class="counter" id="counter">01 / 10</div>
+  <div class="progress" id="progress"></div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="hero-meta">Design System Specification &mdash; Beautiful HTML Templates</div>
+    <div class="hero-title-group">
+      <div class="hero-title">Bold</div>
+      <div class="hero-title red">Poster</div>
+      <div class="hero-title bottom">System</div>
+    </div>
+    <div class="hero-tagline">
+      <div class="tag-label">The Premise</div>
+      <div class="tag-body">A populist editorial poster system &mdash; massive Shrikhand display, one fire-engine red, ruled in ink, printed not pixelated.</div>
+    </div>
+
+    <nav class="contents">
+      <a href="#overview"><span>01</span> Overview</a>
+      <a href="#colours"><span>02</span> Colours</a>
+      <a href="#typography"><span>03</span> Typography</a>
+      <a href="#components"><span>04</span> Components</a>
+      <a href="#layout"><span>05</span> Layout &amp; Spacing</a>
+      <a href="#depth"><span>06</span> Depth &amp; Shapes</a>
+      <a href="#dodont"><span>07</span> Do &amp; Don't</a>
+      <a href="#cjk"><span>08</span> 中文 / CJK</a>
+    </nav>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section class="section light" id="overview" data-counter="Overview">
+    <div class="wrap">
+      <div class="eyebrow">01 &mdash; Overview</div>
+      <h2 class="sec-header">The System</h2>
+      <p class="sec-intro">Bold Poster lifts its vocabulary from <strong>vintage Italian sports magazines</strong>, mid-century European brand annual reports, and wine-merchant catalogues. Every slide should feel <strong>printed</strong> &mdash; set in heavy display type, locked to one strong red accent, on a white or off-white sheet, with grids ruled in ink and decoration kept to a strict minimum.</p>
+
+      <div class="meta-strip">
+        <div class="meta-cell">
+          <div class="mc-label">Formality</div>
+          <div class="mc-value">Medium</div>
+          <div class="mc-sub">Quotable, graphic, intentional &mdash; equally at home on a manifesto or a keynote.</div>
+        </div>
+        <div class="meta-cell">
+          <div class="mc-label">Density</div>
+          <div class="mc-value">Polar</div>
+          <div class="mc-sub">Dense data grids read authoritative; statement slides drop to one huge element.</div>
+        </div>
+        <div class="meta-cell">
+          <div class="mc-label">Scheme</div>
+          <div class="mc-value">Light</div>
+          <div class="mc-sub">White / off-white canvas, with red &amp; dark full-bleed panels for statements.</div>
+        </div>
+        <div class="meta-cell">
+          <div class="mc-label">Slides</div>
+          <div class="mc-value">10</div>
+          <div class="mc-sub">Hero, statement, summary, financial grid, stat, services, roadmap, pillars, global, close.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section class="section" id="colours" data-counter="Colours">
+    <div class="wrap">
+      <div class="eyebrow">02 &mdash; Colours</div>
+      <h2 class="sec-header">Four Colours, No More</h2>
+      <p class="sec-intro">Uncompromising restraint: a white canvas, deep brown-black ink, a single saturated tomato red, and a warm off-white for alternating panels. <strong>No secondary brand colours, no gradients, no semantic state colours.</strong> Every figure, every active rule, every emphasis moment is red &mdash; and red is reserved for those moments only.</p>
+
+      <div class="swatches">
+        <div class="swatch sw-bg">
+          <div class="sw-name">Bg</div>
+          <div class="sw-meta">
+            <div class="sw-hex" style="color:var(--dark)">#FFFFFF</div>
+            <div class="sw-role">Pure white canvas. The default ground for most surfaces. Reads as fresh newsprint paper.</div>
+          </div>
+        </div>
+        <div class="swatch sw-dark on-dark">
+          <div class="sw-name">Dark</div>
+          <div class="sw-meta">
+            <div class="sw-hex">#1C1410</div>
+            <div class="sw-role">Deep brown-black with warm bias &mdash; not pure black. Every line of body, every border, every label.</div>
+          </div>
+        </div>
+        <div class="swatch sw-red on-dark">
+          <div class="sw-name">Red</div>
+          <div class="sw-meta">
+            <div class="sw-hex">#D8000F</div>
+            <div class="sw-role">Saturated tomato red. The single accent: every numeral, every eyebrow, every leftbar, every bullet, the progress bar.</div>
+          </div>
+        </div>
+        <div class="swatch sw-light">
+          <div class="sw-name">Light</div>
+          <div class="sw-meta">
+            <div class="sw-hex" style="color:var(--dark)">#F5F2EF</div>
+            <div class="sw-role">Warm off-white. Alternating panel backgrounds for vertical striping; subtly warmer than the white canvas.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section class="section light" id="typography" data-counter="Typography">
+    <div class="wrap">
+      <div class="eyebrow">03 &mdash; Typography</div>
+      <h2 class="sec-header">Three Faces, Strict Roles</h2>
+      <p class="sec-intro">The roles are <strong>non-overlapping</strong>. Shrikhand handles every display moment and every numeral; Libre Baskerville handles every body paragraph; Space Grotesk handles every uppercase label, bullet, and chrome element. Don't cross &mdash; Shrikhand body would be illegible, Space Grotesk headlines would feel like a tech startup.</p>
+
+      <div class="face-grid">
+        <div class="face-row">
+          <div class="fr-sample fr-shrikhand">Aa 47%</div>
+          <div class="fr-info">
+            <div class="fr-name">Shrikhand &middot; Display + Numerical</div>
+            <div class="fr-desc">Single-weight (400) heavy slab-script with playful italic terminals. Used 18px&ndash;320px, almost always rotated. Carries every hero title, section header, stat figure, card title.</div>
+          </div>
+        </div>
+        <div class="face-row">
+          <div class="fr-sample fr-baskerville">The literary serif body voice.</div>
+          <div class="fr-info">
+            <div class="fr-name">Libre Baskerville &middot; Body</div>
+            <div class="fr-desc">Classical literary serif with high stroke contrast. Set 11&ndash;16px at 1.5&ndash;1.75 line-height in deep ink &mdash; what makes the system feel printed rather than digital.</div>
+          </div>
+        </div>
+        <div class="face-row">
+          <div class="fr-sample fr-grotesk">Stamped Metadata</div>
+          <div class="fr-info">
+            <div class="fr-name">Space Grotesk &middot; Chrome</div>
+            <div class="fr-desc">Used 9&ndash;12px in uppercase with 2&ndash;3px tracking for labels, eyebrows, counters, links, and card bullets. The system's "stamped metadata" voice.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eyebrow" style="margin-top:8px">Type Scale &mdash; rendered at real size</div>
+      <div>
+        <div class="scale-row">
+          <div class="scale-meta"><div class="sm-token">stat-big</div><div class="sm-spec">Shrikhand &middot; 120&ndash;320px &middot; red &middot; &minus;6&deg;</div></div>
+          <div class="scale-sample"><span class="smp-stat-big">96%</span></div>
+        </div>
+        <div class="scale-row">
+          <div class="scale-meta"><div class="sm-token">hero-title-red</div><div class="sm-spec">Shrikhand &middot; 84&ndash;260px &middot; red &middot; &minus;4&deg;</div></div>
+          <div class="scale-sample"><span class="smp-hero-red">Poster</span></div>
+        </div>
+        <div class="scale-row">
+          <div class="scale-meta"><div class="sm-token">section-header-lg</div><div class="sm-spec">Shrikhand &middot; 36&ndash;72px &middot; dark</div></div>
+          <div class="scale-sample"><span class="smp-section-lg">Financial Performance</span></div>
+        </div>
+        <div class="scale-row">
+          <div class="scale-meta"><div class="sm-token">section-header</div><div class="sm-spec">Shrikhand &middot; 32&ndash;64px &middot; dark</div></div>
+          <div class="scale-sample"><span class="smp-section">Executive Summary</span></div>
+        </div>
+        <div class="scale-row">
+          <div class="scale-meta"><div class="sm-token">cell-number</div><div class="sm-spec">Shrikhand &middot; 28&ndash;52px &middot; red</div></div>
+          <div class="scale-sample"><span class="smp-cell-num">$12.4M</span></div>
+        </div>
+        <div class="scale-row">
+          <div class="scale-meta"><div class="sm-token">card-title</div><div class="sm-spec">Shrikhand &middot; 22&ndash;36px &middot; dark</div></div>
+          <div class="scale-sample"><span class="smp-card-title">Strategy</span></div>
+        </div>
+        <div class="scale-row">
+          <div class="scale-meta"><div class="sm-token">body</div><div class="sm-spec">Libre Baskerville &middot; 13&ndash;16px &middot; 1.75</div></div>
+          <div class="scale-sample"><span class="smp-body">Profitable for six consecutive quarters while reinvesting 35% of gross profit into R&amp;D.</span></div>
+        </div>
+        <div class="scale-row">
+          <div class="scale-meta"><div class="sm-token">label-red / tag-label</div><div class="sm-spec">Space Grotesk 600 &middot; 10&ndash;12px &middot; 2&ndash;3px track</div></div>
+          <div class="scale-sample"><span class="smp-label">Annual Report</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section class="section" id="components" data-counter="Components">
+    <div class="wrap">
+      <div class="eyebrow">04 &mdash; Components</div>
+      <h2 class="sec-header sec-header-lg">Live Components</h2>
+      <p class="sec-intro">Every block below is rendered with the template's <strong>actual CSS</strong> &mdash; not a mockup. This is the system's component grammar as it ships.</p>
+
+      <!-- Tabular bordered grid -->
+      <div class="comp-block">
+        <div class="comp-head"><span class="ch-name">Tabular Bordered Grid</span><span class="ch-tag">Signature</span></div>
+        <p class="comp-desc">3px ink outer border + 1.5px ink inner cell borders touching at every intersection &mdash; a printed-newsprint double-border. Each cell: Shrikhand red numeral + Space Grotesk label + Libre Baskerville body + micro line.</p>
+        <div class="fin-grid">
+          <div class="fin-cell"><div class="fc-num">$12.4M</div><div class="fc-label">Annual Recurring Revenue</div><div class="fc-body">Net revenue retention of 118% driven by expansion from existing accounts.</div><div class="fc-micro">Up from $2.7M two years prior.</div></div>
+          <div class="fin-cell"><div class="fc-num">18%</div><div class="fc-label">Net Profit Margin</div><div class="fc-body">Profitable for six consecutive quarters while reinvesting in R&amp;D.</div><div class="fc-micro">EBITDA positive since Q2 FY24.</div></div>
+          <div class="fin-cell"><div class="fc-num">4.2x</div><div class="fc-label">LTV / CAC Ratio</div><div class="fc-body">Lifetime value of $48K against blended acquisition cost of $11.4K.</div><div class="fc-micro">Enterprise segment: 6.8x.</div></div>
+        </div>
+      </div>
+
+      <!-- Red leftbar card -->
+      <div class="comp-block">
+        <div class="comp-head"><span class="ch-name">Red Leftbar Card</span><span class="ch-tag">Primary card pattern</span></div>
+        <p class="comp-desc">A 4px solid red left rule with 18px padding-left &mdash; the card reads as cantilevered off the rule, with no enclosing outline. Holds a Shrikhand title, Libre Baskerville body, and Space Grotesk red-bullet list.</p>
+        <div class="svc-grid">
+          <div class="svc-card">
+            <div class="svc-title">Strategy</div>
+            <div class="svc-body">Market analysis, competitive positioning, and multi-year roadmaps that bridge ambition with executable milestones.</div>
+            <ul class="svc-bullets"><li>Market sizing and TAM analysis</li><li>Competitive landscape mapping</li><li>Pricing strategy and packaging</li></ul>
+          </div>
+          <div class="svc-card">
+            <div class="svc-title">Build</div>
+            <div class="svc-body">Scalable architecture, robust APIs, and infrastructure that grows with demand rather than against it.</div>
+            <ul class="svc-bullets"><li>Cloud-native architecture</li><li>API and developer experience</li><li>CI/CD and observability</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary highlights -->
+      <div class="comp-block">
+        <div class="comp-head"><span class="ch-name">Summary Highlights</span><span class="ch-tag">2px + 1px grid</span></div>
+        <p class="comp-desc">A lighter double-border grid (2px outer + 1px inner) for headline metrics: Shrikhand red numeral + uppercase label + a one-line Libre Baskerville gloss.</p>
+        <div class="summary-highlights">
+          <div class="summary-hl"><div class="hl-num">340%</div><div class="hl-label">YoY Revenue Growth</div><div class="hl-body">From $2.7M to $12M ARR in 24 months with positive unit economics.</div></div>
+          <div class="summary-hl"><div class="hl-num">94%</div><div class="hl-label">Gross Retention</div><div class="hl-body">Enterprise clients renew at industry-leading rates with zero churn in top quartile.</div></div>
+          <div class="summary-hl"><div class="hl-num">120</div><div class="hl-label">Team Members</div><div class="hl-body">Engineering, design, and strategy across four continents.</div></div>
+        </div>
+      </div>
+
+      <!-- Red panel + stacked shadow -->
+      <div class="comp-block">
+        <div class="comp-head"><span class="ch-name">Red Panel &middot; Stacked Text-Shadow</span><span class="ch-tag">The only shadow</span></div>
+        <p class="comp-desc">A full-bleed red statement surface. White Shrikhand carries the system's <strong>only</strong> shadow &mdash; three ink steps at 2/2, 4/4, 6/6 in decreasing opacity, giving a printed-and-pressed, slightly off-register feel.</p>
+        <div class="red-quote-demo">
+          <div class="red-quote">"We don't follow markets. We build the infrastructure they run on."</div>
+          <div class="red-cite">&mdash; Our operating thesis since day one</div>
+        </div>
+      </div>
+
+      <!-- Dark panel roadmap phase -->
+      <div class="comp-block">
+        <div class="comp-head"><span class="ch-name">Dark Panel &middot; Roadmap Phase</span><span class="ch-tag">Dense-data surface</span></div>
+        <p class="comp-desc">A full-bleed dark ground for dense-data surfaces. Phase cards use a 3px red leftbar; labels and bullet glyphs stay red; body goes white at reduced opacity.</p>
+        <div class="dark-demo">
+          <div class="rm-phase">
+            <div class="rm-label">Phase Two &mdash; Current (FY25)</div>
+            <div class="rm-title">Expansion</div>
+            <div class="rm-body">Two new regional hubs. Localized compliance infrastructure. Partner channel activation across two new geographies.</div>
+            <ul class="rm-bullets"><li>EMEA hub operational in London by Q1</li><li>APAC hub in Singapore scheduled Q2</li><li>5 strategic partners signed, 12 in pipeline</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pillars -->
+      <div class="comp-block">
+        <div class="comp-head"><span class="ch-name">Pillar Panels</span><span class="ch-tag">Striped columns</span></div>
+        <p class="comp-desc">Vertical columns separated by 3px ink rules, alternating white / off-white for striping. Each: Shrikhand red numeral, Shrikhand title, Libre Baskerville lead, and bullets divided by 1px hairline-soft rules.</p>
+        <div class="pillars-demo">
+          <div class="pillar"><div class="p-num">01</div><div class="p-title">Clarity</div><div class="p-lead">Every decision is documented, traceable, and communicated with context.</div><ul class="p-bullets"><li>Clear DRI on every initiative</li><li>Public real-time dashboards</li><li>Decision logs within 24 hours</li></ul></div>
+          <div class="pillar"><div class="p-num">02</div><div class="p-title">Velocity</div><div class="p-lead">Speed comes from focus and tooling, not from longer hours.</div><ul class="p-bullets"><li>Two-week sprints, public retros</li><li>Production deploys every day</li><li>Feature flags for safe rollouts</li></ul></div>
+          <div class="pillar"><div class="p-num">03</div><div class="p-title">Trust</div><div class="p-lead">Radical transparency with partners, employees, and the market.</div><ul class="p-bullets"><li>External uptime dashboards</li><li>Security reports published</li><li>90-day exit clauses in contracts</li></ul></div>
+        </div>
+      </div>
+
+      <!-- Global card + bullets + links -->
+      <div class="comp-block">
+        <div class="comp-head"><span class="ch-name">Global Card, Bullets &amp; Links</span><span class="ch-tag">Chrome details</span></div>
+        <p class="comp-desc">The 2px outlined card (heavier, more contained than the leftbar pattern); the red em-dash and round-bullet list markers; and the red-underline footer link.</p>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:40px; align-items:start;">
+          <div class="global-card">
+            <div class="gc-label">Headquarters</div>
+            <div class="gc-title">San Francisco</div>
+            <div class="gc-body">Primary engineering, design, and executive leadership. Founded here in 2019.</div>
+            <div class="gc-stats"><div class="gc-stat"><strong>65</strong> employees</div><div class="gc-stat"><strong>42K</strong> sq ft</div></div>
+          </div>
+          <div>
+            <div class="bullet-demo">
+              <ul class="em-list"><li>Em-dash marker</li><li>Primary list signal</li><li>Position absolute left</li></ul>
+              <ul class="dot-list"><li>Round-bullet marker</li><li>Card &amp; pillar lists</li><li>Always red, never disc</li></ul>
+            </div>
+            <div class="link-demo" style="margin-top:28px"><a href="#">LinkedIn</a><a href="#">Contact</a><a href="#">Careers</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT & SPACING ============ -->
+  <section class="section light" id="layout" data-counter="Layout">
+    <div class="wrap">
+      <div class="eyebrow">05 &mdash; Layout &amp; Spacing</div>
+      <h2 class="sec-header">Rhythm &amp; Surfaces</h2>
+      <p class="sec-intro">A 1920&times;1080 stage with <strong>48px &times; 56px</strong> default padding. The deck cycles through five surfaces: white content, off-white striped panels, full-bleed red statements, full-bleed dark dense-data, and bordered tabular grids.</p>
+      <table class="spec-table">
+        <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td class="tok">pad-slide</td><td class="val">48px 56px</td><td class="use">Default slide padding</td></tr>
+          <tr><td class="tok">pad-cell</td><td class="val">22px 20px</td><td class="use">Tabular cell internal padding (financial grid)</td></tr>
+          <tr><td class="tok">pad-pillar</td><td class="val">32px 24px</td><td class="use">Pillar column padding</td></tr>
+          <tr><td class="tok">pad-roadmap</td><td class="val">40px 48px</td><td class="use">Roadmap surface padding</td></tr>
+          <tr><td class="tok">gap-grid-md</td><td class="val">24px 32px</td><td class="use">Standard service / global grid gap</td></tr>
+          <tr><td class="tok">gap-grid-stats</td><td class="val">48px</td><td class="use">Big stat row gap</td></tr>
+          <tr><td class="tok">max-width-content</td><td class="val">1100px</td><td class="use">Content column max width</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH & SHAPES ============ -->
+  <section class="section" id="depth" data-counter="Depth">
+    <div class="wrap">
+      <div class="eyebrow">06 &mdash; Depth &amp; Shapes</div>
+      <h2 class="sec-header">Depth Without Shadow</h2>
+      <p class="sec-intro">The system has <strong>zero box-shadows</strong>. Depth is structural: heavy borders, surface inversion, and tilted display that breaks the grid. Corners are square everywhere (0px) &mdash; a rounded card collapses the printed-poster feel into generic web.</p>
+
+      <div class="eyebrow" style="margin-top:4px">The Border Ladder &mdash; fixed, always solid</div>
+      <div class="ladder">
+        <div class="rung"><div class="rung-spec"><b>1px soft</b> rgba ink 8%</div><div class="rl-1 rung-vis"></div></div>
+        <div class="rung"><div class="rung-spec"><b>1.5px</b> ink</div><div class="rl-15 rung-vis"></div></div>
+        <div class="rung"><div class="rung-spec"><b>2px</b> red / ink</div><div class="rl-2 rung-vis"></div></div>
+        <div class="rung"><div class="rung-spec"><b>3px</b> ink</div><div class="rl-3 rung-vis"></div></div>
+        <div class="rung"><div class="rung-spec"><b>4px</b> red leftbar</div><div class="rl-4 rung-vis"></div></div>
+        <div class="rung"><div class="rung-spec"><b>5px</b> red progress</div><div class="rl-5 rung-vis"></div></div>
+      </div>
+
+      <div class="eyebrow" style="margin-top:40px">Tilt As Depth &mdash; the signature movement</div>
+      <div class="tilt-demo">
+        <div><div class="tilt-chip tilt-6">96%</div><div class="tilt-cap">&minus;6&deg; stat-big</div></div>
+        <div><div class="tilt-chip tilt-5">End</div><div class="tilt-cap">&minus;5&deg; close-big</div></div>
+        <div><div class="tilt-chip tilt-4">Bold</div><div class="tilt-cap">&minus;4&deg; hero-red</div></div>
+        <div><div class="tilt-chip tilt-2">Ltd.</div><div class="tilt-cap">+2&deg; hero-bottom</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO & DON'T ============ -->
+  <section class="section light" id="dodont" data-counter="Do &amp; Don't">
+    <div class="wrap">
+      <div class="eyebrow">07 &mdash; Do &amp; Don't</div>
+      <h2 class="sec-header">Hold The Line</h2>
+      <div class="dodont">
+        <div class="do-col">
+          <div class="dd-head">Do</div>
+          <ul class="dd-list">
+            <li>Set every hero as a multi-line Shrikhand stack with at least one rotated line and one red line.</li>
+            <li>Use red Shrikhand for every numeral &mdash; it's the system's data voice.</li>
+            <li>Set every eyebrow in Space Grotesk 600 uppercase, 2&ndash;3px tracking, red.</li>
+            <li>Build grids with the 3px + 1.5px double border.</li>
+            <li>Render every bullet as a red em-dash or round-bullet at position absolute left.</li>
+            <li>Keep Libre Baskerville body at line-height 1.5&ndash;1.75.</li>
+          </ul>
+        </div>
+        <div class="dont-col">
+          <div class="dd-head">Don't</div>
+          <ul class="dd-list">
+            <li>Introduce a second accent colour &mdash; no green, blue, or yellow.</li>
+            <li>Round any corner (except the 4px hint-pill chrome).</li>
+            <li>Add drop shadows or blurred shadows of any kind.</li>
+            <li>Substitute fonts &mdash; the trio is the identity.</li>
+            <li>Use default disc bullets, ever.</li>
+            <li>Omit the tilt on hero-class red Shrikhand &mdash; untilted reads as flat.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section class="section" id="cjk" data-counter="CJK">
+    <div class="wrap">
+      <div class="eyebrow">08 &mdash; 中文 / CJK</div>
+      <h2 class="sec-header">International Content</h2>
+      <p class="sec-intro">Shrikhand has <strong>no Chinese equivalent</strong>, so the three-face trio collapses to two: 思源宋体 Noto Serif SC (weight 900 display / 400 body) and 思源黑体 Noto Sans SC for chrome. Hierarchy shifts from face-contrast to <strong>weight + colour + rotation</strong> &mdash; and the non-typographic signatures (tilt, red, double-border, leftbar) carry the voice.</p>
+
+      <div class="cjk-specimen">
+        <div class="cjk-display">大胆<span class="red">海报</span></div>
+        <div class="cjk-body">我们不追逐市场，我们建造市场赖以运转的基础设施。思源宋体 900 承载编辑重量与气场，旋转与饱和红保留了海报的运动感。盘古之白：在中文与 Latin 之间插入空格。</div>
+        <div class="cjk-label">思源宋体 NOTO SERIF SC · 思源黑体 NOTO SANS SC</div>
+      </div>
+
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Latin (default)</th><th>Chinese counterpart</th></tr></thead>
+        <tbody>
+          <tr><td class="use">Display / hero / numerals</td><td class="tok">Shrikhand 400</td><td class="val">思源宋体 900</td></tr>
+          <tr><td class="use">Body / cite</td><td class="tok">Libre Baskerville 400</td><td class="val">思源宋体 400</td></tr>
+          <tr><td class="use">Label / bullet / chrome</td><td class="tok">Space Grotesk 600</td><td class="val">思源黑体 500</td></tr>
+        </tbody>
+      </table>
+      <p class="doc-body" style="margin-top:24px; opacity:0.8; max-width:720px;">Universal adjustments: open display line-height to &ge;1.0, set letter-spacing to 0 on CJK runs, drop <strong>uppercase</strong> (CJK has no case), use full-width punctuation, and never face-switch mid-sentence &mdash; for emphasis stay in 思源宋体 and shift weight 400&rarr;700 or colour instead.</p>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close">
+    <div class="close-big">Bold Poster</div>
+    <div class="close-sub">One of 34 systems in Beautiful HTML Templates.<br>Printed, not pixelated.</div>
+    <div class="close-links">
+      <a href="index.html">&#8592; All Systems</a>
+      <a href="../templates/bold-poster/template.html">Open Live Deck</a>
+      <a href="../templates/bold-poster/design.md">design.md</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var counter = document.getElementById('counter');
+      var sections = Array.prototype.slice.call(document.querySelectorAll('[data-counter]'));
+      var total = sections.length + 2; // hero + 8 sections + close ≈ 10 chapters
+
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (scrolled * 100) + '%';
+
+        // counter: which section is in view
+        var idx = 1;
+        var mid = h.scrollTop + window.innerHeight * 0.4;
+        for (var i = 0; i < sections.length; i++) {
+          if (sections[i].offsetTop <= mid) idx = i + 2; // hero is 01
+        }
+        if (scrolled > 0.985) idx = total;
+        counter.textContent = String(idx).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+    })();
+  </script>
+</body>
+</html>

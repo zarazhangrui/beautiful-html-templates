@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creative Mode — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's three faces: Archivo Black (display) + Space Grotesk (body) + JetBrains Mono (chrome) -->
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <!-- CJK pairing for §08 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #EFE9D9; --cream-2: #E4DCC4; --ink: #0F0F0F; --ink-2: #2A2A2A;
+      --green: #1F8A4C; --pink: #F06CA8; --orange: #E85A1F; --yellow: #F5C518;
+      --f-disp: 'Archivo Black', sans-serif;
+      --f-body: 'Space Grotesk', sans-serif;
+      --f-mono: 'JetBrains Mono', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--cream); color: var(--ink); font-family: var(--f-body); -webkit-font-smoothing: antialiased; }
+
+    /* ===== Persistent chrome ===== */
+    .progress { position: fixed; top: 0; left: 0; height: 5px; width: 0; background: var(--orange); z-index: 300; border-bottom: 2px solid var(--ink); }
+    .back-link { position: fixed; top: 22px; left: 28px; z-index: 200; text-decoration: none; color: var(--ink);
+      background: var(--ink); color: var(--cream); padding: 8px 16px; font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; border: 2px solid var(--ink); }
+    .back-link:hover { background: var(--orange); }
+    .counter { position: fixed; bottom: 20px; right: 28px; z-index: 200; display: flex; align-items: center; gap: 8px;
+      font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); }
+    .counter::before { content: ""; width: 10px; height: 10px; background: var(--ink); border-radius: 50%; }
+
+    /* ===== Sections ===== */
+    section, header, footer { position: relative; overflow: hidden; padding: clamp(56px,6vw,96px) clamp(36px,5vw,96px); }
+    .wrap { max-width: 1280px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+
+    /* ===== Type (Archivo Black uppercase) ===== */
+    .kicker-block { display: inline-block; background: var(--ink); color: var(--cream); font-family: var(--f-mono); font-size: clamp(12px,1vw,16px); letter-spacing: 0.14em; text-transform: uppercase; padding: 8px 16px; }
+    .display { font-family: var(--f-disp); font-weight: 400; font-size: clamp(56px,13vw,200px); line-height: 0.92; letter-spacing: -0.01em; text-transform: uppercase; color: var(--ink); }
+    .display-lg { font-family: var(--f-disp); font-weight: 400; font-size: clamp(40px,7vw,110px); line-height: 0.92; letter-spacing: -0.01em; text-transform: uppercase; color: var(--ink); }
+    .display-md { font-family: var(--f-disp); font-weight: 400; font-size: clamp(34px,5vw,84px); line-height: 0.92; letter-spacing: -0.01em; text-transform: uppercase; color: var(--ink); }
+    .display-xs { font-family: var(--f-disp); font-weight: 400; font-size: clamp(22px,2.6vw,44px); line-height: 0.98; text-transform: uppercase; color: var(--ink); }
+    .stat-num { font-family: var(--f-disp); font-weight: 400; font-size: clamp(40px,5.5vw,90px); line-height: 0.9; }
+    .body-lg { font-family: var(--f-body); font-weight: 400; font-size: clamp(16px,1.5vw,24px); line-height: 1.4; }
+    .body-md { font-family: var(--f-body); font-weight: 400; font-size: clamp(14px,1.1vw,18px); line-height: 1.4; }
+    .mono-label { font-family: var(--f-mono); font-size: clamp(12px,1vw,16px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: clamp(28px,3.5vh,48px); }
+    .topbar-pill { border: 2px solid var(--ink); border-radius: 999px; padding: 6px 16px; font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .sec-head { margin-bottom: clamp(28px,3.5vh,48px); }
+    .sec-head .body-lg { max-width: 58ch; margin-top: 16px; }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+    .hero .display { margin: 18px 0 10px; }
+    .hero-deco { position: absolute; top: 12%; right: 6%; z-index: 1; }
+    .stamp { width: clamp(120px,16vw,240px); height: clamp(120px,16vw,240px); background: var(--pink); border: 4px solid var(--cream); transform: rotate(-6deg); box-shadow: 0 0 0 4px var(--ink); display: flex; align-items: center; justify-content: center; }
+    .stamp-inner { width: 78%; height: 78%; border: 4px solid var(--cream); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; font-family: var(--f-disp); font-size: clamp(18px,2vw,30px); text-transform: uppercase; color: var(--cream); line-height: 0.95; }
+    .hero-lead { font-family: var(--f-body); font-weight: 400; font-size: clamp(16px,1.6vw,26px); line-height: 1.4; max-width: 50ch; margin-top: 14px; }
+    .contents { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: clamp(28px,4vh,52px); }
+    .contents a { text-decoration: none; }
+    .ct-card { border: 4px solid var(--ink); padding: 18px 16px; display: flex; flex-direction: column; gap: 8px; min-height: 110px; justify-content: space-between; transition: transform 0.12s; }
+    .contents a:hover .ct-card { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+    .ct-card .ct-n { font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.06em; }
+    .ct-card .ct-t { font-family: var(--f-disp); font-size: clamp(15px,1.3vw,19px); text-transform: uppercase; line-height: 1; }
+    .cc-green { background: var(--green); color: var(--cream); } .cc-pink { background: var(--pink); color: var(--ink); }
+    .cc-orange { background: var(--orange); color: var(--cream); } .cc-yellow { background: var(--yellow); color: var(--ink); }
+    .cc-cream { background: var(--cream); color: var(--ink); }
+
+    /* ===== grids / cards ===== */
+    .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .cell { border: 4px solid var(--ink); padding: clamp(20px,2vw,32px); }
+    .cell.green { background: var(--green); color: var(--cream); } .cell.pink { background: var(--pink); color: var(--ink); }
+    .cell.orange { background: var(--orange); color: var(--cream); } .cell.yellow { background: var(--yellow); color: var(--ink); } .cell.cream { background: var(--cream); color: var(--ink); }
+    .cell .c-label { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 8px; }
+
+    /* ===== §02 swatches ===== */
+    .sw-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+    .sw { border: 4px solid var(--ink); min-height: 130px; display: flex; flex-direction: column; justify-content: flex-end; padding: 14px; }
+    .sw-name { font-family: var(--f-disp); font-size: 18px; text-transform: uppercase; }
+    .sw-hex { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.04em; margin-top: 3px; }
+
+    /* ===== §03 typography ===== */
+    .scale-stack { display: flex; flex-direction: column; }
+    .scale-row { display: grid; grid-template-columns: 220px 1fr; gap: 28px; align-items: baseline; padding: 16px 0; border-bottom: 3px solid var(--ink); }
+    .scale-row:last-child { border-bottom: none; }
+    .sm { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .sm b { display: block; margin-bottom: 4px; }
+
+    /* ===== §04 ===== */
+    .comp { margin-bottom: 40px; }
+    .comp-h { font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); margin-bottom: 18px; }
+    .marker { background: var(--pink); border: 4px solid var(--ink); padding: clamp(24px,3vw,44px); box-shadow: 24px 24px 0 var(--orange), 24px 24px 0 4px var(--ink); }
+    .badge { display: inline-block; background: var(--yellow); border: 4px solid var(--ink); font-family: var(--f-disp); font-size: clamp(18px,2vw,28px); text-transform: uppercase; padding: 10px 20px; transform: rotate(-4deg); }
+    .matrix { width: 100%; border-collapse: collapse; border: 4px solid var(--ink); background: var(--cream-2); }
+    .matrix th, .matrix td { border: 3px solid var(--ink); padding: 14px 22px; text-align: left; }
+    .matrix thead th { background: var(--ink); color: var(--cream); font-family: var(--f-disp); font-size: clamp(14px,1.3vw,20px); text-transform: uppercase; }
+    .matrix td { font-family: var(--f-body); font-size: clamp(13px,1vw,16px); }
+    .matrix td.lbl { font-family: var(--f-disp); text-transform: uppercase; font-size: clamp(13px,1.1vw,18px); }
+    .matrix .col-pink { background: var(--pink); } .matrix .col-green { background: var(--green); color: var(--cream); }
+    .bar-chart { display: flex; align-items: flex-end; gap: clamp(16px,3vw,40px); height: 200px; border-left: 3px solid var(--ink); border-bottom: 3px solid var(--ink); padding: 0 16px; }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 8px; }
+    .bar { width: 100%; border: 3px solid var(--ink); height: 0; transition: height 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .bar-lbl { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* ===== §07 ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .dd-list { list-style: none; margin-top: 14px; }
+    .dd-list li { font-family: var(--f-body); font-size: clamp(14px,1.1vw,17px); line-height: 1.45; padding: 10px 0 10px 1.8em; position: relative; }
+    .do .dd-list li::before { content: "+"; position: absolute; left: 0; font-family: var(--f-disp); }
+    .dont .dd-list li::before { content: "×"; position: absolute; left: 0; font-family: var(--f-disp); }
+
+    /* ===== §08 cjk ===== */
+    .cjk-display { font-family: 'Noto Serif SC', var(--f-disp); font-weight: 900; font-size: clamp(40px,6vw,96px); line-height: 1; letter-spacing: 0; color: var(--ink); }
+    .cjk-body { font-family: 'Noto Serif SC', var(--f-body); font-weight: 400; font-size: clamp(15px,1.2vw,18px); line-height: 1.7; color: var(--ink); margin-top: 16px; }
+    .cjk-label { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); margin-top: 16px; }
+
+    /* ===== close (green slide) ===== */
+    .close { min-height: 86vh; display: flex; flex-direction: column; justify-content: center; background: var(--green); color: var(--cream); }
+    .close .display { color: var(--cream); }
+    .close .kicker-block { background: var(--cream); color: var(--green); }
+    .close-deco { position: absolute; top: 50%; right: 8%; transform: translateY(-50%); z-index: 1; }
+    .close-links { margin-top: 28px; display: flex; gap: 16px; flex-wrap: wrap; position: relative; z-index: 2; }
+    .close-links a { text-decoration: none; font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green); background: var(--cream); border: 3px solid var(--cream); padding: 10px 20px; }
+    .close-links a:hover { background: var(--yellow); border-color: var(--yellow); color: var(--ink); }
+
+    @media (max-width: 980px) {
+      .contents, .grid-4, .sw-grid { grid-template-columns: 1fr 1fr; }
+      .grid-3, .grid-2, .dodont { grid-template-columns: 1fr; }
+      .scale-row { grid-template-columns: 1fr; gap: 8px; }
+      .hero-deco, .close-deco { display: none; }
+    }
+    @media (max-width: 560px) { .contents, .grid-4, .sw-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <a class="back-link" href="index.html">&larr; Index</a>
+  <div class="counter" id="counter">01 / 10</div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="hero-deco">
+      <div class="stamp"><div class="stamp-inner">DESIGN<br>LED</div></div>
+    </div>
+    <div class="wrap">
+      <span class="kicker-block">Design System Specification</span>
+      <h1 class="display">Creative<br>Mode</h1>
+      <p class="hero-lead">A neo-brutalist editorial system &mdash; warm cream, heavy 4px ink borders, hard offset shadows, and a four-colour accent palette. Part Bauhaus grid, part punk zine, part Swiss editorial.</p>
+      <nav class="contents">
+        <a href="#overview"><div class="ct-card cc-cream"><div class="ct-n">01</div><div class="ct-t">Overview</div></div></a>
+        <a href="#colours"><div class="ct-card cc-pink"><div class="ct-n">02</div><div class="ct-t">Colours</div></div></a>
+        <a href="#typography"><div class="ct-card cc-yellow"><div class="ct-n">03</div><div class="ct-t">Typography</div></div></a>
+        <a href="#components"><div class="ct-card cc-green"><div class="ct-n">04</div><div class="ct-t">Components</div></div></a>
+        <a href="#layout"><div class="ct-card cc-orange"><div class="ct-n">05</div><div class="ct-t">Layout</div></div></a>
+        <a href="#depth"><div class="ct-card cc-cream"><div class="ct-n">06</div><div class="ct-t">Depth</div></div></a>
+        <a href="#dodont"><div class="ct-card cc-pink"><div class="ct-n">07</div><div class="ct-t">Do &amp; Don't</div></div></a>
+        <a href="#cjk"><div class="ct-card cc-yellow"><div class="ct-n">08</div><div class="ct-t">中文 / CJK</div></div></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section id="overview">
+    <div class="wrap">
+      <div class="topbar"><span class="mono-label">01 — Overview</span><span class="topbar-pill">Creative Mode</span></div>
+      <div class="sec-head">
+        <span class="kicker-block">The Premise</span>
+        <h2 class="display-lg" style="margin-top:16px">Restraint Of<br>Technique</h2>
+        <p class="body-lg">Restraint of technique paired with aggression of expression: no rounded cards, no gradients, no light-source shadows &mdash; only flat colour-blocking and hard offset drop-shadows. Four accents fire at full saturation; they never blend, they collide, and the collision is the design.</p>
+      </div>
+      <div class="grid-4">
+        <div class="cell cream"><div class="stat-num">Med</div><div class="c-label">Formality</div></div>
+        <div class="cell pink"><div class="stat-num">Med-Hi</div><div class="c-label">Density</div></div>
+        <div class="cell green"><div class="stat-num">Light</div><div class="c-label">Scheme</div></div>
+        <div class="cell orange"><div class="stat-num">08</div><div class="c-label">Slides</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section id="colours">
+    <div class="wrap">
+      <div class="topbar"><span class="mono-label">02 — Colours</span><span class="topbar-pill">Four Accents</span></div>
+      <div class="sec-head">
+        <span class="kicker-block">The Palette</span>
+        <h2 class="display-lg" style="margin-top:16px">Four Colours,<br>Full Saturation</h2>
+        <p class="body-lg">A warm cream canvas, ink-black structure, and four saturated accents &mdash; forest green, hot pink, burnt orange, sunshine yellow. Each slide uses two or three, never all four. Every accent on one slide is noise.</p>
+      </div>
+      <div class="sw-grid">
+        <div class="sw" style="background:var(--green);color:var(--cream)"><div class="sw-name">Green</div><div class="sw-hex">#1F8A4C</div></div>
+        <div class="sw" style="background:var(--pink);color:var(--ink)"><div class="sw-name">Pink</div><div class="sw-hex">#F06CA8</div></div>
+        <div class="sw" style="background:var(--orange);color:var(--cream)"><div class="sw-name">Orange</div><div class="sw-hex">#E85A1F</div></div>
+        <div class="sw" style="background:var(--yellow);color:var(--ink)"><div class="sw-name">Yellow</div><div class="sw-hex">#F5C518</div></div>
+        <div class="sw" style="background:var(--cream);color:var(--ink)"><div class="sw-name">Cream</div><div class="sw-hex">#EFE9D9</div></div>
+        <div class="sw" style="background:var(--cream-2);color:var(--ink)"><div class="sw-name">Cream 2</div><div class="sw-hex">#E4DCC4</div></div>
+        <div class="sw" style="background:var(--ink);color:var(--cream)"><div class="sw-name">Ink</div><div class="sw-hex">#0F0F0F</div></div>
+        <div class="sw" style="background:var(--ink-2);color:var(--cream)"><div class="sw-name">Ink 2</div><div class="sw-hex">#2A2A2A</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section id="typography">
+    <div class="wrap">
+      <div class="topbar"><span class="mono-label">03 — Typography</span><span class="topbar-pill">Three Faces</span></div>
+      <div class="sec-head">
+        <span class="kicker-block">Loud &amp; Tight</span>
+        <h2 class="display-lg" style="margin-top:16px">Archivo Black,<br>Uppercase</h2>
+        <p class="body-lg">Archivo Black runs every headline in strict uppercase at 0.92 line-height &mdash; headlines overlap their own cap-height, intentionally. Space Grotesk carries body; JetBrains Mono carries every label, like a typesetting rule-sheet.</p>
+      </div>
+      <div class="scale-stack">
+        <div class="scale-row"><div class="sm"><b>display-jumbo</b>Archivo Black · 220px</div><div><span class="display" style="font-size:clamp(40px,5vw,72px)">Creative</span></div></div>
+        <div class="scale-row"><div class="sm"><b>display-lg</b>Archivo Black · 100px</div><div><span class="display-lg" style="font-size:clamp(30px,4vw,56px)">Section Head</span></div></div>
+        <div class="scale-row"><div class="sm"><b>stat-num</b>Archivo Black · 96px</div><div><span class="stat-num" style="font-size:clamp(36px,4vw,64px);color:var(--orange)">340</span></div></div>
+        <div class="scale-row"><div class="sm"><b>body-lg</b>Space Grotesk · 28px</div><div><span class="body-lg" style="margin:0">Body copy in Space Grotesk, left-aligned, line-height 1.4.</span></div></div>
+        <div class="scale-row"><div class="sm"><b>mono-label</b>JetBrains Mono · 24px</div><div><span class="mono-label">Typesetting Rule-Sheet Label</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section id="components">
+    <div class="wrap">
+      <div class="topbar"><span class="mono-label">04 — Components</span><span class="topbar-pill">Actual CSS</span></div>
+      <div class="sec-head">
+        <span class="kicker-block">The Kit</span>
+        <h2 class="display-lg" style="margin-top:16px">Flat Blocks,<br>Hard Shadows</h2>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Stat cells — flat colour-blocking, 4px ink borders</div>
+        <div class="grid-4">
+          <div class="cell green"><div class="stat-num" style="font-size:clamp(34px,3.5vw,56px)">$12M</div><div class="c-label">Revenue</div></div>
+          <div class="cell pink"><div class="stat-num" style="font-size:clamp(34px,3.5vw,56px)">94%</div><div class="c-label">Retention</div></div>
+          <div class="cell orange"><div class="stat-num" style="font-size:clamp(34px,3.5vw,56px)">4.2×</div><div class="c-label">LTV / CAC</div></div>
+          <div class="cell yellow"><div class="stat-num" style="font-size:clamp(34px,3.5vw,56px)">340%</div><div class="c-label">Growth</div></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Marker block (24px hard offset shadow) &amp; rotated badge</div>
+        <div class="grid-2" style="align-items:center">
+          <div class="marker"><div class="display-xs">Featured Block</div><p class="body-md" style="margin-top:10px">A 24px hard offset shadow in orange, wrapped in a 4px ink border. The system's loudest depth statement.</p></div>
+          <div style="display:flex;justify-content:center"><span class="badge">New / 2026</span></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Comparison table &amp; bar chart</div>
+        <div class="grid-2" style="align-items:start">
+          <table class="matrix">
+            <thead><tr><th>Feature</th><th>Us</th><th>Them</th></tr></thead>
+            <tbody>
+              <tr><td class="lbl">Colour-block</td><td class="col-green">Yes</td><td>No</td></tr>
+              <tr><td class="lbl">Hard shadow</td><td class="col-green">Yes</td><td>No</td></tr>
+              <tr><td class="lbl">Archivo Black</td><td class="col-green">Yes</td><td class="col-pink">Part</td></tr>
+            </tbody>
+          </table>
+          <div class="bar-chart">
+            <div class="bar-col"><div class="bar" data-h="42%" style="background:var(--pink)"></div><div class="bar-lbl">FY22</div></div>
+            <div class="bar-col"><div class="bar" data-h="60%" style="background:var(--yellow)"></div><div class="bar-lbl">FY23</div></div>
+            <div class="bar-col"><div class="bar" data-h="78%" style="background:var(--orange)"></div><div class="bar-lbl">FY24</div></div>
+            <div class="bar-col"><div class="bar" data-h="100%" style="background:var(--green)"></div><div class="bar-lbl">FY25</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section id="layout">
+    <div class="wrap">
+      <div class="topbar"><span class="mono-label">05 — Layout</span><span class="topbar-pill">Chrome Frame</span></div>
+      <div class="sec-head">
+        <span class="kicker-block">The Frame</span>
+        <h2 class="display-lg" style="margin-top:16px">Identical Chrome,<br>Every Slide</h2>
+        <p class="body-lg">A JetBrains Mono topbar (label + pill) at the top, a mono meta footer (label + slide number with ink dot) at the bottom. Content lives inside with consistent gutters. Flat colour-blocking, no subtlety.</p>
+      </div>
+      <div class="grid-3">
+        <div class="cell cream"><div class="display-xs" style="font-size:clamp(18px,2vw,28px)">Topbar</div><p class="body-md" style="margin-top:8px">Mono label + pill badge.</p></div>
+        <div class="cell cream"><div class="display-xs" style="font-size:clamp(18px,2vw,28px)">Gutters</div><p class="body-md" style="margin-top:8px">96px content, 64px chrome.</p></div>
+        <div class="cell cream"><div class="display-xs" style="font-size:clamp(18px,2vw,28px)">Meta</div><p class="body-md" style="margin-top:8px">Label + slide no. + dot.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH ============ -->
+  <section id="depth">
+    <div class="wrap">
+      <div class="topbar"><span class="mono-label">06 — Depth &amp; Shape</span><span class="topbar-pill">Hard Offset</span></div>
+      <div class="sec-head">
+        <span class="kicker-block">No Blur, Ever</span>
+        <h2 class="display-lg" style="margin-top:16px">Risograph<br>Shadows</h2>
+        <p class="body-lg">Zero blurred shadows. Depth is a second solid shape offset in X and Y &mdash; 24px for featured blocks (colour + ink double), 18px for stacked blocks (pure ink). Square corners everywhere except the topbar pill. Colour-block contrast does the rest.</p>
+      </div>
+      <div class="grid-3">
+        <div class="cell cream" style="box-shadow:18px 18px 0 var(--ink);margin-bottom:18px"><div class="display-xs" style="font-size:clamp(16px,1.8vw,24px)">18px ink</div></div>
+        <div class="cell pink" style="box-shadow:24px 24px 0 var(--orange), 24px 24px 0 4px var(--ink);margin-bottom:24px"><div class="display-xs" style="font-size:clamp(16px,1.8vw,24px)">24px double</div></div>
+        <div class="cell cream"><div class="display-xs" style="font-size:clamp(16px,1.8vw,24px)">0px flat</div><p class="body-md" style="margin-top:8px">Contrast carries depth.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section id="dodont">
+    <div class="wrap">
+      <div class="topbar"><span class="mono-label">07 — Do &amp; Don't</span><span class="topbar-pill">Rules</span></div>
+      <div class="sec-head"><span class="kicker-block">The Discipline</span><h2 class="display-lg" style="margin-top:16px">Loud, Not Noisy</h2></div>
+      <div class="dodont">
+        <div class="cell green do">
+          <div class="display-xs" style="color:var(--cream);margin-bottom:8px">Do</div>
+          <ul class="dd-list" style="color:var(--cream)">
+            <li>Use 4px ink borders on every structural element.</li>
+            <li>Keep Archivo Black uppercase with 0.92 line-height.</li>
+            <li>Use two or three accents per slide, never all four.</li>
+            <li>Hard offset shadows in exactly two sizes: 24px, 18px.</li>
+            <li>Reserve the green background for a single closing slide.</li>
+          </ul>
+        </div>
+        <div class="cell pink dont">
+          <div class="display-xs" style="margin-bottom:8px">Don't</div>
+          <ul class="dd-list">
+            <li>Round card corners (except the topbar pill).</li>
+            <li>Use gradients, blurred shadows, or glow effects.</li>
+            <li>Lowercase Archivo Black, or add letter-spacing.</li>
+            <li>Introduce a fifth accent, or use pure white.</li>
+            <li>Use Space Grotesk for labels — that's mono's job.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section id="cjk">
+    <div class="wrap">
+      <div class="topbar"><span class="mono-label">08 — 中文 / CJK</span><span class="topbar-pill">Strategy A</span></div>
+      <div class="sec-head">
+        <span class="kicker-block">Brutalist, In Chinese</span>
+        <h2 class="display-lg" style="margin-top:16px">Heavy Serif Mass</h2>
+        <p class="body-lg">Archivo Black's punk-zine density has no exact Hanzi match, so <strong style="font-weight:400">思源宋体 900</strong> is the heaviest substitute. The four-colour blocks, 4px borders, and hard offset shadows do most of the brutalist work — the type becomes one loud component, not the whole system.</p>
+      </div>
+      <div class="grid-2" style="align-items:start">
+        <div class="cell cream">
+          <div class="cjk-display">创意模式</div>
+          <div class="cjk-body">暖奶油画布、四色饱和色块、4px 墨黑边框与硬质偏移投影 —— 新野兽派的全部识别度。思源宋体 900 在巨大尺度下承载色块系统中的标题；中文不转大写、letter-spacing 归零。盘古之白：2026 年、AI 产品。</div>
+          <div class="cjk-label">思源宋体 900 · JetBrains Mono chrome</div>
+        </div>
+        <div class="cell green" style="display:flex;flex-direction:column;justify-content:center">
+          <div class="display-xs" style="color:var(--cream)">Pairing</div>
+          <p class="body-md" style="color:var(--cream);margin-top:12px;line-height:1.9">Display → 思源宋体 900<br>Body → 思源宋体 400<br>Chrome → JetBrains Mono (Latin)<br>Numerals → keep Latin (340%)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE (green slide) ============ -->
+  <footer class="close" id="close">
+    <div class="close-deco"><div class="stamp"><div class="stamp-inner">CREATIVE<br>MODE</div></div></div>
+    <div class="wrap">
+      <span class="kicker-block">End of Deck</span>
+      <h2 class="display" style="margin-top:16px">Creative<br>Mode</h2>
+      <p class="body-lg" style="color:var(--cream);max-width:46ch;margin-top:8px">One of 34 systems in Beautiful HTML Templates. Lead with taste, not convention.</p>
+      <div class="close-links">
+        <a href="index.html">&larr; All Systems</a>
+        <a href="../templates/creative-mode/template.html">Open Live Deck</a>
+        <a href="../templates/creative-mode/design.md">design.md</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var counter = document.getElementById('counter');
+      var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+      var total = ids.length;
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+        for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+        if (scrolled > 0.99) idx = total - 1;
+        counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+      var bars = Array.prototype.slice.call(document.querySelectorAll('.bar[data-h]'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.style.height = e.target.getAttribute('data-h'); io.unobserve(e.target); } }); }, { threshold: 0.4 });
+        bars.forEach(function (b) { io.observe(b); });
+      } else { bars.forEach(function (b) { b.style.height = b.getAttribute('data-h'); }); }
+    })();
+  </script>
+</body>
+</html>

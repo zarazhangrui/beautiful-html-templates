@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raw Grid — Design System</title>
+  <!-- Raw Grid loads ZERO web fonts by design — the digital-native aesthetic uses the system stack.
+       Noto Sans SC is the single exception, loaded only for the §08 Chinese specimen. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0A0A0A;
+      --white: #FFFFFF;
+      --pink: #F2D4CF;
+      --green: #E5EDD6;
+      --gray: #F5F5F5;
+      --darkgray: #333333;
+      --sys: "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--white); color: var(--black); font-family: var(--sys); -webkit-font-smoothing: antialiased; }
+
+    /* ===== Persistent chrome — black label pills ===== */
+    .progress { position: fixed; top: 0; left: 0; height: 4px; width: 0; background: var(--black); z-index: 300; }
+    .back-link {
+      position: fixed; top: 20px; left: 22px; z-index: 200; text-decoration: none;
+      background: var(--black); color: var(--white); padding: 8px 16px;
+      font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+      box-shadow: 4px 4px 0 var(--black); border: 3px solid var(--black);
+    }
+    .back-link:hover { background: var(--green); color: var(--black); }
+    .counter {
+      position: fixed; bottom: 20px; right: 22px; z-index: 200;
+      background: var(--black); color: var(--white); padding: 8px 16px;
+      font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+      border: 3px solid var(--black); box-shadow: 4px 4px 0 var(--black);
+    }
+
+    /* ===== Type ===== */
+    .label { display: inline-block; background: var(--black); color: var(--white); padding: 6px 14px; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    .display { font-family: var(--sys); font-weight: 900; font-size: clamp(48px,7vw,96px); line-height: 1.05; letter-spacing: -0.02em; text-transform: uppercase; }
+    .headline { font-weight: 900; font-size: clamp(32px,4.5vw,64px); line-height: 1.1; letter-spacing: -0.01em; text-transform: uppercase; }
+    .title { font-weight: 800; font-size: clamp(22px,2.5vw,34px); line-height: 1.2; letter-spacing: 0.01em; text-transform: uppercase; }
+    .subtitle { font-weight: 700; font-size: clamp(15px,1.4vw,20px); line-height: 1.3; letter-spacing: 0.04em; text-transform: uppercase; }
+    .body { font-weight: 500; font-size: clamp(15px,1.3vw,19px); line-height: 1.6; }
+    .caption { font-weight: 700; font-size: clamp(11px,1vw,13px); line-height: 1.2; letter-spacing: 0.08em; text-transform: uppercase; }
+    .num { font-weight: 900; font-size: clamp(48px,6vw,90px); line-height: 1; letter-spacing: -0.03em; }
+    .line-h { width: 60px; height: 4px; background: var(--black); }
+
+    /* ===== Sections ===== */
+    section, header, footer { position: relative; padding: clamp(40px,5vw,80px) clamp(28px,5vw,80px); border-bottom: 3px solid var(--black); }
+    .wrap { max-width: 1200px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+    .deco-num { position: absolute; font-weight: 900; line-height: 1; letter-spacing: -0.04em; color: var(--black); opacity: 0.08; z-index: 0; pointer-events: none; font-size: clamp(120px,22vw,360px); }
+
+    .sec-head { margin-bottom: clamp(28px,3.5vw,48px); }
+    .sec-head .label { margin-bottom: 18px; }
+    .sec-head .body { margin-top: 16px; max-width: 64ch; }
+
+    /* border-as-layout grid: black ground + 3px gap = shared 3px lines, white/pastel cells */
+    .frame-grid { background: var(--black); border: 3px solid var(--black); display: grid; gap: 3px; }
+    .frame-grid > .cell { background: var(--white); padding: clamp(20px,2.5vw,36px); position: relative; }
+    .cell.pink { background: var(--pink); } .cell.green { background: var(--green); } .cell.gray { background: var(--gray); }
+    .cell.black { background: var(--black); color: var(--white); }
+    .g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: repeat(3,1fr); } .g4 { grid-template-columns: repeat(4,1fr); }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+    .hero .deco-num { top: 50%; right: -2%; transform: translateY(-50%); }
+    .hero-inner { position: relative; z-index: 2; }
+    .hero .display { margin: 20px 0 16px; }
+    .hero .line-h { margin: 24px 0; }
+    .contents { margin-top: 36px; max-width: 1000px; }
+    .contents a { text-decoration: none; color: var(--black); transition: background 0.15s; }
+    .contents a .cell-num { font-weight: 900; font-size: 13px; letter-spacing: 0.04em; opacity: 0.5; }
+    .contents a .cell-name { font-weight: 800; font-size: clamp(14px,1.4vw,18px); text-transform: uppercase; letter-spacing: 0.01em; margin-top: 6px; }
+    .contents .cell:hover { background: var(--green); }
+    .arrow::before { content: "\2192\00a0"; font-weight: 900; }
+
+    /* ===== stat / icon / bar ===== */
+    .icon-box { width: 48px; height: 48px; border: 3px solid var(--black); background: var(--white); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 20px; }
+    .stat-num { font-weight: 900; font-size: clamp(36px,4vw,56px); line-height: 1; letter-spacing: -0.02em; }
+    .bar-track { width: 100%; height: 32px; border: 3px solid var(--black); background: var(--white); margin-bottom: 14px; display: flex; }
+    .bar-fill { height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; font-size: 12px; font-weight: 800; width: 0; transition: width 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .bf-pink { background: var(--pink); } .bf-green { background: var(--green); } .bf-black { background: var(--black); color: var(--white); }
+    .connector-node { width: 32px; height: 32px; border: 3px solid var(--black); background: var(--black); color: var(--white); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 16px; }
+
+    /* ===== §02 swatches ===== */
+    .sw-grid { background: var(--black); border: 3px solid var(--black); display: grid; grid-template-columns: repeat(3,1fr); gap: 3px; }
+    .sw-cell { background: var(--white); }
+    .sw-chip { height: 110px; border-bottom: 3px solid var(--black); }
+    .sw-info { padding: 16px 18px; }
+    .sw-name { font-weight: 900; font-size: 18px; text-transform: uppercase; letter-spacing: -0.01em; }
+    .sw-hex { font-weight: 700; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px; }
+    .sw-role { font-weight: 500; font-size: 13px; line-height: 1.45; margin-top: 8px; }
+
+    /* ===== §03 typography ===== */
+    .scale-list { border: 3px solid var(--black); }
+    .scale-row { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: baseline; padding: 16px clamp(18px,2vw,28px); border-bottom: 3px solid var(--black); }
+    .scale-row:last-child { border-bottom: none; }
+    .sm { font-weight: 700; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .sm b { display: block; font-size: 13px; margin-bottom: 3px; }
+    .smp { overflow: hidden; }
+
+    /* ===== §04 components ===== */
+    .comp { margin-bottom: 36px; }
+    .comp-h { font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .cta-btn { display: inline-block; border: 3px solid var(--black); background: var(--white); padding: 12px 24px; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; color: var(--black); box-shadow: 4px 4px 0 var(--black); }
+    .cta-btn:hover { background: var(--green); }
+
+    /* ===== §05 spec table ===== */
+    .spec-table { width: 100%; border-collapse: collapse; border: 3px solid var(--black); }
+    .spec-table th, .spec-table td { text-align: left; padding: 13px 18px; border: 3px solid var(--black); }
+    .spec-table th { background: var(--black); color: var(--white); font-weight: 800; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .spec-table td { font-weight: 600; font-size: 14px; }
+    .spec-table td.tok { font-weight: 800; }
+    .spec-table tr:nth-child(even) td { background: var(--gray); }
+
+    /* ===== §06 depth ===== */
+    .shadow-row { display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 36px; }
+    .shadow-demo { border: 3px solid var(--black); background: var(--white); padding: 24px 32px; font-weight: 700; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .sd-6 { box-shadow: 6px 6px 0 var(--black); } .sd-4 { box-shadow: 4px 4px 0 var(--black); }
+
+    /* ===== §07 do/don't ===== */
+    .dodont { background: var(--black); border: 3px solid var(--black); display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+    .dd-col { background: var(--white); padding: clamp(24px,3vw,40px); }
+    .dd-col.dont { background: var(--pink); }
+    .dd-col .title { margin-bottom: 18px; }
+    .dd-list { list-style: none; }
+    .dd-list li { font-weight: 500; font-size: 15px; line-height: 1.5; padding: 10px 0 10px 26px; position: relative; border-bottom: 3px solid var(--black); }
+    .dd-list li:last-child { border-bottom: none; }
+    .dd-col .dd-list li::before { position: absolute; left: 0; top: 10px; font-weight: 900; }
+    .do .dd-list li::before { content: "+"; }
+    .dont .dd-list li::before { content: "\00D7"; }
+
+    /* ===== §08 cjk ===== */
+    .cjk-specimen { border: 3px solid var(--black); box-shadow: 6px 6px 0 var(--black); padding: clamp(28px,3vw,44px); margin-bottom: 28px; position: relative; overflow: hidden; }
+    .cjk-display { font-family: 'Noto Sans SC', var(--sys); font-weight: 900; font-size: clamp(34px,5vw,68px); line-height: 1.2; letter-spacing: 0; }
+    .cjk-body { font-family: 'Noto Sans SC', var(--sys); font-weight: 500; font-size: clamp(15px,1.2vw,18px); line-height: 1.8; max-width: 50ch; margin-top: 16px; }
+    .cjk-label { font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 16px; }
+
+    /* ===== close ===== */
+    .close { border-bottom: none; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; overflow: hidden; }
+    .close .deco-num { top: 50%; left: 50%; transform: translate(-50%,-50%); opacity: 0.06; }
+    .close-inner { position: relative; z-index: 2; }
+    .close .display { margin: 20px 0; }
+    .close-sub { font-weight: 500; font-size: clamp(15px,1.3vw,19px); max-width: 46ch; margin: 0 auto; line-height: 1.6; }
+    .close-links { margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+
+    /* ===== responsive ===== */
+    @media (max-width: 1024px) {
+      .g3, .g4, .sw-grid { grid-template-columns: 1fr 1fr; }
+      .g2, .dodont { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .g3, .g4, .sw-grid { grid-template-columns: 1fr; }
+      .scale-row { grid-template-columns: 1fr; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <a class="back-link arrow" href="index.html">Index</a>
+  <div class="counter" id="counter">01 / 10</div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="deco-num">01</div>
+    <div class="wrap hero-inner">
+      <span class="label">Design System Specification</span>
+      <h1 class="display">Raw Grid</h1>
+      <div class="line-h"></div>
+      <p class="subtitle">Neobrutalism where 3px borders are the layout</p>
+      <p class="body" style="max-width:60ch;margin-top:16px">A digital-native system — system sans-serif at weight 900 uppercase, no web fonts, 3px black borders meeting edge-to-edge, hard offset shadows, and two muted pastels. Notion-meets-protest-poster.</p>
+      <div class="contents frame-grid g4">
+        <a class="cell" href="#overview"><div class="cell-num">01</div><div class="cell-name">Overview</div></a>
+        <a class="cell" href="#colours"><div class="cell-num">02</div><div class="cell-name">Colours</div></a>
+        <a class="cell" href="#typography"><div class="cell-num">03</div><div class="cell-name">Typography</div></a>
+        <a class="cell" href="#components"><div class="cell-num">04</div><div class="cell-name">Components</div></a>
+        <a class="cell" href="#layout"><div class="cell-num">05</div><div class="cell-name">Layout</div></a>
+        <a class="cell" href="#depth"><div class="cell-num">06</div><div class="cell-name">Depth</div></a>
+        <a class="cell" href="#dodont"><div class="cell-num">07</div><div class="cell-name">Do &amp; Don't</div></a>
+        <a class="cell" href="#cjk"><div class="cell-num">08</div><div class="cell-name">中文 / CJK</div></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section id="overview">
+    <div class="deco-num" style="top:-4%;right:2%">A</div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">01 — Overview</span>
+        <h2 class="headline">Borders Are The Grid</h2>
+        <p class="body">Raw Grid is built on a single premise: 3px solid black borders <em>are</em> the layout. No margins, no gaps, no rounded corners, no gradients. When two regions meet, a 3px black line separates them — that line is the entire grid system. The type is deliberately non-decorative: the native system sans, weight 900 uppercase, no web fonts.</p>
+      </div>
+      <div class="frame-grid g4">
+        <div class="cell"><div class="stat-num">Med-Lo</div><div class="caption" style="margin-top:8px">Formality</div></div>
+        <div class="cell pink"><div class="stat-num">High</div><div class="caption" style="margin-top:8px">Density</div></div>
+        <div class="cell green"><div class="stat-num">Light</div><div class="caption" style="margin-top:8px">Scheme</div></div>
+        <div class="cell black"><div class="stat-num">10</div><div class="caption" style="margin-top:8px">Slides</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section id="colours">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">02 — Colours</span>
+        <h2 class="headline">Black Structure, Two Pastels</h2>
+        <p class="body">Six tokens, four roles: white canvas, black structure (borders, text, shadows, label fills), and two muted pastels — blush pink and sage green — as region fills only, never on text. The pastels are pale enough that black text stays fully legible; the system never inverts text over an accent.</p>
+      </div>
+      <div class="sw-grid">
+        <div class="sw-cell"><div class="sw-chip" style="background:var(--white)"></div><div class="sw-info"><div class="sw-name">White</div><div class="sw-hex">#FFFFFF</div><div class="sw-role">The canvas &amp; default card fill.</div></div></div>
+        <div class="sw-cell"><div class="sw-chip" style="background:var(--black)"></div><div class="sw-info"><div class="sw-name">Black</div><div class="sw-hex">#0A0A0A</div><div class="sw-role">All borders, text, shadows, label fills.</div></div></div>
+        <div class="sw-cell"><div class="sw-chip" style="background:var(--pink)"></div><div class="sw-info"><div class="sw-name">Pink</div><div class="sw-hex">#F2D4CF</div><div class="sw-role">Warm accent surface. Region fill only.</div></div></div>
+        <div class="sw-cell"><div class="sw-chip" style="background:var(--green)"></div><div class="sw-info"><div class="sw-name">Green</div><div class="sw-hex">#E5EDD6</div><div class="sw-role">Cool accent surface &amp; hover highlight.</div></div></div>
+        <div class="sw-cell"><div class="sw-chip" style="background:var(--gray)"></div><div class="sw-info"><div class="sw-name">Gray</div><div class="sw-hex">#F5F5F5</div><div class="sw-role">Table zebra &amp; tertiary fills.</div></div></div>
+        <div class="sw-cell"><div class="sw-chip" style="background:var(--darkgray)"></div><div class="sw-info"><div class="sw-name">Dark Gray</div><div class="sw-hex">#333333</div><div class="sw-role">Reserved de-emphasized text.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section id="typography">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">03 — Typography</span>
+        <h2 class="headline">System Sans, No Web Fonts</h2>
+        <p class="body">The entire system runs on the native stack — <em>Segoe UI / system-ui / Helvetica</em>. Loading zero web fonts is the aesthetic statement: this is software, not a print artifact. The weight axis is the only expressive tool — 900 uppercase display against 500 sentence-case body.</p>
+      </div>
+      <div class="scale-list">
+        <div class="scale-row"><div class="sm"><b>number</b>900 · 64–120px · −0.04em</div><div class="smp"><span class="num">96%</span></div></div>
+        <div class="scale-row"><div class="sm"><b>display</b>900 · 48–96px · UPPER</div><div class="smp"><span class="display" style="font-size:clamp(36px,5vw,60px)">Raw Grid</span></div></div>
+        <div class="scale-row"><div class="sm"><b>headline</b>900 · 32–64px · UPPER</div><div class="smp"><span class="headline" style="font-size:clamp(28px,3.5vw,44px)">Section Head</span></div></div>
+        <div class="scale-row"><div class="sm"><b>title</b>800 · 24–36px · UPPER</div><div class="smp"><span class="title">Region Title</span></div></div>
+        <div class="scale-row"><div class="sm"><b>subtitle</b>700 · 16–22px · UPPER</div><div class="smp"><span class="subtitle">Sub-Headline</span></div></div>
+        <div class="scale-row"><div class="sm"><b>body</b>500 · 16–20px · sentence</div><div class="smp"><span class="body">Sentence-case body at line-height 1.6.</span></div></div>
+        <div class="scale-row"><div class="sm"><b>label</b>800 · 11px · 0.08em</div><div class="smp"><span class="label">Label Pill</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section id="components">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">04 — Components</span>
+        <h2 class="headline">The Bordered Toolkit</h2>
+        <p class="body">Every block below is rendered with the template's <em>actual CSS</em> — not a mockup. 3px borders, hard offset shadows, black label pills, and the arrow-prefix interactivity signal.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Labels, buttons &amp; the arrow signal</div>
+        <div class="pill-row">
+          <span class="label">Section Tag</span>
+          <span class="label">Q4 / FY25</span>
+          <a class="cta-btn arrow">Get Started</a>
+          <span class="connector-node arrow" style="font-size:0"><span style="font-size:16px">&rarr;</span></span>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Stat cells &amp; bar chart — pink / green / black fills</div>
+        <div class="frame-grid g3" style="margin-bottom:28px">
+          <div class="cell"><div class="stat-num">$12.4M</div><div class="caption" style="margin-top:8px">Revenue</div></div>
+          <div class="cell pink"><div class="stat-num">340%</div><div class="caption" style="margin-top:8px">YoY Growth</div></div>
+          <div class="cell green"><div class="stat-num">94%</div><div class="caption" style="margin-top:8px">Retention</div></div>
+        </div>
+        <div class="bar-track"><div class="bar-fill bf-black" data-w="86%">86%</div></div>
+        <div class="bar-track"><div class="bar-fill bf-pink" data-w="64%">64%</div></div>
+        <div class="bar-track"><div class="bar-fill bf-green" data-w="48%">48%</div></div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Cards with wallpaper numerals &amp; icon boxes</div>
+        <div class="frame-grid g3">
+          <div class="cell"><div class="deco-num" style="font-size:clamp(60px,7vw,110px);top:-10px;right:6px;opacity:0.16">01</div><div class="icon-box" style="margin-bottom:14px">A</div><div class="title" style="font-size:20px">Strategy</div><div class="body" style="font-size:14px;margin-top:8px">Market sizing and multi-year roadmaps.</div></div>
+          <div class="cell"><div class="deco-num" style="font-size:clamp(60px,7vw,110px);top:-10px;right:6px;opacity:0.16">02</div><div class="icon-box" style="margin-bottom:14px">B</div><div class="title" style="font-size:20px">Build</div><div class="body" style="font-size:14px;margin-top:8px">Scalable architecture and APIs.</div></div>
+          <div class="cell"><div class="deco-num" style="font-size:clamp(60px,7vw,110px);top:-10px;right:6px;opacity:0.16">03</div><div class="icon-box" style="margin-bottom:14px">C</div><div class="title" style="font-size:20px">Grow</div><div class="body" style="font-size:14px;margin-top:8px">Activation, retention, expansion.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section id="layout">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">05 — Layout</span>
+        <h2 class="headline">Borders, Not Gaps</h2>
+        <p class="body">When a slide divides into columns, the cells share a single 3px black border and meet it directly — no gap, no margin. Internal padding gives breathing room <em>inside</em> cells; gaps between cells do not exist. That edge-to-edge meeting is the system's most distinctive structural choice.</p>
+      </div>
+      <table class="spec-table">
+        <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td class="tok">border</td><td class="tok">3px solid</td><td>Every structural division</td></tr>
+          <tr><td class="tok">shadow default / small</td><td class="tok">6px / 4px</td><td>Hard offset, solid black, zero blur</td></tr>
+          <tr><td class="tok">pad-lg / md / sm</td><td class="tok">64 / 40 / 20px</td><td>Internal region padding (clamped)</td></tr>
+          <tr><td class="tok">gap</td><td class="tok">0</td><td>None — borders are the separators</td></tr>
+          <tr><td class="tok">radius</td><td class="tok">0</td><td>Square everywhere except donut</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH ============ -->
+  <section id="depth">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">06 — Depth &amp; Shape</span>
+        <h2 class="headline">Two Shadows, Zero Blur</h2>
+        <p class="body">Exactly two shadow values — 6px and 4px hard offsets in solid black, always bottom-right, never blurred, never colored. Most apparent depth actually comes from the 3px borders; shadow is reserved for elements that float above their surface.</p>
+      </div>
+      <div class="shadow-row">
+        <div class="shadow-demo sd-6">6px · default</div>
+        <div class="shadow-demo sd-4">4px · small</div>
+      </div>
+      <div class="comp-h">Wallpaper numerals — decorative depth at 0.08–0.35 opacity</div>
+      <div class="frame-grid g2">
+        <div class="cell" style="min-height:140px"><div class="deco-num" style="font-size:clamp(90px,12vw,160px);top:-20px;left:10px;opacity:0.18">7</div><div class="title" style="position:relative">Layered content over decoration</div></div>
+        <div class="cell green" style="min-height:140px"><div class="deco-num" style="font-size:clamp(70px,9vw,130px);top:-6px;right:14px;opacity:0.2">&ldquo;</div><div class="body" style="position:relative">No z-index trickery — content sits at full opacity over a low-opacity numeral.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section id="dodont">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">07 — Do &amp; Don't</span>
+        <h2 class="headline">Hold The Borders</h2>
+      </div>
+      <div class="dodont">
+        <div class="dd-col do">
+          <div class="title">Do</div>
+          <ul class="dd-list">
+            <li>Use 3px solid black borders on every division — let them touch edge-to-edge.</li>
+            <li>Set display in weight 900 uppercase with negative tracking; body in 500 sentence case.</li>
+            <li>Use the black label pill as the universal section tag.</li>
+            <li>Pair pink with green — warm with cool — never two of one.</li>
+            <li>Add the arrow-prefix to every CTA and place wallpaper numerals behind content.</li>
+          </ul>
+        </div>
+        <div class="dd-col dont">
+          <div class="title">Don't</div>
+          <ul class="dd-list">
+            <li>Load any web font — the native system stack is the identity.</li>
+            <li>Round a corner, blur a shadow, or colour a border.</li>
+            <li>Put display-weight text in sentence case, or use weights 400 / 600.</li>
+            <li>Invert text over pink, green, or gray — pastels carry black text.</li>
+            <li>Put gaps between regions — borders are the separators.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section id="cjk">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">08 — 中文 / CJK</span>
+        <h2 class="headline">One Family, Black Pills</h2>
+        <p class="body">Strategy A: a single CJK family — 思源黑体 Noto Sans SC — preserves the system's typographic monoculture. It's the one concession to web fonts (no system CJK renders weight 900 consistently). Brutalist density comes from the weight ladder, not from the uppercase that Chinese lacks.</p>
+      </div>
+      <div class="cjk-specimen">
+        <div class="deco-num" style="font-size:clamp(120px,18vw,260px);top:-10%;right:0;opacity:0.07">四</div>
+        <div class="cjk-display" style="position:relative">原始网格系统</div>
+        <div class="cjk-body" style="position:relative">3px 黑边即布局，区域之间以一条黑线相接，没有间隙、没有圆角。思源黑体 900 已自带紧实的野兽派质感 —— 中文务必将 letter-spacing 归零，负字距会让字形粘连。黑底白字的标签药丸（品牌、信号源、第四季度）在中文里反而更紧凑有力。盘古之白：使用 Claude、2026 年。</div>
+        <div class="cjk-label" style="position:relative">思源黑体 Noto Sans SC · 900 / 700 / 500</div>
+      </div>
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Latin (default)</th><th>Chinese counterpart</th></tr></thead>
+        <tbody>
+          <tr><td class="tok">Display / headline / title</td><td>system-ui 900 UPPER</td><td>思源黑体 900（letter-spacing 0）</td></tr>
+          <tr><td class="tok">Body</td><td>system-ui 500</td><td>思源黑体 500</td></tr>
+          <tr><td class="tok">Caption / label</td><td>system-ui 700–800 UPPER</td><td>思源黑体 700–800（不转大写）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close" id="close">
+    <div class="deco-num">END</div>
+    <div class="close-inner">
+      <span class="label">End of Deck</span>
+      <h2 class="display">Raw Grid</h2>
+      <p class="close-sub">One of 34 systems in Beautiful HTML Templates. Sharp, system-native, unmistakably digital.</p>
+      <div class="close-links">
+        <a class="cta-btn arrow" href="index.html">All Systems</a>
+        <a class="cta-btn arrow" href="../templates/raw-grid/template.html">Open Live Deck</a>
+        <a class="cta-btn arrow" href="../templates/raw-grid/design.md">design.md</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var counter = document.getElementById('counter');
+      var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+      var total = ids.length;
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+        for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+        if (scrolled > 0.99) idx = total - 1;
+        counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+      var bars = Array.prototype.slice.call(document.querySelectorAll('.bar-fill[data-w]'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.style.width = e.target.getAttribute('data-w'); io.unobserve(e.target); } }); }, { threshold: 0.4 });
+        bars.forEach(function (b) { io.observe(b); });
+      } else { bars.forEach(function (b) { b.style.width = b.getAttribute('data-w'); }); }
+    })();
+  </script>
+</body>
+</html>

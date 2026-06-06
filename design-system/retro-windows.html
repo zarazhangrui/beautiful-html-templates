@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retro Windows — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's two nostalgic accent faces (the body face is the OS system stack, not loaded) -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <!-- CJK pairing, loaded only for the live Chinese specimen in §08 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gray: #c0c0c0;
+      --bg-light: #d4d0c8;
+      --bg-dark: #808080;
+      --blue-navy: #000080;
+      --blue-bright: #0000a0;
+      --blue-light: #1084d0;
+      --white: #ffffff;
+      --black: #000000;
+      --text-dark: #222222;
+      --text-gray: #555555;
+      --btn-face: #d4d0c8;
+      --btn-highlight: #ffffff;
+      --btn-shadow: #404040;
+      --btn-dark-shadow: #000000;
+      --green-retro: #008000;
+      --red-retro: #800000;
+      --yellow-retro: #808000;
+      --cyan-retro: #008080;
+      --doc-max: 1080px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+    body {
+      /* The page is a Win9x desktop: a flat gray field with a window floating per section. */
+      background: var(--bg-dark);
+      font-family: "MS Sans Serif", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 16px;
+      color: var(--text-dark);
+      padding-bottom: 48px;          /* clears the fixed taskbar */
+      -webkit-font-smoothing: none;  /* the OS-UI illusion wants crisp, not smoothed, type */
+    }
+
+    /* ============ CRT SCANLINE OVERLAY (ported verbatim — sits above everything) ====== */
+    .crt-overlay {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9999;
+      background: repeating-linear-gradient(0deg,
+        rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px,
+        transparent 1px, transparent 3px);
+    }
+
+    /* ============ SCROLLBAR (ported — the Win9x beveled gray thumb) ============ */
+    ::-webkit-scrollbar { width: 16px; height: 16px; }
+    ::-webkit-scrollbar-track { background: var(--bg-gray); }
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-gray);
+      border: 2px solid var(--btn-highlight);
+      border-right-color: var(--btn-dark-shadow);
+      border-bottom-color: var(--btn-dark-shadow);
+    }
+
+    /* ============ THE TASKBAR — persistent chrome (Start / task / system tray) ====== */
+    .taskbar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      height: 36px; display: flex; align-items: center; gap: 6px;
+      padding: 4px 6px;
+      background: var(--bg-light);
+      border-top: 2px solid var(--btn-highlight);
+      box-shadow: inset 0 1px 0 var(--white);
+    }
+    .start-btn {
+      display: flex; align-items: center; gap: 7px;
+      background: var(--btn-face);
+      border: 2px solid var(--btn-highlight);
+      border-right-color: var(--btn-dark-shadow);
+      border-bottom-color: var(--btn-dark-shadow);
+      padding: 3px 12px 3px 8px; height: 26px;
+      font-size: 14px; font-weight: bold; color: var(--text-dark);
+      text-decoration: none; letter-spacing: 0.3px;
+    }
+    .start-btn:active { border-color: var(--btn-dark-shadow); border-right-color: var(--btn-highlight); border-bottom-color: var(--btn-highlight); }
+    .start-flag {
+      display: inline-grid; grid-template-columns: 7px 7px; grid-template-rows: 7px 7px;
+      gap: 1px; transform: skewX(-8deg);
+    }
+    .start-flag i { display: block; }
+    .start-flag i:nth-child(1){ background: var(--red-retro); }
+    .start-flag i:nth-child(2){ background: var(--green-retro); }
+    .start-flag i:nth-child(3){ background: var(--blue-navy); }
+    .start-flag i:nth-child(4){ background: var(--yellow-retro); }
+    .task-btn {
+      display: flex; align-items: center; gap: 7px; height: 26px;
+      padding: 3px 14px 3px 8px; font-size: 13px; color: var(--text-dark);
+      background: var(--btn-face);
+      /* a "pressed-in" running task */
+      border: 2px solid var(--btn-shadow);
+      border-right-color: var(--btn-highlight);
+      border-bottom-color: var(--btn-highlight);
+      box-shadow: inset 1px 1px 0 rgba(0,0,0,0.18);
+      max-width: 230px; overflow: hidden; white-space: nowrap;
+    }
+    .task-btn .win-icon { width: 16px; height: 16px; font-size: 10px; }
+    .tray { margin-left: auto; display: flex; align-items: center; gap: 10px;
+      background: var(--white); padding: 3px 10px; height: 28px;
+      border: 2px solid var(--btn-shadow); border-right-color: var(--btn-highlight); border-bottom-color: var(--btn-highlight);
+    }
+    .tray-progress { width: 96px; height: 14px; background: var(--bg-gray);
+      border: 1px solid var(--btn-shadow); border-right-color: var(--btn-highlight); border-bottom-color: var(--btn-highlight);
+      padding: 1px; }
+    .tray-progress > i { display: block; height: 100%; width: 0; background: var(--blue-navy); transition: width 0.12s linear; }
+    .tray-count { font-size: 12px; color: var(--text-dark); letter-spacing: 0.5px; min-width: 52px; text-align: center; }
+    .tray-clock { font-size: 12px; color: var(--text-dark); letter-spacing: 0.5px; }
+
+    /* ============ WINDOW CHROME (ported verbatim, height freed for a scrolling doc) === */
+    .win-window {
+      background: var(--bg-light);
+      border: 2px solid var(--white);
+      border-right-color: var(--btn-dark-shadow);
+      border-bottom-color: var(--btn-dark-shadow);
+      box-shadow: inset 1px 1px 0 var(--btn-highlight), inset -1px -1px 0 var(--btn-shadow);
+      display: flex; flex-direction: column;
+      width: 100%; max-width: var(--doc-max); margin: 0 auto;
+    }
+    .win-titlebar {
+      background: linear-gradient(90deg, var(--blue-navy) 0%, var(--blue-bright) 100%);
+      color: var(--white); padding: 4px 8px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-weight: bold; font-size: 14px; letter-spacing: 0.5px; flex-shrink: 0;
+    }
+    .win-titlebar.inactive { background: linear-gradient(90deg, #808080 0%, #a0a0a0 100%); }
+    .win-title-left { display: flex; align-items: center; gap: 8px; }
+    .win-icon {
+      width: 18px; height: 18px; background: var(--white); border: 1px solid var(--black);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: var(--blue-navy); font-weight: bold; flex-shrink: 0;
+    }
+    .win-buttons { display: flex; gap: 3px; }
+    .win-btn {
+      width: 20px; height: 18px; background: var(--bg-light);
+      border: 2px solid var(--btn-highlight);
+      border-right-color: var(--btn-dark-shadow); border-bottom-color: var(--btn-dark-shadow);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: bold; color: var(--text-dark);
+      line-height: 1; padding-bottom: 2px;
+    }
+    .win-body { padding: 22px 26px 20px; flex: 1; display: flex; flex-direction: column; }
+
+    /* ============ DOCUMENT SECTION SCAFFOLD (window-per-section on the desktop) ====== */
+    .doc-sec { padding: 40px 28px; }
+    .doc-sec.tight { padding-top: 8px; }
+    .hero { padding: 36px 28px 24px; min-height: calc(100vh - 60px); display: flex; align-items: center; }
+    .hero .win-window { min-height: calc(100vh - 132px); }
+
+    .sec-eyebrow {
+      font-size: 12px; font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--blue-navy); margin-bottom: 10px;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .sec-eyebrow::before { content: "►"; font-size: 9px; color: var(--blue-navy); }
+    .sec-header {
+      font-size: clamp(22px, 3.2vw, 32px); font-weight: bold; line-height: 1.15;
+      color: var(--blue-navy); margin-bottom: 12px;
+    }
+    .sec-lead {
+      font-size: 16px; line-height: 1.6; color: var(--text-dark);
+      max-width: 760px; margin-bottom: 24px;
+    }
+    .sec-lead strong { color: var(--blue-navy); font-weight: bold; }
+
+    /* status footer — every window carries one (density rule) */
+    .status-footer {
+      margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 0;
+      background: var(--bg-light);
+      border: 2px solid var(--btn-highlight);
+      border-right-color: var(--btn-dark-shadow); border-bottom-color: var(--btn-dark-shadow);
+      padding: 6px 12px; font-size: 12px; color: var(--text-gray);
+    }
+    .status-footer span { padding: 0 12px; border-right: 1px solid var(--btn-shadow); box-shadow: 1px 0 0 var(--btn-highlight); }
+    .status-footer span:first-child { padding-left: 0; }
+    .status-footer span:last-child { border-right: none; box-shadow: none; }
+    .status-footer b { color: var(--green-retro); }
+
+    /* ============ HERO ============ */
+    .hero-eyebrow { font-size: 12px; color: var(--text-gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 18px; }
+    .hero-pixel {
+      font-family: 'Press Start 2P', cursive; color: var(--blue-navy);
+      font-size: clamp(22px, 6.2vw, 60px); line-height: 1.35; letter-spacing: 1px;
+      text-shadow: 3px 3px 0 var(--bg-gray);
+    }
+    .hero-pixel .l2 { color: var(--blue-light); }
+    .hero-premise { font-size: 17px; line-height: 1.6; max-width: 640px; margin: 20px 0 4px; color: var(--text-dark); }
+    .hero-premise strong { color: var(--blue-navy); }
+
+    /* desktop-icon contents (clickable TOC) */
+    .contents { margin-top: 8px; }
+    .desk-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+    .desk-icon {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 14px 8px; text-decoration: none; color: var(--text-dark);
+      border: 1px solid transparent;
+    }
+    .desk-icon .desk-glyph { font-size: 30px; line-height: 1; }
+    .desk-icon .desk-lbl {
+      font-size: 12px; letter-spacing: 0.3px; text-align: center; padding: 2px 5px;
+      border: 1px dotted transparent;
+    }
+    .desk-icon:hover .desk-lbl { background: var(--blue-navy); color: var(--white); border-color: var(--yellow-retro); }
+    .desk-icon:hover .desk-glyph { filter: drop-shadow(0 0 0 var(--blue-navy)); }
+
+    /* ============ §01 META TILES ============ */
+    .meta-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .group-box {
+      border: 2px solid var(--btn-shadow);
+      border-right-color: var(--btn-highlight); border-bottom-color: var(--btn-highlight);
+      padding: 20px 18px 16px; position: relative; background: var(--bg-light);
+    }
+    .group-box-title {
+      position: absolute; top: -10px; left: 12px; background: var(--bg-light);
+      padding: 0 8px; font-size: 13px; font-weight: bold; color: var(--text-dark);
+    }
+    .meta-tile .mt-value { font-size: 28px; font-weight: bold; color: var(--blue-navy); line-height: 1.05; margin-bottom: 8px; }
+    .meta-tile .mt-sub { font-size: 13px; line-height: 1.5; color: var(--text-gray); }
+
+    /* ============ §02 COLOURS ============ */
+    .palette-stack { display: flex; flex-direction: column; gap: 30px; }
+    .sw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+    .swatch {
+      background: var(--white);
+      border: 2px solid var(--btn-shadow); border-right-color: var(--btn-highlight); border-bottom-color: var(--btn-highlight);
+      padding: 4px; display: flex; flex-direction: column;
+    }
+    .swatch .sw-chip {
+      height: 64px; border: 1px solid var(--black);
+      box-shadow: inset 1px 1px 0 rgba(255,255,255,0.35), inset -1px -1px 0 rgba(0,0,0,0.35);
+    }
+    .swatch .sw-info { padding: 8px 8px 6px; }
+    .swatch .sw-name { font-size: 13px; font-weight: bold; color: var(--text-dark); }
+    .swatch .sw-hex { font-family: 'VT323', monospace; font-size: 17px; color: var(--blue-navy); letter-spacing: 0.5px; }
+    .swatch .sw-role { font-size: 11px; line-height: 1.4; color: var(--text-gray); margin-top: 4px; }
+
+    /* ============ §03 TYPOGRAPHY ============ */
+    .face-stack { display: flex; flex-direction: column; gap: 18px; margin-bottom: 30px; }
+    .face-card {
+      background: var(--white);
+      border: 2px solid var(--btn-shadow); border-right-color: var(--btn-highlight); border-bottom-color: var(--btn-highlight);
+      padding: 18px 20px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 22px; align-items: center;
+    }
+    .fc-sample-syssans { font-size: 34px; font-weight: bold; color: var(--text-dark); line-height: 1.1; }
+    .fc-sample-pixel { font-family: 'Press Start 2P', cursive; font-size: 26px; color: var(--blue-navy); line-height: 1.2; }
+    .fc-sample-term { font-family: 'VT323', monospace; font-size: 36px; color: var(--text-dark); line-height: 1; }
+    .fc-name { font-size: 13px; font-weight: bold; color: var(--blue-navy); letter-spacing: 0.5px; margin-bottom: 6px; }
+    .fc-desc { font-size: 13px; line-height: 1.55; color: var(--text-gray); }
+
+    .scale-list { display: flex; flex-direction: column; }
+    .scale-row { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--btn-shadow); box-shadow: 0 1px 0 var(--btn-highlight); }
+    .scale-row:last-child { border-bottom: none; box-shadow: none; }
+    .sm-token { font-family: 'VT323', monospace; font-size: 18px; color: var(--blue-navy); letter-spacing: 0.5px; }
+    .sm-spec { font-size: 11px; color: var(--text-gray); margin-top: 2px; }
+    .smp-textxl { font-size: 32px; font-weight: bold; color: var(--text-dark); }
+    .smp-metricxl { font-size: 30px; font-weight: bold; color: var(--blue-navy); }
+    .smp-textlg { font-size: 22px; font-weight: bold; color: var(--blue-navy); }
+    .smp-textmd { font-size: 18px; color: var(--text-dark); }
+    .smp-body { font-size: 16px; color: var(--text-dark); }
+    .smp-textsm { font-size: 14px; color: var(--text-dark); }
+    .smp-textxs { font-size: 12px; color: var(--text-gray); }
+    .smp-titlebar { font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: var(--blue-navy); }
+    .smp-pixel { font-family: 'Press Start 2P', cursive; font-size: 22px; color: var(--blue-navy); }
+    .smp-term { font-family: 'VT323', monospace; font-size: 22px; color: var(--text-dark); }
+
+    /* ============ §04 COMPONENTS (all ported verbatim from the template) ============ */
+    .comp-block { margin-bottom: 34px; }
+    .comp-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 4px; }
+    .comp-head .ch-name { font-size: 18px; font-weight: bold; color: var(--blue-navy); }
+    .comp-head .ch-tag { font-family: 'VT323', monospace; font-size: 16px; color: var(--text-gray); letter-spacing: 0.5px; }
+    .comp-desc { font-size: 14px; line-height: 1.55; color: var(--text-gray); max-width: 720px; margin-bottom: 16px; }
+    .comp-row { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+    .comp-row > * { min-width: 0; }
+    .comp-col { flex: 1 1 280px; }
+
+    .btn-retro {
+      background: var(--btn-face);
+      border: 2px solid var(--btn-highlight); border-right-color: var(--btn-dark-shadow); border-bottom-color: var(--btn-dark-shadow);
+      padding: 6px 24px; font-family: inherit; font-size: 14px; color: var(--text-dark);
+      cursor: pointer; outline: none; text-decoration: none; display: inline-block;
+    }
+    .btn-retro:active, .btn-retro.pressed {
+      border: 2px solid var(--btn-dark-shadow); border-right-color: var(--btn-highlight); border-bottom-color: var(--btn-highlight);
+    }
+    .panel-raised {
+      background: var(--bg-light);
+      border: 2px solid var(--btn-highlight); border-right-color: var(--btn-dark-shadow); border-bottom-color: var(--btn-dark-shadow);
+      padding: 16px;
+    }
+    .panel-sunken {
+      background: var(--white);
+      border: 2px solid var(--btn-shadow); border-right-color: var(--btn-highlight); border-bottom-color: var(--btn-highlight);
+      padding: 12px;
+    }
+    .progress-bar {
+      width: 100%; height: 24px; background: var(--white);
+      border: 2px solid var(--btn-shadow); border-right-color: var(--btn-highlight); border-bottom-color: var(--btn-highlight);
+      padding: 2px;
+    }
+    .progress-fill { height: 100%; background: var(--blue-navy); transition: width 0.9s ease; }
+
+    ul.retro-list { list-style: none; padding-left: 0; }
+    ul.retro-list li { padding: 5px 0 5px 22px; position: relative; font-size: 15px; color: var(--text-dark); }
+    ul.retro-list li::before { content: ">"; position: absolute; left: 4px; color: var(--blue-navy); font-weight: bold; }
+
+    .retro-check { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 4px 0; color: var(--text-dark); }
+    .check-box {
+      width: 16px; height: 16px; background: var(--white);
+      border: 2px solid var(--btn-dark-shadow); border-right-color: var(--btn-highlight); border-bottom-color: var(--btn-highlight);
+      display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; flex-shrink: 0;
+    }
+    table.retro-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    table.retro-table th { background: var(--bg-gray); border: 1px solid var(--btn-shadow); padding: 6px 10px; text-align: left; font-weight: bold; color: var(--text-dark); }
+    table.retro-table td { border: 1px solid var(--bg-gray); padding: 6px 10px; background: var(--white); color: var(--text-dark); }
+    table.retro-table tr:nth-child(even) td { background: #f0f0f0; }
+
+    .marquee-container { overflow: hidden; white-space: nowrap; background: var(--white); border: 1px solid var(--btn-shadow); padding: 4px 0; }
+    .marquee-text { display: inline-block; animation: marquee 14s linear infinite; font-size: 14px; color: var(--text-dark); }
+    @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+    .tree-item { font-size: 14px; padding: 2px 0; display: flex; align-items: center; gap: 6px; color: var(--text-dark); }
+    .tree-icon { width: 18px; text-align: center; font-size: 13px; flex-shrink: 0; }
+    .tree-indent { padding-left: 24px; }
+
+    hr.retro { border: none; border-top: 1px solid var(--btn-shadow); border-bottom: 1px solid var(--btn-highlight); margin: 14px 0; }
+
+    .nav-dots-demo { display: flex; gap: 8px; align-items: center; }
+    .nav-dot {
+      width: 12px; height: 12px; background: var(--bg-gray);
+      border: 2px solid var(--btn-highlight); border-right-color: var(--btn-dark-shadow); border-bottom-color: var(--btn-dark-shadow);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-dot.active { background: var(--blue-navy); }
+    .nav-dot.active::after { content: ""; width: 4px; height: 4px; background: var(--white); }
+
+    /* KPI tiles */
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .kpi .kpi-value { font-size: 30px; font-weight: bold; color: var(--blue-navy); line-height: 1; }
+    .kpi .kpi-delta { font-size: 14px; font-weight: bold; color: var(--green-retro); margin-top: 6px; }
+    .kpi .kpi-delta.down { color: var(--red-retro); }
+    .kpi .kpi-ctx { font-size: 12px; color: var(--text-gray); margin-top: 4px; }
+
+    .status-chip { display: inline-block; font-size: 13px; font-weight: bold; padding: 2px 6px; }
+    .chip-ok { color: var(--green-retro); }
+    .chip-warn { color: var(--red-retro); }
+    .chip-mod { color: var(--yellow-retro); }
+    .chip-info { color: var(--cyan-retro); }
+
+    .icon-set { display: flex; gap: 10px; flex-wrap: wrap; }
+    .icon-set .win-icon { width: 26px; height: 26px; font-size: 14px; }
+
+    /* ============ §05 LAYOUT ============ */
+    .anatomy { display: flex; flex-direction: column; gap: 0; max-width: 460px; }
+    .anatomy .an-bar { background: linear-gradient(90deg, var(--blue-navy), var(--blue-bright)); color: var(--white); font-size: 13px; font-weight: bold; padding: 5px 10px; }
+    .anatomy .an-body { background: var(--bg-light); border: 2px solid var(--btn-highlight); border-right-color: var(--black); border-bottom-color: var(--black); padding: 22px; font-size: 13px; color: var(--text-gray); text-align: center; }
+    .anatomy .an-foot { background: var(--bg-light); border: 2px solid var(--btn-highlight); border-right-color: var(--black); border-bottom-color: var(--black); border-top: none; padding: 8px 10px; font-size: 12px; color: var(--text-gray); }
+    .an-note { font-size: 11px; color: var(--text-gray); margin-top: 6px; }
+
+    /* ============ §06 DEPTH ============ */
+    .depth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .depth-demo { padding: 26px; text-align: center; font-size: 14px; }
+    .depth-demo.raised {
+      background: var(--bg-light);
+      border: 2px solid var(--btn-highlight); border-right-color: var(--black); border-bottom-color: var(--black);
+      box-shadow: inset 1px 1px 0 var(--white), inset -1px -1px 0 var(--btn-shadow);
+    }
+    .depth-demo.sunken {
+      background: var(--white);
+      border: 2px solid var(--btn-shadow); border-right-color: var(--btn-highlight); border-bottom-color: var(--btn-highlight);
+    }
+    .depth-demo .dd-tag { font-weight: bold; color: var(--blue-navy); display: block; margin-bottom: 6px; }
+    .depth-demo .dd-spec { font-family: 'VT323', monospace; font-size: 15px; color: var(--text-gray); }
+
+    /* ============ §07 DO / DON'T ============ */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .dd-list { list-style: none; padding: 0; margin: 0; }
+    .dd-list li { font-size: 14px; line-height: 1.5; padding: 8px 0 8px 26px; position: relative; color: var(--text-dark); border-bottom: 1px solid #d8d4cc; }
+    .dd-list li:last-child { border-bottom: none; }
+    .do-box .dd-list li::before { content: "x"; position: absolute; left: 4px; top: 8px; width: 15px; height: 15px; background: var(--white); border: 2px solid var(--black); border-right-color: var(--white); border-bottom-color: var(--white); color: var(--green-retro); font-size: 11px; font-weight: bold; line-height: 12px; text-align: center; }
+    .dont-box .dd-list li::before { content: "\00D7"; position: absolute; left: 6px; top: 7px; color: var(--red-retro); font-weight: bold; font-size: 18px; }
+
+    /* ============ §08 CJK ============ */
+    .cjk-specimen { background: var(--white); border: 2px solid var(--btn-shadow); border-right-color: var(--btn-highlight); border-bottom-color: var(--btn-highlight); padding: 24px; margin-bottom: 24px; }
+    .cjk-display { font-family: 'Noto Sans SC', sans-serif; font-weight: 700; font-size: clamp(34px, 6vw, 64px); line-height: 1.2; color: var(--blue-navy); }
+    .cjk-body { font-family: 'Noto Sans SC', sans-serif; font-weight: 400; font-size: 16px; line-height: 1.85; color: var(--text-dark); max-width: 640px; margin-top: 14px; }
+    .cjk-label { font-family: 'Noto Sans SC', sans-serif; font-weight: 500; font-size: 13px; color: var(--blue-navy); margin-top: 14px; }
+
+    /* ============ CLOSE — Blue Screen of Death ============ */
+    .close {
+      background: var(--blue-navy); color: var(--white);
+      min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center; padding: 80px 32px; font-family: "MS Sans Serif", "Segoe UI", Tahoma, sans-serif;
+    }
+    .close-tag { background: var(--bg-gray); color: var(--blue-navy); font-weight: bold; font-size: 14px; padding: 2px 14px; letter-spacing: 1px; margin-bottom: 40px; }
+    .close-pixel { font-family: 'Press Start 2P', cursive; font-size: clamp(20px, 5vw, 44px); line-height: 1.4; color: var(--white); text-shadow: 4px 4px 0 rgba(0,0,0,0.4); }
+    .close-body { font-size: 16px; line-height: 1.7; max-width: 540px; margin-top: 32px; opacity: 0.95; }
+    .close-body code { font-family: 'VT323', monospace; font-size: 20px; color: var(--bg-gray); }
+    .close-hint { font-family: 'VT323', monospace; font-size: 20px; margin-top: 30px; color: var(--bg-gray); }
+    .close-links { margin-top: 28px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 880px) {
+      .meta-strip, .desk-grid, .kpi-row { grid-template-columns: 1fr 1fr; }
+      .face-card, .scale-row, .depth-grid, .dodont { grid-template-columns: 1fr; gap: 12px; }
+      .win-body { padding: 18px 16px 16px; }
+      .tray-clock { display: none; }
+    }
+    @media (max-width: 520px) {
+      .meta-strip, .desk-grid, .kpi-row { grid-template-columns: 1fr; }
+      .tray-progress { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="crt-overlay"></div>
+
+  <!-- ============ TASKBAR (persistent chrome) ============ -->
+  <div class="taskbar">
+    <a class="start-btn" href="index.html" title="Back to the Design System index">
+      <span class="start-flag"><i></i><i></i><i></i><i></i></span> Start
+    </a>
+    <div class="task-btn"><span class="win-icon">R</span> RETRO-WINDOWS.DS</div>
+    <div class="tray">
+      <div class="tray-progress"><i id="progress"></i></div>
+      <div class="tray-count" id="counter">01 / 10</div>
+      <div class="tray-clock" id="clock">12:00</div>
+    </div>
+  </div>
+
+  <!-- ============ HERO — WELCOME.EXE splash window ============ -->
+  <header class="hero" id="top">
+    <div class="win-window">
+      <div class="win-titlebar">
+        <div class="win-title-left"><span class="win-icon">R</span><span>WELCOME.EXE</span></div>
+        <div class="win-buttons"><span class="win-btn">_</span><span class="win-btn">&#9633;</span><span class="win-btn">&times;</span></div>
+      </div>
+      <div class="win-body">
+        <div class="hero-eyebrow">Design System Specification &mdash; Beautiful HTML Templates</div>
+        <div class="hero-pixel">RETRO<br><span class="l2">WINDOWS</span></div>
+        <p class="hero-premise">A <strong>Windows&nbsp;95 / 98 desktop-OS</strong> aesthetic rendered as a presentation system &mdash; beveled chrome, navy-gradient title bars, MS Sans Serif body type. Every section is a window; the content is what the software displays.</p>
+        <hr class="retro">
+        <div class="contents">
+          <div class="sec-eyebrow">Contents &mdash; double-click to open</div>
+          <nav class="desk-grid">
+            <a class="desk-icon" href="#overview"><span class="desk-glyph">&#128196;</span><span class="desk-lbl">01 Overview</span></a>
+            <a class="desk-icon" href="#colours"><span class="desk-glyph">&#127912;</span><span class="desk-lbl">02 Colours</span></a>
+            <a class="desk-icon" href="#typography"><span class="desk-glyph">&#128433;</span><span class="desk-lbl">03 Typography</span></a>
+            <a class="desk-icon" href="#components"><span class="desk-glyph">&#129513;</span><span class="desk-lbl">04 Components</span></a>
+            <a class="desk-icon" href="#layout"><span class="desk-glyph">&#128208;</span><span class="desk-lbl">05 Layout</span></a>
+            <a class="desk-icon" href="#depth"><span class="desk-glyph">&#129694;</span><span class="desk-lbl">06 Depth</span></a>
+            <a class="desk-icon" href="#dodont"><span class="desk-glyph">&#9989;</span><span class="desk-lbl">07 Do &amp; Don't</span></a>
+            <a class="desk-icon" href="#cjk"><span class="desk-glyph">&#127760;</span><span class="desk-lbl">08 中文 / CJK</span></a>
+          </nav>
+        </div>
+        <div class="status-footer">
+          <span>Ready</span>
+          <span>10 windows</span>
+          <span>System: <b>Win9x</b></span>
+          <span>Mem: 640K OK</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW — README.TXT ============ -->
+  <section class="doc-sec" id="overview" data-counter="Overview">
+    <div class="win-window">
+      <div class="win-titlebar">
+        <div class="win-title-left"><span class="win-icon">i</span><span>README.TXT</span></div>
+        <div class="win-buttons"><span class="win-btn">_</span><span class="win-btn">&#9633;</span><span class="win-btn">&times;</span></div>
+      </div>
+      <div class="win-body">
+        <div class="sec-eyebrow">01 &mdash; Overview</div>
+        <h2 class="sec-header">The Conceit Is Total</h2>
+        <p class="sec-lead">Retro Windows is a <strong>Windows&nbsp;95 / 98 desktop-OS aesthetic</strong> rendered as a slide template. Every slide is a window &mdash; beveled chrome, a navy-gradient title bar, three system buttons, and a body of application-style content. There are no slide titles in the modern sense, only <strong>window titles styled as filenames</strong> (<code style="font-family:'VT323',monospace;font-size:1.05em;color:var(--blue-navy)">README.DOC</code>, <code style="font-family:'VT323',monospace;font-size:1.05em;color:var(--blue-navy)">METRICS.LOG</code>). Half playful nostalgia, half functional dashboard &mdash; a deck that reads as software running on a CRT monitor.</p>
+
+        <div class="meta-strip">
+          <div class="group-box meta-tile"><div class="group-box-title">Formality</div><div class="mt-value">Low</div><div class="mt-sub">Winking &amp; geeky &mdash; the Win9x chrome always reads as a knowing costume.</div></div>
+          <div class="group-box meta-tile"><div class="group-box-title">Density</div><div class="mt-value">High</div><div class="mt-sub">Bodies packed with panels, group-boxes, tables, charts. Empty space reads as broken.</div></div>
+          <div class="group-box meta-tile"><div class="group-box-title">Scheme</div><div class="mt-value">Light</div><div class="mt-sub">Win9x system grays &mdash; #d4d0c8 button-face chrome on an #808080 desktop.</div></div>
+          <div class="group-box meta-tile"><div class="group-box-title">Windows</div><div class="mt-value">10</div><div class="mt-sub">Splash, agenda, metrics, features, timeline, data, status, close &mdash; each an app screen.</div></div>
+        </div>
+        <div class="status-footer">
+          <span>File: README.TXT</span>
+          <span>Encoding: ASCII</span>
+          <span>Status: <b>Loaded OK</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS — DISPLAY.CPL ============ -->
+  <section class="doc-sec tight" id="colours" data-counter="Colours">
+    <div class="win-window">
+      <div class="win-titlebar">
+        <div class="win-title-left"><span class="win-icon">D</span><span>DISPLAY.CPL &mdash; Appearance</span></div>
+        <div class="win-buttons"><span class="win-btn">_</span><span class="win-btn">&#9633;</span><span class="win-btn">&times;</span></div>
+      </div>
+      <div class="win-body">
+        <div class="sec-eyebrow">02 &mdash; Colours</div>
+        <h2 class="sec-header">The Win9x System Palette</h2>
+        <p class="sec-lead">Three families. <strong>System grays</strong> build all chrome via bevels; the <strong>navy ladder</strong> is the single primary &mdash; title bars, chart bars, progress fills, every headline; the <strong>status accents</strong> carry fixed semantic meaning and are never used as decoration.</p>
+
+        <div class="palette-stack">
+          <div class="group-box">
+            <div class="group-box-title">System &mdash; chrome &amp; bevels</div>
+            <div class="sw-grid">
+              <div class="swatch"><div class="sw-chip" style="background:#d4d0c8"></div><div class="sw-info"><div class="sw-name">Button Face</div><div class="sw-hex">#D4D0C8</div><div class="sw-role">Base chrome for windows, panels, buttons.</div></div></div>
+              <div class="swatch"><div class="sw-chip" style="background:#c0c0c0"></div><div class="sw-info"><div class="sw-name">Background Gray</div><div class="sw-hex">#C0C0C0</div><div class="sw-role">Table headers, scrollbar tracks, dot fills.</div></div></div>
+              <div class="swatch"><div class="sw-chip" style="background:#808080"></div><div class="sw-info"><div class="sw-name">Desktop Gray</div><div class="sw-hex">#808080</div><div class="sw-role">The desktop field behind every window.</div></div></div>
+              <div class="swatch"><div class="sw-chip" style="background:#ffffff"></div><div class="sw-info"><div class="sw-name">White</div><div class="sw-hex">#FFFFFF</div><div class="sw-role">Content fill: inputs, cells, title-bar text.</div></div></div>
+              <div class="swatch"><div class="sw-chip" style="background:#404040"></div><div class="sw-info"><div class="sw-name">Shadow Gray</div><div class="sw-hex">#404040</div><div class="sw-role">The inner bevel shadow on sunken edges.</div></div></div>
+              <div class="swatch"><div class="sw-chip" style="background:#222222"></div><div class="sw-info"><div class="sw-name">Text Dark</div><div class="sw-hex">#222222</div><div class="sw-role">Body text &mdash; softer than the bevel black.</div></div></div>
+            </div>
+          </div>
+
+          <div class="group-box">
+            <div class="group-box-title">Primary &mdash; the navy ladder</div>
+            <div class="sw-grid">
+              <div class="swatch"><div class="sw-chip" style="background:#000080"></div><div class="sw-info"><div class="sw-name">Navy</div><div class="sw-hex">#000080</div><div class="sw-role">Title bars, headlines, chart &amp; progress fills.</div></div></div>
+              <div class="swatch"><div class="sw-chip" style="background:#0000a0"></div><div class="sw-info"><div class="sw-name">Blue Bright</div><div class="sw-hex">#0000A0</div><div class="sw-role">Title-bar gradient end; second chart bar.</div></div></div>
+              <div class="swatch"><div class="sw-chip" style="background:#1084d0"></div><div class="sw-info"><div class="sw-name">Blue Light</div><div class="sw-hex">#1084D0</div><div class="sw-role">Tertiary chart-bar variant.</div></div></div>
+            </div>
+          </div>
+
+          <div class="group-box">
+            <div class="group-box-title">Status &mdash; semantic, never decoration</div>
+            <div class="sw-grid">
+              <div class="swatch"><div class="sw-chip" style="background:#008000"></div><div class="sw-info"><div class="sw-name">Green &middot; OK</div><div class="sw-hex">#008000</div><div class="sw-role">Success, growth, LIVE / READY badges.</div></div></div>
+              <div class="swatch"><div class="sw-chip" style="background:#800000"></div><div class="sw-info"><div class="sw-name">Red &middot; Error</div><div class="sw-hex">#800000</div><div class="sw-role">Hard errors and warning text.</div></div></div>
+              <div class="swatch"><div class="sw-chip" style="background:#808000"></div><div class="sw-info"><div class="sw-name">Yellow &middot; Moderate</div><div class="sw-hex">#808000</div><div class="sw-role">Moderate-risk labels &amp; chart warnings.</div></div></div>
+              <div class="swatch"><div class="sw-chip" style="background:#008080"></div><div class="sw-info"><div class="sw-name">Cyan &middot; Tertiary</div><div class="sw-hex">#008080</div><div class="sw-role">Tertiary chart segments, secondary accents.</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="status-footer">
+          <span>13 system colours</span>
+          <span>Borders: <b>two-tone only</b></span>
+          <span>No gradients except title bars</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY — FONTS.FON ============ -->
+  <section class="doc-sec tight" id="typography" data-counter="Typography">
+    <div class="win-window">
+      <div class="win-titlebar">
+        <div class="win-title-left"><span class="win-icon">F</span><span>FONTS.FON</span></div>
+        <div class="win-buttons"><span class="win-btn">_</span><span class="win-btn">&#9633;</span><span class="win-btn">&times;</span></div>
+      </div>
+      <div class="win-body">
+        <div class="sec-eyebrow">03 &mdash; Typography</div>
+        <h2 class="sec-header">One System Face, Two Accents</h2>
+        <p class="sec-lead">The workhorse is the <strong>OS system stack</strong> (MS Sans Serif &rarr; Segoe UI &rarr; Tahoma) &mdash; never a custom display sans. <strong>Press Start 2P</strong> and <strong>VT323</strong> are nostalgic accents only: one or two moments per deck. Sizes are <strong>fixed integer pixels</strong> (12, 13, 14, 16, 18, 22, 30, 32) &mdash; the OS-UI illusion breaks at fluid type.</p>
+
+        <div class="face-stack">
+          <div class="face-card">
+            <div class="fc-sample-syssans">MS Sans Serif</div>
+            <div><div class="fc-name">SYSTEM SANS &middot; Body + Chrome</div><div class="fc-desc">MS Sans Serif / Segoe UI / Tahoma / Geneva / Verdana. Carries nearly all text: headlines (navy 700), body, labels, table cells, title bars.</div></div>
+          </div>
+          <div class="face-card">
+            <div class="fc-sample-pixel">LOADING...</div>
+            <div><div class="fc-name">PRESS START 2P &middot; Pixel Display</div><div class="fc-desc">An 8-bit pixel face. Reserved for splash titles and the closing send-off. Always navy, always centered. Latin-only &mdash; no CJK substitute exists.</div></div>
+          </div>
+          <div class="face-card">
+            <div class="fc-sample-term">&gt;_ C:\&gt; run.exe</div>
+            <div><div class="fc-name">VT323 &middot; CRT Terminal</div><div class="fc-desc">A chunky monospace that imitates a CRT terminal. Used for the nav hint, marquee text, and any &ldquo;terminal output&rdquo; region. Optional accent.</div></div>
+          </div>
+        </div>
+
+        <div class="sec-eyebrow" style="margin-top:6px">Type Scale &mdash; rendered at real size</div>
+        <div class="scale-list">
+          <div class="scale-row"><div><div class="sm-token">text-xl</div><div class="sm-spec">System &middot; 32px &middot; 700</div></div><div class="smp-textxl">Primary Headline</div></div>
+          <div class="scale-row"><div><div class="sm-token">metric-xl</div><div class="sm-spec">System &middot; 30px &middot; 700 &middot; navy</div></div><div class="smp-metricxl">$12.4M</div></div>
+          <div class="scale-row"><div><div class="sm-token">text-lg</div><div class="sm-spec">System &middot; 22px &middot; 700 &middot; navy</div></div><div class="smp-textlg">Section Heading</div></div>
+          <div class="scale-row"><div><div class="sm-token">text-md</div><div class="sm-spec">System &middot; 18px &middot; 400</div></div><div class="smp-textmd">Standard body paragraph</div></div>
+          <div class="scale-row"><div><div class="sm-token">body</div><div class="sm-spec">System &middot; 16px &middot; 400</div></div><div class="smp-body">Default working body text</div></div>
+          <div class="scale-row"><div><div class="sm-token">text-sm</div><div class="sm-spec">System &middot; 14px &middot; 400</div></div><div class="smp-textsm">Captions, list items, button labels</div></div>
+          <div class="scale-row"><div><div class="sm-token">text-xs</div><div class="sm-spec">System &middot; 12px &middot; 400</div></div><div class="smp-textxs">Fine print &amp; status hints</div></div>
+          <div class="scale-row"><div><div class="sm-token">title-bar</div><div class="sm-spec">System &middot; 14px &middot; 700 &middot; UPPER</div></div><div class="smp-titlebar">METRICS.LOG</div></div>
+          <div class="scale-row"><div><div class="sm-token">pixel-display</div><div class="sm-spec">Press Start 2P &middot; 20&ndash;24px</div></div><div class="smp-pixel">GAME OVER</div></div>
+          <div class="scale-row"><div><div class="sm-token">terminal</div><div class="sm-spec">VT323 &middot; 22px</div></div><div class="smp-term">C:\&gt; dir /w</div></div>
+        </div>
+        <div class="status-footer">
+          <span>3 faces</span>
+          <span>Fixed-pixel scale</span>
+          <span>No italics &middot; no underline</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS — CONTROLS.OCX ============ -->
+  <section class="doc-sec tight" id="components" data-counter="Components">
+    <div class="win-window">
+      <div class="win-titlebar">
+        <div class="win-title-left"><span class="win-icon">C</span><span>CONTROLS.OCX</span></div>
+        <div class="win-buttons"><span class="win-btn">_</span><span class="win-btn">&#9633;</span><span class="win-btn">&times;</span></div>
+      </div>
+      <div class="win-body">
+        <div class="sec-eyebrow">04 &mdash; Components</div>
+        <h2 class="sec-header">Live Controls</h2>
+        <p class="sec-lead">Every control below is rendered with the template's <strong>actual CSS</strong> &mdash; not a mockup. This is the Win9x widget toolkit as it ships.</p>
+
+        <!-- Buttons -->
+        <div class="comp-block">
+          <div class="comp-head"><span class="ch-name">Command Buttons</span><span class="ch-tag">btn-retro</span></div>
+          <p class="comp-desc">Beveled-raised gray, 6&times;24px padding. The only state change is the active <em>bevel inversion</em> &mdash; the button on the right is shown pressed-in. No hover; the era predates it.</p>
+          <div class="comp-row">
+            <a class="btn-retro">OK</a>
+            <a class="btn-retro">Cancel</a>
+            <a class="btn-retro">Help</a>
+            <a class="btn-retro pressed">Pressed</a>
+          </div>
+        </div>
+
+        <!-- Group box + panels -->
+        <div class="comp-block">
+          <div class="comp-head"><span class="ch-name">Group Box &amp; Panels</span><span class="ch-tag">group-box &middot; panel-raised &middot; panel-sunken</span></div>
+          <p class="comp-desc">The group-box is sunken with a <strong>notch-mounted title</strong> that masks the border behind it. Raised panels read as chrome; sunken white panels read as content.</p>
+          <div class="comp-row">
+            <div class="comp-col group-box">
+              <div class="group-box-title">Options</div>
+              <div class="retro-check"><span class="check-box">x</span> Enable scanlines</div>
+              <div class="retro-check"><span class="check-box">x</span> Show status footer</div>
+              <div class="retro-check"><span class="check-box">&nbsp;</span> Rounded corners</div>
+            </div>
+            <div class="comp-col panel-raised">
+              <div style="font-weight:bold;color:var(--blue-navy);margin-bottom:6px">panel-raised</div>
+              <div style="font-size:13px;color:var(--text-gray)">Tool palettes, button strips, dashboards &mdash; elevated chrome regions.</div>
+            </div>
+            <div class="comp-col panel-sunken">
+              <div style="font-weight:bold;color:var(--blue-navy);margin-bottom:6px">panel-sunken</div>
+              <div style="font-size:13px;color:var(--text-gray)">Text inputs &amp; read-only data displays. The white interior signals &ldquo;content.&rdquo;</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI tiles -->
+        <div class="comp-block">
+          <div class="comp-head"><span class="ch-name">KPI Tiles</span><span class="ch-tag">group-box + metric-xl</span></div>
+          <p class="comp-desc">A 4-up dashboard row: notched group-box, a 30px navy metric, a weight-700 status-color delta, and a 12px gray context line.</p>
+          <div class="kpi-row">
+            <div class="group-box kpi"><div class="group-box-title">Revenue</div><div class="kpi-value">$12.4M</div><div class="kpi-delta">&#9650; +18.3%</div><div class="kpi-ctx">vs previous quarter</div></div>
+            <div class="group-box kpi"><div class="group-box-title">Customers</div><div class="kpi-value">8,420</div><div class="kpi-delta">&#9650; +6.1%</div><div class="kpi-ctx">net new this period</div></div>
+            <div class="group-box kpi"><div class="group-box-title">Retention</div><div class="kpi-value">94%</div><div class="kpi-delta">&#9650; +1.2%</div><div class="kpi-ctx">gross logo retention</div></div>
+            <div class="group-box kpi"><div class="group-box-title">Churn</div><div class="kpi-value">2.1%</div><div class="kpi-delta down">&#9660; &minus;0.4%</div><div class="kpi-ctx">monthly, trending down</div></div>
+          </div>
+        </div>
+
+        <!-- Progress bars -->
+        <div class="comp-block">
+          <div class="comp-head"><span class="ch-name">Progress Bars</span><span class="ch-tag">progress-bar</span></div>
+          <p class="comp-desc">A sunken white well with a <strong>solid navy fill</strong> &mdash; no gradient. The bars below fill on scroll-into-view.</p>
+          <div class="comp-row" style="flex-direction:column; gap:14px; max-width:560px;">
+            <div style="width:100%"><div style="font-size:13px;margin-bottom:4px;color:var(--text-gray)">Installing system files&hellip; 82%</div><div class="progress-bar"><div class="progress-fill" data-fill="82%" style="width:0"></div></div></div>
+            <div style="width:100%"><div style="font-size:13px;margin-bottom:4px;color:var(--text-gray)">Copying components&hellip; 64%</div><div class="progress-bar"><div class="progress-fill" data-fill="64%" style="width:0"></div></div></div>
+            <div style="width:100%"><div style="font-size:13px;margin-bottom:4px;color:var(--text-gray)">Defragmenting&hellip; 45%</div><div class="progress-bar"><div class="progress-fill" data-fill="45%" style="width:0"></div></div></div>
+          </div>
+        </div>
+
+        <!-- Lists, tree, table -->
+        <div class="comp-block">
+          <div class="comp-head"><span class="ch-name">Lists, Tree &amp; Table</span><span class="ch-tag">retro-list &middot; tree-item &middot; retro-table</span></div>
+          <p class="comp-desc">Bullets are a navy <code style="font-family:'VT323',monospace;color:var(--blue-navy)">&gt;</code> chevron; checkboxes a literal <code style="font-family:'VT323',monospace;color:var(--blue-navy)">x</code>; trees use folder / file glyphs. Tables are pixel-flat with gray headers and a barely-there zebra fill.</p>
+          <div class="comp-row">
+            <div class="comp-col panel-sunken">
+              <ul class="retro-list">
+                <li>Wrap every slide in a window</li>
+                <li>Headlines in navy, weight 700</li>
+                <li>Pack the body densely</li>
+                <li>Keep the CRT overlay on</li>
+              </ul>
+            </div>
+            <div class="comp-col panel-sunken">
+              <div class="tree-item"><span class="tree-icon">&#128193;</span> SYSTEM</div>
+              <div class="tree-item tree-indent"><span class="tree-icon">&#128196;</span> WINDOW.SYS</div>
+              <div class="tree-item tree-indent"><span class="tree-icon">&#128196;</span> BEVELS.SYS</div>
+              <div class="tree-item"><span class="tree-icon">&#128193;</span> FONTS</div>
+              <div class="tree-item tree-indent"><span class="tree-icon">&#128196;</span> SSERIFE.FON</div>
+            </div>
+            <div class="comp-col">
+              <table class="retro-table">
+                <thead><tr><th>Quarter</th><th>ARR</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Q1</td><td>$8.1M</td><td><span class="chip-ok">OK</span></td></tr>
+                  <tr><td>Q2</td><td>$9.7M</td><td><span class="chip-ok">OK</span></td></tr>
+                  <tr><td>Q3</td><td>$11.0M</td><td><span class="chip-mod">WATCH</span></td></tr>
+                  <tr><td>Q4</td><td>$12.4M</td><td><span class="chip-ok">OK</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status, dots, icons, marquee -->
+        <div class="comp-block">
+          <div class="comp-head"><span class="ch-name">Status, Dots, Icons &amp; Marquee</span><span class="ch-tag">chrome details</span></div>
+          <p class="comp-desc">Status words carry the semantic colour at weight 700. Nav-dots are beveled squares (active = navy + white center). Win-icons are letter glyphs. The marquee scrolls in a sunken well.</p>
+          <div class="comp-row" style="align-items:center; margin-bottom:14px;">
+            <div><span class="status-chip chip-ok">READY</span> <span class="status-chip chip-warn">ERROR</span> <span class="status-chip chip-mod">MODERATE</span> <span class="status-chip chip-info">SYNCING</span></div>
+            <div class="nav-dots-demo"><span class="nav-dot active"></span><span class="nav-dot"></span><span class="nav-dot"></span><span class="nav-dot"></span></div>
+            <div class="icon-set"><span class="win-icon">P</span><span class="win-icon">A</span><span class="win-icon">R</span><span class="win-icon">D</span><span class="win-icon">M</span></div>
+          </div>
+          <div class="marquee-container"><span class="marquee-text">&#9733; Welcome to the Retro Windows design system &nbsp;&bull;&nbsp; Beveled chrome since 1995 &nbsp;&bull;&nbsp; Navy title bars, MS Sans Serif body, pixel-font punctuation &nbsp;&bull;&nbsp; It is now safe to scroll &#9733;</span></div>
+        </div>
+        <div class="status-footer">
+          <span>12 controls</span>
+          <span>Rendered with template CSS</span>
+          <span>Bevels: <b>raised + sunken</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT — LAYOUT.INI ============ -->
+  <section class="doc-sec tight" id="layout" data-counter="Layout">
+    <div class="win-window">
+      <div class="win-titlebar">
+        <div class="win-title-left"><span class="win-icon">L</span><span>LAYOUT.INI</span></div>
+        <div class="win-buttons"><span class="win-btn">_</span><span class="win-btn">&#9633;</span><span class="win-btn">&times;</span></div>
+      </div>
+      <div class="win-body">
+        <div class="sec-eyebrow">05 &mdash; Layout &amp; Spacing</div>
+        <h2 class="sec-header">Window Anatomy</h2>
+        <p class="sec-lead">A <strong>100vw &times; 100vh</strong> stage; each window is <code style="font-family:'VT323',monospace;color:var(--blue-navy)">max-width:1200px</code>, <code style="font-family:'VT323',monospace;color:var(--blue-navy)">max-height:calc(100vh - 68px)</code> so the gray desktop always frames it. Every window stacks three regions; padding is a fixed pixel ladder.</p>
+        <div class="comp-row" style="align-items:flex-start;">
+          <div class="comp-col" style="flex:0 0 auto;">
+            <div class="anatomy">
+              <div class="an-bar">&#9642; TITLE BAR &mdash; icon + FILENAME.EXT + _ &#9633; &times;</div>
+              <div class="an-body">BODY<br><span style="font-size:11px">20px 24px 24px &mdash; the content composition</span></div>
+              <div class="an-foot">STATUS FOOTER &mdash; source &bull; updated &bull; count</div>
+            </div>
+            <div class="an-note">Stack windows side-by-side for timelines; only one carries the active navy bar.</div>
+          </div>
+          <div class="comp-col">
+            <table class="retro-table">
+              <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+              <tbody>
+                <tr><td>slide-pad</td><td>24 32 44 32</td><td>Outer slide padding</td></tr>
+                <tr><td>win-body-pad</td><td>20 24 24 24</td><td>Inside a window body</td></tr>
+                <tr><td>group-box-pad</td><td>20 18 16 18</td><td>Inside a group-box</td></tr>
+                <tr><td>panel-pad</td><td>16</td><td>Inside a raised panel</td></tr>
+                <tr><td>panel-sunken-pad</td><td>12</td><td>Inside a sunken panel</td></tr>
+                <tr><td>gap-1 / 2 / 3 / 4</td><td>6 / 10 / 16 / 24</td><td>Flex &amp; grid gaps</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="status-footer">
+          <span>Canvas: 100vw &times; 100vh</span>
+          <span>Window cap: 1200px</span>
+          <span>Density: <b>High</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH — BEVELS.SYS ============ -->
+  <section class="doc-sec tight" id="depth" data-counter="Depth">
+    <div class="win-window">
+      <div class="win-titlebar">
+        <div class="win-title-left"><span class="win-icon">B</span><span>BEVELS.SYS</span></div>
+        <div class="win-buttons"><span class="win-btn">_</span><span class="win-btn">&#9633;</span><span class="win-btn">&times;</span></div>
+      </div>
+      <div class="win-body">
+        <div class="sec-eyebrow">06 &mdash; Depth &amp; Shape</div>
+        <h2 class="sec-header">Depth By Bevel, Never Shadow</h2>
+        <p class="sec-lead">All depth comes from <strong>two-tone asymmetric borders</strong> plus inset shadows &mdash; no blurred <code style="font-family:'VT323',monospace;color:var(--blue-navy)">box-shadow</code>, no <code style="font-family:'VT323',monospace;color:var(--blue-navy)">drop-shadow</code>. Two states only, and corners are square everywhere.</p>
+
+        <div class="depth-grid">
+          <div class="depth-demo raised"><span class="dd-tag">RAISED</span><div class="dd-spec">white top/left + black right/bottom<br>+ inset 1px white / -1px #404040</div></div>
+          <div class="depth-demo sunken"><span class="dd-tag">SUNKEN</span><div class="dd-spec">#404040 top/left + white right/bottom<br>the inverse &mdash; a recessed well</div></div>
+        </div>
+
+        <hr class="retro" style="margin:24px 0">
+        <div class="comp-row">
+          <div class="comp-col">
+            <div class="sec-eyebrow">Border Vocabulary</div>
+            <ul class="retro-list">
+              <li><strong>2px</strong> two-tone bevel &mdash; windows, panels, buttons, dots</li>
+              <li><strong>1px</strong> solid &mdash; table cells, win-icon outline</li>
+              <li><strong>1px</strong> stacked pair &mdash; the engraved hr-retro rule</li>
+            </ul>
+          </div>
+          <div class="comp-col">
+            <div class="sec-eyebrow">The Rules</div>
+            <ul class="retro-list">
+              <li>Border-radius is <strong>0</strong> system-wide</li>
+              <li>Borders are <strong>never coloured</strong> &mdash; two-tone only</li>
+              <li>Active press <strong>inverts</strong> the bevel</li>
+              <li>The CRT overlay is the one atmospheric layer</li>
+            </ul>
+          </div>
+        </div>
+        <div class="status-footer">
+          <span>2 bevel states</span>
+          <span>0px radius</span>
+          <span>Shadows: <b>none (bevel only)</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T — DO-DONT.TXT ============ -->
+  <section class="doc-sec tight" id="dodont" data-counter="Do &amp; Don't">
+    <div class="win-window">
+      <div class="win-titlebar">
+        <div class="win-title-left"><span class="win-icon">!</span><span>DO-DONT.TXT</span></div>
+        <div class="win-buttons"><span class="win-btn">_</span><span class="win-btn">&#9633;</span><span class="win-btn">&times;</span></div>
+      </div>
+      <div class="win-body">
+        <div class="sec-eyebrow">07 &mdash; Do &amp; Don't</div>
+        <h2 class="sec-header">Hold The Era</h2>
+        <div class="dodont">
+          <div class="group-box do-box">
+            <div class="group-box-title" style="color:var(--green-retro)">DO</div>
+            <ul class="dd-list">
+              <li>Wrap every slide in a window with a navy title bar, a filename title, and the three-button cluster.</li>
+              <li>Use the bevel technique on every panel, button, and window &mdash; it is the system's identity.</li>
+              <li>Set primary headlines in navy weight 700 &mdash; the application-title voice.</li>
+              <li>Pack each slide densely with stacked panels, group-boxes, and a status footer.</li>
+              <li>Use the status colours semantically: green OK, red error, yellow moderate, cyan tertiary.</li>
+              <li>Apply integer pixel font sizes and keep the CRT overlay on every slide.</li>
+            </ul>
+          </div>
+          <div class="group-box dont-box">
+            <div class="group-box-title" style="color:var(--red-retro)">DON'T</div>
+            <ul class="dd-list">
+              <li>Round any corner &mdash; every shape is a strict rectangle.</li>
+              <li>Use blurred box-shadow or drop-shadow; all depth is bevel-based.</li>
+              <li>Introduce modern saturated brand colours outside the Win9x set.</li>
+              <li>Colour the borders &mdash; two-tone white+black / gray+white only.</li>
+              <li>Use Press Start 2P or VT323 for body text, or rem/em/clamp for body sizes.</li>
+              <li>Compose a sparse slide with one headline and empty space &mdash; it reads as broken.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="status-footer">
+          <span>6 do &middot; 6 don't</span>
+          <span>Source: design.md</span>
+          <span>Authority: <b>canonical</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK — LANG.NLS ============ -->
+  <section class="doc-sec tight" id="cjk" data-counter="CJK">
+    <div class="win-window">
+      <div class="win-titlebar">
+        <div class="win-title-left"><span class="win-icon">中</span><span>LANG.NLS &mdash; 区域设置</span></div>
+        <div class="win-buttons"><span class="win-btn">_</span><span class="win-btn">&#9633;</span><span class="win-btn">&times;</span></div>
+      </div>
+      <div class="win-body">
+        <div class="sec-eyebrow">08 &mdash; 中文 / CJK</div>
+        <h2 class="sec-header">A System-Font Localization</h2>
+        <p class="sec-lead">Retro Windows is a system-font deck, so it collapses to <strong>one CJK family for every Latin-system role</strong>: 思源黑体 Noto Sans SC. That preserves the &ldquo;software UI&rdquo; register &mdash; a Win9x app rendered its Simplified-Chinese build in a single system CJK face, not a display + body pairing. The pixel and terminal accents stay <strong>Latin-only</strong> by design.</p>
+
+        <div class="cjk-specimen">
+          <div class="cjk-display">复古视窗系统</div>
+          <div class="cjk-body">每一张幻灯片都是一个窗口：斜角边框、海军蓝标题栏、系统字体正文。标题栏文件名可保留 Latin（如 <span style="font-family:'VT323',monospace;color:var(--blue-navy)">METRICS.LOG</span>）以维持系统怀旧感，也可用「中文描述符 + 扩展名」如 季度指标.LOG。状态徽章干净利落：就绪、在线、通过、警告 &mdash; 语义色彩照常贯穿。盘古之白：在中文与 Latin 之间插入空格。</div>
+          <div class="cjk-label">思源黑体 Noto Sans SC &middot; 400 / 700</div>
+        </div>
+
+        <table class="retro-table">
+          <thead><tr><th>Role</th><th>Latin (default)</th><th>Chinese counterpart</th></tr></thead>
+          <tbody>
+            <tr><td>Headline / metric / section</td><td>MS Sans Serif 700</td><td>思源黑体 Noto Sans SC 700</td></tr>
+            <tr><td>Body / caption / list / cell</td><td>MS Sans Serif 400</td><td>思源黑体 Noto Sans SC 400</td></tr>
+            <tr><td>Pixel display</td><td>Press Start 2P</td><td>(no CJK substitute)</td></tr>
+            <tr><td>Terminal / nav hint</td><td>VT323</td><td>(no CJK substitute)</td></tr>
+          </tbody>
+        </table>
+        <p class="sec-lead" style="margin-top:18px; font-size:14px; color:var(--text-gray);">Adjustments: open line-height (body 1.75&ndash;1.85), letter-spacing 0 on CJK runs (drop the 0.5px title-bar tracking), no uppercase, full-width punctuation, one font per sentence. Never substitute a &ldquo;pixel-style&rdquo; Chinese font &mdash; for a Chinese display moment, use Noto Sans SC at large size and let go of the pixel character.</p>
+        <div class="status-footer">
+          <span>Strategy A: single family</span>
+          <span>Pixel/terminal: Latin-only</span>
+          <span>Locale: <b>zh-CN</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE — Blue Screen send-off ============ -->
+  <footer class="close">
+    <div class="close-tag">RETRO WINDOWS</div>
+    <div class="close-pixel">THANKS<br>FOR<br>SCROLLING</div>
+    <div class="close-body">A fatal amount of nostalgia has occurred. One of <strong>34 systems</strong> in Beautiful HTML Templates.<br><br>Press any link below to continue. <code>_</code></div>
+    <div class="close-hint">* Beveled chrome since 1995 *</div>
+    <div class="close-links">
+      <a class="btn-retro" href="index.html">&#8592; All Systems</a>
+      <a class="btn-retro" href="../templates/retro-windows/template.html">Open Live Deck</a>
+      <a class="btn-retro" href="../templates/retro-windows/design.md">design.md</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var counter = document.getElementById('counter');
+      var clock = document.getElementById('clock');
+      var sections = Array.prototype.slice.call(document.querySelectorAll('[data-counter]'));
+      var total = sections.length + 2; // hero + 8 sections + close = 10
+
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var idx = 1;
+        var mid = h.scrollTop + window.innerHeight * 0.4;
+        for (var i = 0; i < sections.length; i++) {
+          if (sections[i].offsetTop <= mid) idx = i + 2;
+        }
+        if (scrolled > 0.985) idx = total;
+        counter.textContent = String(idx).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+
+      // Live taskbar clock — small detail, big nostalgia
+      function tick() {
+        var d = new Date();
+        var h = d.getHours(), m = d.getMinutes();
+        clock.textContent = (h < 10 ? '0' + h : h) + ':' + (m < 10 ? '0' + m : m);
+      }
+      tick(); setInterval(tick, 15000);
+
+      // Fill the §04 progress bars when they scroll into view
+      var bars = Array.prototype.slice.call(document.querySelectorAll('.progress-fill[data-fill]'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.style.width = e.target.getAttribute('data-fill'); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.4 });
+        bars.forEach(function (b) { io.observe(b); });
+      } else {
+        bars.forEach(function (b) { b.style.width = b.getAttribute('data-fill'); });
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>8-Bit Orbit — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&family=Tektur:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --neon-pink: #F0A6CA;
+      --neon-cyan: #5EDCF4;
+      --neon-yellow: #F4D03F;
+      --deep-navy: #0F1B3D;
+      --dark-void: #0A0E27;
+      --soft-lavender: #E2D5F2;
+      --font-display: 'Tektur', cursive;
+      --font-body: 'Chakra Petch', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--dark-void);
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ===== PERSISTENT ATMOSPHERE (fixed over the whole document) ===== */
+    .fx { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
+    .fx-scanlines::after {
+      content: ""; position: absolute; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(10,14,39,0.05) 2px, rgba(10,14,39,0.05) 4px);
+      mix-blend-mode: multiply;
+    }
+    .fx-grain::before {
+      content: ""; position: absolute; inset: 0; opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .fx-glow::after {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, transparent 55%, rgba(10,14,39,0.45) 100%);
+    }
+
+    /* ===== PERSISTENT CHROME ===== */
+    .progress { position: fixed; top: 0; left: 0; height: 4px; width: 0; background: var(--neon-cyan); z-index: 120; box-shadow: 0 2px 0 0 var(--deep-navy); }
+    .counter {
+      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 120;
+      font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.15em;
+      color: var(--neon-cyan); background: rgba(10,14,39,0.85); padding: 7px 18px;
+    }
+    .back-link {
+      position: fixed; top: 16px; left: 18px; z-index: 120; text-decoration: none;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--neon-yellow); background: var(--deep-navy); padding: 8px 14px;
+    }
+    .back-link:hover { color: var(--neon-cyan); }
+
+    /* ===== GRID SURFACES ===== */
+    .section { position: relative; padding: 100px 6vw; overflow: hidden; }
+    .bg-void   { background-color: var(--dark-void); background-image: linear-gradient(rgba(94,220,244,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(94,220,244,0.07) 1px, transparent 1px); background-size: 40px 40px; }
+    .bg-pink   { background-color: var(--neon-pink); background-image: linear-gradient(rgba(15,27,61,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(15,27,61,0.06) 1px, transparent 1px); background-size: 40px 40px; color: var(--deep-navy); }
+    .bg-cyan   { background-color: var(--neon-cyan); background-image: linear-gradient(rgba(15,27,61,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(15,27,61,0.08) 1px, transparent 1px); background-size: 40px 40px; color: var(--deep-navy); }
+    .bg-lav    { background-color: var(--soft-lavender); background-image: linear-gradient(rgba(15,27,61,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(15,27,61,0.05) 1px, transparent 1px); background-size: 40px 40px; color: var(--deep-navy); }
+    .wrap { max-width: 1180px; margin: 0 auto; position: relative; z-index: 10; }
+
+    /* ===== SHARED PIXEL COMPONENTS (ported from the template) ===== */
+    .label-pill {
+      font-family: var(--font-mono); font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--neon-yellow); background: var(--deep-navy); padding: 6px 14px; display: inline-block; margin-bottom: 22px;
+    }
+    .label-pill.cyan { color: var(--neon-cyan); }
+    .label-pill.pink { color: var(--neon-pink); }
+
+    .sec-head { font-family: var(--font-display); font-weight: 800; font-size: clamp(2rem, 4.5vw, 3.4rem); line-height: 1.1; margin-bottom: 16px; }
+    .bg-void .sec-head { color: var(--neon-cyan); text-shadow: 3px 3px 0 var(--deep-navy); }
+    .bg-pink .sec-head, .bg-cyan .sec-head, .bg-lav .sec-head { color: var(--deep-navy); }
+    .sec-intro { font-family: var(--font-body); font-size: clamp(1rem, 1.3vw, 1.18rem); line-height: 1.75; max-width: 720px; margin-bottom: 48px; }
+    .bg-void .sec-intro { color: rgba(255,255,255,0.72); }
+    .bg-pink .sec-intro, .bg-cyan .sec-intro, .bg-lav .sec-intro { color: rgba(15,27,61,0.8); }
+    .sec-intro strong { font-family: var(--font-mono); font-weight: 700; font-size: 0.9em; color: inherit; }
+    .bg-void .sec-intro strong { color: var(--neon-yellow); }
+
+    .pixel-corners { position: relative; }
+    .pixel-corners::before, .pixel-corners::after { content: ""; position: absolute; width: 22px; height: 22px; border: 4px solid var(--neon-cyan); }
+    .pixel-corners::before { top: -8px; left: -8px; border-right: none; border-bottom: none; }
+    .pixel-corners::after { bottom: -8px; right: -8px; border-left: none; border-top: none; }
+    .pixel-corners.yellow::before, .pixel-corners.yellow::after { border-color: var(--neon-yellow); }
+    .pixel-corners.pink::before, .pixel-corners.pink::after { border-color: var(--neon-pink); }
+    .pixel-corners.navy::before, .pixel-corners.navy::after { border-color: var(--deep-navy); }
+
+    .pixel-btn {
+      display: inline-block; font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 16px 32px; background: var(--neon-cyan); color: var(--deep-navy); border: none; cursor: pointer; position: relative;
+      box-shadow: 4px 0 0 0 var(--deep-navy), 0 4px 0 0 var(--deep-navy), 4px 4px 0 0 var(--deep-navy), 8px 4px 0 0 var(--neon-yellow), 4px 8px 0 0 var(--neon-yellow), 8px 8px 0 0 var(--neon-yellow);
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .pixel-btn:hover { transform: translate(2px,2px); box-shadow: 2px 0 0 0 var(--deep-navy), 0 2px 0 0 var(--deep-navy), 2px 2px 0 0 var(--deep-navy), 4px 2px 0 0 var(--neon-yellow), 2px 4px 0 0 var(--neon-yellow), 4px 4px 0 0 var(--neon-yellow); }
+    .pixel-btn.pink-btn { background: var(--neon-pink); box-shadow: 4px 0 0 0 var(--deep-navy), 0 4px 0 0 var(--deep-navy), 4px 4px 0 0 var(--deep-navy), 8px 4px 0 0 var(--neon-cyan), 4px 8px 0 0 var(--neon-cyan), 8px 8px 0 0 var(--neon-cyan); }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 90px 6vw; }
+    .starfield { position: absolute; inset: 0; overflow: hidden; z-index: 1; }
+    .starfield .star { position: absolute; width: 4px; height: 4px; background: var(--neon-cyan); opacity: 0.6; animation: tw 3s infinite ease-in-out; }
+    .starfield .star:nth-child(2n) { background: var(--neon-yellow); } .starfield .star:nth-child(3n) { background: var(--neon-pink); } .starfield .star:nth-child(4n) { width: 6px; height: 6px; }
+    @keyframes tw { 0%,100%{opacity:0.3; transform:scale(1);} 50%{opacity:0.9; transform:scale(1.3);} }
+    .hero-sub { font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.3em; color: var(--neon-pink); text-transform: uppercase; margin-bottom: 1.6rem; }
+    .pixel-hero-text { font-family: var(--font-display); font-weight: 900; font-size: clamp(3.2rem, 11vw, 8.5rem); line-height: 1.02; color: var(--neon-cyan); text-shadow: 4px 4px 0 var(--neon-yellow), 8px 8px 0 var(--deep-navy); letter-spacing: 0.04em; }
+    .hero-tag { font-family: var(--font-body); font-size: clamp(0.95rem, 1.4vw, 1.2rem); color: rgba(255,255,255,0.7); max-width: 520px; margin: 2rem auto 0; line-height: 1.8; }
+    .hero-badges { display: flex; gap: 14px; margin-top: 2.4rem; flex-wrap: wrap; justify-content: center; }
+    .hero-badge { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 16px; border: 2px solid var(--neon-yellow); color: var(--neon-yellow); }
+    .contents { margin-top: 3.4rem; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 760px; }
+    .contents a { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--neon-cyan); text-decoration: none; border: 2px solid rgba(94,220,244,0.4); padding: 7px 12px; transition: all 0.2s; }
+    .contents a span { color: var(--neon-pink); }
+    .contents a:hover { border-color: var(--neon-cyan); background: rgba(94,220,244,0.1); }
+
+    /* ===== META TILES ===== */
+    .meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+    .meta-tile { background: rgba(15,27,61,0.07); border: 2px solid rgba(15,27,61,0.18); padding: 26px 22px; position: relative; }
+    .meta-tile .mt-label { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--deep-navy); opacity: 0.6; margin-bottom: 10px; }
+    .meta-tile .mt-value { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; color: var(--deep-navy); line-height: 1.05; }
+    .meta-tile .mt-sub { font-family: var(--font-body); font-size: 0.82rem; line-height: 1.5; color: rgba(15,27,61,0.7); margin-top: 8px; }
+
+    /* ===== COLOURS ===== */
+    .swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .swatch { padding: 28px 22px; min-height: 170px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+    .swatch .sw-name { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; }
+    .swatch .sw-hex { font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.1em; margin-top: 8px; }
+    .swatch .sw-role { font-family: var(--font-body); font-size: 0.82rem; line-height: 1.5; margin-top: 10px; opacity: 0.85; }
+    .sw-void { background: var(--dark-void); color: #fff; border: 2px solid rgba(94,220,244,0.3); }
+    .sw-navy { background: var(--deep-navy); color: #fff; }
+    .sw-cyan { background: var(--neon-cyan); color: var(--deep-navy); }
+    .sw-pink { background: var(--neon-pink); color: var(--deep-navy); }
+    .sw-yellow { background: var(--neon-yellow); color: var(--deep-navy); }
+    .sw-lav { background: var(--soft-lavender); color: var(--deep-navy); }
+
+    /* ===== TYPOGRAPHY ===== */
+    .faces { display: flex; flex-direction: column; gap: 22px; margin-bottom: 52px; }
+    .face { background: rgba(15,27,61,0.06); border: 2px solid rgba(15,27,61,0.18); padding: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; }
+    .face .f-name { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--deep-navy); opacity: 0.6; margin-bottom: 8px; }
+    .face .f-desc { font-family: var(--font-body); font-size: 0.9rem; line-height: 1.6; color: rgba(15,27,61,0.8); }
+    .smp-tektur { font-family: var(--font-display); font-weight: 900; font-size: clamp(2.2rem, 5vw, 4rem); color: var(--deep-navy); line-height: 1; }
+    .smp-chakra { font-family: var(--font-body); font-weight: 500; font-size: clamp(1.1rem, 2vw, 1.6rem); color: var(--deep-navy); line-height: 1.4; }
+    .smp-mono { font-family: var(--font-mono); font-weight: 700; font-size: clamp(1rem, 1.8vw, 1.4rem); letter-spacing: 0.15em; text-transform: uppercase; color: var(--deep-navy); }
+    .scale-row { display: grid; grid-template-columns: 200px 1fr; gap: 28px; align-items: baseline; padding: 20px 0; border-bottom: 2px solid rgba(15,27,61,0.12); }
+    .scale-row:last-child { border-bottom: none; }
+    .scale-tok { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--deep-navy); }
+    .scale-tok span { display: block; opacity: 0.55; margin-top: 4px; font-size: 0.62rem; }
+
+    /* ===== COMPONENTS ===== */
+    .comp { margin-bottom: 52px; }
+    .comp-h { font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; color: var(--neon-cyan); margin-bottom: 6px; }
+    .comp-d { font-family: var(--font-body); font-size: 0.92rem; line-height: 1.6; color: rgba(255,255,255,0.65); max-width: 680px; margin-bottom: 22px; }
+    .comp-stage { background: rgba(15,27,61,0.4); border: 2px solid rgba(94,220,244,0.18); padding: 40px; display: flex; flex-wrap: wrap; gap: 28px; align-items: center; }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; width: 100%; }
+    .feature-card { background: rgba(255,255,255,0.12); backdrop-filter: blur(6px); padding: 28px 22px; text-align: center; position: relative; border: 2px solid rgba(94,220,244,0.2); }
+    .feature-card::before { content: ""; position: absolute; top: -2px; left: -2px; width: 16px; height: 16px; border-top: 4px solid var(--neon-cyan); border-left: 4px solid var(--neon-cyan); }
+    .feature-card::after { content: ""; position: absolute; bottom: -2px; right: -2px; width: 16px; height: 16px; border-bottom: 4px solid var(--neon-cyan); border-right: 4px solid var(--neon-cyan); }
+    .feature-card .fi { width: 40px; height: 40px; margin: 0 auto 14px; }
+    .fi.cube { background: var(--neon-cyan); box-shadow: 5px 5px 0 var(--neon-yellow); }
+    .fi.diamond { background: var(--neon-pink); transform: rotate(45deg); width: 30px; height: 30px; margin-top: 6px; margin-bottom: 20px; }
+    .fi.cross { background: var(--neon-yellow); position: relative; }
+    .fi.cross::before { content:""; position:absolute; inset:9px 4px; background: var(--deep-navy);} .fi.cross::after{content:"";position:absolute;inset:4px 9px;background:var(--deep-navy);}
+    .feature-card h4 { font-family: var(--font-display); font-size: 0.95rem; color: #fff; margin-bottom: 6px; }
+    .feature-card p { font-family: var(--font-body); font-size: 0.78rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+    .pixel-bar-chart { width: 100%; max-width: 560px; display: flex; align-items: flex-end; justify-content: center; gap: 22px; height: 240px; position: relative; }
+    .pixel-bar-chart::before { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--neon-cyan); opacity: 0.5; }
+    .cbg { display: flex; flex-direction: column; align-items: center; gap: 10px; flex: 1; max-width: 80px; }
+    .cbar { width: 100%; background: var(--neon-cyan); box-shadow: 4px 0 0 0 var(--deep-navy), 0 4px 0 0 var(--deep-navy), 4px 4px 0 0 var(--deep-navy); transition: height 1s cubic-bezier(0.22,1,0.36,1); height: 0; }
+    .cbar.alt { background: var(--neon-pink); } .cbar.alt2 { background: var(--neon-yellow); }
+    .cval { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--neon-yellow); }
+    .clab { font-family: var(--font-mono); font-size: 0.66rem; color: rgba(255,255,255,0.8); letter-spacing: 0.05em; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; width: 100%; }
+    .stat-block { text-align: center; padding: 28px 14px; background: rgba(94,220,244,0.08); border: 2px solid rgba(94,220,244,0.2); position: relative; }
+    .stat-block::before { content:""; position:absolute; top:-2px; left:-2px; width:18px; height:18px; border-top:4px solid var(--neon-cyan); border-left:4px solid var(--neon-cyan);}
+    .stat-block::after { content:""; position:absolute; bottom:-2px; right:-2px; width:18px; height:18px; border-bottom:4px solid var(--neon-cyan); border-right:4px solid var(--neon-cyan);}
+    .stat-num { font-family: var(--font-display); font-size: clamp(1.8rem,3.4vw,2.8rem); font-weight: 900; color: var(--neon-cyan); line-height: 1; text-shadow: 3px 3px 0 var(--deep-navy); margin-bottom: 8px; }
+    .stat-lab { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--neon-pink); }
+
+    .quote-box { max-width: 720px; text-align: center; padding: 40px; position: relative; }
+    .quote-text { font-family: var(--font-body); font-weight: 500; font-size: clamp(1.05rem,2vw,1.5rem); color: #fff; line-height: 1.8; }
+    .quote-line { width: 60px; height: 4px; background: var(--neon-yellow); margin: 1.4rem auto 0; box-shadow: 4px 4px 0 var(--deep-navy); }
+    .quote-auth { margin-top: 1.4rem; font-family: var(--font-mono); font-size: 0.78rem; color: rgba(255,255,255,0.6); letter-spacing: 0.1em; }
+
+    /* ===== DEPTH ===== */
+    .depth-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+    .depth-card { background: rgba(15,27,61,0.06); border: 2px solid rgba(15,27,61,0.18); padding: 34px 26px; text-align: center; }
+    .depth-card .dc-label { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--deep-navy); opacity: 0.6; margin-top: 24px; }
+    .demo-chip { width: 56px; height: 56px; background: var(--deep-navy); margin: 12px auto; box-shadow: 6px 6px 0 var(--neon-yellow); }
+    .demo-chip.cyan { background: var(--neon-cyan); box-shadow: 6px 6px 0 var(--deep-navy); }
+    .demo-text { font-family: var(--font-display); font-weight: 900; font-size: 2.4rem; color: var(--neon-cyan); text-shadow: 4px 4px 0 var(--neon-yellow), 8px 8px 0 var(--deep-navy); }
+
+    /* ===== DO / DON'T ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .dd { padding: 34px; border: 2px solid var(--deep-navy); background: rgba(255,255,255,0.35); }
+    .dd.dont { background: var(--deep-navy); color: #fff; }
+    .dd-h { font-family: var(--font-display); font-weight: 800; font-size: 1.8rem; margin-bottom: 20px; }
+    .dd .dd-h { color: var(--deep-navy); } .dd.dont .dd-h { color: var(--neon-pink); }
+    .dd ul { list-style: none; }
+    .dd li { font-family: var(--font-body); font-size: 0.92rem; line-height: 1.5; padding-left: 24px; position: relative; margin-bottom: 14px; }
+    .dd li::before { position: absolute; left: 0; font-family: var(--font-mono); font-weight: 700; }
+    .dd:not(.dont) li { color: rgba(15,27,61,0.85); } .dd:not(.dont) li::before { content: "+"; color: #0f9d58; }
+    .dd.dont li { color: rgba(255,255,255,0.85); } .dd.dont li::before { content: "×"; color: var(--neon-pink); }
+
+    /* ===== CJK ===== */
+    .cjk-spec { border: 2px solid rgba(94,220,244,0.3); padding: 34px; margin-bottom: 32px; position: relative; }
+    .cjk-display { font-family: 'Noto Sans SC', sans-serif; font-weight: 900; font-size: clamp(2.4rem,6vw,4.6rem); color: var(--neon-cyan); text-shadow: 4px 4px 0 var(--deep-navy); line-height: 1.1; }
+    .cjk-body { font-family: 'Noto Sans SC', sans-serif; font-weight: 400; font-size: clamp(0.95rem,1.3vw,1.15rem); line-height: 1.9; color: rgba(255,255,255,0.75); max-width: 640px; margin-top: 16px; }
+    .cjk-tag { font-family: 'Noto Sans SC', sans-serif; font-weight: 500; font-size: 0.85rem; color: var(--neon-yellow); margin-top: 14px; }
+    .spec-table { width: 100%; border-collapse: collapse; border: 2px solid rgba(94,220,244,0.3); }
+    .spec-table th, .spec-table td { border: 1px solid rgba(94,220,244,0.18); padding: 12px 16px; text-align: left; font-family: var(--font-body); font-size: 0.88rem; color: rgba(255,255,255,0.85); }
+    .spec-table th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--neon-cyan); }
+    .spec-table td.cn { font-family: 'Noto Sans SC', sans-serif; color: var(--neon-yellow); }
+
+    /* ===== CLOSE ===== */
+    .close { min-height: 78vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 90px 6vw; }
+    .close h2 { font-family: var(--font-display); font-weight: 900; font-size: clamp(2.4rem,6vw,4.4rem); color: var(--neon-cyan); text-shadow: 4px 4px 0 var(--deep-navy), 8px 8px 0 var(--neon-yellow); line-height: 1.05; margin-bottom: 1rem; }
+    .close p { font-family: var(--font-body); color: rgba(255,255,255,0.7); margin-bottom: 2.4rem; max-width: 480px; }
+    .close-links { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; }
+
+    @media (max-width: 880px) {
+      .section { padding: 72px 6vw; }
+      .meta-grid, .swatches, .feature-grid, .stats-grid, .depth-grid { grid-template-columns: 1fr 1fr; }
+      .face, .scale-row, .dodont { grid-template-columns: 1fr; gap: 14px; }
+    }
+    @media (max-width: 520px) { .meta-grid, .swatches, .feature-grid, .stats-grid, .depth-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="fx fx-scanlines"></div>
+  <div class="fx fx-grain"></div>
+  <div class="fx fx-glow"></div>
+  <div class="progress" id="progress"></div>
+  <a class="back-link" href="index.html">&#9664; Index</a>
+  <div class="counter" id="counter">01 / 09</div>
+
+  <!-- HERO -->
+  <header class="section bg-void hero" id="top">
+    <div class="starfield" id="sf-hero"></div>
+    <div style="position:relative; z-index:10;">
+      <div class="hero-sub">Design System Specification</div>
+      <h1 class="pixel-hero-text">8-BIT<br>ORBIT</h1>
+      <p class="hero-tag">Pixel-art neon arcade aesthetic on a deep navy void. A CRT screen at 2am, rasterized into HTML.</p>
+      <div class="hero-badges">
+        <span class="hero-badge">Dark Scheme</span>
+        <span class="hero-badge">4px Pixel Unit</span>
+        <span class="hero-badge">3-Font Stack</span>
+      </div>
+      <nav class="contents">
+        <a href="#overview"><span>01</span> Overview</a>
+        <a href="#colours"><span>02</span> Colours</a>
+        <a href="#type"><span>03</span> Type</a>
+        <a href="#components"><span>04</span> Components</a>
+        <a href="#depth"><span>05</span> Depth</a>
+        <a href="#dodont"><span>06</span> Do / Don't</a>
+        <a href="#cjk"><span>07</span> 中文 / CJK</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 01 OVERVIEW -->
+  <section class="section bg-pink" id="overview">
+    <div class="wrap">
+      <span class="label-pill">01 / Overview</span>
+      <h2 class="sec-head">A CRT, Rasterized</h2>
+      <p class="sec-intro">8-Bit Orbit is a retro-futuristic pixel-art system built on the <strong>4-pixel unit</strong>: every shadow offset, border, and corner bracket resolves to a multiple of 4px. Atmospheric overlays — scanlines, grain, vignette glow, animated starfields — reinforce the illusion on every surface. The system reads as broken when surfaces are clean; <strong>always layer the atmosphere</strong>.</p>
+      <div class="meta-grid">
+        <div class="meta-tile"><div class="mt-label">Formality</div><div class="mt-value">Low</div><div class="mt-sub">Geeky, neon, rebellious, sci-fi.</div></div>
+        <div class="meta-tile"><div class="mt-label">Density</div><div class="mt-value">Medium</div><div class="mt-sub">One display moment + a constellation of HUD support.</div></div>
+        <div class="meta-tile"><div class="mt-label">Scheme</div><div class="mt-value">Dark</div><div class="mt-sub">Navy ground alternating with neon-grid surfaces.</div></div>
+        <div class="meta-tile"><div class="mt-label">Best For</div><div class="mt-value">Arcade</div><div class="mt-sub">Gaming, hackathon, web3, indie dev, synthwave.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 COLOURS -->
+  <section class="section bg-void" id="colours">
+    <div class="wrap">
+      <span class="label-pill cyan">02 / Colours</span>
+      <h2 class="sec-head">Navy Ground, Three Neons</h2>
+      <p class="sec-intro">Deep navy as ground, lit by three saturated neons plus a soft lavender pastel. The neons <strong>never appear as body text</strong> — they are reserved for headlines, stat numerals, accent rules, and label fills, so they read as illuminated rather than printed.</p>
+      <div class="swatches">
+        <div class="swatch sw-void pixel-corners"><div class="sw-name">Dark Void</div><div><div class="sw-hex">#0A0E27</div><div class="sw-role">The deepest ground. Hero and dense surfaces; grid etched in cyan at 7%.</div></div></div>
+        <div class="swatch sw-navy"><div class="sw-name">Deep Navy</div><div><div class="sw-hex">#0F1B3D</div><div class="sw-role">Secondary ground & the shadow colour. Every hard offset shadow is navy.</div></div></div>
+        <div class="swatch sw-cyan"><div class="sw-name">Neon Cyan</div><div><div class="sw-hex">#5EDCF4</div><div class="sw-role">Default headline on dark. Primary accent, grid lines, chart series #1.</div></div></div>
+        <div class="swatch sw-pink"><div class="sw-name">Neon Pink</div><div><div class="sw-hex">#F0A6CA</div><div class="sw-role">Hot accent. Mono eyebrows, chart series #2, colored grid surface.</div></div></div>
+        <div class="swatch sw-yellow"><div class="sw-name">Neon Yellow</div><div><div class="sw-hex">#F4D03F</div><div class="sw-role">Label fills, shadow halos, chart series #3. The HUD highlight.</div></div></div>
+        <div class="swatch sw-lav"><div class="sw-name">Soft Lavender</div><div><div class="sw-hex">#E2D5F2</div><div class="sw-role">Pastel relief surface with navy text — a calmer colored grid.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 TYPOGRAPHY -->
+  <section class="section bg-cyan" id="type">
+    <div class="wrap">
+      <span class="label-pill">03 / Typography</span>
+      <h2 class="sec-head">Display · Body · HUD</h2>
+      <p class="sec-intro">Three faces, single roles. <strong>Tektur</strong> for display, hero, and stat numerals; <strong>Chakra Petch</strong> for body; <strong>Space Mono</strong> for labels, badges, chart values, and counters — the HUD readout voice. Cross-mixing flattens the system.</p>
+      <div class="faces">
+        <div class="face"><div class="smp-tektur">ORBIT 847</div><div><div class="f-name">Tektur · Display + Numerals</div><div class="f-desc">Chunky semi-pixelated geometric grotesque. Headlines, hero text, stat figures — anything drawn on the pixel grid. Always with its stacked text-shadow.</div></div></div>
+        <div class="face"><div class="smp-chakra">The humanist body voice reads cleanly at small sizes.</div><div><div class="f-name">Chakra Petch · Body</div><div class="f-desc">Humanist sans with subtle geometric cuts. Sentence-case body only — never uppercase, never chrome.</div></div></div>
+        <div class="face"><div class="smp-mono">SYSTEM ONLINE</div><div><div class="f-name">Space Mono · HUD / Labels</div><div class="f-desc">Labels, captions, badges, chart values, dates, counters. Uppercase + 0.15–0.2em tracking = HUD readout, not editorial caption.</div></div></div>
+      </div>
+      <span class="label-pill" style="margin-bottom:0">Type Scale</span>
+      <div style="margin-top:18px;">
+        <div class="scale-row"><div class="scale-tok">pixel-hero-text<span>Tektur 900 · clamp 3.2–8.5rem · cyan + stacked shadow</span></div><div class="smp-tektur" style="color:var(--deep-navy)">8-BIT</div></div>
+        <div class="scale-row"><div class="scale-tok">stat-number<span>Tektur 900 · clamp 1.8–2.8rem · text-shadow 3px</span></div><div style="font-family:var(--font-display); font-weight:900; font-size:2.4rem; color:var(--deep-navy)">99.9%</div></div>
+        <div class="scale-row"><div class="scale-tok">h2 / sec-head<span>Tektur 800 · clamp 1.5–2.8rem</span></div><div style="font-family:var(--font-display); font-weight:800; font-size:1.9rem; color:var(--deep-navy)">Quarterly Growth</div></div>
+        <div class="scale-row"><div class="scale-tok">body<span>Chakra Petch 400 · clamp 0.9–1.15rem · 1.7</span></div><div style="font-family:var(--font-body); font-size:1.05rem; color:rgba(15,27,61,0.85)">Bars grow with CSS transitions triggered on navigation.</div></div>
+        <div class="scale-row"><div class="scale-tok">label-pill<span>Space Mono 700 · 12px · 0.2em · uppercase</span></div><div><span class="label-pill" style="margin:0">Mission Brief</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 COMPONENTS -->
+  <section class="section bg-void" id="components">
+    <div class="wrap">
+      <span class="label-pill cyan">04 / Components</span>
+      <h2 class="sec-head">Live Components</h2>
+      <p class="sec-intro">Every block is rendered with the template's <strong>actual CSS</strong> — pixel buttons, corner-bracketed cards, neon charts, HUD stat tiles.</p>
+
+      <div class="comp">
+        <div class="comp-h">Label Pill &amp; Pixel Button</div>
+        <div class="comp-d">The universal mono eyebrow (navy fill, neon text, 0.2em tracking) and the six-piece stacked-shadow button — three navy offsets at 4px, three colored halo offsets at 8px.</div>
+        <div class="comp-stage">
+          <span class="label-pill">Mission Brief</span>
+          <span class="label-pill cyan">Analytics Core</span>
+          <button class="pixel-btn">Initialize</button>
+          <button class="pixel-btn pink-btn">Documentation</button>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Corner-Bracket Cards</div>
+        <div class="comp-d">L-shaped corner brackets at opposite corners imply a frame instead of fully outlining it — the system's signature card treatment.</div>
+        <div class="comp-stage" style="display:block">
+          <div class="feature-grid">
+            <div class="feature-card"><div class="fi cube"></div><h4>Modular Blocks</h4><p>Containerized, responsive by default.</p></div>
+            <div class="feature-card"><div class="fi diamond"></div><h4>Crisp Vectors</h4><p>All effects are native CSS, no assets.</p></div>
+            <div class="feature-card"><div class="fi cross"></div><h4>Live Data</h4><p>Bars grow with transitions on nav.</p></div>
+            <div class="feature-card"><div class="fi cube" style="box-shadow:5px 5px 0 var(--neon-pink)"></div><h4>Atmosphere</h4><p>Scanlines, vignette, starfields.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Neon Bar Chart &amp; HUD Stats</div>
+        <div class="comp-d">Charts run cyan → pink → yellow series order with Space Mono numerals. Stat tiles are corner-bracketed with Tektur numerals carrying a 3px navy text-shadow.</div>
+        <div class="comp-stage" style="flex-direction:column; align-items:stretch; gap:40px;">
+          <div class="pixel-bar-chart" id="barChart" style="margin:0 auto;">
+            <div class="cbg"><div class="cval">78</div><div class="cbar" data-h="78"></div><div class="clab">Alpha</div></div>
+            <div class="cbg"><div class="cval">92</div><div class="cbar alt" data-h="92"></div><div class="clab">Beta</div></div>
+            <div class="cbg"><div class="cval">64</div><div class="cbar alt2" data-h="64"></div><div class="clab">Gamma</div></div>
+            <div class="cbg"><div class="cval">85</div><div class="cbar" data-h="85"></div><div class="clab">Delta</div></div>
+            <div class="cbg"><div class="cval">56</div><div class="cbar alt" data-h="56"></div><div class="clab">Epsilon</div></div>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-block"><div class="stat-num">847</div><div class="stat-lab">Active Worlds</div></div>
+            <div class="stat-block"><div class="stat-num">12.4M</div><div class="stat-lab">Pixels Rendered</div></div>
+            <div class="stat-block"><div class="stat-num">99.9%</div><div class="stat-lab">Uptime Score</div></div>
+            <div class="stat-block"><div class="stat-num">2048</div><div class="stat-lab">Max Resolution</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Quote Block</div>
+        <div class="comp-d">Centered Chakra Petch with a corner-bracketed frame, a yellow underline rule carrying a 4px navy shadow, and a Space Mono attribution.</div>
+        <div class="comp-stage" style="justify-content:center">
+          <div class="quote-box pixel-corners yellow">
+            <p class="quote-text">The best presentations do not merely inform. They immerse — turning the conference room into an arcade cabinet where every slide is a new level.</p>
+            <div class="quote-line"></div>
+            <div class="quote-auth">&mdash; Lead Creative Technologist, Studio Orbital</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 DEPTH -->
+  <section class="section bg-lav" id="depth">
+    <div class="wrap">
+      <span class="label-pill">05 / Depth &amp; Shape</span>
+      <h2 class="sec-head">Hard Offset Shadows</h2>
+      <p class="sec-intro">Depth is stacked hard offset shadows in the pixel unit — <strong>zero blur, always stepping down-right</strong> in 4px increments. No corner is ever rounded; <code>0 4px 12px rgba(0,0,0,.1)</code> does not exist here.</p>
+      <div class="depth-grid">
+        <div class="depth-card"><div class="demo-text">Aa</div><div class="dc-label">Text shadow · yellow +4 / navy +8</div></div>
+        <div class="depth-card"><div class="demo-chip"></div><div class="dc-label">Box shadow · 6px navy → yellow halo</div></div>
+        <div class="depth-card"><div class="demo-chip cyan"></div><div class="dc-label">Box shadow · 6px hard, zero blur</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 DO / DON'T -->
+  <section class="section bg-void" id="dodont">
+    <div class="wrap">
+      <span class="label-pill cyan">06 / Do &amp; Don't</span>
+      <h2 class="sec-head">Keep It On-Grid</h2>
+      <div class="dodont">
+        <div class="dd">
+          <div class="dd-h">Do</div>
+          <ul>
+            <li>Layer scanlines + grain + CRT-vignette on every surface — the atmosphere IS the system.</li>
+            <li>Snap every measurement to the 4px pixel unit.</li>
+            <li>Cyan headlines on dark; deep-navy headlines on colored grids.</li>
+            <li>Wrap every eyebrow in the navy label pill.</li>
+            <li>Give Tektur display its stacked text-shadow; stat numerals the 3px shadow.</li>
+            <li>Bracket cards with L-corners instead of full outlines.</li>
+          </ul>
+        </div>
+        <div class="dd dont">
+          <div class="dd-h">Don't</div>
+          <ul>
+            <li>Round any corner — square edges only.</li>
+            <li>Blur any shadow — every shadow is hard-edged.</li>
+            <li>Place neon text on a neon surface (illegible).</li>
+            <li>Introduce a fourth neon — cyan + pink + yellow + lavender only.</li>
+            <li>Substitute the fonts or cross their three roles.</li>
+            <li>Shadow with left or upward offsets — down-right only.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 CJK -->
+  <section class="section bg-void" id="cjk">
+    <div class="wrap">
+      <span class="label-pill">07 / 中文 · CJK</span>
+      <h2 class="sec-head">International Content</h2>
+      <p class="sec-intro">The three-face stack collapses to weight contrast in <strong>思源黑体 Noto Sans SC</strong> (900 display / 400 body / 500 chrome). The neons, stacked shadows, pixel grid, and corner brackets carry the arcade voice — set CJK tracking to 0 and drop uppercase.</p>
+      <div class="cjk-spec pixel-corners">
+        <div class="cjk-display">街机轨道</div>
+        <div class="cjk-body">最好的演示不只是传递信息，而是让人沉浸——把会议室变成街机厅，每一页都是等待解锁的新关卡。霓虹、堆叠硬阴影与像素网格承载着复古未来的气场。</div>
+        <div class="cjk-tag">思源黑体 NOTO SANS SC · 900 / 400 / 500</div>
+      </div>
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Latin (default)</th><th>Chinese</th></tr></thead>
+        <tbody>
+          <tr><td>Display / stat numerals</td><td>Tektur 700–900</td><td class="cn">思源黑体 900</td></tr>
+          <tr><td>Body / tagline</td><td>Chakra Petch 400–500</td><td class="cn">思源黑体 400</td></tr>
+          <tr><td>HUD labels / badges</td><td>Space Mono 400–700</td><td class="cn">思源黑体 500（无大写无字距）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CLOSE -->
+  <footer class="section bg-void close" id="end">
+    <div class="starfield" id="sf-end"></div>
+    <div style="position:relative; z-index:10;">
+      <h2>INSERT COIN</h2>
+      <p>One of 34 systems in Beautiful HTML Templates. Press start.</p>
+      <div class="close-links">
+        <a class="pixel-btn" href="index.html">&#9664; All Systems</a>
+        <a class="pixel-btn pink-btn" href="../templates/8-bit-orbit/template.html">Open Live Deck</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      // starfields
+      function stars(id, n) { var c=document.getElementById(id); if(!c) return; for(var i=0;i<n;i++){var s=document.createElement('div'); s.className='star'; s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%'; s.style.animationDelay=Math.random()*3+'s'; c.appendChild(s);} }
+      stars('sf-hero', 60); stars('sf-end', 50);
+
+      // progress + counter
+      var progress=document.getElementById('progress'), counter=document.getElementById('counter');
+      var secs=Array.prototype.slice.call(document.querySelectorAll('.section'));
+      function onScroll(){ var h=document.documentElement; var sc=h.scrollTop/(h.scrollHeight-h.clientHeight); progress.style.width=(sc*100)+'%'; var mid=h.scrollTop+innerHeight*0.4, idx=1; for(var i=0;i<secs.length;i++){ if(secs[i].offsetTop<=mid) idx=i+1; } counter.textContent=String(idx).padStart(2,'0')+' / '+String(secs.length).padStart(2,'0'); }
+      addEventListener('scroll', onScroll, {passive:true}); addEventListener('resize', onScroll); onScroll();
+
+      // bar chart animate on view
+      var bc=document.getElementById('barChart'), done=false;
+      function animate(){ if(done) return; done=true; bc.querySelectorAll('.cbar').forEach(function(b,i){ setTimeout(function(){ b.style.height=b.dataset.h+'%'; }, i*120); }); }
+      if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) animate(); }); }, {threshold:0.4}).observe(bc); } else { animate(); }
+    })();
+  </script>
+</body>
+</html>

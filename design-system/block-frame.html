@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlockFrame — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's two faces: Inter (display/body) + Space Grotesk (label/chrome) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- CJK pairing, loaded only for the live Chinese specimen in §08 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #000000;
+      --white: #FFFFFF;
+      --offwhite: #FFFDF5;
+      --pink: #FE90E8;
+      --blue: #C0F7FE;
+      --green: #99E885;
+      --yellow: #F7CB46;
+      --cream: #FFDC8B;
+      --f-disp: 'Inter', sans-serif;
+      --f-mono: 'Space Grotesk', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--offwhite); color: var(--black); font-family: var(--f-disp); -webkit-font-smoothing: antialiased; }
+
+    /* ===== Persistent chrome — neobrutalist pills ===== */
+    .progress { position: fixed; top: 0; left: 0; height: 6px; width: 0; background: var(--black); z-index: 300; }
+    .back-link {
+      position: fixed; top: 22px; left: 24px; z-index: 200; text-decoration: none; color: var(--black);
+      background: var(--yellow); border: 3px solid var(--black); box-shadow: 4px 4px 0 var(--black);
+      font-family: var(--f-mono); font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 8px 16px;
+    }
+    .back-link:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--black); }
+    .counter {
+      position: fixed; bottom: 22px; left: 24px; z-index: 200;
+      background: var(--white); border: 3px solid var(--black); box-shadow: 4px 4px 0 var(--black);
+      font-family: var(--f-mono); font-weight: 700; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 10px 18px;
+    }
+
+    /* ===== Sections — colour-cycling grounds ===== */
+    section, header, footer { position: relative; overflow: hidden; padding: clamp(40px, 6vw, 72px); }
+    .bg-offwhite { background: var(--offwhite); }
+    .bg-blue { background: var(--blue); }
+    .bg-green { background: var(--green); }
+    .bg-pink { background: var(--pink); }
+    .bg-yellow { background: var(--yellow); }
+    .bg-cream { background: var(--cream); }
+    .bg-black { background: var(--black); color: var(--white); }
+    .wrap { max-width: 1180px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+
+    /* dot-grid + tilted decorations */
+    .dotgrid { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.5;
+      background-image: radial-gradient(circle, rgba(0,0,0,0.28) 1.2px, transparent 1.2px); background-size: 24px 24px; }
+    .deco-rect { position: absolute; z-index: 1; border: 4px solid var(--black); pointer-events: none; }
+    .star {
+      position: absolute; z-index: 1; width: 64px; height: 64px; background: var(--black); pointer-events: none;
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .star::before { content: ""; width: 54px; height: 54px; background: var(--pink);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+    .stripe-block { border: 3px solid var(--black); background: repeating-linear-gradient(45deg, var(--black), var(--black) 4px, var(--green) 4px, var(--green) 12px); }
+
+    /* ===== Type ===== */
+    .label-pill {
+      display: inline-block; border: 3px solid var(--black); box-shadow: 4px 4px 0 var(--black);
+      background: var(--white); padding: 6px 16px; font-family: var(--f-mono); font-weight: 600;
+      font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .lp-pink { background: var(--pink); } .lp-blue { background: var(--blue); } .lp-green { background: var(--green); }
+    .lp-yellow { background: var(--yellow); } .lp-cream { background: var(--cream); }
+    .h-xl { font-family: var(--f-disp); font-weight: 900; font-size: clamp(48px,6vw,96px); line-height: 0.95; letter-spacing: -0.03em; text-transform: uppercase; }
+    .h-lg { font-family: var(--f-disp); font-weight: 800; font-size: clamp(32px,4vw,64px); line-height: 1; letter-spacing: -0.02em; text-transform: uppercase; }
+    .h-md { font-family: var(--f-disp); font-weight: 700; font-size: clamp(24px,2.5vw,40px); line-height: 1.1; letter-spacing: -0.01em; text-transform: uppercase; }
+    .subtitle-mono { font-family: var(--f-mono); font-weight: 500; font-size: clamp(15px,1.4vw,18px); line-height: 1.5; }
+    .body { font-family: var(--f-disp); font-weight: 500; font-size: clamp(15px,1.1vw,18px); line-height: 1.6; }
+
+    /* ===== Cards ===== */
+    .card { border: 4px solid var(--black); background: var(--white); box-shadow: 8px 8px 0 var(--black); padding: clamp(24px,2.5vw,36px); }
+    .card-sm { border: 3px solid var(--black); background: var(--white); box-shadow: 4px 4px 0 var(--black); padding: 22px; }
+    .card-flat { border: 4px solid var(--black); background: var(--white); padding: clamp(24px,2.5vw,36px); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; }
+
+    .sec-head { margin-bottom: clamp(32px,4vw,48px); }
+    .sec-head .label-pill { margin-bottom: 20px; }
+    .sec-head .body { margin-top: 16px; max-width: 64ch; }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+    .hero-inner { position: relative; z-index: 2; }
+    .hero .h-xl { margin: 22px 0 18px; }
+    .hero-frame { border: 4px solid var(--black); background: var(--white); box-shadow: 12px 12px 0 var(--black); padding: clamp(32px,4vw,60px); max-width: 1000px; }
+    .contents { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+    .contents a { text-decoration: none; color: var(--black); }
+    .cta { display: inline-block; margin-top: 28px; border: 3px solid var(--black); background: var(--yellow); color: var(--black);
+      box-shadow: 4px 4px 0 var(--black); padding: 14px 32px; font-family: var(--f-disp); font-weight: 700; font-size: 16px; text-decoration: none; }
+    .cta:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--black); }
+
+    /* ===== stat / icon / list ===== */
+    .stat-card { border: 4px solid var(--black); background: var(--white); box-shadow: 8px 8px 0 var(--black); padding: 28px; position: relative; }
+    .stat-card:nth-child(odd) { transform: rotate(-2deg); } .stat-card:nth-child(even) { transform: rotate(2deg); }
+    .stat-deco-dot { position: absolute; top: 14px; right: 14px; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--black); }
+    .stat-number { font-family: var(--f-disp); font-weight: 900; font-size: clamp(36px,4vw,64px); line-height: 1; }
+    .stat-label { font-family: var(--f-mono); font-weight: 600; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 8px; }
+    .icon-square { width: 64px; height: 64px; border: 3px solid var(--black); display: flex; align-items: center; justify-content: center; font-family: var(--f-disp); font-weight: 700; font-size: 28px; margin-bottom: 16px; }
+    .card-title { font-family: var(--f-disp); font-weight: 700; font-size: 22px; line-height: 1.2; text-transform: uppercase; margin-bottom: 10px; }
+    .num-list { list-style: none; }
+    .num-list li { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 18px; }
+    .list-number { flex-shrink: 0; width: 36px; height: 36px; border: 3px solid var(--black); background: var(--yellow); display: flex; align-items: center; justify-content: center; font-family: var(--f-mono); font-weight: 700; font-size: 14px; }
+
+    /* ===== §02 swatches ===== */
+    .sw-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+    .swatch { border: 4px solid var(--black); box-shadow: 6px 6px 0 var(--black); }
+    .sw-chip { height: 96px; border-bottom: 4px solid var(--black); }
+    .sw-info { background: var(--white); padding: 14px 16px; }
+    .sw-name { font-family: var(--f-disp); font-weight: 800; font-size: 18px; text-transform: uppercase; }
+    .sw-hex { font-family: var(--f-mono); font-weight: 600; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px; }
+
+    /* ===== §03 typography ===== */
+    .face-row { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 36px; }
+    .fc-name { font-family: var(--f-mono); font-weight: 600; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+    .fc-inter { font-family: var(--f-disp); font-weight: 900; font-size: clamp(40px,5vw,72px); line-height: 0.95; letter-spacing: -0.03em; text-transform: uppercase; }
+    .fc-grotesk { font-family: var(--f-mono); font-weight: 600; font-size: clamp(20px,2.4vw,32px); letter-spacing: 0.06em; text-transform: uppercase; }
+    .fc-desc { font-family: var(--f-disp); font-weight: 500; font-size: 15px; line-height: 1.6; margin-top: 14px; }
+    .scale-list .scale-row { display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: baseline; padding: 16px 0; border-bottom: 3px solid var(--black); }
+    .scale-list .scale-row:last-child { border-bottom: none; }
+    .sm { font-family: var(--f-mono); font-weight: 600; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .sm b { display: block; font-size: 14px; margin-bottom: 3px; }
+
+    /* ===== §04 components helpers ===== */
+    .comp { margin-bottom: 36px; }
+    .comp-h { font-family: var(--f-mono); font-weight: 600; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .bar-row { display: flex; align-items: flex-end; gap: 20px; height: 200px; }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 10px; }
+    .bar { width: 100%; border: 3px solid var(--black); box-shadow: 4px 4px 0 var(--black); height: 0; transition: height 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .bar-lbl { font-family: var(--f-mono); font-weight: 600; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .avatar-square { width: 72px; height: 72px; border: 3px solid var(--black); display: flex; align-items: center; justify-content: center; font-family: var(--f-disp); font-weight: 900; font-size: 28px; text-transform: uppercase; }
+
+    /* ===== §05 spec table ===== */
+    .spec-table { width: 100%; border-collapse: collapse; border: 4px solid var(--black); background: var(--white); box-shadow: 8px 8px 0 var(--black); }
+    .spec-table th, .spec-table td { text-align: left; padding: 14px 18px; border-bottom: 3px solid var(--black); }
+    .spec-table tr:last-child th, .spec-table tr:last-child td { border-bottom: none; }
+    .spec-table th { font-family: var(--f-mono); font-weight: 600; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .spec-table td { font-family: var(--f-disp); font-weight: 500; font-size: 15px; }
+    .spec-table td.tok { font-family: var(--f-mono); font-weight: 600; }
+
+    /* ===== §06 depth ===== */
+    .shadow-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 28px; margin-bottom: 36px; }
+    .shadow-demo { border: 4px solid var(--black); background: var(--white); padding: 24px; text-align: center; font-family: var(--f-mono); font-weight: 600; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .sd-1 { box-shadow: 4px 4px 0 var(--black); } .sd-2 { box-shadow: 8px 8px 0 var(--black); }
+    .sd-3 { box-shadow: 12px 12px 0 var(--yellow); } .sd-4 { box-shadow: 6px 6px 0 var(--black); }
+    .tilt-row { display: flex; gap: 40px; flex-wrap: wrap; align-items: center; }
+    .tilt-demo { width: 120px; height: 80px; border: 4px solid var(--black); background: var(--pink); box-shadow: 6px 6px 0 var(--black); display: flex; align-items: center; justify-content: center; font-family: var(--f-mono); font-weight: 600; font-size: 12px; }
+
+    /* ===== §07 do/don't ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .dd-list { list-style: none; }
+    .dd-list li { font-family: var(--f-disp); font-weight: 500; font-size: 15px; line-height: 1.5; padding: 12px 0 12px 40px; position: relative; border-bottom: 3px solid var(--black); }
+    .dd-list li:last-child { border-bottom: none; }
+    .dd-list li::before { position: absolute; left: 0; top: 10px; width: 26px; height: 26px; border: 3px solid var(--black); display: flex; align-items: center; justify-content: center; font-family: var(--f-disp); font-weight: 900; font-size: 15px; }
+    .do-card .dd-list li::before { content: "✓"; background: var(--green); }
+    .dont-card .dd-list li::before { content: "✕"; background: var(--pink); }
+
+    /* ===== §08 cjk ===== */
+    .cjk-specimen { border: 4px solid var(--black); background: var(--white); box-shadow: 8px 8px 0 var(--black); padding: clamp(28px,3vw,44px); margin-bottom: 28px; }
+    .cjk-display { font-family: 'Noto Sans SC', sans-serif; font-weight: 900; font-size: clamp(36px,5vw,72px); line-height: 1.2; }
+    .cjk-body { font-family: 'Noto Sans SC', sans-serif; font-weight: 400; font-size: clamp(15px,1.2vw,18px); line-height: 1.8; max-width: 50ch; margin-top: 16px; }
+    .cjk-label { font-family: var(--f-mono); font-weight: 600; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 16px; }
+
+    /* ===== close ===== */
+    .close { min-height: 88vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    .close-frame { border: 4px solid var(--white); background: var(--black); box-shadow: 12px 12px 0 var(--yellow); padding: clamp(36px,5vw,72px); position: relative; z-index: 2; }
+    .close-title { font-family: var(--f-disp); font-weight: 900; font-size: clamp(40px,5vw,80px); line-height: 0.95; letter-spacing: -0.03em; text-transform: uppercase; color: var(--white); }
+    .close-sub { font-family: var(--f-mono); font-weight: 500; font-size: 16px; color: var(--cream); margin-top: 20px; max-width: 42ch; line-height: 1.6; }
+    .close-links { margin-top: 28px; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .close-links a { text-decoration: none; color: var(--black); background: var(--white); border: 3px solid var(--white); box-shadow: 6px 6px 0 var(--yellow); padding: 12px 24px; font-family: var(--f-mono); font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .close-links a:hover { transform: translate(-2px,-2px); }
+
+    /* ===== responsive ===== */
+    @media (max-width: 1024px) {
+      .grid-3, .grid-4, .sw-grid, .shadow-grid { grid-template-columns: 1fr 1fr; }
+      .grid-2, .face-row, .dodont { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .grid-3, .grid-4, .sw-grid, .shadow-grid { grid-template-columns: 1fr; }
+      .scale-list .scale-row { grid-template-columns: 1fr; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <a class="back-link" href="index.html">&larr; Index</a>
+  <div class="counter" id="counter">01 / 10</div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero bg-offwhite" id="top">
+    <div class="dotgrid"></div>
+    <div class="deco-rect" style="top:10%;right:8%;width:120px;height:80px;background:var(--blue);transform:rotate(-8deg);box-shadow:8px 8px 0 var(--black)"></div>
+    <div class="star" style="top:18%;left:6%;transform:rotate(-12deg)"></div>
+    <div class="deco-rect" style="bottom:12%;right:14%;width:90px;height:90px;background:var(--green);transform:rotate(7deg);box-shadow:6px 6px 0 var(--black)"></div>
+    <div class="wrap hero-inner">
+      <div class="hero-frame">
+        <span class="label-pill lp-pink">Design System Specification</span>
+        <h1 class="h-xl">Block<br>Frame</h1>
+        <p class="subtitle-mono">Maximalist neobrutalism &mdash; 4px borders, 8px hard shadows, candy pastels, joyful chaos.</p>
+        <nav class="contents">
+          <a href="#overview"><span class="label-pill lp-blue">01 Overview</span></a>
+          <a href="#colours"><span class="label-pill lp-green">02 Colours</span></a>
+          <a href="#typography"><span class="label-pill lp-yellow">03 Typography</span></a>
+          <a href="#components"><span class="label-pill lp-pink">04 Components</span></a>
+          <a href="#layout"><span class="label-pill lp-cream">05 Layout</span></a>
+          <a href="#depth"><span class="label-pill lp-blue">06 Depth</span></a>
+          <a href="#dodont"><span class="label-pill lp-green">07 Do &amp; Don't</span></a>
+          <a href="#cjk"><span class="label-pill lp-yellow">08 中文 / CJK</span></a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section class="bg-blue" id="overview">
+    <div class="deco-rect" style="top:14%;right:9%;width:80px;height:80px;background:var(--pink);transform:rotate(10deg);box-shadow:6px 6px 0 var(--black)"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-pill">01 — Overview</span>
+        <h2 class="h-lg">Five Structural Laws</h2>
+        <p class="body">BlockFrame is a maximalist neobrutalist system: every region has a 4px black border, every elevated element an 8px hard offset shadow, every corner is square, every accent a saturated pastel, and every layout is allowed to be a little crooked. The joy comes from the deliberate collision of these laws.</p>
+      </div>
+      <div class="grid-4">
+        <div class="stat-card"><span class="stat-deco-dot" style="background:var(--pink)"></span><div class="stat-number">Med-Lo</div><div class="stat-label">Formality</div></div>
+        <div class="stat-card"><span class="stat-deco-dot" style="background:var(--green)"></span><div class="stat-number">High</div><div class="stat-label">Density</div></div>
+        <div class="stat-card"><span class="stat-deco-dot" style="background:var(--yellow)"></span><div class="stat-number">Light</div><div class="stat-label">Scheme</div></div>
+        <div class="stat-card"><span class="stat-deco-dot" style="background:var(--blue)"></span><div class="stat-number">10</div><div class="stat-label">Slides</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section class="bg-offwhite" id="colours">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-pill lp-green">02 — Colours</span>
+        <h2 class="h-lg">Five Pastels, Cycled Loud</h2>
+        <p class="body">Five saturated pastels plus black, white, and warm off-white. Pastels aren't subtle accents &mdash; they are full-bleed surface grounds, cycled every slide for rhythm. No semantic mapping; pair by juxtaposition.</p>
+      </div>
+      <div class="sw-grid">
+        <div class="swatch"><div class="sw-chip" style="background:var(--pink)"></div><div class="sw-info"><div class="sw-name">Pink</div><div class="sw-hex">#FE90E8</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:var(--blue)"></div><div class="sw-info"><div class="sw-name">Blue</div><div class="sw-hex">#C0F7FE</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:var(--green)"></div><div class="sw-info"><div class="sw-name">Green</div><div class="sw-hex">#99E885</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:var(--yellow)"></div><div class="sw-info"><div class="sw-name">Yellow</div><div class="sw-hex">#F7CB46</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:var(--cream)"></div><div class="sw-info"><div class="sw-name">Cream</div><div class="sw-hex">#FFDC8B</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:var(--offwhite)"></div><div class="sw-info"><div class="sw-name">Off-white</div><div class="sw-hex">#FFFDF5</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:var(--black)"></div><div class="sw-info"><div class="sw-name">Black</div><div class="sw-hex">#000000</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:var(--white)"></div><div class="sw-info"><div class="sw-name">White</div><div class="sw-hex">#FFFFFF</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section class="bg-green" id="typography">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-pill lp-yellow">03 — Typography</span>
+        <h2 class="h-lg">Heavy Caps, Wide Chrome</h2>
+        <p class="body">Inter at weight 800–900 in tight uppercase with negative tracking is the display voice; Space Grotesk at weight 600 uppercase with 0.08em tracking is the label voice. The contrast between heavy display and wide-tracked chrome is the whole rhythm.</p>
+      </div>
+      <div class="face-row">
+        <div class="card"><div class="fc-name">Inter · display / body / stat</div><div class="fc-inter">Brutalist</div><div class="fc-desc">Weight 900 for hero &amp; quotes, 800 for headlines, 700 for card titles, 500 for body. Display is always uppercase with -0.02 to -0.03em tracking.</div></div>
+        <div class="card"><div class="fc-name">Space Grotesk · label / chrome</div><div class="fc-grotesk">System Label</div><div class="fc-desc">A quasi-mono label voice for eyebrows, counters, stat labels, and tags — weight 600 uppercase with wide 0.05–0.1em tracking.</div></div>
+      </div>
+      <div class="card scale-list">
+        <div class="scale-row"><div class="sm"><b>heading-xl</b>Inter 900 · 48–96px</div><div class="h-xl" style="font-size:clamp(36px,5vw,60px)">Hero Title</div></div>
+        <div class="scale-row"><div class="sm"><b>heading-lg</b>Inter 800 · 32–64px</div><div class="h-lg" style="font-size:clamp(28px,3.5vw,44px)">Section Head</div></div>
+        <div class="scale-row"><div class="sm"><b>stat-number</b>Inter 900 · 36–64px</div><div class="stat-number" style="font-size:clamp(32px,4vw,52px)">340%</div></div>
+        <div class="scale-row"><div class="sm"><b>card-title</b>Inter 700 · 22px · UPPER</div><div class="card-title" style="margin:0">Feature Card</div></div>
+        <div class="scale-row"><div class="sm"><b>body</b>Inter 500 · 16–20px</div><div class="body" style="margin:0">Sentence-case body copy at line-height 1.6.</div></div>
+        <div class="scale-row"><div class="sm"><b>label</b>Space Grotesk 600 · 13px</div><div><span class="label-pill lp-pink">Label Pill</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section class="bg-offwhite" id="components">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-pill lp-pink">04 — Components</span>
+        <h2 class="h-lg">The Bordered Toolkit</h2>
+        <p class="body">Every block below is rendered with the template's <strong>actual CSS</strong> &mdash; not a mockup. 4px / 3px borders, hard offset shadows, square corners, pastel fills.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Label pills &mdash; the universal eyebrow, pastel variants</div>
+        <div class="pill-row">
+          <span class="label-pill">White</span><span class="label-pill lp-pink">Pink</span><span class="label-pill lp-blue">Blue</span>
+          <span class="label-pill lp-green">Green</span><span class="label-pill lp-yellow">Yellow</span><span class="label-pill lp-cream">Cream</span>
+          <a class="cta" style="margin-top:0">Primary CTA</a>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Feature cards &mdash; 4px border, 8px shadow, icon-square</div>
+        <div class="grid-3">
+          <div class="card"><div class="icon-square" style="background:var(--pink)">A</div><div class="card-title">Strategy</div><div class="body" style="font-size:15px">Market analysis and multi-year roadmaps that bridge ambition with milestones.</div></div>
+          <div class="card"><div class="icon-square" style="background:var(--blue)">B</div><div class="card-title">Build</div><div class="body" style="font-size:15px">Scalable architecture and infrastructure that grows with demand.</div></div>
+          <div class="card"><div class="icon-square" style="background:var(--green)">C</div><div class="card-title">Grow</div><div class="body" style="font-size:15px">Activation, retention, and expansion across new geographies.</div></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Stat cards (tilted, deco-dot) &amp; bar chart</div>
+        <div class="grid-3" style="margin-bottom:40px">
+          <div class="stat-card"><span class="stat-deco-dot" style="background:var(--pink)"></span><div class="stat-number">$12.4M</div><div class="stat-label">Revenue</div></div>
+          <div class="stat-card"><span class="stat-deco-dot" style="background:var(--green)"></span><div class="stat-number">94%</div><div class="stat-label">Retention</div></div>
+          <div class="stat-card"><span class="stat-deco-dot" style="background:var(--blue)"></span><div class="stat-number">4.2&times;</div><div class="stat-label">LTV / CAC</div></div>
+        </div>
+        <div class="card">
+          <div class="bar-row">
+            <div class="bar-col"><div class="bar" data-h="34%" style="background:var(--pink)"></div><div class="bar-lbl">FY22</div></div>
+            <div class="bar-col"><div class="bar" data-h="52%" style="background:var(--blue)"></div><div class="bar-lbl">FY23</div></div>
+            <div class="bar-col"><div class="bar" data-h="74%" style="background:var(--green)"></div><div class="bar-lbl">FY24</div></div>
+            <div class="bar-col"><div class="bar" data-h="100%" style="background:var(--yellow)"></div><div class="bar-lbl">FY25</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Numbered list, avatars &amp; decorative units</div>
+        <div class="grid-2">
+          <div class="card">
+            <ul class="num-list">
+              <li><span class="list-number">01</span><div class="body" style="font-size:15px">Every region carries a 4px black border.</div></li>
+              <li><span class="list-number">02</span><div class="body" style="font-size:15px">Every elevated element an 8px hard shadow.</div></li>
+              <li><span class="list-number">03</span><div class="body" style="font-size:15px">Every corner square, every accent pastel.</div></li>
+            </ul>
+          </div>
+          <div class="card" style="display:flex;flex-direction:column;gap:20px;align-items:center;justify-content:center">
+            <div class="pill-row" style="justify-content:center">
+              <div class="avatar-square" style="background:var(--pink)">AB</div>
+              <div class="avatar-square" style="background:var(--blue)">CD</div>
+              <div class="avatar-square" style="background:var(--green)">EF</div>
+            </div>
+            <div class="pill-row" style="justify-content:center;gap:20px">
+              <div class="stripe-block" style="width:120px;height:48px"></div>
+              <div class="star" style="position:static;transform:rotate(-8deg)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section class="bg-yellow" id="layout">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-pill">05 — Layout</span>
+        <h2 class="h-lg">Cards On Grounds On Grounds</h2>
+        <p class="body">The primary pattern: a colored ground, a white 4px-bordered card with 8px shadow, holding smaller 3px-bordered chrome. Each nesting level carries its own border weight — that packed, nested structure is the dense feel.</p>
+      </div>
+      <table class="spec-table">
+        <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td class="tok">slide-pad</td><td class="tok">60px</td><td>Default edge-to-content padding</td></tr>
+          <tr><td class="tok">border primary / thin</td><td class="tok">4px / 3px</td><td>Primary card vs secondary chrome</td></tr>
+          <tr><td class="tok">shadow default / small</td><td class="tok">8px / 4px</td><td>Coupled to border weight</td></tr>
+          <tr><td class="tok">gap-lg / md / sm</td><td class="tok">48 / 32 / 24px</td><td>Section, card, intra gaps</td></tr>
+          <tr><td class="tok">tilt</td><td class="tok">±2° to ±12°</td><td>Intentional grid disruption</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH ============ -->
+  <section class="bg-pink" id="depth">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-pill lp-cream">06 — Depth &amp; Shape</span>
+        <h2 class="h-lg">Hard Offset, Zero Blur</h2>
+        <p class="body">Depth is a solid black offset shadow at 4px and 8px — always bottom-right, never blurred. The close-frame is the one colored shadow: 12px yellow. Square corners everywhere except the single stat-deco dot.</p>
+      </div>
+      <div class="shadow-grid">
+        <div class="shadow-demo sd-1">4px · chrome</div>
+        <div class="shadow-demo sd-2">8px · cards</div>
+        <div class="shadow-demo sd-4">6px · hover</div>
+        <div class="shadow-demo sd-3">12px yellow · close</div>
+      </div>
+      <div class="comp-h">Tilt as depth &mdash; the playful signature</div>
+      <div class="tilt-row">
+        <div class="tilt-demo" style="transform:rotate(-2deg)">−2°</div>
+        <div class="tilt-demo" style="transform:rotate(2deg);background:var(--blue)">+2°</div>
+        <div class="tilt-demo" style="transform:rotate(-8deg);background:var(--green)">−8°</div>
+        <div class="tilt-demo" style="transform:rotate(12deg);background:var(--yellow)">+12°</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section class="bg-cream" id="dodont">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-pill lp-blue">07 — Do &amp; Don't</span>
+        <h2 class="h-lg">Keep It Chunky</h2>
+      </div>
+      <div class="dodont">
+        <div class="card do-card">
+          <h3 class="h-md" style="margin-bottom:18px">Do</h3>
+          <ul class="dd-list">
+            <li>Pair every 4px border with an 8px shadow, every 3px with a 4px shadow.</li>
+            <li>Cycle slide grounds through the five pastels for rhythm.</li>
+            <li>Set Inter display uppercase, weight 800+, negative tracking.</li>
+            <li>Use the label-pill as the universal section eyebrow.</li>
+            <li>Tilt decorations ±2° to ±12°, and add a decorative unit to every surface.</li>
+          </ul>
+        </div>
+        <div class="card dont-card">
+          <h3 class="h-md" style="margin-bottom:18px">Don't</h3>
+          <ul class="dd-list">
+            <li>Round any corner (except the stat-deco dot) or blur any shadow.</li>
+            <li>Use colored borders — black only, except the white close-frame.</li>
+            <li>Set Inter display in sentence case or without negative tracking.</li>
+            <li>Introduce a sixth pastel, or omit the label-pill eyebrow.</li>
+            <li>Keep everything perfectly aligned — the tilt is the energy.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section class="bg-blue" id="cjk">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label-pill lp-pink">08 — 中文 / CJK</span>
+        <h2 class="h-lg">Structural, Not Typographic</h2>
+        <p class="body">The system is 80% structural, 20% typographic — so CJK survives. Strategy A: one family, 思源黑体 Noto Sans SC, with built-in Latin coverage. Hierarchy comes from weight (900 display / 600 label / 400 body), since the uppercase + negative-tracking signal disappears in CJK.</p>
+      </div>
+      <div class="cjk-specimen">
+        <div class="cjk-display">块框设计系统</div>
+        <div class="cjk-body">4px 黑边、8px 硬投影、五色糖果底色逐屏循环 —— 这些结构性元素承担了野兽派的全部识别度，与字母是否大写无关。思源黑体 900 在同样的大尺寸下，配合黑边与硬投影，依然读作野兽派。盘古之白：在中文与 Latin 之间留一个空格，如 BlockFrame 设计系统、2026 年。</div>
+        <div class="cjk-label">思源黑体 Noto Sans SC · 900 / 600 / 400</div>
+      </div>
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Latin (default)</th><th>Chinese counterpart</th></tr></thead>
+        <tbody>
+          <tr><td class="tok">Display / quote / stat</td><td>Inter 800–900 UPPER</td><td>思源黑体 900（不转大写）</td></tr>
+          <tr><td class="tok">Card title / body</td><td>Inter 700 / 500</td><td>思源黑体 700 / 400</td></tr>
+          <tr><td class="tok">Label / counter</td><td>Space Grotesk 600 UPPER</td><td>思源黑体 600（0 字距）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close bg-black" id="close">
+    <div class="star" style="top:16%;left:12%;transform:rotate(-14deg)"></div>
+    <div class="deco-rect" style="bottom:16%;right:12%;width:90px;height:90px;background:var(--blue);transform:rotate(9deg);box-shadow:6px 6px 0 var(--white)"></div>
+    <div class="close-frame">
+      <span class="label-pill lp-yellow">End of Deck</span>
+      <h2 class="close-title" style="margin-top:18px">Block<br>Frame</h2>
+      <p class="close-sub">One of 34 systems in Beautiful HTML Templates. Bold, joyful, slightly chaotic, never timid.</p>
+      <div class="close-links">
+        <a href="index.html">&larr; All Systems</a>
+        <a href="../templates/block-frame/template.html">Open Live Deck</a>
+        <a href="../templates/block-frame/design.md">design.md</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var counter = document.getElementById('counter');
+      var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+      var total = ids.length;
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+        for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+        if (scrolled > 0.99) idx = total - 1;
+        counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+      var bars = Array.prototype.slice.call(document.querySelectorAll('.bar[data-h]'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.style.height = e.target.getAttribute('data-h'); io.unobserve(e.target); } }); }, { threshold: 0.4 });
+        bars.forEach(function (b) { io.observe(b); });
+      } else { bars.forEach(function (b) { b.style.height = b.getAttribute('data-h'); }); }
+    })();
+  </script>
+</body>
+</html>

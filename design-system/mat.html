@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mat — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's three faces: Bricolage Grotesque (display) + DM Sans (body) + DM Mono (labels) -->
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- CJK pairing for §08 (Mincho warmth matches the wood-glow register) -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #232E26; --bg-dark-alt: #2E3D30; --bg-cream: #EDE6D0; --bg-cream-alt: #E4DAC4;
+      --ink-cream: #F0E8D2; --ink-dark: #1E2820; --accent: #C07030; --wood: #7A4E24;
+      --f-disp: 'Bricolage Grotesque', 'Noto Serif SC', sans-serif;
+      --f-body: 'DM Sans', 'Noto Serif SC', sans-serif;
+      --f-mono: 'DM Mono', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg-dark); color: var(--ink-cream); font-family: var(--f-body); -webkit-font-smoothing: antialiased; }
+
+    /* ===== Persistent chrome ===== */
+    .progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--accent); z-index: 300; }
+    .back-link { position: fixed; top: 22px; left: 28px; z-index: 200; text-decoration: none; color: var(--accent);
+      font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+    .back-link:hover { color: var(--ink-cream); }
+    .counter { position: fixed; bottom: 22px; right: 28px; z-index: 200;
+      font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(240,232,210,0.4); }
+
+    /* ===== Surfaces ===== */
+    section, header, footer { position: relative; overflow: hidden; padding: clamp(56px,7vh,100px) clamp(40px,5.5vw,110px); }
+    .s-dark { background: var(--bg-dark); color: var(--ink-cream); --fg2: rgba(240,232,210,0.58); --fg3: rgba(240,232,210,0.3); --bd: rgba(240,232,210,0.12); }
+    .s-cream { background: var(--bg-cream); color: var(--ink-dark); --fg2: rgba(30,40,32,0.6); --fg3: rgba(30,40,32,0.3); --bd: rgba(30,40,32,0.14); }
+    /* wood-brown atmospheric glow on dark slides */
+    .s-dark::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(ellipse 60% 75% at 80% 88%, rgba(122,78,36,0.34), rgba(80,50,20,0.16) 42%, transparent 72%); }
+    .wrap { max-width: 1180px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+
+    /* ===== Type (display always mixed case) ===== */
+    .kicker { font-family: var(--f-mono); font-size: clamp(11px,0.85vw,14px); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+    .rule { width: 32px; height: 1px; background: var(--accent); margin: 16px 0; }
+    .display { font-family: var(--f-disp); font-weight: 800; font-size: clamp(56px,12vw,180px); line-height: 0.88; letter-spacing: -0.03em; }
+    .h1 { font-family: var(--f-disp); font-weight: 800; font-size: clamp(40px,7vw,110px); line-height: 0.92; letter-spacing: -0.025em; }
+    .h2 { font-family: var(--f-disp); font-weight: 700; font-size: clamp(28px,4vw,64px); line-height: 1; letter-spacing: -0.02em; }
+    .h3 { font-family: var(--f-disp); font-weight: 600; font-size: clamp(19px,2.4vw,38px); line-height: 1.1; letter-spacing: -0.01em; }
+    .lead { font-family: var(--f-body); font-weight: 400; font-size: clamp(16px,1.5vw,23px); line-height: 1.55; color: var(--fg2); }
+    .body { font-family: var(--f-body); font-weight: 400; font-size: clamp(14px,1.05vw,17px); line-height: 1.65; color: var(--fg2); }
+    .stat-value { font-family: var(--f-disp); font-weight: 800; font-size: clamp(40px,5.5vw,96px); line-height: 1; letter-spacing: -0.025em; color: var(--ink-cream); }
+    .s-cream .stat-value { color: var(--ink-dark); }
+    .stat-value em { color: var(--accent); font-style: normal; }
+    .mono-label { font-family: var(--f-mono); font-size: clamp(11px,0.8vw,13px); letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg3); }
+
+    .chrome-band { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--bd); padding-bottom: 12px; margin-bottom: clamp(28px,4vh,48px); }
+    .foot-band { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--bd); padding-top: 12px; margin-top: clamp(32px,4.5vh,56px); }
+    .sec-head { margin-bottom: clamp(28px,4vh,48px); }
+    .sec-head .lead { max-width: 60ch; margin-top: 16px; }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+    .hero .display { margin: 18px 0 8px; }
+    .hero-lead { font-family: var(--f-body); font-weight: 400; font-size: clamp(16px,1.6vw,24px); line-height: 1.55; color: var(--fg2); max-width: 50ch; margin-top: 20px; }
+    .toc { margin-top: clamp(36px,5vh,60px); display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0 64px; max-width: 800px; }
+    .toc a { display: grid; grid-template-columns: 44px 1fr; gap: 18px; align-items: baseline; text-decoration: none; padding: 14px 0; border-top: 1px solid var(--bd); }
+    .toc .t-num { font-family: var(--f-mono); font-size: 13px; color: var(--accent); }
+    .toc .t-title { font-family: var(--f-disp); font-weight: 600; font-size: clamp(17px,1.8vw,26px); color: var(--ink-cream); }
+    .toc a:hover .t-title { color: var(--accent); }
+
+    /* ===== components ===== */
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,4vw,56px); }
+    .info-card { background: var(--bg-cream); color: var(--ink-dark); padding: clamp(24px,3vh,36px) clamp(28px,3vw,40px); max-width: 32vw; }
+    .info-card .h3 { color: var(--ink-dark); }
+    .info-card .body { color: rgba(30,40,32,0.6); }
+    .stat-cell { border-right: 1px solid var(--bd); padding: 8px 32px 8px 0; }
+    .stat-cell:last-child { border-right: none; }
+    .stat-cell .sc-label { font-family: var(--f-body); font-size: clamp(13px,1vw,16px); color: var(--fg2); margin-top: 10px; }
+    .em-list { list-style: none; }
+    .em-list li { font-family: var(--f-body); font-size: clamp(14px,1.1vw,17px); line-height: 1.6; color: var(--fg2); display: grid; grid-template-columns: 1.4em 1fr; margin-bottom: 12px; }
+    .em-list li::before { content: "—"; font-family: var(--f-mono); color: var(--accent); }
+
+    /* ===== §02 swatches ===== */
+    .sw-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; border: 1px solid var(--bd); }
+    .sw { min-height: 130px; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; border: 1px solid var(--bd); }
+    .sw .sw-name { font-family: var(--f-disp); font-weight: 700; font-size: 18px; }
+    .sw .sw-hex { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.06em; margin-top: 4px; opacity: 0.75; }
+
+    /* ===== §03 typography ===== */
+    .scale-stack { display: flex; flex-direction: column; }
+    .scale-row { display: grid; grid-template-columns: 220px 1fr; gap: 28px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--bd); }
+    .scale-row:last-child { border-bottom: none; }
+    .sm { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg3); }
+    .sm b { display: block; color: var(--fg2); margin-bottom: 4px; }
+
+    /* ===== §04 ===== */
+    .comp { margin-bottom: 42px; }
+    .comp-h { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
+    .quote-mark { font-family: var(--f-disp); font-weight: 800; font-size: clamp(60px,8vw,140px); line-height: 0.5; color: var(--accent); }
+    .quote-text { font-family: var(--f-disp); font-weight: 600; font-size: clamp(24px,3.2vw,48px); line-height: 1.2; letter-spacing: -0.02em; }
+    .bar-chart { display: flex; align-items: flex-end; gap: clamp(16px,3vw,40px); height: 190px; border-bottom: 1px solid var(--bd); }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 8px; }
+    .bar { width: 100%; background: rgba(240,232,210,0.3); height: 0; transition: height 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .bar.accent { background: var(--accent); }
+    .bar-lbl { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg3); }
+    .img-ph { background: rgba(240,232,210,0.06); border: 1px solid var(--bd); min-height: 26vh; display: flex; align-items: center; justify-content: center; }
+    .img-ph span { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg3); }
+
+    /* ===== §07 ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .dd-col { padding: clamp(24px,3vw,40px); }
+    .dd-col.right { border-left: 1px solid var(--bd); }
+    .dd-list { list-style: none; margin-top: 14px; }
+    .dd-list li { font-family: var(--f-body); font-size: clamp(14px,1.1vw,16px); line-height: 1.55; color: var(--fg2); display: grid; grid-template-columns: 1.4em 1fr; margin-bottom: 12px; }
+    .dd-list li::before { font-family: var(--f-mono); }
+    .do .dd-list li::before { content: "—"; color: var(--accent); }
+    .dont .dd-list li::before { content: "×"; color: var(--fg3); }
+
+    /* ===== §08 cjk ===== */
+    .cjk-display { font-family: 'Noto Serif SC', var(--f-disp); font-weight: 700; font-size: clamp(40px,6vw,96px); line-height: 1.15; letter-spacing: 0; }
+    .cjk-body { font-family: 'Noto Serif SC', var(--f-body); font-weight: 400; font-size: clamp(15px,1.3vw,18px); line-height: 1.85; color: var(--fg2); margin-top: 16px; }
+    .cjk-label { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-top: 16px; }
+
+    /* ===== close ===== */
+    .close { min-height: 84vh; display: flex; flex-direction: column; justify-content: center; }
+    .close-links { margin-top: 30px; display: flex; gap: 32px; flex-wrap: wrap; }
+    .close-links a { text-decoration: none; font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); border-bottom: 1px solid var(--accent); padding-bottom: 5px; }
+    .close-links a:hover { color: var(--ink-cream); border-color: var(--ink-cream); }
+
+    @media (max-width: 920px) {
+      .grid-3, .grid-4, .grid-2, .sw-grid, .dodont, .toc { grid-template-columns: 1fr; }
+      .info-card { max-width: none; }
+      .dd-col.right { border-left: none; border-top: 1px solid var(--bd); }
+      .scale-row { grid-template-columns: 1fr; gap: 8px; }
+    }
+    @media (max-width: 560px) { .grid-4, .sw-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <a class="back-link" href="index.html">&larr; Index</a>
+  <div class="counter" id="counter">01 / 10</div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero s-dark" id="top">
+    <div class="wrap">
+      <span class="kicker">Design System Specification</span>
+      <div class="rule"></div>
+      <h1 class="display">Mat</h1>
+      <p class="hero-lead">A warm, material-tactile system &mdash; deep forest green warmed by a wood-brown glow from the bottom-right, cream type floating on the field, and a single burnt-orange accent. Industrial-design portfolio meets boutique product launch.</p>
+      <nav class="toc">
+        <a href="#overview"><span class="t-num">01</span><span class="t-title">Overview</span></a>
+        <a href="#colours"><span class="t-num">02</span><span class="t-title">Colours</span></a>
+        <a href="#typography"><span class="t-num">03</span><span class="t-title">Typography</span></a>
+        <a href="#components"><span class="t-num">04</span><span class="t-title">Components</span></a>
+        <a href="#layout"><span class="t-num">05</span><span class="t-title">Layout</span></a>
+        <a href="#depth"><span class="t-num">06</span><span class="t-title">Depth &amp; Shape</span></a>
+        <a href="#dodont"><span class="t-num">07</span><span class="t-title">Do &amp; Don't</span></a>
+        <a href="#cjk"><span class="t-num">08</span><span class="t-title">中文 / CJK</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section class="s-dark" id="overview">
+    <div class="wrap">
+      <div class="chrome-band"><span class="mono-label" style="color:var(--accent)">01 — Overview</span><span class="mono-label">Mat / Material-tactile</span></div>
+      <div class="sec-head">
+        <span class="kicker">The Premise</span>
+        <div class="rule"></div>
+        <h2 class="h2">A workbench in afternoon light</h2>
+        <p class="lead">The atmosphere does the heavy lifting &mdash; before any content lands, the slide already feels like a workbench warmed by a low wood-brown glow. Cream type floats directly on the green field; no cards, no panels, no frames. The single break is the cream info-card.</p>
+      </div>
+      <div class="grid-2" style="align-items:start">
+        <div class="grid-3" style="grid-column:1/-1;display:grid">
+          <div class="stat-cell"><div class="stat-value" style="font-size:clamp(32px,4vw,56px)">Med</div><div class="sc-label">Formality</div></div>
+          <div class="stat-cell"><div class="stat-value" style="font-size:clamp(32px,4vw,56px)">Med</div><div class="sc-label">Density</div></div>
+          <div class="stat-cell"><div class="stat-value" style="font-size:clamp(32px,4vw,56px)">Mixed</div><div class="sc-label">Scheme &mdash; <em>09</em> slides</div></div>
+        </div>
+      </div>
+      <div class="foot-band"><span class="mono-label">Mid-century · tactile · considered</span><span class="mono-label">Never tech demo</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section class="s-dark" id="colours">
+    <div class="wrap">
+      <div class="chrome-band"><span class="mono-label" style="color:var(--accent)">02 — Colours</span><span class="mono-label">Sage · cream · burnt orange</span></div>
+      <div class="sec-head">
+        <span class="kicker">The Palette</span>
+        <div class="rule"></div>
+        <h2 class="h2">Narrow, warm, intentional</h2>
+        <p class="lead">Dark forest green dominates; warm cream is the type and the secondary surface; a single burnt orange is the accent &mdash; inline only, never a background, never a large headline. A wood tone glows beneath it all.</p>
+      </div>
+      <div class="sw-grid">
+        <div class="sw" style="background:#232E26;color:#F0E8D2"><div class="sw-name">Forest Green</div><div class="sw-hex">#232E26</div></div>
+        <div class="sw" style="background:#2E3D30;color:#F0E8D2"><div class="sw-name">Green Alt</div><div class="sw-hex">#2E3D30</div></div>
+        <div class="sw" style="background:#EDE6D0;color:#1E2820"><div class="sw-name">Cream</div><div class="sw-hex">#EDE6D0</div></div>
+        <div class="sw" style="background:#F0E8D2;color:#1E2820"><div class="sw-name">Cream Ink</div><div class="sw-hex">#F0E8D2</div></div>
+        <div class="sw" style="background:#C07030;color:#1E2820"><div class="sw-name">Burnt Orange</div><div class="sw-hex">#C07030</div></div>
+        <div class="sw" style="background:#7A4E24;color:#F0E8D2"><div class="sw-name">Wood Glow</div><div class="sw-hex">#7A4E24</div></div>
+        <div class="sw" style="background:#1E2820;color:#F0E8D2"><div class="sw-name">Dark Ink</div><div class="sw-hex">#1E2820</div></div>
+        <div class="sw" style="background:#E4DAC4;color:#1E2820"><div class="sw-name">Cream Alt</div><div class="sw-hex">#E4DAC4</div></div>
+      </div>
+      <div class="foot-band"><span class="mono-label">Orange = punctuation, never surface</span><span class="mono-label">If two oranges touch, one is wrong</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section class="s-dark" id="typography">
+    <div class="wrap">
+      <div class="chrome-band"><span class="mono-label" style="color:var(--accent)">03 — Typography</span><span class="mono-label">Bricolage · DM Sans · DM Mono</span></div>
+      <div class="sec-head">
+        <span class="kicker">Always Mixed Case</span>
+        <div class="rule"></div>
+        <h2 class="h2">Heavy display, light body</h2>
+        <p class="lead">Bricolage Grotesque at 700–800 is the display voice &mdash; <strong style="color:var(--ink-cream);font-weight:500">always mixed case, never uppercase</strong>. DM Sans 400 is the body; DM Mono carries every label and the uppercase work. The wide weight gap is deliberate.</p>
+      </div>
+      <div class="scale-stack">
+        <div class="scale-row"><div class="sm"><b>display · Bricolage 800</b>12vw · −0.03em</div><div><span class="display" style="font-size:clamp(40px,5vw,72px)">Mat</span></div></div>
+        <div class="scale-row"><div class="sm"><b>h1 · Bricolage 800</b>7vw</div><div><span class="h1" style="font-size:clamp(30px,4vw,56px)">Chapter title</span></div></div>
+        <div class="scale-row"><div class="sm"><b>stat-value · Bricolage 800</b>5.5vw</div><div><span class="stat-value" style="font-size:clamp(36px,4.5vw,72px)">4.7<em>k</em></span></div></div>
+        <div class="scale-row"><div class="sm"><b>h2 · Bricolage 700</b>4vw</div><div><span class="h2">Primary headline</span></div></div>
+        <div class="scale-row"><div class="sm"><b>lead · DM Sans 400</b>1.5vw</div><div><span class="lead" style="margin:0">A lead paragraph in DM Sans.</span></div></div>
+        <div class="scale-row"><div class="sm"><b>label · DM Mono UPPER</b>0.7vw · 0.12em</div><div><span class="kicker">Mono Label &amp; Kicker</span></div></div>
+      </div>
+      <div class="foot-band"><span class="mono-label">Italic never used · &lt;em&gt; = orange inline</span><span class="mono-label">Em-dash bullets in orange mono</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section class="s-dark" id="components">
+    <div class="wrap">
+      <div class="chrome-band"><span class="mono-label" style="color:var(--accent)">04 — Components</span><span class="mono-label">Rendered with the actual CSS</span></div>
+      <div class="sec-head">
+        <span class="kicker">The Material Kit</span>
+        <div class="rule"></div>
+        <h2 class="h2">Cream paper on a green field</h2>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Info-card — the signature material-contrast inset</div>
+        <div class="grid-2" style="align-items:center">
+          <div>
+            <ul class="em-list">
+              <li>Cream type floats directly on the green field.</li>
+              <li>The info-card punctures it with a piece of warm paper.</li>
+              <li>No border, no shadow &mdash; the tonal jump is the edge.</li>
+            </ul>
+          </div>
+          <div class="info-card" style="max-width:none">
+            <div class="h3">Material contrast</div>
+            <p class="body" style="margin-top:10px">A cream inset box on the dark field. It carries a heading and a body block — the system's one card move, defined by colour, not chrome.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Stat cells — Bricolage value + orange inline em</div>
+        <div class="grid-3">
+          <div class="stat-cell"><div class="stat-value" style="font-size:clamp(34px,4vw,64px)">$12.4<em>M</em></div><div class="sc-label">Annual recurring revenue</div></div>
+          <div class="stat-cell"><div class="stat-value" style="font-size:clamp(34px,4vw,64px)">94<em>%</em></div><div class="sc-label">Gross retention</div></div>
+          <div class="stat-cell"><div class="stat-value" style="font-size:clamp(34px,4vw,64px)">4.2<em>×</em></div><div class="sc-label">LTV / CAC ratio</div></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Bar chart (one orange highlight) &amp; quote</div>
+        <div class="grid-2" style="align-items:center">
+          <div class="bar-chart">
+            <div class="bar-col"><div class="bar" data-h="42%"></div><div class="bar-lbl">FY22</div></div>
+            <div class="bar-col"><div class="bar" data-h="58%"></div><div class="bar-lbl">FY23</div></div>
+            <div class="bar-col"><div class="bar" data-h="76%"></div><div class="bar-lbl">FY24</div></div>
+            <div class="bar-col"><div class="bar accent" data-h="100%"></div><div class="bar-lbl">FY25</div></div>
+          </div>
+          <div>
+            <span class="quote-mark">&ldquo;</span>
+            <p class="quote-text">Considered, analog, warm &mdash; never digital-cool.</p>
+            <p class="mono-label" style="margin-top:14px">— The Mat thesis</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT (cream tonal break) ============ -->
+  <section class="s-cream" id="layout">
+    <div class="wrap">
+      <div class="chrome-band"><span class="mono-label" style="color:var(--accent)">05 — Layout</span><span class="mono-label">Cream tonal break</span></div>
+      <div class="sec-head">
+        <span class="kicker">Breathing Room</span>
+        <div class="rule"></div>
+        <h2 class="h2">Medium-sparse, by design</h2>
+        <p class="lead">One main typographic moment, one supporting block, generous 5.5vw side padding. The green field needs negative space to do its atmospheric work. This slide is the deck's one <strong style="color:var(--ink-dark);font-weight:500">cream tonal break</strong> &mdash; an inversion, not the default.</p>
+      </div>
+      <div class="grid-3">
+        <div style="border-top:1px solid var(--bd);padding-top:14px"><div class="h3">Padding</div><p class="body" style="margin-top:8px">5.5vw / 5.5vh — content sits in the middle 89%.</p></div>
+        <div style="border-top:1px solid var(--bd);padding-top:14px"><div class="h3">Chrome band</div><p class="body" style="margin-top:8px">Mono label pair on a 1px hairline.</p></div>
+        <div style="border-top:1px solid var(--bd);padding-top:14px"><div class="h3">Density</div><p class="body" style="margin-top:8px">One headline + one paragraph is right.</p></div>
+      </div>
+      <div class="foot-band"><span class="mono-label">Light slide = once per deck</span><span class="mono-label">Dark is the default</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH ============ -->
+  <section class="s-dark" id="depth">
+    <div class="wrap">
+      <div class="chrome-band"><span class="mono-label" style="color:var(--accent)">06 — Depth &amp; Shape</span><span class="mono-label">Atmospheric, not stacked</span></div>
+      <div class="sec-head">
+        <span class="kicker">The Glow</span>
+        <div class="rule"></div>
+        <h2 class="h2">Depth from light, not shadow</h2>
+        <p class="lead">The only depth is the wood-brown radial glow anchored to the bottom-right corner of every dark slide &mdash; you can see it warming this corner right now. No drop shadows, no rounded corners, no elevation. Region separation is 1px hairlines only.</p>
+      </div>
+      <div class="grid-3">
+        <div style="border-top:1px solid var(--bd);padding-top:14px"><div class="h3">Wood glow</div><p class="body" style="margin-top:8px">Radial ::before, bottom-right, every dark slide.</p></div>
+        <div style="border-top:1px solid var(--bd);padding-top:14px"><div class="h3">1px hairline</div><p class="body" style="margin-top:8px">The only divider language.</p></div>
+        <div style="border-top:1px solid var(--bd);padding-top:14px"><div class="h3">0px radius</div><p class="body" style="margin-top:8px">Square everywhere but nav dots.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section class="s-dark" id="dodont">
+    <div class="wrap">
+      <div class="chrome-band"><span class="mono-label" style="color:var(--accent)">07 — Do &amp; Don't</span><span class="mono-label">Keep it warm &amp; slow</span></div>
+      <div class="sec-head">
+        <span class="kicker">The Discipline</span>
+        <div class="rule"></div>
+        <h2 class="h2">Keep it warm &amp; slow</h2>
+      </div>
+      <div class="dodont">
+        <div class="dd-col do">
+          <div class="h3" style="margin-bottom:8px">Do</div>
+          <ul class="dd-list">
+            <li>Keep the wood-brown glow on every dark slide — it's part of the surface.</li>
+            <li>Set Bricolage display in mixed case; reserve uppercase for mono labels.</li>
+            <li>Use burnt orange only inline — kicker, em-dash, &lt;em&gt;, one chart bar.</li>
+            <li>Use the cream info-card to inset warm paper on the green field.</li>
+            <li>Keep slides medium-sparse with generous side padding.</li>
+          </ul>
+        </div>
+        <div class="dd-col dont right">
+          <div class="h3" style="margin-bottom:8px">Don't</div>
+          <ul class="dd-list">
+            <li>Uppercase any Bricolage display, or add a second accent colour.</li>
+            <li>Use orange as a background or a large headline colour.</li>
+            <li>Add drop shadows, rounded corners, or borders on the info-card.</li>
+            <li>Use a serif face, or italic letterforms.</li>
+            <li>Crowd the slide with three columns of bullets.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section class="s-dark" id="cjk">
+    <div class="wrap">
+      <div class="chrome-band"><span class="mono-label" style="color:var(--accent)">08 — 中文 / CJK</span><span class="mono-label">Mincho warmth</span></div>
+      <div class="sec-head">
+        <span class="kicker">Warm Material, In Chinese</span>
+        <div class="rule"></div>
+        <h2 class="h2">All-Mincho, one accent</h2>
+        <p class="lead">Mat's identity is environmental, not face-specific. Switch the whole stack to <strong style="color:var(--ink-cream);font-weight:500">思源宋体 Noto Serif SC</strong> &mdash; its warm Mincho letterforms match the wood-glow / forest-green register better than a geometric sans. The glow, orange accent, and info-card all transfer unchanged.</p>
+      </div>
+      <div class="grid-2" style="align-items:start">
+        <div>
+          <div class="cjk-display">温润的材质</div>
+          <div class="cjk-body">深森林绿环境，右下角一抹木棕暖光，奶油色文字直接浮于绿场之上，一抹烧橙作为唯一点缀。思源宋体承载标题，强调改为纯色橙（不用斜体），破折号项目符号也用橙色。盘古之白：使用 Claude、2026 年。</div>
+          <div class="cjk-label">思源宋体 Noto Serif SC · 700 / 400</div>
+        </div>
+        <div class="info-card" style="max-width:none">
+          <div class="h3">Pairing</div>
+          <p class="body" style="margin-top:10px;line-height:2">Display → 思源宋体 700<br>Body → 思源宋体 400<br>Label → 思源宋体 500 · 0.05em<br>&lt;em&gt; → 烧橙（纯色，无斜体）</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close s-dark" id="close">
+    <div class="wrap">
+      <span class="kicker">End of Deck</span>
+      <div class="rule"></div>
+      <h2 class="h1">Mat.</h2>
+      <p class="lead" style="margin-top:18px;max-width:46ch">One of 34 systems in Beautiful HTML Templates. Warm, tactile, intentional &mdash; an analog feel in a digital medium.</p>
+      <div class="close-links">
+        <a href="index.html">&larr; All Systems</a>
+        <a href="../templates/mat/template.html">Open Live Deck</a>
+        <a href="../templates/mat/design.md">design.md</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var counter = document.getElementById('counter');
+      var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+      var total = ids.length;
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+        for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+        if (scrolled > 0.99) idx = total - 1;
+        counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+      var bars = Array.prototype.slice.call(document.querySelectorAll('.bar[data-h]'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.style.height = e.target.getAttribute('data-h'); io.unobserve(e.target); } }); }, { threshold: 0.4 });
+        bars.forEach(function (b) { io.observe(b); });
+      } else { bars.forEach(function (b) { b.style.height = b.getAttribute('data-h'); }); }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monochrome (Ivory Ledger) — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Noto+Serif+SC:wght@300;400;500&family=Noto+Sans+SC:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --c-bg: #fafadf;        /* cream paper — every surface */
+      --c-bg-warm: #f5f0e4;   /* warm cream variant */
+      --c-bg-alt: #f0f0d4;    /* deeper cream inset */
+      --c-ink: #1a1a16;       /* black ink */
+      --c-g2: #5e5e54;        /* secondary graphite */
+      --c-g3: #8a8a80;        /* tertiary graphite */
+      --f-sans: 'Jost', 'Noto Sans SC', system-ui, sans-serif;
+      --f-serif: 'Lora', 'Noto Serif SC', Georgia, serif;
+      --f-mono: 'JetBrains Mono', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--c-bg); color: var(--c-ink); font-family: var(--f-sans); font-weight: 300; -webkit-font-smoothing: antialiased; }
+
+    /* chrome — 1px ink progress line, mono counter, mono back-link */
+    .progress { position: fixed; top: 0; left: 0; height: 1px; width: 0; background: var(--c-ink); z-index: 120; transition: width 0.12s linear; }
+    .counter { position: fixed; bottom: 20px; right: 28px; z-index: 120; font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.12em; color: rgba(26,26,22,0.3); }
+    .back-link { position: fixed; top: 22px; left: 28px; z-index: 120; font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-g2); text-decoration: none; border-bottom: 1px solid var(--c-ink); padding-bottom: 3px; }
+    .back-link:hover { color: var(--c-ink); }
+
+    .section { padding: 14vh 8vw; }
+    .section.warm { background: var(--c-bg-warm); }
+    .wrap { max-width: 1080px; margin: 0 auto; }
+
+    .kicker { font-family: var(--f-mono); font-size: 11px; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-g3); margin-bottom: 26px; }
+    .short-rule { width: 36px; height: 1px; background: var(--c-ink); margin: 26px 0; }
+    .sec-h { font-family: var(--f-sans); font-weight: 200; font-size: clamp(2.4rem, 5vw, 4.4rem); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 28px; }
+    .lead { font-family: var(--f-sans); font-weight: 300; font-size: clamp(1.1rem, 1.6vw, 1.45rem); line-height: 1.65; color: var(--c-g2); max-width: 640px; }
+    .lead em { font-family: var(--f-serif); font-style: italic; color: var(--c-ink); }
+    .body { font-weight: 300; font-size: clamp(0.95rem, 1.1vw, 1.05rem); line-height: 1.75; color: var(--c-g2); }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 12vh 8vw 10vh; }
+    .hero .display { font-family: var(--f-sans); font-weight: 200; font-size: clamp(3.4rem, 12vw, 11rem); line-height: 0.95; letter-spacing: -0.03em; }
+    .hero-lead { font-weight: 300; font-size: clamp(1.1rem, 1.7vw, 1.5rem); line-height: 1.6; color: var(--c-g2); max-width: 50%; }
+    .hero-lead em { font-family: var(--f-serif); font-style: italic; color: var(--c-ink); }
+    .meta-bar { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 6vh; padding-top: 2vh; border-top: 1px solid var(--c-ink); }
+    .meta-bar .label { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-g2); }
+    .contents { margin-top: 5vh; display: grid; grid-template-columns: repeat(4, auto); gap: 10px 40px; justify-content: start; }
+    .contents a { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-g2); text-decoration: none; padding: 6px 0; border-bottom: 1px solid rgba(26,26,22,0.15); transition: color 0.2s, border-color 0.2s; }
+    .contents a span { color: var(--c-g3); margin-right: 10px; }
+    .contents a:hover { color: var(--c-ink); border-color: var(--c-ink); }
+
+    /* META TILES — rule-top stat cards */
+    .meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 48px; }
+    .meta-cell { border-top: 1px solid var(--c-ink); padding: 22px 24px 22px 0; }
+    .meta-cell .mc-v { font-family: var(--f-sans); font-weight: 200; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1; letter-spacing: -0.02em; }
+    .meta-cell .mc-l { font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-g3); margin-top: 14px; }
+    .meta-cell .mc-s { font-weight: 300; font-size: 0.85rem; line-height: 1.5; color: var(--c-g2); margin-top: 10px; }
+
+    /* COLOURS — tonal ramp */
+    .ramp { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; margin-top: 44px; border: 1px solid var(--c-ink); }
+    .chip { aspect-ratio: 3 / 4; border-right: 1px solid var(--c-ink); padding: 16px 14px; display: flex; flex-direction: column; justify-content: flex-end; }
+    .chip:last-child { border-right: none; }
+    .chip .ch-hex { font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.06em; }
+    .chip .ch-name { font-family: var(--f-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; opacity: 0.7; }
+    .c-cream { background: #fafadf; color: var(--c-ink); }
+    .c-warm  { background: #f5f0e4; color: var(--c-ink); }
+    .c-alt   { background: #f0f0d4; color: var(--c-ink); }
+    .c-g3    { background: #8a8a80; color: #fff; }
+    .c-g2    { background: #5e5e54; color: #fff; }
+    .c-ink   { background: #1a1a16; color: var(--c-bg); }
+
+    /* TYPOGRAPHY */
+    .faces { margin-top: 40px; }
+    .face-row { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: baseline; padding: 30px 0; border-top: 1px solid var(--c-ink); }
+    .f-meta .fm-n { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-g3); margin-bottom: 10px; }
+    .f-meta .fm-d { font-weight: 300; font-size: 0.92rem; line-height: 1.6; color: var(--c-g2); }
+    .smp-jost-2 { font-family: var(--f-sans); font-weight: 200; font-size: clamp(2.4rem, 4.5vw, 3.6rem); line-height: 1; letter-spacing: -0.02em; }
+    .smp-jost-3 { font-family: var(--f-sans); font-weight: 300; font-size: clamp(1.3rem, 2.2vw, 1.8rem); line-height: 1.3; }
+    .smp-lora { font-family: var(--f-serif); font-style: italic; font-weight: 400; font-size: clamp(1.5rem, 2.6vw, 2.1rem); line-height: 1.3; }
+    .smp-mono { font-family: var(--f-mono); font-size: clamp(0.9rem, 1.4vw, 1.1rem); letter-spacing: 0.12em; text-transform: uppercase; }
+    .scale { margin-top: 8px; }
+    .scale-row { display: grid; grid-template-columns: 180px 1fr; gap: 32px; align-items: baseline; padding: 20px 0; border-top: 1px solid rgba(26,26,22,0.15); }
+    .scale-row:first-child { border-top: none; }
+    .scale-tok { font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.06em; color: var(--c-g3); text-transform: uppercase; }
+
+    /* COMPONENTS */
+    .comp { margin-bottom: 64px; }
+    .comp-h { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-g3); margin-bottom: 18px; }
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+    .stat-card { border-top: 1px solid var(--c-ink); padding: 26px 28px 0 0; }
+    .stat-v { font-family: var(--f-sans); font-weight: 200; font-size: clamp(2.6rem, 5vw, 4.4rem); line-height: 1; letter-spacing: -0.03em; }
+    .stat-l { font-weight: 300; font-size: 1rem; line-height: 1.5; margin-top: 14px; }
+    .stat-n { font-family: var(--f-mono); font-size: 0.78rem; letter-spacing: 0.05em; color: var(--c-g3); margin-top: 8px; }
+
+    .quote-demo { max-width: 760px; }
+    .quote-text { font-family: var(--f-serif); font-style: italic; font-weight: 400; font-size: clamp(1.5rem, 3vw, 2.4rem); line-height: 1.35; color: var(--c-ink); }
+    .quote-attr { font-family: var(--f-mono); font-size: 0.78rem; letter-spacing: 0.08em; color: var(--c-g3); margin-top: 28px; display: flex; flex-direction: column; gap: 4px; }
+
+    .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 18px; max-width: 620px; }
+    .bullet-list li { display: grid; grid-template-columns: 1.4em 1fr; gap: 0.6em; font-weight: 300; font-size: clamp(1rem, 1.4vw, 1.2rem); line-height: 1.5; }
+    .bullet-list li::before { content: "—"; color: var(--c-g3); font-family: var(--f-mono); }
+
+    .insights { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2vw; }
+    .insight-card { background: var(--c-bg-warm); border-radius: 16px; padding: 36px 30px; display: flex; flex-direction: column; gap: 16px; min-height: 280px; }
+    .section.warm .insight-card { background: var(--c-bg); }
+    .insight-title { font-family: var(--f-serif); font-weight: 400; font-size: clamp(1.6rem, 2.4vw, 2.1rem); line-height: 1.15; }
+    .insight-title em { font-style: italic; }
+    .insight-body { font-weight: 300; font-size: 0.95rem; line-height: 1.65; color: rgba(26,26,22,0.72); margin-top: auto; }
+
+    .bar-track { height: 200px; display: flex; align-items: flex-end; gap: 3vw; border-left: 1px solid var(--c-ink); padding-left: 1vw; max-width: 600px; }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 10px; height: 100%; }
+    .bar-fill { width: 100%; background: var(--c-g3); opacity: 0.5; }
+    .bar-fill.accent { background: var(--c-ink); opacity: 1; }
+    .bar-x { font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-g3); }
+    .bar-v { font-weight: 300; font-size: 0.9rem; color: var(--c-g2); }
+    .bar-v.hi { color: var(--c-ink); font-weight: 500; }
+
+    /* DEPTH */
+    .depth-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 40px; }
+    .depth-card { padding-top: 28px; border-top: 1px solid var(--c-ink); }
+    .depth-card .dc-demo { height: 80px; display: flex; align-items: center; }
+    .depth-card .dc-l { font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-g3); margin-top: 12px; }
+    .depth-card .dc-d { font-weight: 300; font-size: 0.88rem; line-height: 1.55; color: var(--c-g2); margin-top: 8px; }
+    .demo-hair { width: 100%; height: 1px; background: var(--c-ink); }
+    .demo-short { width: 36px; height: 1px; background: var(--c-ink); }
+
+    /* DO / DON'T */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 40px; }
+    .dd { padding: 0 40px; border-left: 1px solid var(--c-ink); }
+    .dd:first-child { padding-left: 0; border-left: none; }
+    .dd-h { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-ink); padding-bottom: 18px; border-bottom: 1px solid var(--c-ink); margin-bottom: 24px; }
+    .dd ul { list-style: none; }
+    .dd li { display: grid; grid-template-columns: 1.6em 1fr; gap: 0.4em; font-weight: 300; font-size: 0.98rem; line-height: 1.55; color: var(--c-g2); margin-bottom: 18px; }
+    .dd li::before { font-family: var(--f-mono); font-size: 0.85em; }
+    .dd.do li::before { content: "—"; color: var(--c-g3); }
+    .dd.dont li::before { content: "×"; color: var(--c-ink); }
+
+    /* CJK */
+    .cjk-spec { border-top: 1px solid var(--c-ink); padding-top: 34px; margin-bottom: 34px; }
+    .cjk-display { font-family: 'Noto Sans SC', sans-serif; font-weight: 700; font-size: clamp(2.4rem, 6vw, 4.4rem); line-height: 1.1; color: var(--c-ink); }
+    .cjk-quote { font-family: 'Noto Serif SC', serif; font-weight: 400; font-size: clamp(1.2rem, 1.8vw, 1.5rem); line-height: 1.9; color: var(--c-g2); max-width: 640px; margin-top: 22px; }
+    .cjk-tag { font-family: var(--f-mono); font-size: 0.78rem; letter-spacing: 0.08em; color: var(--c-g3); margin-top: 18px; }
+    .spec-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    .spec-table th, .spec-table td { border-top: 1px solid var(--c-ink); padding: 14px 16px 14px 0; text-align: left; font-weight: 300; font-size: 0.92rem; color: var(--c-g2); }
+    .spec-table th { font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-g3); }
+    .spec-table td.cn { font-family: 'Noto Sans SC', sans-serif; color: var(--c-ink); }
+
+    /* CLOSE */
+    .close { min-height: 72vh; display: flex; flex-direction: column; justify-content: center; padding: 12vh 8vw; }
+    .close .display { font-family: var(--f-sans); font-weight: 200; font-size: clamp(2.8rem, 8vw, 6rem); line-height: 1; letter-spacing: -0.03em; }
+    .close-links { display: flex; gap: 32px; margin-top: 5vh; }
+    .close-links a { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-g2); text-decoration: none; border-bottom: 1px solid var(--c-ink); padding-bottom: 4px; }
+    .close-links a:hover { color: var(--c-ink); }
+
+    @media (max-width: 880px) {
+      .section { padding: 10vh 7vw; }
+      .meta-grid, .ramp, .stat-grid, .insights, .depth-row, .contents { grid-template-columns: 1fr 1fr; }
+      .face-row, .scale-row, .dodont { grid-template-columns: 1fr; gap: 16px; }
+      .dd { padding: 0; border-left: none; } .dd.dont { border-top: 1px solid var(--c-ink); padding-top: 24px; margin-top: 8px; }
+      .hero-lead, .hero .display { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <a class="back-link" href="index.html">&#8592; Index</a>
+  <div class="counter" id="counter">01 / 09</div>
+
+  <!-- HERO -->
+  <header class="hero" id="top">
+    <div class="kicker">Design System Specification — Beautiful HTML Templates</div>
+    <h1 class="display">Monochrome</h1>
+    <div class="short-rule"></div>
+    <p class="hero-lead">Black ink on cream paper, and nothing else. A quietly typeset research monograph — <em>not</em> a presentation.</p>
+    <div class="meta-bar">
+      <span class="label">Ivory Ledger</span>
+      <span class="label">No Accent · Cream Only</span>
+    </div>
+    <nav class="contents">
+      <a href="#overview"><span>01</span>Overview</a>
+      <a href="#colours"><span>02</span>Colours</a>
+      <a href="#type"><span>03</span>Type</a>
+      <a href="#components"><span>04</span>Components</a>
+      <a href="#depth"><span>05</span>Depth</a>
+      <a href="#dodont"><span>06</span>Do / Don't</a>
+      <a href="#cjk"><span>07</span>中文 / CJK</a>
+      <a href="#end"><span>08</span>Close</a>
+    </nav>
+  </header>
+
+  <!-- 01 OVERVIEW -->
+  <section class="section" id="overview">
+    <div class="wrap">
+      <div class="kicker">01 — Overview</div>
+      <h2 class="sec-h">A Single Material</h2>
+      <p class="lead">Monochrome is a literary editorial system built on one constraint: <em>black ink on cream paper</em>. Eight tokens, but seven are tonal cream or graphite — there is no chromatic accent. The accent is simply darker ink. It reads as a carefully typeset monograph, where a single ultra-light Jost-200 headline can carry an otherwise nearly-empty page.</p>
+      <div class="meta-grid">
+        <div class="meta-cell"><div class="mc-v">High</div><div class="mc-l">Formality</div><div class="mc-s">Quiet, literary, intentional — research and monograph register.</div></div>
+        <div class="meta-cell"><div class="mc-v">Sparse</div><div class="mc-l">Density</div><div class="mc-s">Content sits in the middle 60–70%. Whitespace is the design.</div></div>
+        <div class="meta-cell"><div class="mc-v">Cream</div><div class="mc-l">Scheme</div><div class="mc-s">Never white, never dark. One warm off-yellow surface.</div></div>
+        <div class="meta-cell"><div class="mc-v">None</div><div class="mc-l">Accent</div><div class="mc-s">Zero chromatic colour. Emphasis is weight, size, and serif.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 COLOURS -->
+  <section class="section warm" id="colours">
+    <div class="wrap">
+      <div class="kicker">02 — Colours</div>
+      <h2 class="sec-h">Cream, Graphite, Ink</h2>
+      <p class="lead">The whole system in six tones — three near-identical creams, two graphites, and ink. <em>No red, blue, green, or yellow exists here.</em> When a region needs weight it gets more padding, not a colour.</p>
+      <div class="ramp">
+        <div class="chip c-cream"><div><div class="ch-hex">#FAFADF</div><div class="ch-name">Cream Paper</div></div></div>
+        <div class="chip c-warm"><div><div class="ch-hex">#F5F0E4</div><div class="ch-name">Warm Cream</div></div></div>
+        <div class="chip c-alt"><div><div class="ch-hex">#F0F0D4</div><div class="ch-name">Deep Cream</div></div></div>
+        <div class="chip c-g3"><div><div class="ch-hex">#8A8A80</div><div class="ch-name">Graphite 3</div></div></div>
+        <div class="chip c-g2"><div><div class="ch-hex">#5E5E54</div><div class="ch-name">Graphite 2</div></div></div>
+        <div class="chip c-ink"><div><div class="ch-hex">#1A1A16</div><div class="ch-name">Ink Black</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 TYPOGRAPHY -->
+  <section class="section" id="type">
+    <div class="wrap">
+      <div class="kicker">03 — Typography</div>
+      <h2 class="sec-h">Three Voices</h2>
+      <p class="lead">Jost carries every display, headline, and body — the contrast between <em>weight 200 and weight 300</em> is the system's primary rhythm. Lora italic appears in exactly two moments. JetBrains Mono handles every structural marker.</p>
+      <div class="faces">
+        <div class="face-row"><div class="smp-jost-2">Jost 200 · the airy display voice</div><div class="f-meta"><div class="fm-n">Jost · Display + Body</div><div class="fm-d">Geometric sans at weights 200 (display) / 300 (body) / 400 (sub). Calm at ultra-light; never heavier than 300 for headlines.</div></div></div>
+        <div class="face-row"><div class="smp-lora">The only typographic warmth.</div><div class="f-meta"><div class="fm-n">Lora · Italic Serif</div><div class="fm-d">Reserved for two moments only: pull-quote bodies and insight-card titles. Wherever it appears, it signals the human voice.</div></div></div>
+        <div class="face-row"><div class="smp-mono">Structural Marker</div><div class="f-meta"><div class="fm-n">JetBrains Mono · Chrome</div><div class="fm-d">Every label, sidebar tag, version number, axis, date, and bullet dash. Uppercase, tracked 0.12em or wider.</div></div></div>
+      </div>
+      <div class="kicker" style="margin-top:48px; margin-bottom:0;">Type Scale</div>
+      <div class="scale">
+        <div class="scale-row"><div class="scale-tok">display · Jost 200 · 8.5vw</div><div class="smp-jost-2" style="font-size:clamp(2.6rem,5vw,4rem)">Synthesis</div></div>
+        <div class="scale-row"><div class="scale-tok">h2 · Jost 300 · 3.2vw</div><div class="smp-jost-3">The first 48 hours determine everything</div></div>
+        <div class="scale-row"><div class="scale-tok">quote · Lora italic · 3.2vw</div><div class="smp-lora" style="font-size:clamp(1.3rem,2.2vw,1.8rem)">They leave because they don't know what to do next.</div></div>
+        <div class="scale-row"><div class="scale-tok">body · Jost 300 · 1.1vw</div><div class="body">Users who complete three core actions in their first two days retain 4× better.</div></div>
+        <div class="scale-row"><div class="scale-tok">label · Mono · 0.72vw · 0.12em</div><div class="smp-mono" style="font-size:0.8rem">Key Finding / 03</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 COMPONENTS -->
+  <section class="section warm" id="components">
+    <div class="wrap">
+      <div class="kicker">04 — Components</div>
+      <h2 class="sec-h">Live Components</h2>
+      <p class="lead">Every block below uses the template's <em>actual CSS</em> — rule-top stats, Lora pull-quotes, em-dash lists, cream-on-cream insight cards, hairline charts.</p>
+
+      <div class="comp" style="margin-top:48px">
+        <div class="comp-h">Rule-Top Stats</div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-v">24</div><div class="stat-l">Interviews synthesised</div><div class="stat-n">Round 3 · internal</div></div>
+          <div class="stat-card"><div class="stat-v">4×</div><div class="stat-l">90-day retention lift</div><div class="stat-n">Activated cohort</div></div>
+          <div class="stat-card"><div class="stat-v">48h</div><div class="stat-l">The decisive window</div><div class="stat-n">First-session data</div></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Pull-Quote · Lora Italic</div>
+        <div class="quote-demo">
+          <p class="quote-text">Users don't leave because they lose interest. They leave because they don't know what to do next.</p>
+          <div class="quote-attr"><span>Synthesis — Round 3</span><span>Research Team</span></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Em-Dash List</div>
+        <ul class="bullet-list">
+          <li>The dash marker is JetBrains Mono in muted graphite — never a dot, check, or numeral.</li>
+          <li>Inline emphasis switches to Lora italic, never a heavier weight.</li>
+          <li>Lists breathe: generous gaps, no ruled separators between items.</li>
+        </ul>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Insight Cards · cream-on-cream</div>
+        <div class="insights">
+          <div class="insight-card"><div class="insight-title">A quiet <em>onboarding</em></div><div class="insight-body">Cards are defined by 16px radius and a Lora serif title — not by a contrast jump. They sit almost flush with the page.</div></div>
+          <div class="insight-card"><div class="insight-title">The <em>second</em> session</div><div class="insight-body">Surfaces are nearly indistinguishable from the canvas. The serif title is the anchor; the body is light sans pushed to the floor.</div></div>
+          <div class="insight-card"><div class="insight-title">A reason to <em>return</em></div><div class="insight-body">No shadow, no fill jump, no elevation. Depth is the radius and the whitespace around it.</div></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Hairline Bar Chart</div>
+        <div class="bar-track" id="barTrack">
+          <div class="bar-col"><div class="bar-v">31%</div><div class="bar-fill" data-h="42%"></div><div class="bar-x">Day 1</div></div>
+          <div class="bar-col"><div class="bar-v">54%</div><div class="bar-fill" data-h="60%"></div><div class="bar-x">Day 7</div></div>
+          <div class="bar-col"><div class="bar-v hi">88%</div><div class="bar-fill accent" data-h="92%"></div><div class="bar-x">Day 30</div></div>
+          <div class="bar-col"><div class="bar-v">47%</div><div class="bar-fill" data-h="55%"></div><div class="bar-x">Day 60</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 DEPTH -->
+  <section class="section" id="depth">
+    <div class="wrap">
+      <div class="kicker">05 — Depth &amp; Shape</div>
+      <h2 class="sec-h">No Shadow, Ever</h2>
+      <p class="lead">Depth comes entirely from <em>1px hairline rules</em> and generous whitespace. No drop shadows, no gradients, no elevation. When two regions need separation, a single black line divides them.</p>
+      <div class="depth-row">
+        <div class="depth-card"><div class="dc-demo"><div class="demo-hair"></div></div><div class="dc-l">1px hairline rule</div><div class="dc-d">The only divider. Solid black, never dashed, never muted, never thicker.</div></div>
+        <div class="depth-card"><div class="dc-demo"><div class="demo-short"></div></div><div class="dc-l">36px short rule</div><div class="dc-d">A small punctuation mark between headline and lead — a visual pause.</div></div>
+        <div class="depth-card"><div class="dc-demo"></div><div class="dc-l">Whitespace</div><div class="dc-d">8vw horizontal padding — the most generous in the library. Space is the elevation.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 DO / DON'T -->
+  <section class="section warm" id="dodont">
+    <div class="wrap">
+      <div class="kicker">06 — Do &amp; Don't</div>
+      <h2 class="sec-h">The Discipline</h2>
+      <div class="dodont">
+        <div class="dd do">
+          <div class="dd-h">Do</div>
+          <ul>
+            <li>Use cream paper on every slide — the single surface is the foundation.</li>
+            <li>Set headlines in Jost 200 and let weight and size do the work.</li>
+            <li>Reach for Lora italic only for pull-quotes and insight-card titles.</li>
+            <li>Render every divider as a 1px solid black rule.</li>
+            <li>Mark every bullet with a graphite mono em-dash.</li>
+            <li>Leave generous whitespace — middle 60–70% of the canvas.</li>
+          </ul>
+        </div>
+        <div class="dd dont">
+          <div class="dd-h">Don't</div>
+          <ul>
+            <li>Introduce any chromatic colour — the accent is darker ink.</li>
+            <li>Use Jost 500/600/700 for headlines — it reads as broken.</li>
+            <li>Put a pull-quote in sans — the Lora italic is its identity.</li>
+            <li>Use box-shadow on anything — there is no elevation.</li>
+            <li>Crowd a slide to the edges — content must breathe.</li>
+            <li>Swap the em-dash bullet for a dot, check, or arrow.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 CJK -->
+  <section class="section" id="cjk">
+    <div class="wrap">
+      <div class="kicker">07 — 中文 · CJK</div>
+      <h2 class="sec-h">International Content</h2>
+      <p class="lead">CJK cannot render at Jost-200 weight — it breaks. Display shifts to <em>思源黑体 Noto Sans SC 700</em>; body to 400; quotes to 思源宋体 Noto Serif SC. Hierarchy comes from weight and size, never colour.</p>
+      <div class="cjk-spec">
+        <div class="cjk-display">用户研究综合</div>
+        <div class="cjk-quote">用户离开，不是因为失去兴趣，而是因为不知道下一步该做什么。思源宋体承载着引语的人声，黑墨与奶油纸之间，留白即是层级。</div>
+        <div class="cjk-tag">思源黑体 NOTO SANS SC 700 / 400 · 思源宋体 NOTO SERIF SC</div>
+      </div>
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Latin</th><th>Chinese</th></tr></thead>
+        <tbody>
+          <tr><td>Display / headline</td><td>Jost 200</td><td class="cn">思源黑体 700</td></tr>
+          <tr><td>Body / lead</td><td>Jost 300</td><td class="cn">思源黑体 400</td></tr>
+          <tr><td>Pull-quote / insight title</td><td>Lora italic</td><td class="cn">思源宋体 400</td></tr>
+          <tr><td>Label / mono chrome</td><td>JetBrains Mono</td><td class="cn">思源黑体 400（不强制等宽）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CLOSE -->
+  <footer class="close" id="end">
+    <div class="kicker">End of specification</div>
+    <h2 class="display">Monochrome</h2>
+    <div class="close-links">
+      <a href="index.html">&#8592; All Systems</a>
+      <a href="../templates/monochrome/template.html">Open Live Deck</a>
+      <a href="../templates/monochrome/design.md">design.md</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress=document.getElementById('progress'), counter=document.getElementById('counter');
+      var secs=Array.prototype.slice.call(document.querySelectorAll('section, .hero, .close'));
+      function onScroll(){ var h=document.documentElement; var sc=h.scrollTop/(h.scrollHeight-h.clientHeight); progress.style.width=(sc*100)+'%'; var mid=h.scrollTop+innerHeight*0.4, idx=1; for(var i=0;i<secs.length;i++){ if(secs[i].offsetTop<=mid) idx=i+1; } counter.textContent=String(Math.min(idx,secs.length)).padStart(2,'0')+' / '+String(secs.length).padStart(2,'0'); }
+      addEventListener('scroll', onScroll, {passive:true}); addEventListener('resize', onScroll); onScroll();
+      var bt=document.getElementById('barTrack'), done=false;
+      function go(){ if(done)return; done=true; bt.querySelectorAll('.bar-fill').forEach(function(b,i){ b.style.height='0'; setTimeout(function(){ b.style.transition='height 0.9s cubic-bezier(0.16,1,0.3,1)'; b.style.height=b.dataset.h; }, i*100); }); }
+      if('IntersectionObserver' in window){ new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)go();});},{threshold:0.4}).observe(bt); } else go();
+    })();
+  </script>
+</body>
+</html>

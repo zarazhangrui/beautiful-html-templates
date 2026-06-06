@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stencil &amp; Tablet — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Stardos+Stencil:wght@400;700&family=Bowlby+One&family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bone:#E2DCC9;
+    --paper:#F4EFE0;
+    --black:#000000;
+    --ink:#0A0A0A;
+    --sienna:#A06A3C;
+    --magenta:#C73B7A;
+    --orange:#EE7A2E;
+    --teal:#2D7E73;
+    --blue:#3F73B7;
+    --mustard:#D8A93B;
+    --olive:#6F7A2E;
+    --stencil:'Stardos Stencil','Noto Serif SC',serif;
+    --cond:'Barlow Condensed','Noto Sans SC',sans-serif;
+    --body:'Inter','Noto Serif SC',sans-serif;
+    --bowlby:'Bowlby One','Stardos Stencil',serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bone);
+    color:var(--ink);
+    font-family:var(--body);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--orange);color:var(--ink);}
+
+  /* ---------- fixed chrome ---------- */
+  #progress{position:fixed;top:0;left:0;height:5px;width:0%;background:var(--orange);z-index:100;}
+  .chrome{position:fixed;z-index:99;font-family:var(--cond);font-weight:800;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;}
+  #backlink a{color:var(--bone);background:var(--ink);text-decoration:none;padding:9px 18px;display:inline-block;border-radius:999px;}
+  #backlink{top:20px;left:24px;}
+  #counter{top:22px;right:24px;color:var(--ink);background:var(--mustard);padding:9px 16px;border-radius:999px;}
+
+  /* ---------- layout primitives ---------- */
+  section{max-width:1320px;margin:0 auto;padding:clamp(76px,9vw,118px) clamp(24px,5vw,64px) clamp(64px,7vw,90px);position:relative;}
+  .topbar{display:flex;justify-content:space-between;align-items:baseline;gap:18px;font-family:var(--cond);font-weight:800;font-size:clamp(14px,1.4vw,24px);letter-spacing:0.06em;text-transform:uppercase;border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:clamp(34px,4.4vw,56px);flex-wrap:wrap;}
+  .eyebrow{font-family:var(--cond);font-weight:800;font-size:clamp(14px,1.4vw,22px);letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);}
+  h2{font-family:var(--stencil);font-weight:700;font-size:clamp(52px,9vw,120px);line-height:0.9;letter-spacing:-0.005em;text-transform:uppercase;color:var(--ink);}
+  .lede{font-family:var(--body);font-weight:400;font-size:clamp(17px,1.7vw,24px);line-height:1.4;max-width:52ch;color:var(--ink);}
+  .footer-chrome{display:flex;justify-content:space-between;font-family:var(--cond);font-weight:600;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink);opacity:.75;border-top:2px solid var(--ink);margin-top:clamp(48px,6vw,78px);padding-top:14px;}
+
+  /* ---------- hero ---------- */
+  .hero{padding-top:clamp(80px,9vw,128px);}
+  h1{font-family:var(--stencil);font-weight:700;font-size:clamp(60px,13vw,200px);line-height:0.82;letter-spacing:-0.015em;text-transform:uppercase;color:var(--ink);}
+  .hero .amp{color:var(--orange);}
+  .hero-lede{font-family:var(--body);font-weight:400;font-size:clamp(18px,1.9vw,26px);line-height:1.45;max-width:48ch;margin-top:clamp(22px,2.6vw,34px);}
+  .cover-lockup{display:flex;align-items:center;gap:18px;margin-top:clamp(28px,3.2vw,44px);flex-wrap:wrap;}
+  .cover-mark{width:clamp(48px,5vw,56px);height:clamp(48px,5vw,56px);border-radius:14px;background:var(--orange);flex:none;}
+  .cover-lockup .name{font-family:var(--cond);font-weight:800;font-size:clamp(18px,1.8vw,28px);letter-spacing:0.04em;text-transform:uppercase;line-height:1;}
+  .cover-lockup .name small{display:block;font-weight:600;font-size:0.6em;letter-spacing:0.06em;opacity:.7;margin-top:4px;}
+  .cover-lockup .date{font-family:var(--stencil);font-weight:700;font-size:clamp(26px,3vw,42px);text-transform:uppercase;margin-left:auto;}
+
+  .nav{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,22px);margin-top:clamp(50px,6vw,84px);}
+  .nav a{text-decoration:none;border-radius:22px;padding:clamp(20px,2.2vw,30px) clamp(18px,1.8vw,24px);min-height:clamp(150px,15vw,196px);display:flex;flex-direction:column;justify-content:space-between;transition:transform .14s ease;}
+  .nav a:hover{transform:translateY(-5px);}
+  .nav .n-num{font-family:var(--stencil);font-weight:700;font-size:clamp(52px,6vw,96px);line-height:0.78;}
+  .nav .n-ttl{font-family:var(--cond);font-weight:800;font-size:clamp(18px,1.8vw,26px);letter-spacing:0.04em;text-transform:uppercase;line-height:1;}
+  .f-sienna{background:var(--sienna);color:var(--bone);} .f-magenta{background:var(--magenta);color:var(--bone);}
+  .f-orange{background:var(--orange);color:var(--ink);} .f-teal{background:var(--teal);color:var(--bone);}
+  .f-blue{background:var(--blue);color:var(--bone);} .f-mustard{background:var(--mustard);color:var(--ink);}
+  .f-olive{background:var(--olive);color:var(--bone);} .f-paper{background:var(--paper);color:var(--ink);border:2px solid var(--ink);}
+
+  /* ---------- §01 overview ---------- */
+  .ov-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .tablet{border-radius:26px;padding:clamp(26px,2.8vw,38px) clamp(22px,2.4vw,32px);display:flex;flex-direction:column;}
+  .tablet .t-num{font-family:var(--stencil);font-weight:700;font-size:clamp(90px,13vw,200px);line-height:0.82;}
+  .tablet .t-h{font-family:var(--stencil);font-weight:700;font-size:clamp(24px,2.4vw,34px);text-transform:uppercase;line-height:1.05;margin-top:8px;}
+  .tablet p{font-family:var(--body);font-weight:400;font-size:clamp(14px,1.1vw,17px);line-height:1.45;margin-top:12px;}
+  .action-bar{background:var(--mustard);color:var(--ink);border-radius:22px;padding:clamp(22px,2.4vw,30px) clamp(26px,3vw,40px);display:flex;align-items:center;gap:clamp(18px,2.4vw,32px);flex-wrap:wrap;margin-top:clamp(20px,2.4vw,30px);}
+  .action-bar .tag{font-family:var(--cond);font-weight:800;font-size:clamp(15px,1.4vw,22px);letter-spacing:0.1em;text-transform:uppercase;padding-right:clamp(18px,2.4vw,30px);border-right:2px solid var(--ink);}
+  .action-bar .ah{font-family:var(--stencil);font-weight:700;font-size:clamp(26px,3.4vw,52px);text-transform:uppercase;line-height:0.95;}
+
+  /* ---------- §02 colours ---------- */
+  .swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .sw{border-radius:22px;padding:clamp(22px,2.4vw,32px);min-height:clamp(140px,16vw,190px);display:flex;flex-direction:column;justify-content:space-between;}
+  .sw .nm{font-family:var(--stencil);font-weight:700;font-size:clamp(26px,3vw,44px);text-transform:uppercase;line-height:0.85;}
+  .sw .hex{font-family:var(--cond);font-weight:700;font-size:clamp(14px,1.2vw,18px);letter-spacing:0.06em;text-transform:uppercase;}
+
+  /* ---------- §03 typography ---------- */
+  .type-stack{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .type-card{border-radius:22px;padding:clamp(24px,2.8vw,38px);background:var(--paper);border:2px solid var(--ink);}
+  .type-card.dark{background:var(--ink);color:var(--bone);border-color:var(--ink);}
+  .type-card .tlab{font-family:var(--cond);font-weight:800;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;opacity:.85;}
+  .type-card .stencil-spec{font-family:var(--stencil);font-weight:700;font-size:clamp(52px,7vw,110px);line-height:0.85;text-transform:uppercase;}
+  .type-card .cond-spec{font-family:var(--cond);font-weight:800;font-size:clamp(24px,2.6vw,40px);letter-spacing:0.06em;text-transform:uppercase;line-height:1.05;}
+  .type-card .body-spec{font-family:var(--body);font-weight:400;font-size:clamp(16px,1.5vw,20px);line-height:1.45;}
+  .type-card .bowlby-spec{font-family:var(--bowlby);font-size:clamp(70px,10vw,150px);line-height:0.7;}
+
+  /* ---------- §04 components ---------- */
+  .comp{margin-top:clamp(34px,4.2vw,54px);}
+  .comp .clabel{font-family:var(--cond);font-weight:800;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);margin-bottom:18px;opacity:.85;}
+  .pills{display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
+  .pill{border-radius:999px;padding:7px 18px;font-family:var(--cond);font-weight:700;font-size:clamp(13px,1.2vw,18px);letter-spacing:0.08em;text-transform:uppercase;}
+  .pill.yes{background:var(--teal);color:var(--bone);} .pill.part{background:var(--mustard);color:var(--ink);}
+  .pill.no{background:var(--magenta);color:var(--bone);} .pill.note{background:var(--paper);color:var(--ink);border:2px solid var(--ink);}
+  .num-mega-demo{display:flex;align-items:center;gap:clamp(20px,3vw,50px);border-radius:26px;background:var(--ink);color:var(--bone);padding:clamp(26px,3vw,44px) clamp(30px,3.4vw,52px);flex-wrap:wrap;}
+  .num-mega-demo .nm{font-family:var(--stencil);font-weight:700;font-size:clamp(120px,22vw,300px);line-height:0.72;color:var(--orange);}
+  .num-mega-demo .nx{font-family:var(--stencil);font-weight:700;font-size:clamp(34px,4.4vw,72px);text-transform:uppercase;line-height:0.92;}
+  .matrix{margin-top:clamp(20px,2.4vw,30px);border:2px solid var(--ink);border-radius:14px;overflow:hidden;}
+  .matrix .mr{display:grid;grid-template-columns:1.4fr 1fr 1fr;}
+  .matrix .mr>div{border-bottom:1.5px solid rgba(10,10,10,0.3);border-right:1.5px solid rgba(10,10,10,0.3);padding:clamp(12px,1.4vw,18px) clamp(14px,1.6vw,22px);font-family:var(--stencil);font-weight:700;font-size:clamp(16px,1.5vw,24px);text-transform:uppercase;letter-spacing:0.01em;}
+  .matrix .mr>div:last-child{border-right:none;}
+  .matrix .mr.head>div{background:var(--ink);color:var(--bone);font-family:var(--cond);font-weight:800;letter-spacing:0.04em;}
+  .matrix .mr:last-child>div{border-bottom:none;}
+  .quote-panel{background:var(--magenta);color:var(--bone);border-radius:26px;padding:clamp(34px,4vw,60px) clamp(34px,4.5vw,80px);display:flex;gap:clamp(16px,2.4vw,40px);align-items:flex-start;margin-top:clamp(20px,2.4vw,30px);}
+  .quote-panel .qm{font-family:var(--bowlby);font-size:clamp(90px,16vw,260px);line-height:0.62;flex:none;}
+  .quote-panel .qt{font-family:var(--stencil);font-weight:400;font-size:clamp(26px,3.6vw,60px);line-height:1.05;}
+
+  /* ---------- §05 layout ---------- */
+  .lay-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .lay-card{border-radius:22px;padding:clamp(22px,2.4vw,34px);background:var(--paper);border:2px solid var(--ink);}
+  .lay-card .h{font-family:var(--stencil);font-weight:700;font-size:clamp(22px,2.2vw,32px);text-transform:uppercase;line-height:1.0;margin-bottom:10px;}
+  .lay-card p{font-family:var(--body);font-weight:400;font-size:clamp(14px,1.1vw,16px);line-height:1.5;}
+  .radii{display:flex;flex-wrap:wrap;gap:clamp(16px,2.4vw,32px);margin-top:clamp(26px,3vw,40px);}
+  .radii .rd{text-align:center;}
+  .radii .rd .box{width:clamp(76px,9vw,120px);height:clamp(76px,9vw,120px);background:var(--teal);}
+  .radii .rd .lab{font-family:var(--cond);font-weight:700;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;margin-top:10px;}
+
+  /* ---------- §06 depth ---------- */
+  .depth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .depth-grid .dc{border-radius:22px;padding:clamp(24px,2.8vw,38px);min-height:clamp(200px,22vw,280px);display:flex;flex-direction:column;}
+  .depth-grid .dc .dn{font-family:var(--stencil);font-weight:700;font-size:clamp(54px,6vw,100px);line-height:0.78;}
+  .depth-grid .dc .dh{font-family:var(--stencil);font-weight:700;font-size:clamp(20px,2vw,30px);text-transform:uppercase;line-height:1.0;margin:14px 0 12px;}
+  .depth-grid .dc p{font-family:var(--body);font-weight:400;font-size:clamp(14px,1.1vw,16px);line-height:1.5;}
+
+  /* ---------- §07 do & don't ---------- */
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .dd .col{border-radius:22px;padding:clamp(26px,3vw,40px);}
+  .dd .do{background:var(--teal);color:var(--bone);} .dd .dont{background:var(--ink);color:var(--bone);}
+  .dd .col h3{font-family:var(--stencil);font-weight:700;font-size:clamp(34px,4vw,64px);text-transform:uppercase;line-height:0.85;margin-bottom:18px;}
+  .dd .dont h3{color:var(--orange);}
+  .dd ul{list-style:none;}
+  .dd li{font-family:var(--body);font-weight:400;font-size:clamp(15px,1.4vw,18px);line-height:1.4;padding:13px 0;border-bottom:1.5px solid rgba(226,220,201,0.3);display:flex;gap:12px;}
+  .dd li:last-child{border-bottom:none;}
+  .dd li .mk{font-family:var(--stencil);font-weight:700;flex:none;}
+  .dd .dont li .mk{color:var(--orange);}
+
+  /* ---------- §08 cjk ---------- */
+  .cjk-head{font-family:'Noto Serif SC',serif;font-weight:900;font-size:clamp(54px,11vw,150px);line-height:1.18;letter-spacing:0;color:var(--ink);}
+  .cjk-head .accent{color:var(--magenta);}
+  .cjk-body{font-family:'Noto Serif SC',serif;font-weight:400;font-size:clamp(17px,1.8vw,22px);line-height:1.8;color:var(--ink);max-width:42ch;margin-top:clamp(26px,3.2vw,42px);}
+  .cjk-pair{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .cjk-pair .cp{border-radius:22px;padding:clamp(22px,2.6vw,34px);color:var(--bone);}
+  .cjk-pair .cp.c1{background:var(--sienna);} .cjk-pair .cp.c2{background:var(--blue);} .cjk-pair .cp.c3{background:var(--olive);}
+  .cjk-pair .cp .role{font-family:'Noto Sans SC',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.04em;opacity:.85;}
+  .cjk-pair .cp .face{font-size:clamp(40px,4.6vw,64px);margin:12px 0 8px;line-height:1.1;}
+  .cjk-pair .cp.c1 .face,.cjk-pair .cp.c3 .face{font-family:'Noto Serif SC',serif;font-weight:900;}
+  .cjk-pair .cp.c2 .face{font-family:'Noto Sans SC',sans-serif;font-weight:900;}
+  .cjk-pair .cp .meta{font-family:'Noto Sans SC',sans-serif;font-weight:400;font-size:12px;opacity:.85;}
+  .cjk-note{border:2px solid var(--ink);border-radius:22px;background:var(--paper);padding:clamp(26px,3.2vw,44px);margin-top:clamp(40px,5vw,64px);}
+  .cjk-note .h{font-family:'Noto Serif SC',serif;font-weight:900;font-size:clamp(24px,3vw,40px);color:var(--ink);margin-bottom:18px;}
+  .cjk-note ul{list-style:none;}
+  .cjk-note li{font-family:'Noto Serif SC',serif;font-weight:400;font-size:clamp(15px,1.6vw,19px);line-height:1.75;color:var(--ink);padding:11px 0;border-bottom:1.5px solid rgba(10,10,10,0.18);}
+  .cjk-note li:last-child{border-bottom:none;}
+
+  /* ---------- close ---------- */
+  .close{max-width:none;background:var(--ink);color:var(--bone);text-align:center;padding:clamp(96px,13vw,180px) clamp(24px,5vw,64px);}
+  .close .eyebrow{color:var(--orange);}
+  .close h2{color:var(--bone);font-size:clamp(54px,12vw,180px);margin:clamp(16px,2vw,28px) 0;}
+  .close h2 .amp{color:var(--orange);}
+  .close .back{display:inline-block;margin-top:clamp(24px,3vw,40px);font-family:var(--cond);font-weight:800;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink);background:var(--mustard);padding:13px 30px;border-radius:999px;text-decoration:none;}
+
+  @media(max-width:900px){
+    .nav,.ov-grid,.swatches,.type-stack,.lay-grid,.depth-grid,.cjk-pair,.dd{grid-template-columns:1fr;}
+    .nav,.swatches{grid-template-columns:repeat(2,1fr);}
+    .ov-grid,.lay-grid,.depth-grid,.cjk-pair{grid-template-columns:1fr;}
+    .matrix .mr{grid-template-columns:1.2fr 0.9fr 0.9fr;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="chrome" id="backlink"><a href="index.html">← Index</a></div>
+<div class="chrome" id="counter">01 / 10</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="top">
+  <div class="topbar"><span>Stencil &amp; Tablet · Field Manual</span><span>Vol. 11 — Archive</span></div>
+  <div class="eyebrow">Design System Specification</div>
+  <h1 style="margin-top:clamp(16px,2vw,26px)">Stencil<br><span class="amp">&amp;</span> Tablet</h1>
+  <p class="hero-lede">A poster-loud, type-led system — bone paper, stencil-cut headlines, and a six-colour earth palette tiled in rounded colour blocks. Archaeology meets brand.</p>
+  <div class="cover-lockup">
+    <span class="cover-mark"></span>
+    <span class="name">Stencil &amp; Tablet<small>Industrial · archival · graphic</small></span>
+    <span class="date">MMXXVI</span>
+  </div>
+
+  <nav class="nav">
+    <a href="#overview" class="f-sienna"><span class="n-num">01</span><span class="n-ttl">Overview</span></a>
+    <a href="#colours" class="f-magenta"><span class="n-num">02</span><span class="n-ttl">Colour</span></a>
+    <a href="#typography" class="f-orange"><span class="n-num">03</span><span class="n-ttl">Type</span></a>
+    <a href="#components" class="f-teal"><span class="n-num">04</span><span class="n-ttl">Parts</span></a>
+    <a href="#layout" class="f-blue"><span class="n-num">05</span><span class="n-ttl">Layout</span></a>
+    <a href="#depth" class="f-olive"><span class="n-num">06</span><span class="n-ttl">Depth</span></a>
+    <a href="#dodont" class="f-mustard"><span class="n-num">07</span><span class="n-ttl">Do &amp; Don't</span></a>
+    <a href="#cjk" class="f-paper"><span class="n-num">08</span><span class="n-ttl">中文</span></a>
+  </nav>
+</section>
+
+<!-- ========== §01 OVERVIEW ========== -->
+<section id="overview">
+  <div class="topbar"><span>§ 01 — Overview</span><span>Colour blocks as layout</span></div>
+  <h2>The number<br>is the layout.</h2>
+  <p class="lede" style="margin-top:clamp(18px,2.2vw,28px)">A single display face — Stardos Stencil — handles every headline and numeral, its ink-breaks giving each glyph a distressed industrial register. Rounded "tablet" cards in saturated retro-print colours tile the canvas; you can read a slide's structure from across the room.</p>
+
+  <div class="ov-grid">
+    <div class="tablet f-sienna"><div class="t-num">01</div><div class="t-h">Stencil type</div><p>Every headline and numeral, with characteristic ink-break gaps.</p></div>
+    <div class="tablet f-teal"><div class="t-num">02</div><div class="t-h">Colour blocks</div><p>Saturated tablets do the work of dividing the canvas geometrically.</p></div>
+    <div class="tablet f-blue"><div class="t-num">03</div><div class="t-h">Huge scale</div><p>Numerals to 540px — scale is the primary expressive tool.</p></div>
+  </div>
+
+  <div class="action-bar"><span class="tag">Section</span><span class="ah">Reads like a field manual, not a slide deck.</span></div>
+  <div class="footer-chrome"><span>Museum · heritage · longform research</span><span>01 / 10</span></div>
+</section>
+
+<!-- ========== §02 COLOURS ========== -->
+<section id="colours">
+  <div class="topbar"><span>§ 02 — Colour</span><span>Bone + earth accents</span></div>
+  <h2>Printed ink,<br>not pastel.</h2>
+  <p class="lede" style="margin-top:clamp(18px,2.2vw,28px)">The bone-cream field is the default page. On it sit seven saturated retro-print accents — slightly muted but unmistakably ink. A dark-bone alternate (black field, bone type) appears on agenda and statement slides.</p>
+
+  <div class="swatches">
+    <div class="sw f-sienna"><div class="nm">Sienna</div><div class="hex">#A06A3C</div></div>
+    <div class="sw f-magenta"><div class="nm">Magenta</div><div class="hex">#C73B7A</div></div>
+    <div class="sw f-orange"><div class="nm">Orange</div><div class="hex">#EE7A2E</div></div>
+    <div class="sw f-teal"><div class="nm">Teal</div><div class="hex">#2D7E73</div></div>
+    <div class="sw f-blue"><div class="nm">Blue</div><div class="hex">#3F73B7</div></div>
+    <div class="sw f-mustard"><div class="nm">Mustard</div><div class="hex">#D8A93B</div></div>
+    <div class="sw f-olive"><div class="nm">Olive</div><div class="hex">#6F7A2E</div></div>
+    <div class="sw f-paper"><div class="nm">Bone / Paper</div><div class="hex">#E2DCC9 · #F4EFE0</div></div>
+    <div class="sw" style="background:var(--ink);color:var(--bone)"><div class="nm">Ink</div><div class="hex">#0A0A0A</div></div>
+  </div>
+  <div class="footer-chrome"><span>Accents read as printed ink — slightly muted, fully saturated</span><span>02 / 10</span></div>
+</section>
+
+<!-- ========== §03 TYPOGRAPHY ========== -->
+<section id="typography">
+  <div class="topbar"><span>§ 03 — Type</span><span>Stencil · Condensed · Body</span></div>
+  <div class="type-stack">
+    <div class="type-card dark">
+      <div class="tlab">Stardos Stencil · 700 · every headline &amp; numeral</div>
+      <div class="stencil-spec">Tablet 24</div>
+    </div>
+    <div class="type-card">
+      <div class="tlab">Barlow Condensed · 800 · all chrome</div>
+      <div class="cond-spec">Metadata · Pills · Legends</div>
+    </div>
+    <div class="type-card">
+      <div class="tlab">Inter · 400 · body</div>
+      <div class="body-spec">Inter handles the small set of body paragraphs that caption the loud type above them — the supporting cast, never the star.</div>
+    </div>
+    <div class="type-card dark">
+      <div class="tlab">Bowlby One · the 320px quote mark only</div>
+      <div class="bowlby-spec" style="color:var(--orange)">&ldquo;</div>
+    </div>
+  </div>
+  <div class="footer-chrome"><span>Stencil ink-breaks are the signature register</span><span>03 / 10</span></div>
+</section>
+
+<!-- ========== §04 COMPONENTS ========== -->
+<section id="components">
+  <div class="topbar"><span>§ 04 — Components</span><span>Tablets · pills · matrix · quote</span></div>
+
+  <div class="comp">
+    <p class="clabel">Num-mega — the number is the section divider</p>
+    <div class="num-mega-demo"><span class="nm">5</span><span class="nx">Components,<br>tiled in colour.</span></div>
+  </div>
+
+  <div class="comp">
+    <p class="clabel">Status pills — teal yes · mustard partial · magenta no · note</p>
+    <div class="pills">
+      <span class="pill yes">Yes</span>
+      <span class="pill part">Partial</span>
+      <span class="pill no">No</span>
+      <span class="pill note">Note</span>
+    </div>
+  </div>
+
+  <div class="comp">
+    <p class="clabel">Matrix — head row inverts to black fill, bone type</p>
+    <div class="matrix">
+      <div class="mr head"><div>Feature</div><div>Type I</div><div>Type IV</div></div>
+      <div class="mr"><div>Bias</div><div>Normal</div><div>Metal</div></div>
+      <div class="mr"><div>Register</div><div>Warm</div><div>Crisp</div></div>
+    </div>
+  </div>
+
+  <div class="comp">
+    <p class="clabel">Quote panel — magenta block, Bowlby One quote mark + stencil text</p>
+    <div class="quote-panel"><span class="qm">&ldquo;</span><span class="qt">Scale is the loud tool. Colour is the second. Body is the supporting cast.</span></div>
+  </div>
+  <div class="footer-chrome"><span>No drop shadows — rounded chrome carries depth</span><span>04 / 10</span></div>
+</section>
+
+<!-- ========== §05 LAYOUT ========== -->
+<section id="layout">
+  <div class="topbar"><span>§ 05 — Layout</span><span>1920 × 1080</span></div>
+  <h2>Blocks tile<br>the canvas.</h2>
+  <div class="lay-grid">
+    <div class="lay-card"><div class="h">Topbar</div><p>Section name left, meta columns right — Barlow Condensed 800 uppercase, sealed by a 2px ink rule.</p></div>
+    <div class="lay-card"><div class="h">Num-mega</div><p>A 540px stencil numeral fills the left; eyebrow top-right, headline bottom-right. The number is the layout.</p></div>
+    <div class="lay-card"><div class="h">Footer chrome</div><p>Date left, deck name right — Barlow Condensed 600 at 75% opacity.</p></div>
+  </div>
+
+  <div class="radii">
+    <div class="rd"><div class="box" style="border-radius:26px"></div><div class="lab">26px · tablet</div></div>
+    <div class="rd"><div class="box" style="border-radius:22px"></div><div class="lab">22px · card</div></div>
+    <div class="rd"><div class="box" style="border-radius:14px"></div><div class="lab">14px · mark</div></div>
+    <div class="rd"><div class="box" style="border-radius:999px"></div><div class="lab">999px · pill</div></div>
+  </div>
+  <div class="footer-chrome"><span>Colour blocks divide the canvas geometrically</span><span>05 / 10</span></div>
+</section>
+
+<!-- ========== §06 DEPTH ========== -->
+<section id="depth">
+  <div class="topbar"><span>§ 06 — Depth</span><span>Flat with rounded chrome</span></div>
+  <div class="depth-grid">
+    <div class="dc f-orange"><div class="dn">a.</div><div class="dh">No shadows</div><p>No drop shadows, no gradients. Generous border-radius and saturated fills are the entire depth system.</p></div>
+    <div class="dc f-teal"><div class="dn">b.</div><div class="dh">Solid hairlines</div><p>Inside cards, dividers are 1.5–2px solid warm-ink lines — heavier, because the system carries more visual weight.</p></div>
+    <div class="dc f-blue"><div class="dn">c.</div><div class="dh">Dark alternate</div><p>A black field with bone type appears on agenda and bold-statement slides for contrast and gravity.</p></div>
+  </div>
+  <div class="footer-chrome"><span>Border-radius + saturated fill = the depth language</span><span>06 / 10</span></div>
+</section>
+
+<!-- ========== §07 DO & DON'T ========== -->
+<section id="dodont">
+  <div class="topbar"><span>§ 07 — Do &amp; Don't</span><span>The register</span></div>
+  <div class="dd">
+    <div class="col do">
+      <h3>Do</h3>
+      <ul>
+        <li><span class="mk">+</span>Run Stardos Stencil for every headline and numeral — keep the ink-breaks.</li>
+        <li><span class="mk">+</span>Let colour-block tablets do the layout; tile them geometrically.</li>
+        <li><span class="mk">+</span>Run type huge — 120px statements, 220px numerals, 540px dividers.</li>
+        <li><span class="mk">+</span>Use Barlow Condensed 800 uppercase for every label, pill, and legend.</li>
+        <li><span class="mk">+</span>Keep card radii at 22–26px and dividers at 1.5–2px solid.</li>
+      </ul>
+    </div>
+    <div class="col dont">
+      <h3>Don't</h3>
+      <ul>
+        <li><span class="mk">–</span>Don't set body in the stencil face — Inter captions the loud type.</li>
+        <li><span class="mk">–</span>Don't add drop shadows or gradients — depth is fill + radius only.</li>
+        <li><span class="mk">–</span>Don't use pastel accents — they read as printed ink, not soft.</li>
+        <li><span class="mk">–</span>Don't run timid type — scale is the system's primary expressive tool.</li>
+        <li><span class="mk">–</span>Don't keep negative tracking on CJK — set it to zero.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-chrome"><span>Scale first · colour second · body last</span><span>07 / 10</span></div>
+</section>
+
+<!-- ========== §08 CJK ========== -->
+<section id="cjk">
+  <div class="topbar"><span>§ 08 — 中文 / CJK</span><span>Strategy A</span></div>
+  <h2 class="cjk-head">模板<span class="accent">石板</span></h2>
+  <p class="cjk-body">Stardos Stencil 的墨断缺口与拉丁字母笔形绑定,中文无对应模板体 —— 整体替换为思源宋体 900(展示)、思源黑体重磅(chrome)、思源宋体(正文)。900 字重是唯一能在 120–540px 大尺度与 Stencil 视觉分量持平的权重。</p>
+
+  <div class="cjk-pair">
+    <div class="cp c1"><div class="role">Display · 数字</div><div class="face">石板</div><div class="meta">思源宋体 Noto Serif SC · 900</div></div>
+    <div class="cp c2"><div class="role">Chrome · 胶囊</div><div class="face">元数据</div><div class="meta">思源黑体 Noto Sans SC · 700–900</div></div>
+    <div class="cp c3"><div class="role">Body · 正文</div><div class="face">正文</div><div class="meta">思源宋体 Noto Serif SC · 400</div></div>
+  </div>
+
+  <div class="cjk-note">
+    <p class="h">每段中文都要做的调整</p>
+    <ul>
+      <li>整体换脸:Stardos 的墨断缺口只属于拉丁,中文用思源宋体 900,绝不强行让 Stencil 渲染汉字。</li>
+      <li>混排标题(如 STUDIO 工作室)拆成两个 span:拉丁保留 Stardos,中文用宋体 900,字号调到视觉分量相当。</li>
+      <li>放宽行高:展示 1.15–1.25(220–540px 汉字需要竖向呼吸),正文 1.75–1.85;字距一律归零。</li>
+      <li>使用全角标点(,。:;「」),标题结尾不加句号;中英文边界加盘古之白:「2026 年」。</li>
+      <li>色块 tablet、圆角、内描边、巨号尺度 —— 与语言无关,全部原样保留。</li>
+    </ul>
+  </div>
+  <div class="footer-chrome"><span>思源宋体 900 是唯一与 Stencil 持平的权重</span><span>08 / 10</span></div>
+</section>
+
+<!-- ========== CLOSE ========== -->
+<section class="close" id="close">
+  <div class="eyebrow">End of field manual</div>
+  <h2>Stencil <span class="amp">&amp;</span> Tablet</h2>
+  <a class="back" href="index.html">← Back to index</a>
+</section>
+
+<script>
+(function () {
+  var progress = document.getElementById('progress');
+  var counter = document.getElementById('counter');
+  var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+  var total = ids.length;
+  function onScroll() {
+    var h = document.documentElement;
+    var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+    var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+    for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+    if (scrolled > 0.99) idx = total - 1;
+    counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signal — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's three faces: Source Serif 4 (voice, roman+italic) + DM Sans (substance) + IBM Plex Mono (metadata) -->
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=DM+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- CJK pairing for §08 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1C2644; --navy-alt: #232F55; --cream: #F0ECE3; --cream-alt: #E6E0D4;
+      --text-warm: #E2DCD0; --muted-dark: #8A96A8; --hint-dark: #4E5A6E;
+      --ink: #1A2030; --muted-light: #5A6270; --hint-light: #9AA0A8;
+      --gold: #C8A870; --border-dark: #2E3D5C; --border-light: #CAC4B4;
+      --f-serif: 'Source Serif 4', 'Noto Serif SC', Georgia, serif;
+      --f-sans: 'DM Sans', 'Noto Sans SC', system-ui, sans-serif;
+      --f-mono: 'IBM Plex Mono', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--navy); color: var(--text-warm); font-family: var(--f-sans); -webkit-font-smoothing: antialiased; }
+
+    /* ===== Persistent chrome ===== */
+    .progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--gold); z-index: 300; }
+    .back-link { position: fixed; top: 22px; left: 28px; z-index: 200; text-decoration: none; color: var(--gold);
+      font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; }
+    .back-link:hover { color: var(--text-warm); }
+    .counter { position: fixed; bottom: 22px; right: 28px; z-index: 200;
+      font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted-dark); }
+    .counter em { color: var(--gold); font-style: normal; }
+
+    /* ===== Surfaces ===== */
+    section, header, footer { position: relative; padding: clamp(64px,8vh,110px) clamp(40px,7.5vw,150px); }
+    .s-navy { background: var(--navy); color: var(--text-warm); --fg2: var(--muted-dark); --fg3: var(--hint-dark); --bd: var(--border-dark); }
+    .s-cream { background: var(--cream); color: var(--ink); --fg2: var(--muted-light); --fg3: var(--hint-light); --bd: var(--border-light); }
+    /* 80px grid texture on navy slides */
+    .s-navy::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 80px 80px; }
+    .wrap { max-width: 1180px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+
+    /* ===== Type ===== */
+    .kicker { font-family: var(--f-mono); font-weight: 500; font-size: clamp(11px,0.85vw,14px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+    .rule-short { width: 36px; height: 1px; background: var(--gold); margin: 16px 0; }
+    .display { font-family: var(--f-serif); font-weight: 700; font-size: clamp(48px,9vw,150px); line-height: 0.96; letter-spacing: -0.02em; }
+    .h1 { font-family: var(--f-serif); font-weight: 600; font-size: clamp(34px,5.2vw,88px); line-height: 1.08; letter-spacing: -0.01em; }
+    .h2 { font-family: var(--f-serif); font-weight: 600; font-size: clamp(26px,3vw,52px); line-height: 1.18; }
+    .h3 { font-family: var(--f-serif); font-weight: 500; font-size: clamp(18px,1.9vw,30px); line-height: 1.3; }
+    .display em, .h1 em, .h2 em, .h3 em, .quote-text em, .editorial-h em { font-family: var(--f-serif); font-style: italic; font-weight: 600; color: var(--gold); }
+    .lead { font-family: var(--f-sans); font-weight: 400; font-size: clamp(15px,1.4vw,22px); line-height: 1.58; color: var(--fg2); }
+    .lead em { font-family: var(--f-serif); font-style: italic; color: var(--gold); }
+    .body { font-family: var(--f-sans); font-weight: 400; font-size: clamp(14px,1.05vw,17px); line-height: 1.65; color: var(--fg2); }
+    .body em { font-family: var(--f-serif); font-style: italic; color: var(--gold); }
+    .caption { font-family: var(--f-sans); font-size: clamp(12px,0.82vw,14px); line-height: 1.5; color: var(--fg3); }
+    .stat-value { font-family: var(--f-serif); font-weight: 600; font-size: clamp(40px,5.5vw,96px); line-height: 1; letter-spacing: -0.02em; color: var(--gold); }
+    .mono-label { font-family: var(--f-mono); font-size: clamp(11px,0.8vw,13px); letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg3); }
+
+    /* chrome bar / foot bar */
+    .chrome-bar { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--bd); padding-bottom: 12px; margin-bottom: clamp(28px,4vh,48px); }
+    .foot-bar { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--bd); padding-top: 12px; margin-top: clamp(32px,5vh,60px); }
+
+    .sec-head { margin-bottom: clamp(28px,4vh,48px); }
+    .sec-head .lead { max-width: 64ch; margin-top: 16px; }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+    .hero .display { margin: 18px 0 8px; max-width: 14ch; }
+    .hero-lead { font-family: var(--f-sans); font-weight: 400; font-size: clamp(16px,1.6vw,24px); line-height: 1.55; color: var(--muted-dark); max-width: 52ch; margin-top: 20px; }
+    .hero-lead em { font-family: var(--f-serif); font-style: italic; color: var(--gold); }
+    .toc { margin-top: clamp(36px,5vh,60px); display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0 64px; max-width: 820px; }
+    .toc a { display: grid; grid-template-columns: 48px 1fr; gap: 18px; align-items: baseline; text-decoration: none; padding: 14px 0; border-top: 1px solid var(--border-dark); }
+    .toc .t-num { font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.12em; color: var(--gold); }
+    .toc .t-title { font-family: var(--f-serif); font-weight: 500; font-size: clamp(17px,1.7vw,24px); color: var(--text-warm); }
+    .toc a:hover .t-title { color: var(--gold); }
+
+    /* ===== grids / components ===== */
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .stat-card { border-top: 1px solid var(--bd); padding: 20px 28px 20px 0; }
+    .stat-card .sc-label { font-family: var(--f-sans); font-size: clamp(13px,1vw,16px); color: var(--fg2); margin-top: 10px; }
+    .stat-card .sc-note { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg3); margin-top: 8px; }
+    .tag { display: inline-block; border: 1px solid var(--gold); color: var(--gold); padding: 5px 12px; font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+    .em-list { list-style: none; }
+    .em-list li { font-family: var(--f-sans); font-size: clamp(14px,1.1vw,17px); line-height: 1.6; color: var(--fg2); padding-left: 1.6em; position: relative; margin-bottom: 12px; }
+    .em-list li::before { content: "—"; position: absolute; left: 0; font-family: var(--f-mono); color: var(--gold); }
+
+    /* ===== §02 swatches ===== */
+    .sw-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; border: 1px solid var(--bd); }
+    .sw { min-height: 130px; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; border: 1px solid var(--bd); }
+    .sw .sw-name { font-family: var(--f-serif); font-weight: 600; font-size: 18px; }
+    .sw .sw-hex { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.08em; margin-top: 4px; opacity: 0.8; }
+
+    /* ===== §03 typography ===== */
+    .scale-stack { display: flex; flex-direction: column; }
+    .scale-row { display: grid; grid-template-columns: 220px 1fr; gap: 28px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--bd); }
+    .scale-row:last-child { border-bottom: none; }
+    .sm { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg3); }
+    .sm b { display: block; color: var(--fg2); margin-bottom: 4px; }
+
+    /* ===== §04 ===== */
+    .comp { margin-bottom: 40px; }
+    .comp-h { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+    .quote-mark { font-family: var(--f-serif); font-weight: 300; font-size: clamp(60px,8vw,140px); line-height: 0.5; color: var(--gold); }
+    .quote-text { font-family: var(--f-serif); font-weight: 400; font-size: clamp(26px,3.4vw,52px); line-height: 1.28; letter-spacing: -0.01em; }
+    .bar-chart { display: flex; align-items: flex-end; gap: clamp(16px,3vw,40px); height: 200px; border-bottom: 1px solid var(--bd); }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 8px; }
+    .bar { width: 100%; background: var(--hint-dark); height: 0; transition: height 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .s-cream .bar { background: var(--hint-light); }
+    .bar.hi { background: var(--gold); }
+    .bar-lbl { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg3); }
+    .pyramid { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .pyr-band { border-left: 3px solid var(--gold); padding: 12px 24px; font-family: var(--f-serif); font-weight: 500; font-size: clamp(15px,1.6vw,22px); }
+
+    /* ===== §07 ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .dd-col { padding: clamp(24px,3vw,40px); }
+    .dd-col.right { border-left: 1px solid var(--bd); }
+    .dd-list { list-style: none; margin-top: 14px; }
+    .dd-list li { font-family: var(--f-sans); font-size: clamp(14px,1.1vw,16px); line-height: 1.55; color: var(--fg2); padding-left: 1.6em; position: relative; margin-bottom: 12px; }
+    .dd-list li::before { position: absolute; left: 0; font-family: var(--f-mono); }
+    .do .dd-list li::before { content: "—"; color: var(--gold); }
+    .dont .dd-list li::before { content: "×"; color: var(--fg3); }
+
+    /* ===== §08 cjk ===== */
+    .cjk-display { font-family: 'Noto Serif SC', var(--f-serif); font-weight: 700; font-size: clamp(38px,5.5vw,84px); line-height: 1.2; }
+    .cjk-display em { color: var(--gold); font-style: normal; font-weight: 700; }
+    .cjk-body { font-family: 'Noto Sans SC', var(--f-sans); font-weight: 400; font-size: clamp(15px,1.3vw,18px); line-height: 1.85; color: var(--fg2); margin-top: 16px; }
+    .cjk-label { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-top: 16px; }
+
+    /* ===== close ===== */
+    .close { min-height: 84vh; display: flex; flex-direction: column; justify-content: center; }
+    .close .h1 { max-width: 16ch; }
+    .close-links { margin-top: 30px; display: flex; gap: 32px; flex-wrap: wrap; }
+    .close-links a { text-decoration: none; font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); border-bottom: 1px solid var(--gold); padding-bottom: 5px; }
+    .close-links a:hover { color: var(--text-warm); border-color: var(--text-warm); }
+
+    @media (max-width: 920px) {
+      .grid-3, .grid-4, .grid-2, .sw-grid, .dodont, .toc { grid-template-columns: 1fr; }
+      .dd-col.right { border-left: none; border-top: 1px solid var(--bd); }
+      .scale-row { grid-template-columns: 1fr; gap: 8px; }
+    }
+    @media (max-width: 560px) { .grid-4, .sw-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <a class="back-link" href="index.html">&larr; Index</a>
+  <div class="counter"><em id="pg">01</em> / 10</div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero s-navy" id="top">
+    <div class="wrap">
+      <span class="kicker">Design System Specification</span>
+      <div class="rule-short"></div>
+      <h1 class="display">A quiet <em>authority</em></h1>
+      <p class="hero-lead">Signal is a literary editorial system &mdash; <em>The Economist's</em> restraint crossed with a private intelligence briefing. Source Serif 4 carries the voice with roman/italic mixed mid-sentence in antique gold; DM Sans the substance; IBM Plex Mono the chrome.</p>
+      <nav class="toc">
+        <a href="#overview"><span class="t-num">01</span><span class="t-title">Overview</span></a>
+        <a href="#colours"><span class="t-num">02</span><span class="t-title">Colours</span></a>
+        <a href="#typography"><span class="t-num">03</span><span class="t-title">Typography</span></a>
+        <a href="#components"><span class="t-num">04</span><span class="t-title">Components</span></a>
+        <a href="#layout"><span class="t-num">05</span><span class="t-title">Layout</span></a>
+        <a href="#depth"><span class="t-num">06</span><span class="t-title">Depth &amp; Shape</span></a>
+        <a href="#dodont"><span class="t-num">07</span><span class="t-title">Do &amp; Don't</span></a>
+        <a href="#cjk"><span class="t-num">08</span><span class="t-title">中文 / CJK</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section class="s-cream" id="overview">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono-label" style="color:var(--gold)">01 — Overview</span><span class="mono-label">Signal / Editorial</span></div>
+      <div class="sec-head">
+        <span class="kicker">The Premise</span>
+        <div class="rule-short"></div>
+        <h2 class="h2">A long-form briefing that <em>runs as a deck</em></h2>
+        <p class="lead">The deck does not need to shout because the typography already telegraphs seriousness. A dual-surface model &mdash; deep editorial navy and warm aged paper &mdash; connected by a single antique gold, used only on rules, italic emphasis, and figures.</p>
+      </div>
+      <div class="grid-4">
+        <div class="stat-card"><div class="stat-value" style="font-size:clamp(32px,4vw,56px)">High</div><div class="sc-label">Formality</div></div>
+        <div class="stat-card"><div class="stat-value" style="font-size:clamp(32px,4vw,56px)">High</div><div class="sc-label">Density</div></div>
+        <div class="stat-card"><div class="stat-value" style="font-size:clamp(32px,4vw,56px)">Mixed</div><div class="sc-label">Scheme</div></div>
+        <div class="stat-card"><div class="stat-value" style="font-size:clamp(32px,4vw,56px)">18</div><div class="sc-label">Slides</div></div>
+      </div>
+      <div class="foot-bar"><span class="mono-label">The Economist × intelligence briefing</span><span class="mono-label">Sober · considered</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section class="s-navy" id="colours">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono-label" style="color:var(--gold)">02 — Colours</span><span class="mono-label">Dual surface + one accent</span></div>
+      <div class="sec-head">
+        <span class="kicker">The Palette</span>
+        <div class="rule-short"></div>
+        <h2 class="h2">Two surfaces, <em>one hot accent</em></h2>
+        <p class="lead">Navy and cream are interchangeable &mdash; both first-class, alternating freely. Exactly one accent: antique gold, on rules, italic emphasis, and numerals. Gold never fills a background, never carries body.</p>
+      </div>
+      <div class="sw-grid">
+        <div class="sw" style="background:#1C2644;color:#E2DCD0"><div class="sw-name">Navy</div><div class="sw-hex">#1C2644</div></div>
+        <div class="sw" style="background:#232F55;color:#E2DCD0"><div class="sw-name">Navy Alt</div><div class="sw-hex">#232F55</div></div>
+        <div class="sw" style="background:#F0ECE3;color:#1A2030"><div class="sw-name">Cream</div><div class="sw-hex">#F0ECE3</div></div>
+        <div class="sw" style="background:#E6E0D4;color:#1A2030"><div class="sw-name">Cream Alt</div><div class="sw-hex">#E6E0D4</div></div>
+        <div class="sw" style="background:#C8A870;color:#1A2030"><div class="sw-name">Gold</div><div class="sw-hex">#C8A870</div></div>
+        <div class="sw" style="background:#E2DCD0;color:#1A2030"><div class="sw-name">Text Warm</div><div class="sw-hex">#E2DCD0</div></div>
+        <div class="sw" style="background:#8A96A8;color:#1A2030"><div class="sw-name">Muted Dark</div><div class="sw-hex">#8A96A8</div></div>
+        <div class="sw" style="background:#1A2030;color:#E2DCD0"><div class="sw-name">Ink</div><div class="sw-hex">#1A2030</div></div>
+      </div>
+      <div class="foot-bar"><span class="mono-label">No second accent</span><span class="mono-label">Gold = rules · italic · numerals</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section class="s-cream" id="typography">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono-label" style="color:var(--gold)">03 — Typography</span><span class="mono-label">Voice · substance · timestamp</span></div>
+      <div class="sec-head">
+        <span class="kicker">The Signal Moment</span>
+        <div class="rule-short"></div>
+        <h2 class="h2">Roman, then <em>italic gold</em>, mid-sentence</h2>
+        <p class="lead">Serif = voice, sans = substance, mono = timestamp. The most distinctive move is mixing roman and italic Source Serif inside one headline, the italic always in gold. An <em>em</em> inside a sans paragraph switches to italic serif gold &mdash; the font change <em>is</em> the emphasis.</p>
+      </div>
+      <div class="scale-stack">
+        <div class="scale-row"><div class="sm"><b>display · Source Serif 700</b>9.5vw · −0.02em</div><div><span class="display" style="font-size:clamp(36px,5vw,64px)">Signal</span></div></div>
+        <div class="scale-row"><div class="sm"><b>h1 · Source Serif 600</b>5.2vw</div><div><span class="h1" style="font-size:clamp(28px,3.5vw,52px)">Chapter <em>Title</em></span></div></div>
+        <div class="scale-row"><div class="sm"><b>stat-value · Source Serif 600 gold</b>5.5vw</div><div><span class="stat-value" style="font-size:clamp(36px,4.5vw,72px)">94%</span></div></div>
+        <div class="scale-row"><div class="sm"><b>h2 · Source Serif 600</b>3vw</div><div><span class="h2">Primary <em>Headline</em></span></div></div>
+        <div class="scale-row"><div class="sm"><b>lead · DM Sans 400</b>1.4vw</div><div><span class="lead" style="margin:0">A lead paragraph, set in DM Sans.</span></div></div>
+        <div class="scale-row"><div class="sm"><b>body · DM Sans 400</b>1.05vw</div><div><span class="body" style="margin:0">Standard paragraph body, substance not voice.</span></div></div>
+        <div class="scale-row"><div class="sm"><b>kicker · IBM Plex Mono gold</b>0.7vw · 0.18em</div><div><span class="kicker">Mono Gold Kicker</span></div></div>
+      </div>
+      <div class="foot-bar"><span class="mono-label">Italic = emphasis, structural not decorative</span><span class="mono-label">Em-dash gold bullets</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section class="s-navy" id="components">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono-label" style="color:var(--gold)">04 — Components</span><span class="mono-label">Rendered with the actual CSS</span></div>
+      <div class="sec-head">
+        <span class="kicker">The Briefing Kit</span>
+        <div class="rule-short"></div>
+        <h2 class="h2">Hairlines, gold, <em>and restraint</em></h2>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Stat cards — top hairline + gold serif numeral</div>
+        <div class="grid-3">
+          <div class="stat-card"><div class="stat-value" style="font-size:clamp(36px,4vw,64px)">$12.4M</div><div class="sc-label">Annual Recurring Revenue</div><div class="sc-note">Up from $2.7M</div></div>
+          <div class="stat-card" style="padding-left:28px"><div class="stat-value" style="font-size:clamp(36px,4vw,64px)">118%</div><div class="sc-label">Net Revenue Retention</div><div class="sc-note">Expansion-driven</div></div>
+          <div class="stat-card" style="padding-left:28px"><div class="stat-value" style="font-size:clamp(36px,4vw,64px)">4.2×</div><div class="sc-label">LTV / CAC</div><div class="sc-note">Enterprise 6.8×</div></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Kickers, tags &amp; em-dash list</div>
+        <div class="grid-2" style="gap:48px">
+          <div>
+            <div style="display:flex;gap:14px;align-items:center;margin-bottom:18px"><span class="tag">Confidential</span><span class="tag">Q4 / FY25</span></div>
+            <ul class="em-list">
+              <li>Source Serif carries every headline at every scale.</li>
+              <li>DM Sans steps back for body and substance.</li>
+              <li>IBM Plex Mono runs all timestamps and chrome.</li>
+            </ul>
+          </div>
+          <div>
+            <span class="quote-mark">&ldquo;</span>
+            <p class="quote-text">Authority without aggression. The deck speaks <em>quietly</em>.</p>
+            <p class="mono-label" style="margin-top:16px">— The operating thesis</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Bar chart (gold highlight) &amp; pyramid bands</div>
+        <div class="grid-2" style="gap:48px;align-items:end">
+          <div class="bar-chart">
+            <div class="bar-col"><div class="bar" data-h="42%"></div><div class="bar-lbl">FY22</div></div>
+            <div class="bar-col"><div class="bar" data-h="58%"></div><div class="bar-lbl">FY23</div></div>
+            <div class="bar-col"><div class="bar" data-h="76%"></div><div class="bar-lbl">FY24</div></div>
+            <div class="bar-col"><div class="bar hi" data-h="100%"></div><div class="bar-lbl">FY25</div></div>
+          </div>
+          <div class="pyramid">
+            <div class="pyr-band" style="width:60%;background:color-mix(in srgb, var(--gold) 60%, var(--navy))">Vision</div>
+            <div class="pyr-band" style="width:78%;background:color-mix(in srgb, var(--gold) 32%, var(--navy))">Strategy</div>
+            <div class="pyr-band" style="width:100%;background:color-mix(in srgb, var(--gold) 12%, var(--navy))">Execution</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section class="s-cream" id="layout">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono-label" style="color:var(--gold)">05 — Layout</span><span class="mono-label">Breathing room</span></div>
+      <div class="sec-head">
+        <span class="kicker">The Frame</span>
+        <div class="rule-short"></div>
+        <h2 class="h2">One thing, said <em>carefully</em></h2>
+        <p class="lead">A typical slide uses a small fraction of its real estate &mdash; a kicker, a headline, a sentence, a footer. Standard slides carry a chrome bar and foot bar; cover, chapter, statement, and quote slides go chromeless. 7.5vw / 5.5vh padding gives the editorial breathing room.</p>
+      </div>
+      <div class="grid-3">
+        <div style="border-top:1px solid var(--bd);padding-top:16px"><div class="h3">Chrome bar</div><p class="body" style="margin-top:8px">Mono label left, counter right, hairline beneath.</p></div>
+        <div style="border-top:1px solid var(--bd);padding-top:16px"><div class="h3">Dual surface</div><p class="body" style="margin-top:8px">Navy and cream alternate freely as a reset.</p></div>
+        <div style="border-top:1px solid var(--bd);padding-top:16px"><div class="h3">80px grid</div><p class="body" style="margin-top:8px">A near-invisible fingerprint on dark slides.</p></div>
+      </div>
+      <div class="foot-bar"><span class="mono-label">~50% max fill</span><span class="mono-label">Restraint is the register</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH ============ -->
+  <section class="s-navy" id="depth">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono-label" style="color:var(--gold)">06 — Depth &amp; Shape</span><span class="mono-label">Flat plus hairline</span></div>
+      <div class="sec-head">
+        <span class="kicker">No Elevation</span>
+        <div class="rule-short"></div>
+        <h2 class="h2">Flat, plus a single <em>hairline</em></h2>
+        <p class="lead">No drop shadows, no rounded chrome, no elevation. Regions separate via 1px hairlines. The only texture is the 80px grid on dark slides at 3% white &mdash; the system's fingerprint. Corners are square everywhere except the donut chart.</p>
+      </div>
+      <div class="grid-3">
+        <div class="stat-card"><div class="h3">1px hairline</div><p class="body" style="margin-top:8px">The universal separator.</p></div>
+        <div class="stat-card" style="padding-left:28px"><div class="h3" style="color:var(--gold)">36px gold rule</div><p class="body" style="margin-top:8px">Kicker &amp; chapter break.</p></div>
+        <div class="stat-card" style="padding-left:28px"><div class="h3">80px grid</div><p class="body" style="margin-top:8px">3% white fingerprint.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section class="s-cream" id="dodont">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono-label" style="color:var(--gold)">07 — Do &amp; Don't</span><span class="mono-label">Hold the restraint</span></div>
+      <div class="sec-head">
+        <span class="kicker">The Discipline</span>
+        <div class="rule-short"></div>
+        <h2 class="h2">Hold the <em>restraint</em></h2>
+      </div>
+      <div class="dodont">
+        <div class="dd-col do">
+          <div class="h3" style="margin-bottom:8px">Do</div>
+          <ul class="dd-list">
+            <li>Mix roman + italic-gold Source Serif inside one headline — the Signal moment.</li>
+            <li>Alternate navy and cream surfaces freely; both are first-class.</li>
+            <li>Colour every numeral and kicker gold; use em-dash gold bullets.</li>
+            <li>Separate regions with 1px hairlines; keep the 80px grid on dark slides.</li>
+            <li>Pad generously — restraint is the register.</li>
+          </ul>
+        </div>
+        <div class="dd-col dont right">
+          <div class="h3" style="margin-bottom:8px">Don't</div>
+          <ul class="dd-list">
+            <li>Use gold on body or as a background fill.</li>
+            <li>Use pure white on navy — always the warm off-white.</li>
+            <li>Add drop shadows, rounded chrome, or a second accent.</li>
+            <li>Put serif on body, or bold body text for emphasis.</li>
+            <li>Fill more than half a slide — crowding breaks the system.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section class="s-navy" id="cjk">
+    <div class="wrap">
+      <div class="chrome-bar"><span class="mono-label" style="color:var(--gold)">08 — 中文 / CJK</span><span class="mono-label">Color-only Signal moment</span></div>
+      <div class="sec-head">
+        <span class="kicker">Editorial Bilingualism</span>
+        <div class="rule-short"></div>
+        <h2 class="h2">The Signal moment, <em>color-only</em></h2>
+        <p class="lead">Noto Serif SC has no italic axis, so the roman→italic move becomes a <em>color-only</em> shift to gold in Chinese. The serif/sans contrast softens, but hairlines, mono kickers, gold accents, and dual surfaces carry the editorial restraint through.</p>
+      </div>
+      <div class="grid-2" style="gap:48px;align-items:start">
+        <div>
+          <div class="cjk-display">沉静的<em>权威</em></div>
+          <div class="cjk-body">长篇情报简报式的编辑系统：深蓝与暖奶油双表面交替，一抹古金贯穿全场，只用于分隔线、强调与数字。思源宋体承载标题，强调改为纯色金（无斜体），思源黑体处理正文。盘古之白：使用 Claude、2026 年。</div>
+          <div class="cjk-label">思源宋体 · 思源黑体 · 古金强调</div>
+        </div>
+        <div style="border-top:1px solid var(--bd);padding-top:20px">
+          <p class="body" style="line-height:2">Display → 思源宋体 700<br>Body → 思源黑体 400<br>&lt;em&gt; → 古金（纯色，无斜体）<br>Numerals → keep Latin (94%)<br>Quote glyph → 「 」</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close s-cream" id="close">
+    <div class="wrap">
+      <span class="kicker">End of Briefing</span>
+      <div class="rule-short"></div>
+      <h2 class="h1">Quietly <em>authoritative</em>.</h2>
+      <p class="lead" style="margin-top:18px;max-width:46ch">One of 34 systems in Beautiful HTML Templates. Sober, considered, a little aristocratic.</p>
+      <div class="close-links">
+        <a href="index.html">&larr; All Systems</a>
+        <a href="../templates/signal/template.html">Open Live Deck</a>
+        <a href="../templates/signal/design.md">design.md</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var pg = document.getElementById('pg');
+      var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+      var total = ids.length;
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+        for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+        if (scrolled > 0.99) idx = total - 1;
+        pg.textContent = String(idx + 1).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+      var bars = Array.prototype.slice.call(document.querySelectorAll('.bar[data-h]'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.style.height = e.target.getAttribute('data-h'); io.unobserve(e.target); } }); }, { threshold: 0.4 });
+        bars.forEach(function (b) { io.observe(b); });
+      } else { bars.forEach(function (b) { b.style.height = b.getAttribute('data-h'); }); }
+    })();
+  </script>
+</body>
+</html>

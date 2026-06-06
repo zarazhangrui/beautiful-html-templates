@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daisy Days — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;500;600;700&family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream:#F5F0E6; --turquoise:#7ECDC0; --soft-pink:#F7C8D4; --butter:#FDE68A;
+      --mint:#A8E6CF; --lavender:#D4A5E8; --peach:#FFCBA4; --sky:#A8D8F0; --coral:#F8635F;
+      --text-dark:#2D2D2D; --text-muted:#6B6B6B;
+      --border:#2D2D2D; --bw:3px; --radius:20px; --radius-lg:28px;
+      --shadow:6px 6px 0 var(--border); --shadow-sm:4px 4px 0 var(--border);
+      --f-display:'Fredoka One', cursive; --f-body:'Quicksand', sans-serif;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:var(--f-body); font-weight:500; color:var(--text-dark); background:var(--cream); -webkit-font-smoothing:antialiased; }
+    h1,h2,h3,h4 { font-family:var(--f-display); font-weight:400; letter-spacing:.02em; }
+
+    /* chrome */
+    .progress { position:fixed; top:0; left:0; height:6px; width:0; background:var(--coral); z-index:200; transition:width .12s linear; }
+    .counter { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); background:#fff; border:var(--bw) solid var(--border); border-radius:50px; padding:6px 18px; font-family:var(--f-display); font-size:.78rem; z-index:200; box-shadow:var(--shadow-sm); }
+    .back-link { position:fixed; top:16px; left:18px; z-index:200; background:var(--butter); border:var(--bw) solid var(--border); border-radius:50px; padding:8px 16px; font-family:var(--f-display); font-size:.8rem; color:var(--text-dark); text-decoration:none; box-shadow:var(--shadow-sm); }
+    .back-link:hover { transform:translate(1px,1px); box-shadow:3px 3px 0 var(--border); }
+
+    .section { position:relative; padding:96px 7vw; overflow:hidden; }
+    .s-cream{background:var(--cream)} .s-turq{background:var(--turquoise)} .s-pink{background:var(--soft-pink)}
+    .s-butter{background:var(--butter)} .s-mint{background:var(--mint)} .s-lav{background:var(--lavender)}
+    .s-peach{background:var(--peach)} .s-sky{background:var(--sky)}
+    .wrap { max-width:1080px; margin:0 auto; position:relative; z-index:2; }
+
+    /* ornament layer */
+    .deco { position:absolute; pointer-events:none; z-index:1; }
+    .deco svg { width:100%; height:100%; display:block; }
+
+    .badge { display:inline-block; padding:8px 22px; border-radius:50px; border:var(--bw) solid var(--border); font-family:var(--f-display); font-size:.85rem; background:var(--butter); margin-bottom:22px; box-shadow:var(--shadow-sm); }
+    .sec-h { font-size:clamp(2.2rem,4.6vw,3.8rem); line-height:1.05; margin-bottom:18px; }
+    .on-color .sec-h { color:#fff; text-shadow:3px 3px 0 var(--border); }
+    .lead { font-family:var(--f-body); font-weight:600; font-size:clamp(1.05rem,1.5vw,1.35rem); line-height:1.6; color:var(--text-muted); max-width:660px; }
+    .on-color .lead { color:var(--text-dark); }
+
+    /* cards */
+    .card { background:#fff; border:var(--bw) solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); }
+
+    /* META */
+    .meta-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:40px; }
+    .meta-card { background:#fff; border:var(--bw) solid var(--border); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow-sm); }
+    .meta-card .mc-icon { width:42px; height:42px; border-radius:50%; border:var(--bw) solid var(--border); display:flex; align-items:center; justify-content:center; font-family:var(--f-display); margin-bottom:14px; }
+    .meta-card .mc-v { font-family:var(--f-display); font-size:1.5rem; }
+    .meta-card .mc-l { font-weight:700; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-top:4px; }
+    .meta-card .mc-s { font-weight:500; font-size:.84rem; color:var(--text-muted); margin-top:8px; line-height:1.5; }
+
+    /* COLOURS */
+    .swatches { display:grid; grid-template-columns:repeat(5,1fr); gap:18px; margin-top:40px; }
+    .swatch { border:var(--bw) solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-sm); background:#fff; }
+    .swatch .sw-chip { height:88px; border-bottom:var(--bw) solid var(--border); }
+    .swatch .sw-info { padding:12px 14px; }
+    .swatch .sw-name { font-family:var(--f-display); font-size:.92rem; }
+    .swatch .sw-hex { font-weight:600; font-size:.72rem; color:var(--text-muted); margin-top:2px; }
+
+    /* TYPOGRAPHY */
+    .faces { display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:40px; }
+    .face { background:#fff; border:var(--bw) solid var(--border); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow-sm); }
+    .face .f-n { font-weight:700; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); margin-bottom:12px; }
+    .smp-fredoka { font-family:var(--f-display); font-size:clamp(2rem,4vw,3rem); line-height:1.1; }
+    .smp-quick { font-family:var(--f-body); font-weight:600; font-size:clamp(1.1rem,2vw,1.5rem); line-height:1.4; }
+    .face .f-d { font-weight:500; font-size:.86rem; color:var(--text-muted); line-height:1.55; margin-top:14px; }
+    .scale { margin-top:24px; background:#fff; border:var(--bw) solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow-sm); overflow:hidden; }
+    .scale-row { display:grid; grid-template-columns:170px 1fr; gap:24px; align-items:baseline; padding:18px 24px; border-bottom:2px solid #eee; }
+    .scale-row:last-child { border-bottom:none; }
+    .scale-tok { font-weight:700; font-size:.72rem; letter-spacing:.04em; color:var(--text-muted); text-transform:uppercase; }
+
+    /* COMPONENTS */
+    .comp { margin-bottom:44px; }
+    .comp-h { font-family:var(--f-display); font-size:1.2rem; margin-bottom:14px; }
+    .on-color .comp-h { color:#fff; text-shadow:2px 2px 0 var(--border); }
+    .row { display:flex; flex-wrap:wrap; gap:18px; align-items:center; }
+
+    .day-card { background:#fff; border:var(--bw) solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-sm); flex:1; min-width:130px; }
+    .day-header { padding:10px; text-align:center; font-family:var(--f-display); font-size:.95rem; border-bottom:var(--bw) solid var(--border); }
+    .dh-pink{background:var(--soft-pink)} .dh-green{background:var(--mint)} .dh-coral{background:var(--coral);color:#fff} .dh-yellow{background:var(--butter)} .dh-lav{background:var(--lavender)}
+    .day-body { padding:14px 16px; }
+    .day-body li { list-style:none; position:relative; padding-left:16px; font-weight:500; font-size:.82rem; color:var(--text-muted); margin-bottom:6px; }
+    .day-body li::before { content:"-"; position:absolute; left:0; color:var(--text-muted); }
+
+    .info-card { background:#fff; border:var(--bw) solid var(--border); border-radius:var(--radius); padding:26px; box-shadow:var(--shadow-sm); flex:1; min-width:200px; }
+    .info-card .ic { width:44px; height:44px; border-radius:50%; border:var(--bw) solid var(--border); display:flex; align-items:center; justify-content:center; font-family:var(--f-display); font-size:1.2rem; margin-bottom:12px; }
+    .ic1{background:var(--soft-pink)} .ic2{background:var(--mint)} .ic3{background:var(--sky)} .ic4{background:var(--lavender)}
+    .info-card h4 { font-size:1.1rem; } .info-card p { font-weight:500; font-size:.86rem; color:var(--text-muted); line-height:1.5; margin-top:6px; }
+
+    .quote-box { background:#fff; border:var(--bw) solid var(--border); border-radius:var(--radius-lg); padding:40px 48px; box-shadow:var(--shadow); max-width:680px; text-align:center; }
+    .quote-mark { font-family:var(--f-display); font-size:3.4rem; line-height:1; color:var(--soft-pink); }
+    .quote-text { font-family:var(--f-display); font-size:clamp(1.2rem,2.2vw,1.7rem); line-height:1.35; margin:8px 0 16px; }
+    .quote-author { font-weight:700; color:var(--text-muted); }
+
+    .step-circle { width:80px; height:80px; border-radius:50%; border:var(--bw) solid var(--border); display:flex; align-items:center; justify-content:center; font-family:var(--f-display); font-size:1.8rem; color:#fff; box-shadow:var(--shadow-sm); }
+    .sc1{background:var(--coral)} .sc2{background:var(--turquoise)} .sc3{background:var(--lavender)}
+    .process-arrow { font-family:var(--f-display); font-size:1.8rem; color:var(--border); }
+
+    .bullet-list { list-style:none; }
+    .bullet-list li { position:relative; padding-left:34px; font-weight:600; font-size:1rem; margin-bottom:14px; }
+    .bullet-list li::before { content:""; position:absolute; left:0; top:2px; width:20px; height:20px; background:var(--butter); border:2px solid var(--border); border-radius:50%; }
+
+    .bar-chart { display:flex; align-items:flex-end; gap:20px; height:200px; max-width:520px; padding:0 6px; }
+    .bar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:flex-end; }
+    .bar { width:100%; border:var(--bw) solid var(--border); border-radius:10px 10px 0 0; box-shadow:var(--shadow-sm); transition:height .9s cubic-bezier(.16,1,.3,1); height:0; }
+    .b1{background:var(--coral)} .b2{background:var(--turquoise)} .b3{background:var(--lavender)} .b4{background:var(--butter)}
+    .bar-v { font-family:var(--f-display); font-size:.9rem; } .bar-x { font-weight:600; font-size:.78rem; color:var(--text-muted); }
+
+    /* DO / DONT */
+    .dodont { display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:40px; }
+    .dd { background:#fff; border:var(--bw) solid var(--border); border-radius:var(--radius-lg); padding:32px 34px; box-shadow:var(--shadow); }
+    .dd-h { display:inline-block; font-family:var(--f-display); font-size:1.3rem; padding:6px 22px; border-radius:50px; border:var(--bw) solid var(--border); margin-bottom:22px; }
+    .dd.do .dd-h { background:var(--mint); } .dd.dont .dd-h { background:var(--soft-pink); }
+    .dd ul { list-style:none; }
+    .dd li { position:relative; padding-left:32px; font-weight:500; font-size:.94rem; line-height:1.5; color:var(--text-dark); margin-bottom:14px; }
+    .dd li::before { position:absolute; left:0; top:0; width:20px; height:20px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:var(--f-display); font-size:.7rem; }
+    .dd.do li::before { content:"✓"; background:var(--mint); }
+    .dd.dont li::before { content:"✕"; background:var(--coral); color:#fff; }
+
+    /* CJK */
+    .cjk-card { background:#fff; border:var(--bw) solid var(--border); border-radius:var(--radius-lg); padding:36px 40px; box-shadow:var(--shadow); margin-top:36px; }
+    .cjk-display { font-family:'ZCOOL XiaoWei', serif; font-size:clamp(2.2rem,5vw,3.6rem); color:var(--text-dark); }
+    .cjk-body { font-family:'Noto Sans SC', sans-serif; font-weight:500; font-size:clamp(1rem,1.4vw,1.2rem); line-height:1.85; color:var(--text-muted); max-width:600px; margin-top:16px; }
+    .cjk-tag { font-weight:700; font-size:.8rem; color:var(--text-muted); margin-top:16px; }
+    .spec-table { width:100%; border-collapse:collapse; margin-top:18px; background:#fff; border:var(--bw) solid var(--border); border-radius:var(--radius); overflow:hidden; }
+    .spec-table th,.spec-table td { padding:12px 16px; text-align:left; font-weight:500; font-size:.88rem; border-bottom:2px solid #eee; }
+    .spec-table th { font-family:var(--f-display); font-weight:400; font-size:.8rem; background:var(--butter); }
+    .spec-table td.cn { font-family:'ZCOOL XiaoWei', serif; }
+
+    /* CLOSE */
+    .close { min-height:74vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
+    .close .big { font-size:clamp(2.6rem,7vw,5rem); color:#fff; text-shadow:4px 4px 0 var(--border); }
+    .close p { font-weight:600; color:var(--text-dark); margin:16px 0 28px; }
+    .close-links { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; }
+    .close-links a { background:#fff; border:var(--bw) solid var(--border); border-radius:50px; padding:12px 26px; font-family:var(--f-display); font-size:.9rem; color:var(--text-dark); text-decoration:none; box-shadow:var(--shadow-sm); }
+    .close-links a:hover { transform:translate(1px,1px); box-shadow:3px 3px 0 var(--border); }
+    .close-links a.coral { background:var(--coral); color:#fff; }
+
+    @media (max-width:880px){
+      .section{padding:72px 6vw}
+      .meta-grid,.swatches{grid-template-columns:1fr 1fr}
+      .faces,.dodont{grid-template-columns:1fr}
+      .scale-row{grid-template-columns:1fr; gap:8px}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <a class="back-link" href="index.html">&#8592; Index</a>
+  <div class="counter" id="counter">01 / 09</div>
+
+  <!-- HERO -->
+  <header class="section s-cream close" id="top" style="min-height:100vh;">
+    <div class="deco" style="top:-30px;left:-20px;width:200px;height:200px;">
+      <svg viewBox="0 0 100 100"><g stroke="#2D2D2D" stroke-width="3"><circle cx="50" cy="20" r="13" fill="#fff"/><circle cx="80" cy="50" r="13" fill="#fff"/><circle cx="50" cy="80" r="13" fill="#fff"/><circle cx="20" cy="50" r="13" fill="#fff"/><circle cx="71" cy="29" r="13" fill="#fff"/><circle cx="71" cy="71" r="13" fill="#fff"/><circle cx="29" cy="71" r="13" fill="#fff"/><circle cx="29" cy="29" r="13" fill="#fff"/><circle cx="50" cy="50" r="15" fill="#FDE68A"/></g></svg>
+    </div>
+    <div class="deco" style="bottom:-30px;right:-20px;width:230px;height:230px;">
+      <svg viewBox="0 0 100 100"><g stroke="#2D2D2D" stroke-width="3"><circle cx="50" cy="20" r="13" fill="#fff"/><circle cx="80" cy="50" r="13" fill="#fff"/><circle cx="50" cy="80" r="13" fill="#fff"/><circle cx="20" cy="50" r="13" fill="#fff"/><circle cx="71" cy="29" r="13" fill="#fff"/><circle cx="71" cy="71" r="13" fill="#fff"/><circle cx="29" cy="71" r="13" fill="#fff"/><circle cx="29" cy="29" r="13" fill="#fff"/><circle cx="50" cy="50" r="15" fill="#F7C8D4"/></g></svg>
+    </div>
+    <div class="deco" style="top:14%;right:9%;width:74px;height:74px;">
+      <svg viewBox="0 0 100 100"><path d="M50 5 L61 39 L97 39 L68 60 L79 95 L50 73 L21 95 L32 60 L3 39 L39 39 Z" fill="#A8D8F0" stroke="#2D2D2D" stroke-width="4" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="deco" style="bottom:18%;left:7%;width:60px;height:60px;">
+      <svg viewBox="0 0 100 100"><path d="M50 5 L61 39 L97 39 L68 60 L79 95 L50 73 L21 95 L32 60 L3 39 L39 39 Z" fill="#FDE68A" stroke="#2D2D2D" stroke-width="4" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="wrap" style="text-align:center;">
+      <span class="badge">Design System · Beautiful HTML Templates</span>
+      <h1 style="font-size:clamp(3rem,9vw,7rem); line-height:1.02;">Daisy Days</h1>
+      <p class="lead" style="margin:18px auto 0; text-align:center;">A cheerful storybook system — chubby Fredoka headlines, charcoal outlines, hard offset shadows, and a sunny garden of pastel surfaces.</p>
+      <div style="margin-top:30px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <span class="badge" style="background:var(--mint); margin:0;">Friendly</span>
+        <span class="badge" style="background:var(--sky); margin:0;">Soft</span>
+        <span class="badge" style="background:var(--soft-pink); margin:0;">Warm</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 01 OVERVIEW -->
+  <section class="section s-cream" id="overview">
+    <div class="deco" style="top:8%;right:5%;width:120px;height:90px;"><svg viewBox="0 0 130 100"><g fill="none" stroke="#2D2D2D" stroke-width="4" stroke-linecap="round"><path d="M15 90 A50 50 0 0 1 115 90" stroke="#F8635F"/><path d="M28 90 A37 37 0 0 1 102 90" stroke="#FDE68A"/><path d="M41 90 A24 24 0 0 1 89 90" stroke="#7ECDC0"/></g></svg></div>
+    <div class="wrap">
+      <span class="badge">01 · Overview</span>
+      <h2 class="sec-h">A Sunny Garden</h2>
+      <p class="lead">Daisy Days descends from picture-book illustration and sticker-sheet kawaii. Every shape carries a charcoal 2D outline, every elevated element casts a solid offset shadow, and every surface is a pastel from a sunny garden palette. One focused content card per slide, surrounded by a wreath of corner ornaments.</p>
+      <div class="meta-grid">
+        <div class="meta-card"><div class="mc-icon" style="background:var(--soft-pink)">A</div><div class="mc-v">Low</div><div class="mc-l">Formality</div><div class="mc-s">Friendly, soft, warm — a classroom or playful brand.</div></div>
+        <div class="meta-card"><div class="mc-icon" style="background:var(--mint)">B</div><div class="mc-v">Full</div><div class="mc-l">Density</div><div class="mc-s">One main container + 3–7 corner ornaments. No empty corners.</div></div>
+        <div class="meta-card"><div class="mc-icon" style="background:var(--sky)">C</div><div class="mc-v">Light</div><div class="mc-l">Scheme</div><div class="mc-s">Cream default, rotating saturated pastel surfaces.</div></div>
+        <div class="meta-card"><div class="mc-icon" style="background:var(--lavender)">D</div><div class="mc-v">Coral</div><div class="mc-l">Pop accent</div><div class="mc-s">Single warm spot colour — dots & markers, never a full surface.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 COLOURS -->
+  <section class="section s-turq on-color" id="colours">
+    <div class="deco" style="top:-20px;left:-15px;width:150px;height:150px;"><svg viewBox="0 0 100 100"><g stroke="#2D2D2D" stroke-width="3"><circle cx="50" cy="22" r="12" fill="#fff"/><circle cx="78" cy="50" r="12" fill="#fff"/><circle cx="50" cy="78" r="12" fill="#fff"/><circle cx="22" cy="50" r="12" fill="#fff"/><circle cx="50" cy="50" r="14" fill="#FDE68A"/></g></svg></div>
+    <div class="deco" style="bottom:8%;right:6%;width:64px;height:64px;"><svg viewBox="0 0 100 100"><path d="M50 5 L61 39 L97 39 L68 60 L79 95 L50 73 L21 95 L32 60 L3 39 L39 39 Z" fill="#FDE68A" stroke="#2D2D2D" stroke-width="4" stroke-linejoin="round"/></svg></div>
+    <div class="wrap">
+      <span class="badge">02 · Colours</span>
+      <h2 class="sec-h">Pastels + One Pop</h2>
+      <p class="lead">A multi-pastel garden over cream, with a single high-saturation coral pop reserved for small markers. Headlines on a colored surface get a 3px charcoal text-shadow; on cream they sit flat. Borders are always charcoal — never coloured.</p>
+      <div class="swatches">
+        <div class="swatch"><div class="sw-chip" style="background:#F5F0E6"></div><div class="sw-info"><div class="sw-name">Cream</div><div class="sw-hex">#F5F0E6</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:#7ECDC0"></div><div class="sw-info"><div class="sw-name">Turquoise</div><div class="sw-hex">#7ECDC0</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:#F7C8D4"></div><div class="sw-info"><div class="sw-name">Soft Pink</div><div class="sw-hex">#F7C8D4</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:#FDE68A"></div><div class="sw-info"><div class="sw-name">Butter</div><div class="sw-hex">#FDE68A</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:#A8E6CF"></div><div class="sw-info"><div class="sw-name">Mint</div><div class="sw-hex">#A8E6CF</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:#D4A5E8"></div><div class="sw-info"><div class="sw-name">Lavender</div><div class="sw-hex">#D4A5E8</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:#FFCBA4"></div><div class="sw-info"><div class="sw-name">Peach</div><div class="sw-hex">#FFCBA4</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:#A8D8F0"></div><div class="sw-info"><div class="sw-name">Sky</div><div class="sw-hex">#A8D8F0</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:#F8635F"></div><div class="sw-info"><div class="sw-name">Coral · pop</div><div class="sw-hex">#F8635F</div></div></div>
+        <div class="swatch"><div class="sw-chip" style="background:#2D2D2D"></div><div class="sw-info"><div class="sw-name">Charcoal</div><div class="sw-hex">#2D2D2D</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 TYPOGRAPHY -->
+  <section class="section s-cream" id="type">
+    <div class="deco" style="top:10%;left:5%;width:70px;height:70px;"><svg viewBox="0 0 100 100"><path d="M50 5 L61 39 L97 39 L68 60 L79 95 L50 73 L21 95 L32 60 L3 39 L39 39 Z" fill="#D4A5E8" stroke="#2D2D2D" stroke-width="4" stroke-linejoin="round"/></svg></div>
+    <div class="wrap">
+      <span class="badge">03 · Typography</span>
+      <h2 class="sec-h">Two Friendly Faces</h2>
+      <p class="lead">A strict pairing: chubby rounded <strong>Fredoka One</strong> for every headline and display moment, friendly humanist <strong>Quicksand</strong> 500–600 for every paragraph and meta line. Never cross the two roles.</p>
+      <div class="faces">
+        <div class="face"><div class="f-n">Fredoka One · Display</div><div class="smp-fredoka">Hello Sunshine 123</div><div class="f-d">One weight, rounded and chubby. Every headline, quote, badge, step number. Italic and stretching are off-limits.</div></div>
+        <div class="face"><div class="f-n">Quicksand · Body</div><div class="smp-quick">The friendly humanist body voice.</div><div class="f-d">Weights 500–600 for all paragraphs and meta. Geometric but warm; never set a headline in it.</div></div>
+      </div>
+      <div class="scale">
+        <div class="scale-row"><div class="scale-tok">title · clamp 3.2–6.5rem</div><div class="smp-fredoka" style="font-size:clamp(2rem,4vw,3rem)">Daisy Days</div></div>
+        <div class="scale-row"><div class="scale-tok">h2 · clamp 1.8–3rem</div><div class="smp-fredoka" style="font-size:clamp(1.5rem,3vw,2.2rem)">This Week at a Glance</div></div>
+        <div class="scale-row"><div class="scale-tok">quote · Fredoka · 2rem</div><div class="smp-fredoka" style="font-size:clamp(1.2rem,2.2vw,1.7rem); color:var(--text-dark)">Small steps, big smiles.</div></div>
+        <div class="scale-row"><div class="scale-tok">body · Quicksand 600</div><div class="smp-quick" style="font-size:1.05rem">Friendly, rounded, and easy to read at any size.</div></div>
+        <div class="scale-row"><div class="scale-tok">badge · Fredoka · pill</div><div><span class="badge" style="margin:0;">Mission Brief</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 COMPONENTS -->
+  <section class="section s-pink" id="components">
+    <div class="deco" style="top:-20px;right:-15px;width:150px;height:150px;"><svg viewBox="0 0 100 100"><g stroke="#2D2D2D" stroke-width="3"><circle cx="50" cy="22" r="12" fill="#fff"/><circle cx="78" cy="50" r="12" fill="#fff"/><circle cx="50" cy="78" r="12" fill="#fff"/><circle cx="22" cy="50" r="12" fill="#fff"/><circle cx="50" cy="50" r="14" fill="#A8E6CF"/></g></svg></div>
+    <div class="wrap">
+      <span class="badge">04 · Components</span>
+      <h2 class="sec-h">Live Components</h2>
+      <p class="lead">Every block uses the template's <strong>actual CSS</strong> — bordered cards, pill badges, colored day-headers, circle-icon info cards, quote boxes, step circles, and dot-bullet lists.</p>
+
+      <div class="comp" style="margin-top:36px">
+        <div class="comp-h">Day Cards &amp; Info Cards</div>
+        <div class="row">
+          <div class="day-card"><div class="day-header dh-pink">Mon</div><ul class="day-body"><li>Kickoff</li><li>Sketch</li></ul></div>
+          <div class="day-card"><div class="day-header dh-green">Tue</div><ul class="day-body"><li>Build</li><li>Review</li></ul></div>
+          <div class="day-card"><div class="day-header dh-coral">Wed</div><ul class="day-body"><li>Test</li><li>Polish</li></ul></div>
+          <div class="info-card"><div class="ic ic2">★</div><h4>One subject</h4><p>One main container per slide, framed and surrounded by ornaments.</p></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Quote · Steps · Bullets</div>
+        <div class="row" style="align-items:stretch">
+          <div class="quote-box"><div class="quote-mark">“</div><div class="quote-text">Small steps, big smiles — every slide is a page in a picture book.</div><div class="quote-author">— The Daisy Days Studio</div></div>
+          <div style="display:flex; flex-direction:column; gap:18px; min-width:240px;">
+            <div class="row">
+              <div class="step-circle sc1">1</div><div class="process-arrow">→</div><div class="step-circle sc2">2</div><div class="process-arrow">→</div><div class="step-circle sc3">3</div>
+            </div>
+            <ul class="bullet-list"><li>Outlined dot bullets</li><li>Never bare hyphens</li><li>Butter fill by default</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Chunky Bar Chart</div>
+        <div class="card" style="padding:28px 32px; display:inline-block;">
+          <div class="bar-chart" id="barChart">
+            <div class="bar-col"><div class="bar-v">31</div><div class="bar b1" data-h="46%"></div><div class="bar-x">Mon</div></div>
+            <div class="bar-col"><div class="bar-v">58</div><div class="bar b2" data-h="68%"></div><div class="bar-x">Tue</div></div>
+            <div class="bar-col"><div class="bar-v">88</div><div class="bar b3" data-h="95%"></div><div class="bar-x">Wed</div></div>
+            <div class="bar-col"><div class="bar-v">47</div><div class="bar b4" data-h="58%"></div><div class="bar-x">Thu</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 DEPTH -->
+  <section class="section s-butter" id="depth">
+    <div class="deco" style="bottom:8%;right:7%;width:120px;height:90px;"><svg viewBox="0 0 130 100"><g fill="none" stroke="#2D2D2D" stroke-width="4" stroke-linecap="round"><path d="M15 90 A50 50 0 0 1 115 90" stroke="#F8635F"/><path d="M28 90 A37 37 0 0 1 102 90" stroke="#7ECDC0"/><path d="M41 90 A24 24 0 0 1 89 90" stroke="#D4A5E8"/></g></svg></div>
+    <div class="wrap">
+      <span class="badge">05 · Depth &amp; Shape</span>
+      <h2 class="sec-h">Sticker On Paper</h2>
+      <p class="lead">Depth is 2D and graphic: a thick charcoal outline plus a <strong>solid charcoal offset shadow</strong> with zero blur. No gradients, no glow, no glass. Corners are always rounded — the smallest radius is 4px, most are 20px+.</p>
+      <div class="row" style="margin-top:36px; gap:28px;">
+        <div class="card" style="padding:24px 30px; background:#fff;"><div style="font-family:var(--f-display); font-size:1.1rem;">Default card</div><div style="font-weight:600; font-size:.84rem; color:var(--text-muted); margin-top:6px;">3px outline · 6px offset shadow · 20px radius</div></div>
+        <span class="badge" style="margin:0; font-size:1rem;">Pill badge · 50px radius</span>
+        <div class="step-circle sc1" style="width:64px;height:64px;font-size:1.4rem;">●</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 DO / DON'T -->
+  <section class="section s-mint on-color" id="dodont">
+    <div class="deco" style="top:10%;left:4%;width:64px;height:64px;"><svg viewBox="0 0 100 100"><path d="M50 5 L61 39 L97 39 L68 60 L79 95 L50 73 L21 95 L32 60 L3 39 L39 39 Z" fill="#fff" stroke="#2D2D2D" stroke-width="4" stroke-linejoin="round"/></svg></div>
+    <div class="wrap">
+      <span class="badge">06 · Do &amp; Don't</span>
+      <h2 class="sec-h">Storybook Rules</h2>
+      <div class="dodont">
+        <div class="dd do">
+          <div class="dd-h">Do</div>
+          <ul>
+            <li>Pair Fredoka One headlines with Quicksand body, strictly by role.</li>
+            <li>Give every container a 3px charcoal outline + hard offset shadow.</li>
+            <li>Add the 3px text-shadow to headlines on colored surfaces.</li>
+            <li>Cluster 3–7 ornaments around every slide's edges.</li>
+            <li>Use outlined coloured dots as bullets — never bare hyphens.</li>
+            <li>Reserve coral for small markers only.</li>
+          </ul>
+        </div>
+        <div class="dd dont">
+          <div class="dd-h">Don't</div>
+          <ul>
+            <li>Use any third font, or cross the two face roles.</li>
+            <li>Use square corners — everything has radius.</li>
+            <li>Use blurred or rgba shadows — solid charcoal offsets only.</li>
+            <li>Use coloured borders — all borders are charcoal.</li>
+            <li>Flood a whole surface with coral.</li>
+            <li>Leave any corner empty of decorations.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 CJK -->
+  <section class="section s-sky on-color" id="cjk">
+    <div class="deco" style="top:8%;right:6%;width:120px;height:120px;"><svg viewBox="0 0 100 100"><g stroke="#2D2D2D" stroke-width="3"><circle cx="50" cy="50" r="20" fill="#FDE68A"/><g stroke-linecap="round" stroke-width="4"><line x1="50" y1="8" x2="50" y2="20"/><line x1="50" y1="80" x2="50" y2="92"/><line x1="8" y1="50" x2="20" y2="50"/><line x1="80" y1="50" x2="92" y2="50"/><line x1="20" y1="20" x2="29" y2="29"/><line x1="71" y1="71" x2="80" y2="80"/><line x1="80" y1="20" x2="71" y2="29"/><line x1="29" y1="71" x2="20" y2="80"/></g></g></svg></div>
+    <div class="wrap">
+      <span class="badge">07 · 中文 · CJK</span>
+      <h2 class="sec-h">International Content</h2>
+      <p class="lead">Keep the storybook warmth in Chinese with <strong>站酷小薇体 ZCOOL XiaoWei</strong> for headlines and <strong>悠哉字体 Yozai</strong> for body. Keep the outlines, offset shadows, rounded corners, and ornament wreath — they carry the voice when the face changes.</p>
+      <div class="cjk-card">
+        <div class="cjk-display">雏菊的日子</div>
+        <div class="cjk-body">每一页都是绘本里的一页。圆润的字体、炭黑描边、实心偏移阴影，和角落里的雏菊、星星与彩虹，一起把温暖留在画面里。</div>
+        <div class="cjk-tag">站酷小薇体 ZCOOL XiaoWei · 悠哉字体 Yozai</div>
+      </div>
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Latin</th><th>Chinese</th></tr></thead>
+        <tbody>
+          <tr><td>Display / Headline</td><td>Fredoka One</td><td class="cn">站酷小薇体 ZCOOL XiaoWei</td></tr>
+          <tr><td>Body / Meta</td><td>Quicksand 500–600</td><td class="cn">悠哉字体 Yozai</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CLOSE -->
+  <footer class="section s-lav on-color close" id="end">
+    <div class="deco" style="top:-20px;left:-15px;width:160px;height:160px;"><svg viewBox="0 0 100 100"><g stroke="#2D2D2D" stroke-width="3"><circle cx="50" cy="22" r="12" fill="#fff"/><circle cx="78" cy="50" r="12" fill="#fff"/><circle cx="50" cy="78" r="12" fill="#fff"/><circle cx="22" cy="50" r="12" fill="#fff"/><circle cx="50" cy="50" r="14" fill="#F8635F"/></g></svg></div>
+    <div class="deco" style="bottom:6%;right:7%;width:70px;height:70px;"><svg viewBox="0 0 100 100"><path d="M50 5 L61 39 L97 39 L68 60 L79 95 L50 73 L21 95 L32 60 L3 39 L39 39 Z" fill="#FDE68A" stroke="#2D2D2D" stroke-width="4" stroke-linejoin="round"/></svg></div>
+    <div class="wrap">
+      <h2 class="big">Daisy Days</h2>
+      <p>One of 34 systems in Beautiful HTML Templates. Have a sunny day!</p>
+      <div class="close-links">
+        <a href="index.html">&#8592; All Systems</a>
+        <a class="coral" href="../templates/daisy-days/template.html">Open Live Deck</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      var progress=document.getElementById('progress'), counter=document.getElementById('counter');
+      var secs=Array.prototype.slice.call(document.querySelectorAll('.section'));
+      function onScroll(){ var h=document.documentElement; var sc=h.scrollTop/(h.scrollHeight-h.clientHeight); progress.style.width=(sc*100)+'%'; var mid=h.scrollTop+innerHeight*0.4, idx=1; for(var i=0;i<secs.length;i++){ if(secs[i].offsetTop<=mid) idx=i+1; } counter.textContent=String(Math.min(idx,secs.length)).padStart(2,'0')+' / '+String(secs.length).padStart(2,'0'); }
+      addEventListener('scroll', onScroll, {passive:true}); addEventListener('resize', onScroll); onScroll();
+      var bc=document.getElementById('barChart'), done=false;
+      function go(){ if(done)return; done=true; bc.querySelectorAll('.bar').forEach(function(b,i){ setTimeout(function(){ b.style.height=b.dataset.h; }, i*110); }); }
+      if('IntersectionObserver' in window){ new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)go();});},{threshold:0.4}).observe(bc); } else go();
+    })();
+  </script>
+</body>
+</html>

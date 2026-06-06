@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emerald Editorial — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,700;6..96,800;6..96,900&family=Manrope:wght@500;700;800&family=LXGW+WenKai+TC&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#3CD896;
+    --bg-2:#2DC684;
+    --bg-3:#25B377;
+    --ink:#0F1A5C;
+    --ink-2:#1B2774;
+    --paper:#F1E9D6;
+    --rule:rgba(15,26,92,0.22);
+    --serif:'Bodoni Moda','LXGW WenKai TC','Noto Serif SC',Georgia,serif;
+    --sans:'Manrope','Noto Sans SC',system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:500;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--ink);color:var(--bg);}
+
+  /* ---------- fixed chrome ---------- */
+  #progress{position:fixed;top:0;left:0;height:4px;width:0%;background:var(--ink);z-index:100;}
+  .chrome{position:fixed;z-index:99;font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;}
+  #backlink a{color:var(--bg);background:var(--ink);text-decoration:none;padding:9px 18px;display:inline-block;}
+  #backlink{top:22px;left:28px;}
+  #counter{top:22px;right:28px;color:var(--bg);background:var(--ink);padding:9px 16px;letter-spacing:0.12em;}
+
+  /* ---------- layout primitives ---------- */
+  section{max-width:1280px;margin:0 auto;padding:clamp(82px,10vw,130px) clamp(26px,6vw,110px) clamp(60px,7vw,90px);position:relative;}
+  .eyebrow{font-family:var(--sans);font-weight:800;font-size:clamp(12px,1.3vw,16px);letter-spacing:0.18em;text-transform:uppercase;color:var(--ink);}
+  .sec-head{margin-bottom:clamp(40px,5vw,64px);}
+  .sec-head .row{display:flex;justify-content:space-between;align-items:baseline;border-bottom:4px solid var(--ink);padding-bottom:14px;margin-bottom:clamp(26px,3.4vw,40px);}
+  .sec-head .row .no{font-family:var(--serif);font-weight:900;font-size:clamp(28px,3.4vw,52px);line-height:1;}
+  h2{font-family:var(--serif);font-weight:900;font-size:clamp(42px,7.6vw,100px);line-height:0.92;letter-spacing:-0.02em;color:var(--ink);}
+  .lede{font-family:var(--sans);font-weight:500;font-size:clamp(18px,2vw,28px);line-height:1.5;max-width:54ch;margin-top:clamp(20px,2.6vw,32px);color:var(--ink);}
+  .footline{display:flex;justify-content:space-between;align-items:center;font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);border-top:4px solid var(--ink);margin-top:clamp(50px,6vw,82px);padding-top:16px;}
+
+  /* ---------- double-rule ornament ---------- */
+  .ornament{display:flex;align-items:center;justify-content:center;gap:clamp(14px,1.8vw,26px);color:var(--ink);}
+  .orn-rules{flex:1;display:flex;flex-direction:column;gap:3px;min-width:40px;}
+  .orn-rules i{height:4px;background:currentColor;display:block;}
+  .orn-word{font-family:var(--serif);font-weight:800;font-size:clamp(26px,4vw,64px);line-height:1;letter-spacing:0.02em;flex:none;}
+
+  /* ---------- hero ---------- */
+  .hero{padding-top:clamp(92px,11vw,150px);text-align:center;}
+  .masthead{display:flex;justify-content:space-between;align-items:center;font-family:var(--sans);font-weight:700;font-size:clamp(11px,1.2vw,15px);letter-spacing:0.1em;text-transform:uppercase;border-bottom:4px solid var(--ink);padding-bottom:14px;margin-bottom:clamp(40px,6vw,80px);}
+  .hero .cover-eyebrow{font-family:var(--sans);font-weight:800;font-size:clamp(12px,1.3vw,17px);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:clamp(20px,2.6vw,34px);}
+  .hero .cv-the{font-family:var(--serif);font-weight:800;font-size:clamp(24px,3.4vw,56px);line-height:1;}
+  h1{font-family:var(--serif);font-weight:900;font-size:clamp(62px,15vw,200px);line-height:0.9;letter-spacing:-0.015em;color:var(--ink);}
+  .hero .ornament{margin:clamp(8px,1.2vw,16px) auto;max-width:780px;}
+  .hero-lede{font-family:var(--sans);font-weight:500;font-size:clamp(18px,2vw,28px);line-height:1.5;max-width:50ch;margin:clamp(30px,4vw,48px) auto 0;}
+
+  /* nav agenda */
+  .nav{margin-top:clamp(50px,6.5vw,90px);text-align:left;}
+  .nav a{display:grid;grid-template-columns:clamp(56px,8vw,120px) 1fr auto;gap:clamp(16px,2.5vw,40px);align-items:baseline;text-decoration:none;color:var(--ink);border-top:4px solid var(--ink);padding:clamp(16px,2vw,26px) 4px;transition:background .15s,color .15s,padding-left .15s;}
+  .nav a:last-child{border-bottom:4px solid var(--ink);}
+  .nav a:hover{background:var(--ink);color:var(--bg);padding-left:16px;}
+  .nav .a-no{font-family:var(--serif);font-weight:900;font-size:clamp(30px,5vw,80px);line-height:0.9;}
+  .nav .a-nm{font-family:var(--serif);font-weight:800;font-size:clamp(24px,4vw,56px);line-height:0.95;letter-spacing:-0.01em;}
+  .nav .a-kind{font-family:var(--sans);font-weight:700;font-size:clamp(11px,1.2vw,15px);letter-spacing:0.1em;text-transform:uppercase;}
+
+  /* ---------- §02 colours ---------- */
+  .swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);}
+  .sw{display:flex;flex-direction:column;}
+  .sw .chip{height:clamp(150px,18vw,240px);display:flex;align-items:flex-end;padding:20px;}
+  .sw .chip .big{font-family:var(--serif);font-weight:900;font-size:clamp(40px,5vw,72px);line-height:0.8;}
+  .sw .meta{border-top:4px solid var(--ink);padding-top:14px;margin-top:0;}
+  .sw .meta .nm{font-family:var(--serif);font-weight:800;font-size:clamp(20px,2.2vw,30px);line-height:1;}
+  .sw .meta .hex{font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:0.06em;margin-top:8px;}
+  .sw .meta .use{font-family:var(--sans);font-weight:500;font-size:14px;line-height:1.45;margin-top:10px;opacity:.85;}
+  .variants{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(34px,4.5vw,56px);border-top:4px solid var(--ink);padding-top:clamp(20px,2.6vw,30px);}
+  .variants .v{display:flex;align-items:center;gap:10px;font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;}
+  .variants .v i{width:26px;height:26px;display:inline-block;}
+
+  /* ---------- §03 typography ---------- */
+  .specimen{border-top:4px solid var(--ink);border-bottom:4px solid var(--ink);padding:clamp(24px,3vw,40px) 0;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;}
+  .specimen .glyph{font-family:var(--serif);font-weight:900;font-size:clamp(100px,22vw,300px);line-height:0.8;letter-spacing:-0.03em;}
+  .specimen .sp-meta{font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;text-align:right;line-height:1.8;}
+  .ladder{margin-top:clamp(40px,5vw,64px);}
+  .ladder .l{display:flex;align-items:baseline;gap:clamp(14px,2.5vw,40px);border-bottom:4px solid var(--ink);padding:clamp(12px,1.6vw,22px) 0;}
+  .ladder .l .tag{font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;flex:none;width:120px;opacity:.8;}
+  .ladder .l .smp{font-family:var(--serif);font-weight:900;line-height:0.9;letter-spacing:-0.02em;white-space:nowrap;}
+  .chrome-ladder{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(40px,5vw,64px);}
+  .chrome-ladder .c{background:var(--ink);color:var(--bg);font-family:var(--sans);font-weight:800;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;padding:10px 20px;}
+  .orn-demo{margin-top:clamp(44px,5.5vw,72px);}
+  .orn-demo .cap{font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;text-align:center;margin-top:18px;opacity:.8;}
+
+  /* ---------- §04 components ---------- */
+  .comp{margin-top:clamp(40px,5vw,64px);}
+  .comp h3{font-family:var(--sans);font-weight:800;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;border-bottom:4px solid var(--ink);padding-bottom:12px;margin-bottom:20px;}
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.5vw,20px);}
+  .tile{padding:clamp(22px,2.6vw,34px);min-height:clamp(170px,19vw,250px);display:flex;flex-direction:column;justify-content:space-between;}
+  .tile.ink{background:var(--ink);color:var(--bg);}
+  .tile.paper{background:var(--paper);color:var(--ink);}
+  .tile .t-fig{font-family:var(--serif);font-weight:900;font-size:clamp(52px,7vw,120px);line-height:0.82;letter-spacing:-0.03em;}
+  .tile .t-fig sub{font-size:0.42em;vertical-align:baseline;font-weight:800;}
+  .tile .t-cap{font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;}
+  .tile .delta{align-self:flex-start;font-family:var(--sans);font-weight:800;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:6px 12px;}
+  .tile.ink .delta{background:var(--bg);color:var(--ink);}
+  .tile.paper .delta{background:var(--ink);color:var(--bg);}
+  .pills-row{display:flex;flex-wrap:wrap;align-items:center;gap:14px;}
+  .pill-rect{background:var(--ink);color:var(--bg);font-family:var(--sans);font-weight:800;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;padding:10px 22px;}
+  .pill-rect.delta{background:var(--bg);color:var(--ink);outline:4px solid var(--ink);outline-offset:-4px;}
+  .chart-card{background:var(--ink);color:var(--bg);padding:clamp(28px,3.4vw,50px);}
+  .chart-card .ct{font-family:var(--serif);font-weight:800;font-size:clamp(26px,3vw,48px);line-height:1;margin-bottom:24px;}
+  .chart-card .plot{display:flex;align-items:flex-end;gap:clamp(12px,2vw,28px);height:240px;border-bottom:4px solid var(--bg);padding-bottom:0;position:relative;}
+  .chart-card .bar{flex:1;position:relative;}
+  .chart-card .bar i{display:block;width:100%;}
+  .chart-card .bar .v{position:absolute;top:-32px;left:0;right:0;text-align:center;font-family:var(--serif);font-weight:900;font-size:clamp(16px,1.8vw,26px);}
+  .chart-card .xlabels{display:flex;gap:clamp(12px,2vw,28px);margin-top:14px;}
+  .chart-card .xlabels span{flex:1;text-align:center;font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;opacity:.8;}
+  /* agenda demo */
+  .agenda-demo a,.agenda-demo .ad{display:grid;grid-template-columns:90px 1fr auto;gap:24px;align-items:baseline;border-top:4px solid var(--ink);padding:18px 0;}
+  .agenda-demo .ad:last-child{border-bottom:4px solid var(--ink);}
+  .agenda-demo .ad-no{font-family:var(--serif);font-weight:900;font-size:clamp(28px,3.4vw,52px);line-height:0.9;}
+  .agenda-demo .ad-nm{font-family:var(--serif);font-weight:800;font-size:clamp(20px,2.4vw,38px);line-height:1;letter-spacing:-0.01em;}
+  .agenda-demo .ad-kind{font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;}
+  /* opener panel */
+  .opener{display:grid;grid-template-columns:clamp(160px,30%,360px) 1fr;gap:0;}
+  .opener .panel{background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;padding:30px;min-height:clamp(200px,24vw,320px);}
+  .opener .panel .num{font-family:var(--serif);font-weight:900;font-size:clamp(120px,22vw,300px);line-height:0.8;letter-spacing:-0.04em;}
+  .opener .side{padding:clamp(22px,3vw,44px);display:flex;flex-direction:column;justify-content:center;}
+  .opener .side .ob{font-family:var(--serif);font-weight:800;font-size:clamp(24px,3vw,44px);line-height:1;}
+  .opener .side p{font-family:var(--sans);font-weight:500;font-size:clamp(15px,1.6vw,20px);line-height:1.5;margin-top:14px;}
+
+  /* ---------- §05 layout ---------- */
+  .lay-table{border-top:4px solid var(--ink);}
+  .lay-table .r{display:grid;grid-template-columns:clamp(120px,20%,220px) 1fr;gap:24px;border-bottom:4px solid var(--ink);padding:clamp(16px,2vw,26px) 0;align-items:baseline;}
+  .lay-table .r .k{font-family:var(--sans);font-weight:800;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;}
+  .lay-table .r .v{font-family:var(--sans);font-weight:500;font-size:clamp(15px,1.6vw,20px);line-height:1.4;}
+  .lay-table .r .v b{font-family:var(--serif);font-weight:800;}
+  .rules-demo{display:flex;flex-direction:column;gap:clamp(20px,2.6vw,34px);margin-top:clamp(40px,5vw,64px);}
+  .rules-demo .rd{display:flex;align-items:center;gap:20px;}
+  .rules-demo .rd .lbl{font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;flex:none;width:160px;}
+  .rules-demo .rd .ln{flex:1;background:var(--ink);}
+
+  /* ---------- §06 depth ---------- */
+  .depth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(8px,1vw,14px);}
+  .dc{padding:clamp(24px,3vw,40px);min-height:clamp(220px,26vw,320px);display:flex;flex-direction:column;}
+  .dc.emerald{outline:4px solid var(--ink);outline-offset:-4px;}
+  .dc.ink{background:var(--ink);color:var(--bg);}
+  .dc .dn{font-family:var(--serif);font-weight:900;font-size:clamp(40px,5vw,80px);line-height:0.8;}
+  .dc .dt{font-family:var(--serif);font-weight:800;font-size:clamp(20px,2.2vw,32px);line-height:1;margin:14px 0 12px;}
+  .dc p{font-family:var(--sans);font-weight:500;font-size:14px;line-height:1.5;}
+
+  /* ---------- §07 do & don't ---------- */
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:clamp(40px,5vw,64px);}
+  .dd .col{padding:clamp(24px,3vw,40px);}
+  .dd .do{background:var(--ink);color:var(--bg);}
+  .dd .dont{background:var(--paper);color:var(--ink);}
+  .dd .col h3{font-family:var(--serif);font-weight:900;font-size:clamp(28px,3.4vw,52px);line-height:1;margin-bottom:24px;}
+  .dd ul{list-style:none;}
+  .dd li{font-family:var(--sans);font-weight:500;font-size:clamp(15px,1.6vw,19px);line-height:1.4;padding:15px 0;display:flex;gap:14px;}
+  .dd .do li{border-bottom:4px solid var(--bg);}
+  .dd .dont li{border-bottom:4px solid var(--ink);}
+  .dd li:last-child{border-bottom:none!important;}
+  .dd li .mk{font-family:var(--serif);font-weight:900;flex:none;}
+
+  /* ---------- §08 cjk ---------- */
+  .cjk-head{font-family:'LXGW WenKai TC','Noto Serif SC',serif;font-weight:400;font-size:clamp(54px,11vw,150px);line-height:1.06;letter-spacing:0.02em;color:var(--ink);text-align:center;}
+  .cjk-orn{margin:clamp(14px,1.8vw,24px) auto;max-width:560px;}
+  .cjk-orn .orn-word{font-family:'LXGW WenKai TC','Noto Serif SC',serif;font-weight:400;}
+  .cjk-body{font-family:'Noto Serif SC',serif;font-weight:400;font-size:clamp(17px,1.8vw,22px);line-height:1.6;color:var(--ink);max-width:42ch;margin:clamp(28px,3.5vw,44px) auto 0;text-align:center;}
+  .cjk-pair{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .cjk-pair .cp{border-top:4px solid var(--ink);padding-top:16px;}
+  .cjk-pair .cp .role{font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;}
+  .cjk-pair .cp .face{font-size:clamp(34px,4vw,56px);color:var(--ink);margin:12px 0 8px;line-height:1;}
+  .cjk-pair .cp.kai .face{font-family:'LXGW WenKai TC','Noto Serif SC',serif;font-weight:400;}
+  .cjk-pair .cp.song .face{font-family:'Noto Serif SC',serif;font-weight:900;}
+  .cjk-pair .cp.hei .face{font-family:'Noto Sans SC',sans-serif;font-weight:700;}
+  .cjk-pair .cp .meta{font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:0.05em;opacity:.8;}
+  .cjk-note{background:var(--ink);color:var(--bg);padding:clamp(26px,3.4vw,46px);margin-top:clamp(40px,5vw,64px);}
+  .cjk-note h4{font-family:var(--sans);font-weight:800;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:18px;}
+  .cjk-note ul{list-style:none;}
+  .cjk-note li{font-family:'Noto Serif SC',serif;font-size:clamp(15px,1.6vw,19px);line-height:1.55;padding:11px 0;border-bottom:2px solid rgba(241,233,214,0.25);}
+  .cjk-note li:last-child{border-bottom:none;}
+
+  /* ---------- close ---------- */
+  .close{max-width:none;padding:clamp(70px,9vw,120px) clamp(26px,6vw,110px);}
+  .close .panel{background:var(--ink);color:var(--bg);padding:clamp(56px,8vw,110px) clamp(30px,6vw,90px);text-align:center;position:relative;}
+  .close .panel .mh{display:flex;justify-content:space-between;font-family:var(--sans);font-weight:700;font-size:clamp(11px,1.2vw,14px);letter-spacing:0.1em;text-transform:uppercase;border-bottom:4px solid var(--bg);padding-bottom:14px;margin-bottom:clamp(40px,6vw,72px);}
+  .close .panel h2{color:var(--bg);font-size:clamp(54px,12vw,160px);line-height:0.9;}
+  .close .panel .ornament{color:var(--bg);margin:clamp(14px,2vw,24px) auto;max-width:620px;}
+  .close .panel .fl{display:flex;justify-content:space-between;align-items:center;font-family:var(--sans);font-weight:700;font-size:clamp(11px,1.2vw,14px);letter-spacing:0.1em;text-transform:uppercase;border-top:4px solid var(--bg);padding-top:14px;margin-top:clamp(40px,6vw,72px);}
+  .close .panel .fl a{color:var(--bg);text-decoration:none;}
+
+  @media(max-width:880px){
+    .swatches,.tiles,.cjk-pair,.depth-grid{grid-template-columns:1fr;}
+    .tiles{grid-template-columns:repeat(2,1fr);}
+    .dd,.opener,.lay-table .r,.nav a{grid-template-columns:1fr;}
+    .nav a{gap:6px;}
+    .specimen{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="chrome" id="backlink"><a href="index.html">← Index</a></div>
+<div class="chrome" id="counter">01 / 10</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="top">
+  <div class="masthead"><span>Emerald Editorial · Vol. 01</span><span>Design System · SS 2026</span></div>
+  <div class="cover-eyebrow">Design System Specification</div>
+  <div class="cv-the">The</div>
+  <h1>Emerald</h1>
+  <div class="ornament"><span class="orn-rules"><i></i><i></i></span><span class="orn-word">Of</span><span class="orn-rules"><i></i><i></i></span></div>
+  <h1>Editorial</h1>
+  <p class="hero-lede">A magazine-cover business deck: Bodoni Moda at weight 900, a saturated emerald canvas, deep navy ink, and the signature double-rule masthead ornament.</p>
+
+  <nav class="nav">
+    <a href="#overview"><span class="a-no">01</span><span class="a-nm">Overview</span><span class="a-kind">The premise</span></a>
+    <a href="#colours"><span class="a-no">02</span><span class="a-nm">Colours</span><span class="a-kind">Emerald · Navy · Paper</span></a>
+    <a href="#typography"><span class="a-no">03</span><span class="a-nm">Typography</span><span class="a-kind">Bodoni 900 · Manrope</span></a>
+    <a href="#components"><span class="a-no">04</span><span class="a-nm">Components</span><span class="a-kind">Tiles · Pills · Charts</span></a>
+    <a href="#layout"><span class="a-no">05</span><span class="a-nm">Layout</span><span class="a-kind">1920 × 1080</span></a>
+    <a href="#depth"><span class="a-no">06</span><span class="a-nm">Depth</span><span class="a-kind">Flat · Inversion</span></a>
+    <a href="#dodont"><span class="a-no">07</span><span class="a-nm">Do &amp; Don't</span><span class="a-kind">Discipline</span></a>
+    <a href="#cjk"><span class="a-no">08</span><span class="a-nm">中文</span><span class="a-kind">CJK · Strategy C</span></a>
+  </nav>
+</section>
+
+<!-- ========== §01 OVERVIEW ========== -->
+<section id="overview">
+  <div class="sec-head">
+    <div class="row"><span class="eyebrow">§ 01 — Overview</span><span class="no">01</span></div>
+    <h2>Type leads,<br>not image.</h2>
+  </div>
+  <p class="lede">The foundational premise is a single face — Bodoni Moda at weight 900 — used at unapologetic scale: 92px for routine headlines, up to 460px for hero numerals. The serif is loud, theatrical, confident. Every slide leads with type.</p>
+
+  <div class="opener">
+    <div class="panel"><span class="num">01</span></div>
+    <div class="side">
+      <span class="ob">The section-opener panel</span>
+      <p>A solid navy panel holding a jumbo Bodoni numeral reads as a magazine title-page opening — heavy, anchored, ceremonial. The signature elevation device.</p>
+    </div>
+  </div>
+
+  <div class="footline"><span>Leadership · Quarterly review · Strategy readout</span><span>01 / 10</span></div>
+</section>
+
+<!-- ========== §02 COLOURS ========== -->
+<section id="colours">
+  <div class="sec-head">
+    <div class="row"><span class="eyebrow">§ 02 — Colours</span><span class="no">02</span></div>
+    <h2>Three colours,<br>printed in ink.</h2>
+  </div>
+  <p class="lede">The navy / emerald contrast is the system's chromatic identity. Every body of text is navy-on-emerald or emerald-on-navy. Paper breaks a row of all-navy tiles.</p>
+
+  <div class="swatches" style="margin-top:clamp(40px,5vw,64px)">
+    <div class="sw"><div class="chip" style="background:var(--bg)"><span class="big" style="color:var(--ink)">Aa</span></div><div class="meta"><div class="nm">Emerald</div><div class="hex">#3CD896 — BG / canvas</div><div class="use">The dominant slide surface. Saturated enough to read as printed ink.</div></div></div>
+    <div class="sw"><div class="chip" style="background:var(--ink)"><span class="big" style="color:var(--bg)">Aa</span></div><div class="meta"><div class="nm">Navy</div><div class="hex">#0F1A5C — INK / structure</div><div class="use">Text colour, inverse-panel surface, rule colour, border colour.</div></div></div>
+    <div class="sw"><div class="chip" style="background:var(--paper)"><span class="big" style="color:var(--ink)">Aa</span></div><div class="meta"><div class="nm">Paper</div><div class="hex">#F1E9D6 — alt tile</div><div class="use">The warm secondary surface. Alt tile fill and alt bar series.</div></div></div>
+  </div>
+
+  <div class="variants">
+    <span class="eyebrow" style="width:100%">Reserved tonal variants — used sparingly</span>
+    <span class="v"><i style="background:var(--bg-2)"></i>BG-2 #2DC684</span>
+    <span class="v"><i style="background:var(--bg-3)"></i>BG-3 #25B377</span>
+    <span class="v"><i style="background:var(--ink-2)"></i>INK-2 #1B2774</span>
+    <span class="v"><i style="background:var(--paper);outline:2px solid var(--ink)"></i>PAPER #F1E9D6</span>
+  </div>
+  <div class="footline"><span>No fourth chromatic family</span><span>02 / 10</span></div>
+</section>
+
+<!-- ========== §03 TYPOGRAPHY ========== -->
+<section id="typography">
+  <div class="sec-head">
+    <div class="row"><span class="eyebrow">§ 03 — Typography</span><span class="no">03</span></div>
+    <h2>Weight 900,<br>theatrical.</h2>
+  </div>
+
+  <div class="specimen">
+    <span class="glyph">Aa</span>
+    <span class="sp-meta">Bodoni Moda<br>Weight 900<br>Tracking −0.02em<br>Leading 0.9–0.95</span>
+  </div>
+
+  <div class="ladder">
+    <div class="l"><span class="tag">460 · numeral</span><span class="smp" style="font-size:clamp(44px,8vw,108px)">01</span></div>
+    <div class="l"><span class="tag">184 · cover</span><span class="smp" style="font-size:clamp(34px,6vw,76px)">Masthead</span></div>
+    <div class="l"><span class="tag">92 · headline</span><span class="smp" style="font-size:clamp(28px,4.4vw,56px)">Routine headline</span></div>
+    <div class="l"><span class="tag">800 · ornament</span><span class="smp" style="font-weight:800;font-size:clamp(24px,3.4vw,46px)">Ornament word</span></div>
+  </div>
+
+  <div class="chrome-ladder">
+    <span class="c">Eyebrow · 0.18em</span>
+    <span class="c">Label · 0.08em</span>
+    <span class="c">Tag · 0.12em</span>
+    <span class="c">Caption · 0.10em</span>
+    <span class="c" style="background:transparent;color:var(--ink);outline:3px solid var(--ink);outline-offset:-3px">Body · Manrope 500</span>
+  </div>
+
+  <div class="orn-demo">
+    <div class="ornament" style="max-width:760px;margin:0 auto"><span class="orn-rules"><i></i><i></i></span><span class="orn-word">Of</span><span class="orn-rules"><i></i><i></i></span></div>
+    <div class="cap">The double-rule ornament — two stacked 4px rules, 3px apart, bracketing a centered serif word</div>
+  </div>
+  <div class="footline"><span>Bodoni display · Manrope chrome — never crossed</span><span>03 / 10</span></div>
+</section>
+
+<!-- ========== §04 COMPONENTS ========== -->
+<section id="components">
+  <div class="sec-head">
+    <div class="row"><span class="eyebrow">§ 04 — Components</span><span class="no">04</span></div>
+    <h2>Strict rectangles,<br>inverse fills.</h2>
+  </div>
+
+  <div class="comp">
+    <h3>KPI tiles — inverse / paper rotation · 144px figure · delta pill</h3>
+    <div class="tiles">
+      <div class="tile ink"><span class="delta">↑ 12% YoY</span><div><div class="t-fig">94<sub>%</sub></div><div class="t-cap">Retention</div></div></div>
+      <div class="tile paper"><span class="delta">↑ 2.4×</span><div><div class="t-fig">2.4<sub>×</sub></div><div class="t-cap">Throughput</div></div></div>
+      <div class="tile ink"><span class="delta">New</span><div><div class="t-fig">12</div><div class="t-cap">Themes</div></div></div>
+      <div class="tile paper"><span class="delta">↓ 3 days</span><div><div class="t-fig">8<sub>d</sub></div><div class="t-cap">Cycle time</div></div></div>
+    </div>
+  </div>
+
+  <div class="comp">
+    <h3>Pills — mark · tag · delta · strict rectangle, no radius</h3>
+    <div class="pills-row">
+      <span class="pill-rect">Mark Pill</span>
+      <span class="pill-rect">Tag · Category</span>
+      <span class="pill-rect delta">↑ Delta</span>
+    </div>
+  </div>
+
+  <div class="comp">
+    <h3>Chart card — navy panel · emerald + paper bars · Bodoni values</h3>
+    <div class="chart-card">
+      <div class="ct">Quarterly trajectory</div>
+      <div class="plot">
+        <div class="bar"><span class="v">42</span><i style="height:90px;background:var(--bg)"></i></div>
+        <div class="bar"><span class="v">58</span><i style="height:128px;background:var(--paper)"></i></div>
+        <div class="bar"><span class="v">71</span><i style="height:160px;background:var(--bg)"></i></div>
+        <div class="bar"><span class="v">64</span><i style="height:144px;background:var(--paper)"></i></div>
+        <div class="bar"><span class="v">88</span><i style="height:200px;background:var(--bg)"></i></div>
+      </div>
+      <div class="xlabels"><span>Q1</span><span>Q2</span><span>Q3</span><span>Q4</span><span>Q5</span></div>
+    </div>
+  </div>
+
+  <div class="comp">
+    <h3>Agenda rows — three columns · 4px ink rules seal the list</h3>
+    <div class="agenda-demo">
+      <div class="ad"><span class="ad-no">01</span><span class="ad-nm">Context</span><span class="ad-kind">Background</span></div>
+      <div class="ad"><span class="ad-no">02</span><span class="ad-nm">Findings</span><span class="ad-kind">Analysis</span></div>
+      <div class="ad"><span class="ad-no">03</span><span class="ad-nm">Recommendation</span><span class="ad-kind">Decision</span></div>
+    </div>
+  </div>
+  <div class="footline"><span>Zero border-radius · zero shadow</span><span>04 / 10</span></div>
+</section>
+
+<!-- ========== §05 LAYOUT ========== -->
+<section id="layout">
+  <div class="sec-head">
+    <div class="row"><span class="eyebrow">§ 05 — Layout</span><span class="no">05</span></div>
+    <h2>110px margins,<br>4px rules.</h2>
+  </div>
+  <p class="lede">A fixed 1920×1080 canvas, scaled to fit by the deck runtime. The masthead and footline chrome anchor cover and closing slides as magazine title pages.</p>
+
+  <div class="lay-table" style="margin-top:clamp(40px,5vw,64px)">
+    <div class="r"><span class="k">pad-default</span><span class="v"><b>110px 110px 70px</b> — asymmetric content padding, slightly less bottom for the footline</span></div>
+    <div class="r"><span class="k">pad-cover</span><span class="v"><b>56px 110px</b> — less top padding to give the masthead room</span></div>
+    <div class="r"><span class="k">masthead-inset</span><span class="v"><b>56px top · 80px sides</b> — absolute masthead / footline inset</span></div>
+  </div>
+
+  <div class="rules-demo">
+    <div class="rd"><span class="lbl">2px · grid lines</span><span class="ln" style="height:2px;opacity:.5"></span></div>
+    <div class="rd"><span class="lbl">4px · structural</span><span class="ln" style="height:4px"></span></div>
+    <div class="rd"><span class="lbl">5px · cover ornament</span><span class="ln" style="height:5px"></span></div>
+  </div>
+  <div class="footline"><span>Masthead · Headline · Body · Footline</span><span>05 / 10</span></div>
+</section>
+
+<!-- ========== §06 DEPTH ========== -->
+<section id="depth">
+  <div class="sec-head">
+    <div class="row"><span class="eyebrow">§ 06 — Depth &amp; Elevation</span><span class="no">06</span></div>
+    <h2>Inversion is<br>the depth.</h2>
+  </div>
+  <div class="depth-grid">
+    <div class="dc emerald">
+      <div class="dn">01</div><div class="dt">Color-block inversion</div>
+      <p>A navy tile on the emerald canvas is the system's "elevated" element. Inversion replaces shadow entirely.</p>
+    </div>
+    <div class="dc ink">
+      <div class="dn">02</div><div class="dt">4px ink rules</div>
+      <p>Sections are separated by 4px navy lines that read as paper-fold creases between regions.</p>
+    </div>
+    <div class="dc emerald">
+      <div class="dn">03</div><div class="dt">Solid panels</div>
+      <p>Strict rectangles with full inverse fill give tiles the weight of printed ink blocks. No glass, no neumorphism.</p>
+    </div>
+  </div>
+  <div class="footline"><span>No box-shadow · no gradient · no blur</span><span>06 / 10</span></div>
+</section>
+
+<!-- ========== §07 DO & DON'T ========== -->
+<section id="dodont">
+  <div class="sec-head">
+    <div class="row"><span class="eyebrow">§ 07 — Do &amp; Don't</span><span class="no">07</span></div>
+    <h2>Hold the<br>commitment.</h2>
+  </div>
+  <div class="dd">
+    <div class="col do">
+      <h3>Do</h3>
+      <ul>
+        <li><span class="mk">+</span>Run every Bodoni headline at weight 900 with negative tracking and 0.9–0.95 leading.</li>
+        <li><span class="mk">+</span>Run every Manrope label uppercase with at least 0.05em letter-spacing.</li>
+        <li><span class="mk">+</span>Use 4px solid navy rules for every separator, list border, and tile divider.</li>
+        <li><span class="mk">+</span>Reach for the double-rule ornament around small connector words.</li>
+        <li><span class="mk">+</span>Keep every shape a strict rectangle — the no-radius commitment is the signature.</li>
+      </ul>
+    </div>
+    <div class="col dont">
+      <h3>Don't</h3>
+      <ul>
+        <li><span class="mk">–</span>Don't add box-shadow, gradient, or blur — the system is flat printed-ink.</li>
+        <li><span class="mk">–</span>Don't run Bodoni at weight 500, or introduce a third typeface.</li>
+        <li><span class="mk">–</span>Don't render Manrope in sentence case or without tracking.</li>
+        <li><span class="mk">–</span>Don't introduce a fourth colour beyond emerald / navy / paper.</li>
+        <li><span class="mk">–</span>Don't use border-radius, or 1–2px structural rules.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footline"><span>One display headline + 3–4 supporting tiles</span><span>07 / 10</span></div>
+</section>
+
+<!-- ========== §08 CJK ========== -->
+<section id="cjk">
+  <div class="sec-head">
+    <div class="row"><span class="eyebrow">§ 08 — 中文 / CJK</span><span class="no">08</span></div>
+  </div>
+  <h2 class="cjk-head">翡翠</h2>
+  <div class="ornament cjk-orn"><span class="orn-rules"><i></i><i></i></span><span class="orn-word">之</span><span class="orn-rules"><i></i><i></i></span></div>
+  <h2 class="cjk-head">编辑部</h2>
+  <p class="cjk-body">保留 Bodoni Moda 作拉丁展示字面,中文按字号回退:展示用霞鹜文楷,巨号数字用思源宋体 900,正文用思源宋体,chrome 标签用思源黑体。双线饰框同样适用 —— 用「之 / 与 / 的」替换拉丁连接词。</p>
+
+  <div class="cjk-pair">
+    <div class="cp kai"><div class="role">Display · 92–460px</div><div class="face">霞鹜文楷</div><div class="meta">LXGW WenKai TC · 400</div></div>
+    <div class="cp song"><div class="role">Jumbo figure · 144px+</div><div class="face">思源宋体</div><div class="meta">Noto Serif SC · 900</div></div>
+    <div class="cp hei"><div class="role">Chrome label / tag</div><div class="face">思源黑体</div><div class="meta">Noto Sans SC · 700–800</div></div>
+  </div>
+
+  <div class="cjk-note">
+    <h4>Universal CJK adjustments</h4>
+    <ul>
+      <li>放宽行高 0.05–0.08:全宽方块比拉丁字母更重 —— 展示提到 1.0–1.1,正文提到 1.55–1.65。</li>
+      <li>去掉中文标题负字距(Bodoni 展示用 -0.01 至 -0.03em 会挤压汉字),设为 letter-spacing 0。</li>
+      <li>中文不做 text-transform: uppercase —— 拉丁 chrome 全大写的字段在中文里改用思源黑体的字重与字距承载。</li>
+      <li>使用中文全角标点(,。:;「」),标题结尾不加句号;中英文边界加盘古之白:「2026 年 5 月」。</li>
+      <li>展示用文楷暖意承载剧场感,巨号数字用宋体 900 取其分量;不要用黑体做展示,会拍平成「现代企业」。</li>
+    </ul>
+  </div>
+  <div class="footline"><span>One font per sentence · role-level contrast</span><span>08 / 10</span></div>
+</section>
+
+<!-- ========== CLOSE ========== -->
+<section class="close" id="close">
+  <div class="panel">
+    <div class="mh"><span>Emerald Editorial · Vol. 01</span><span>Colophon</span></div>
+    <h2>Emerald<br>Editorial</h2>
+    <div class="ornament"><span class="orn-rules"><i></i><i></i></span><span class="orn-word">Fin</span><span class="orn-rules"><i></i><i></i></span></div>
+    <div class="fl"><span>Bodoni Moda · Manrope</span><a href="index.html">← Back to index</a></div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var progress = document.getElementById('progress');
+  var counter = document.getElementById('counter');
+  var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+  var total = ids.length;
+  function onScroll() {
+    var h = document.documentElement;
+    var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+    var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+    for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+    if (scrolled > 0.99) idx = total - 1;
+    counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  var bars = document.querySelectorAll('.chart-card .bar i');
+  bars.forEach(function (b) { var hh = b.style.height; b.style.height = '0px'; b.dataset.h = hh; });
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.style.transition = 'height .8s cubic-bezier(.2,.7,.2,1)'; e.target.style.height = e.target.dataset.h; io.unobserve(e.target); }
+    });
+  }, { threshold: 0.3 });
+  bars.forEach(function (b) { io.observe(b); });
+})();
+</script>
+</body>
+</html>

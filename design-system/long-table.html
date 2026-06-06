@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Long Table — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500;1,9..144,600&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF1E2;
+    --paper-d:#F2E5CF;
+    --ink:#B53D2A;
+    --ink-dp:#8E2D1F;
+    --ink-78:rgba(181,61,42,0.78);
+    --ink-50:rgba(181,61,42,0.5);
+    --ink-32:rgba(181,61,42,0.32);
+    --disp:'Bricolage Grotesque','Noto Serif SC',sans-serif;
+    --serif:'Fraunces','Noto Serif SC',Georgia,serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* paper-texture overlay — on every surface, Riso printed-stock quality */
+  body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 1px 1px, var(--ink-50) 0.5px, transparent 1px);background-size:4px 4px;opacity:.1;pointer-events:none;z-index:50;}
+  ::selection{background:var(--ink);color:var(--paper);}
+
+  /* ---------- fixed chrome ---------- */
+  #progress{position:fixed;top:0;left:0;height:2px;width:0%;background:var(--ink);z-index:100;}
+  .chrome{position:fixed;z-index:99;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(13px,1vw,16px);}
+  #backlink{top:22px;left:26px;}
+  #backlink a{color:var(--ink);text-decoration:none;border:1.5px solid var(--ink);border-radius:999px;padding:7px 18px;display:inline-block;background:var(--paper);}
+  #counter{top:24px;right:26px;color:var(--ink);letter-spacing:0.02em;}
+
+  /* ---------- layout primitives ---------- */
+  section{max-width:1280px;margin:0 auto;padding:clamp(78px,9vw,128px) clamp(26px,5vw,90px) clamp(72px,8vw,110px);position:relative;}
+  .ed-row{display:flex;align-items:center;gap:14px;margin-bottom:clamp(22px,3vw,38px);}
+  .ed-badge{width:clamp(34px,2.8vw,44px);height:clamp(34px,2.8vw,44px);border:1.5px solid var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(15px,1.3vw,20px);flex:none;}
+  .ed-label{font-family:var(--disp);font-weight:700;font-size:clamp(13px,1.1vw,16px);letter-spacing:0.18em;text-transform:uppercase;}
+  h2{font-family:var(--disp);font-weight:800;font-size:clamp(46px,8.4vw,140px);line-height:0.9;letter-spacing:-0.012em;text-transform:uppercase;}
+  .lede{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(18px,1.7vw,28px);line-height:1.45;max-width:48ch;margin-top:clamp(18px,2.4vw,30px);}
+  .topbar{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;border-bottom:1.5px solid var(--ink);padding-bottom:clamp(16px,2vw,26px);margin-bottom:clamp(34px,4.5vw,56px);}
+  .topbar .tb-label{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(15px,1.2vw,20px);}
+  .pagenum{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(14px,1vw,17px);color:var(--ink);text-align:right;border-top:1px solid var(--ink-32);margin-top:clamp(46px,6vw,76px);padding-top:14px;}
+
+  /* pills / tags */
+  .pill{display:inline-flex;align-items:center;border:1.5px solid var(--ink);border-radius:999px;padding:clamp(8px,1vh,13px) clamp(20px,2vw,30px);font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(15px,1.1vw,19px);color:var(--ink);}
+  .rect-tag{display:inline-flex;align-items:center;border:1.5px solid var(--ink);padding:clamp(7px,0.9vh,11px) clamp(14px,1.4vw,20px);font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(14px,1vw,17px);color:var(--ink);}
+
+  /* ---------- hero ---------- */
+  .hero{padding-top:clamp(96px,11vw,150px);}
+  .hero-grid{display:grid;grid-template-columns:1.35fr 0.65fr;gap:clamp(20px,3vw,50px);align-items:center;}
+  h1{font-family:var(--disp);font-weight:800;font-size:clamp(72px,13vw,184px);line-height:0.88;letter-spacing:-0.012em;text-transform:uppercase;}
+  .hero .tagline{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(19px,1.8vw,30px);line-height:1.35;max-width:34ch;margin-top:clamp(20px,2.4vw,32px);}
+  .hero .pills{display:flex;flex-wrap:wrap;gap:12px;margin-top:clamp(26px,3vw,40px);}
+  .hero .numeral{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(160px,26vw,420px);line-height:0.82;letter-spacing:-0.02em;text-align:center;}
+  .hero .numeral small{display:block;font-size:0.12em;letter-spacing:0.18em;font-style:italic;margin-top:0.1em;}
+
+  .nav{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,22px);margin-top:clamp(50px,6vw,84px);}
+  .nav a{text-decoration:none;color:var(--ink);border:1.5px solid var(--ink);padding:clamp(20px,2.2vw,30px) clamp(18px,1.8vw,24px);min-height:clamp(150px,15vw,200px);display:flex;flex-direction:column;justify-content:space-between;transition:background .18s ease,color .18s ease;}
+  .nav a:hover{background:var(--ink);color:var(--paper);}
+  .nav a:hover .n-badge{border-color:var(--paper);}
+  .nav .n-badge{width:clamp(30px,2.4vw,40px);height:clamp(30px,2.4vw,40px);border:1.5px solid var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;font-size:clamp(14px,1.1vw,18px);}
+  .nav .n-ttl{font-family:var(--disp);font-weight:800;font-size:clamp(22px,2.4vw,38px);line-height:0.95;letter-spacing:-0.008em;text-transform:uppercase;}
+  .nav .n-sub{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(13px,1vw,16px);margin-top:4px;}
+
+  /* ---------- §01 overview / card pattern ---------- */
+  .ov-grid{display:grid;grid-template-columns:1fr 0.8fr;gap:clamp(20px,3vw,44px);margin-top:clamp(40px,5vw,64px);align-items:start;}
+  .card-out{border:1.5px solid var(--ink);padding:clamp(22px,2.4vw,34px);}
+  .card-out .c-top{display:flex;justify-content:space-between;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(13px,1vw,16px);border-bottom:1px solid var(--ink-32);padding-bottom:14px;margin-bottom:16px;}
+  .card-out .c-name{font-family:var(--disp);font-weight:800;font-size:clamp(26px,3vw,48px);line-height:0.95;letter-spacing:-0.008em;text-transform:uppercase;}
+  .card-out .c-body{font-family:var(--serif);font-weight:400;font-size:clamp(15px,1.1vw,18px);line-height:1.45;margin-top:14px;}
+  .card-out .c-meta{display:flex;justify-content:space-between;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(13px,1vw,15px);color:var(--ink-78);border-top:1px dashed var(--ink-32);margin-top:18px;padding-top:14px;}
+  .ov-stats{display:flex;flex-direction:column;gap:clamp(14px,1.8vw,24px);}
+  .ov-stats .stat{border-bottom:1px solid var(--ink-32);padding-bottom:14px;}
+  .ov-stats .stat .big{font-family:var(--disp);font-weight:800;font-size:clamp(40px,5vw,80px);line-height:0.9;text-transform:uppercase;}
+  .ov-stats .stat .lab{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(15px,1.2vw,20px);margin-top:6px;}
+
+  /* ---------- §02 colours ---------- */
+  .single-ink{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,28px);margin-top:clamp(40px,5vw,64px);}
+  .ink-card{border:1.5px solid var(--ink);padding:clamp(24px,3vw,40px);min-height:clamp(180px,20vw,260px);display:flex;flex-direction:column;justify-content:space-between;}
+  .ink-card.filled{background:var(--ink);color:var(--paper);}
+  .ink-card .lab{font-family:var(--disp);font-weight:800;font-size:clamp(22px,2.4vw,36px);text-transform:uppercase;letter-spacing:-0.008em;}
+  .ink-card .hex{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(15px,1.2vw,20px);}
+  .opacity-ladder{margin-top:clamp(30px,3.6vw,48px);}
+  .opacity-ladder .ol-h{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(16px,1.4vw,22px);margin-bottom:18px;}
+  .opacity-ladder .bars{display:flex;flex-direction:column;gap:12px;}
+  .opacity-ladder .ob{display:flex;align-items:center;gap:16px;}
+  .opacity-ladder .ob .swatch{height:clamp(28px,3vw,42px);flex:1;}
+  .opacity-ladder .ob .pct{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(13px,1vw,16px);flex:none;width:140px;}
+
+  /* ---------- §03 typography ---------- */
+  .type-split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,28px);margin-top:clamp(40px,5vw,64px);}
+  .type-card{border:1.5px solid var(--ink);padding:clamp(24px,3vw,40px);}
+  .type-card .tlab{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(13px,1vw,16px);border-bottom:1px solid var(--ink-32);padding-bottom:12px;margin-bottom:18px;}
+  .type-card .disp-spec{font-family:var(--disp);font-weight:800;font-size:clamp(44px,6vw,92px);line-height:0.9;text-transform:uppercase;letter-spacing:-0.012em;}
+  .type-card .serif-spec{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(40px,5.4vw,84px);line-height:0.95;}
+  .type-card p{font-family:var(--serif);font-weight:400;font-size:clamp(14px,1.05vw,17px);line-height:1.5;margin-top:16px;}
+  .type-card p em{font-style:italic;}
+  .numeral-feature{border:1.5px solid var(--ink);margin-top:clamp(16px,2vw,28px);padding:clamp(24px,3vw,44px);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  .numeral-feature .nf-num{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(100px,16vw,260px);line-height:0.8;letter-spacing:-0.02em;}
+  .numeral-feature .nf-txt{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(16px,1.4vw,24px);line-height:1.4;max-width:24ch;}
+
+  /* ---------- §04 components ---------- */
+  .comp{margin-top:clamp(34px,4.2vw,54px);}
+  .comp .clabel{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(16px,1.4vw,22px);color:var(--ink-78);margin-bottom:18px;}
+  .row-wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
+  .ledger{border-top:1px solid var(--ink-32);}
+  .ledger .lr{display:grid;grid-template-columns:64px 1.6fr 0.9fr auto;gap:clamp(12px,2vw,28px);align-items:center;border-bottom:1px solid var(--ink-32);padding:clamp(12px,1.4vh,18px) 0;}
+  .ledger .lr .num{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(20px,2vw,30px);}
+  .ledger .lr .nm{font-family:var(--disp);font-weight:700;font-size:clamp(18px,1.5vw,26px);text-transform:uppercase;letter-spacing:-0.005em;}
+  .ledger .lr .desc{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(14px,1.1vw,18px);color:var(--ink-78);}
+
+  /* ---------- §05 layout ---------- */
+  .lay-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(16px,2vw,28px);margin-top:clamp(40px,5vw,64px);}
+  .lay-grid .card-out .h{font-family:var(--disp);font-weight:800;font-size:clamp(22px,2.2vw,32px);text-transform:uppercase;letter-spacing:-0.008em;margin-bottom:10px;}
+  .lay-grid .card-out p{font-family:var(--serif);font-weight:400;font-size:clamp(14px,1.05vw,17px);line-height:1.5;}
+  .lay-grid .card-out p em{font-style:italic;}
+
+  /* ---------- §06 depth ---------- */
+  .depth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .depth-grid .card-out{min-height:clamp(220px,24vw,300px);display:flex;flex-direction:column;}
+  .depth-grid .card-out .dn{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(36px,4vw,64px);line-height:0.85;}
+  .depth-grid .card-out .dh{font-family:var(--disp);font-weight:800;font-size:clamp(22px,2.2vw,32px);text-transform:uppercase;letter-spacing:-0.008em;margin:14px 0 12px;}
+  .depth-grid .card-out p{font-family:var(--serif);font-weight:400;font-size:clamp(14px,1.05vw,16px);line-height:1.5;}
+
+  /* ---------- §07 do & don't ---------- */
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,28px);margin-top:clamp(40px,5vw,64px);}
+  .dd .col{border:1.5px solid var(--ink);padding:clamp(24px,3vw,40px);}
+  .dd .col h3{font-family:var(--disp);font-weight:800;font-size:clamp(28px,3.2vw,48px);text-transform:uppercase;letter-spacing:-0.012em;margin-bottom:18px;}
+  .dd ul{list-style:none;}
+  .dd li{font-family:var(--serif);font-weight:400;font-size:clamp(15px,1.2vw,18px);line-height:1.45;padding:14px 0;border-bottom:1px dashed var(--ink-32);display:flex;gap:12px;}
+  .dd li:last-child{border-bottom:none;}
+  .dd li .mk{font-family:var(--serif);font-style:italic;font-weight:500;flex:none;}
+
+  /* ---------- §08 cjk ---------- */
+  .cjk-grid{display:grid;grid-template-columns:1fr 0.7fr;gap:clamp(20px,3vw,44px);align-items:center;margin-top:clamp(20px,2.4vw,32px);}
+  .cjk-head{font-family:'Noto Serif SC',serif;font-weight:700;font-size:clamp(50px,9vw,128px);line-height:1.06;letter-spacing:0;}
+  .cjk-num{font-family:'Noto Serif SC',serif;font-weight:400;font-size:clamp(120px,20vw,320px);line-height:0.8;text-align:center;}
+  .cjk-body{font-family:'Noto Serif SC',serif;font-weight:400;font-size:clamp(16px,1.6vw,21px);line-height:1.7;max-width:42ch;margin-top:clamp(24px,3vw,40px);}
+  .cjk-pair{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(34px,4.4vw,56px);}
+  .cjk-pair .cp{border:1.5px solid var(--ink);padding:clamp(22px,2.6vw,34px);}
+  .cjk-pair .cp .role{font-family:'Noto Serif SC',serif;font-weight:400;font-size:13px;color:var(--ink-78);}
+  .cjk-pair .cp .face{font-family:'Noto Serif SC',serif;font-size:clamp(32px,3.6vw,52px);margin:12px 0 8px;line-height:1.1;}
+  .cjk-pair .cp.hei .face{font-weight:700;}
+  .cjk-pair .cp.song .face{font-weight:400;}
+  .cjk-pair .cp .meta{font-family:'Noto Serif SC',serif;font-weight:400;font-size:12px;color:var(--ink-78);}
+  .cjk-note{border:1.5px solid var(--ink);padding:clamp(26px,3.2vw,44px);margin-top:clamp(34px,4.4vw,56px);}
+  .cjk-note .h{font-family:'Noto Serif SC',serif;font-weight:700;font-size:clamp(18px,1.8vw,26px);margin-bottom:18px;}
+  .cjk-note ul{list-style:none;}
+  .cjk-note li{font-family:'Noto Serif SC',serif;font-weight:400;font-size:clamp(15px,1.5vw,18px);line-height:1.7;padding:11px 0;border-bottom:1px dashed var(--ink-32);}
+  .cjk-note li:last-child{border-bottom:none;}
+
+  /* ---------- close ---------- */
+  .close{max-width:none;text-align:center;padding:clamp(96px,13vw,180px) clamp(26px,5vw,90px);border-top:1.5px solid var(--ink);}
+  .close .ed-row{justify-content:center;}
+  .close h2{font-size:clamp(60px,13vw,180px);margin:clamp(16px,2vw,28px) 0;}
+  .close .sign{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(18px,1.8vw,28px);}
+  .close .back{display:inline-block;margin-top:clamp(26px,3.2vw,42px);font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(16px,1.4vw,20px);color:var(--ink);text-decoration:none;border:1.5px solid var(--ink);border-radius:999px;padding:11px 28px;}
+
+  @media(max-width:880px){
+    .hero-grid,.ov-grid,.cjk-grid{grid-template-columns:1fr;}
+    .nav,.single-ink,.type-split,.lay-grid,.dd{grid-template-columns:1fr;}
+    .nav{grid-template-columns:repeat(2,1fr);}
+    .depth-grid,.cjk-pair{grid-template-columns:1fr;}
+    .ledger .lr{grid-template-columns:50px 1fr;gap:8px;}
+    .ledger .lr .desc,.ledger .lr .pill{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="chrome" id="backlink"><a href="index.html">← Index</a></div>
+<div class="chrome" id="counter">01 / 10</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="top">
+  <div class="ed-row"><span class="ed-badge">1</span><span class="ed-label">Edition 01 · Design System</span></div>
+  <div class="hero-grid">
+    <div>
+      <h1>Long<br>Table</h1>
+      <p class="tagline">A single-ink editorial system — warm rust terracotta on buttery cream, set like a supper-club program.</p>
+      <div class="pills">
+        <span class="pill">Reserve a seat</span>
+        <span class="pill">View the menu</span>
+      </div>
+    </div>
+    <div class="numeral">№8<small>EDITION</small></div>
+  </div>
+
+  <nav class="nav">
+    <a href="#overview"><span class="n-badge">1</span><span><span class="n-ttl">Overview</span><span class="n-sub">The premise</span></span></a>
+    <a href="#colours"><span class="n-badge">2</span><span><span class="n-ttl">Colour</span><span class="n-sub">One ink, opacity</span></span></a>
+    <a href="#typography"><span class="n-badge">3</span><span><span class="n-ttl">Type</span><span class="n-sub">Bricolage + Fraunces</span></span></a>
+    <a href="#components"><span class="n-badge">4</span><span><span class="n-ttl">Parts</span><span class="n-sub">Outlined only</span></span></a>
+    <a href="#layout"><span class="n-badge">5</span><span><span class="n-ttl">Layout</span><span class="n-sub">Fluid clamp()</span></span></a>
+    <a href="#depth"><span class="n-badge">6</span><span><span class="n-ttl">Depth</span><span class="n-sub">Flat, printed</span></span></a>
+    <a href="#dodont"><span class="n-badge">7</span><span><span class="n-ttl">Do &amp; Don't</span><span class="n-sub">The register</span></span></a>
+    <a href="#cjk"><span class="n-badge">8</span><span><span class="n-ttl">中文</span><span class="n-sub">CJK · Strategy A</span></span></a>
+  </nav>
+  <div class="pagenum">← → to navigate · 01</div>
+</section>
+
+<!-- ========== §01 OVERVIEW ========== -->
+<section id="overview">
+  <div class="topbar"><h2>Overview</h2><span class="tb-label">i. — the premise</span></div>
+  <p class="lede">Every visible mark — every headline, paragraph, border, rule, pill, and page number — is rendered in a single warm rust terracotta on buttery cream. The only chromatic variation is opacity. By committing to one ink, the system earns the calm authority of a printed object.</p>
+
+  <div class="ov-grid">
+    <div class="card-out">
+      <div class="c-top"><span>The card pattern</span><span>No. 01</span></div>
+      <div class="c-name">Printed,<br>not polished</div>
+      <p class="c-body">The aesthetic borrows from one-colour screen printing, letterpress posters, and Risograph stationery — formats where each additional colour is a separate printing pass and therefore a deliberate decision.</p>
+      <div class="c-meta"><span>solid divider above</span><span>dashed divider here</span></div>
+    </div>
+    <div class="ov-stats">
+      <div class="stat"><div class="big">1 ink</div><div class="lab">opacity is the only variation</div></div>
+      <div class="stat"><div class="big">4px</div><div class="lab">radial-dot paper texture, every slide</div></div>
+      <div class="stat"><div class="big">1.5px</div><div class="lab">outline weight — no fills, no shadows</div></div>
+    </div>
+  </div>
+  <div class="pagenum">Long Table · Edition 01 — 01</div>
+</section>
+
+<!-- ========== §02 COLOURS ========== -->
+<section id="colours">
+  <div class="topbar"><h2>Colour</h2><span class="tb-label">ii. — single ink</span></div>
+  <p class="lede">There is no "accent colour" to reach for. If a moment needs to stand out, scale up the type or reach for the italic Fraunces numeral — never introduce a second hue.</p>
+
+  <div class="single-ink">
+    <div class="ink-card"><div class="lab">Paper / Cream</div><div class="hex">#FAF1E2 — the only background</div></div>
+    <div class="ink-card filled"><div class="lab">Warm Rust Ink</div><div class="hex">#B53D2A — every mark</div></div>
+  </div>
+
+  <div class="opacity-ladder">
+    <p class="ol-h">Opacity is the entire palette —</p>
+    <div class="bars">
+      <div class="ob"><span class="pct">100% · primary</span><span class="swatch" style="background:rgba(181,61,42,1)"></span></div>
+      <div class="ob"><span class="pct">78% · metadata</span><span class="swatch" style="background:rgba(181,61,42,0.78)"></span></div>
+      <div class="ob"><span class="pct">50% · texture dots</span><span class="swatch" style="background:rgba(181,61,42,0.5)"></span></div>
+      <div class="ob"><span class="pct">32% · dividers</span><span class="swatch" style="background:rgba(181,61,42,0.32)"></span></div>
+      <div class="ob"><span class="pct">10% · paper grain</span><span class="swatch" style="background:rgba(181,61,42,0.1)"></span></div>
+    </div>
+  </div>
+  <div class="pagenum">Ink-deep #8E2D1F reserved — 02</div>
+</section>
+
+<!-- ========== §03 TYPOGRAPHY ========== -->
+<section id="typography">
+  <div class="topbar"><h2>Type</h2><span class="tb-label">iii. — two faces</span></div>
+
+  <div class="type-split">
+    <div class="type-card">
+      <div class="tlab">Bricolage Grotesque · 800 · uppercase · −0.012em</div>
+      <div class="disp-spec">Supper<br>Club</div>
+      <p>Carries every display moment — covers, headlines, card titles, course names. Always uppercase, weight 700–800, negative tracking. The impact of a hand-lettered poster.</p>
+    </div>
+    <div class="type-card">
+      <div class="tlab">Fraunces · italic-default · opsz 9..144</div>
+      <div class="serif-spec">An evening<br>of good things</div>
+      <p>Italic is the body voice — the slanted serif lends warmth and editorial personality. Roman appears only for <em>info-keys</em> and dense card descriptions.</p>
+    </div>
+  </div>
+
+  <div class="numeral-feature">
+    <div class="nf-num">№3</div>
+    <div class="nf-txt">A massive italic Fraunces edition numeral — up to 480px — is the system's signature display anchor. It replaces the illustration a poster would carry, in the same ink as everything else.</div>
+  </div>
+  <div class="pagenum">opsz axis engaged on both faces — 03</div>
+</section>
+
+<!-- ========== §04 COMPONENTS ========== -->
+<section id="components">
+  <div class="topbar"><h2>Parts</h2><span class="tb-label">iv. — outlined only</span></div>
+
+  <div class="comp">
+    <p class="clabel">Pills (999px, actions) · rect-tags (sharp, metadata) · edition badges</p>
+    <div class="row-wrap">
+      <span class="pill">Reserve a seat</span>
+      <span class="pill">View the menu</span>
+      <span class="rect-tag">Vegetarian</span>
+      <span class="rect-tag">Sold out</span>
+      <span class="ed-badge">5</span>
+      <span class="ed-label">Edition 05.</span>
+    </div>
+  </div>
+
+  <div class="comp">
+    <p class="clabel">Ledger rows — guestbook / reservation log, 1px @ 32% dividers</p>
+    <div class="ledger">
+      <div class="lr"><span class="num">i.</span><span class="nm">Heirloom tomatoes</span><span class="desc">with basil oil &amp; sea salt</span><span class="rect-tag">Course 1</span></div>
+      <div class="lr"><span class="num">ii.</span><span class="nm">Slow-roast lamb</span><span class="desc">white beans, rosemary</span><span class="rect-tag">Course 2</span></div>
+      <div class="lr"><span class="num">iii.</span><span class="nm">Almond &amp; pear tart</span><span class="desc">crème fraîche</span><span class="rect-tag">Dessert</span></div>
+    </div>
+  </div>
+
+  <div class="comp">
+    <p class="clabel">Outlined card — top metadata · solid divider · name · body · dashed meta</p>
+    <div class="ov-grid" style="margin-top:0;grid-template-columns:1fr 1fr">
+      <div class="card-out">
+        <div class="c-top"><span>The pattern</span><span>No. 04</span></div>
+        <div class="c-name">House style</div>
+        <p class="c-body">A 1.5px ink outline, an internal solid hairline above the content, and a dashed hairline below it. The solid / dashed pairing is the system's rhythm.</p>
+        <div class="c-meta"><span>outline only</span><span>no fill</span></div>
+      </div>
+      <div class="card-out">
+        <div class="c-top"><span>The pattern</span><span>No. 05</span></div>
+        <div class="c-name">Repeats</div>
+        <p class="c-body">Every primary content card carries this structure. Reach for the pill for actions, the rect-tag for status — and don't conflate the two.</p>
+        <div class="c-meta"><span>1.5px border</span><span>1px @ 32% rules</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="pagenum">No filled shapes exist — 04</div>
+</section>
+
+<!-- ========== §05 LAYOUT ========== -->
+<section id="layout">
+  <div class="topbar"><h2>Layout</h2><span class="tb-label">v. — fluid stage</span></div>
+  <p class="lede">A 100vw × 100vh canvas with clamp() units throughout — the same composition renders correctly on a laptop, a monitor, and a 1440p display without media queries.</p>
+
+  <div class="lay-grid">
+    <div class="card-out"><div class="h">Topbar divider</div><p>A Bricolage headline beside a small italic Fraunces label, sealed below by a <em>1.5px ink rule</em> — the universal page divider.</p></div>
+    <div class="card-out"><div class="h">Page number</div><p>Italic Fraunces, bottom-right of every slide. The marker is the system's spine.</p></div>
+    <div class="card-out"><div class="h">Nav hint</div><p>A faint italic Fraunces string at the bottom-left, at <em>45% opacity</em> — the interactivity affordance.</p></div>
+    <div class="card-out"><div class="h">Border weights</div><p><em>1.5px</em> structural outlines, <em>1px @ 32%</em> solid or dashed internal dividers. Nothing thicker.</p></div>
+  </div>
+  <div class="pagenum">Rich-but-curated density — 05</div>
+</section>
+
+<!-- ========== §06 DEPTH ========== -->
+<section id="depth">
+  <div class="topbar"><h2>Depth</h2><span class="tb-label">vi. — flat, printed</span></div>
+  <div class="depth-grid">
+    <div class="card-out">
+      <div class="dn">i.</div><div class="dh">Outlines</div>
+      <p>Elevation is communicated through 1.5px solid ink borders on cards, badges, pills, and tags — never a fill, never a shadow.</p>
+    </div>
+    <div class="card-out">
+      <div class="dn">ii.</div><div class="dh">Opacity rules</div>
+      <p>1px solid or 1px dashed internal dividers at 32% opacity carry the structure inside cards and between ledger rows.</p>
+    </div>
+    <div class="card-out">
+      <div class="dn">iii.</div><div class="dh">Paper texture</div>
+      <p>A 4px radial-dot overlay at 10% — invisible at distance, present up close. The whole system reads as ink soaked into paper.</p>
+    </div>
+  </div>
+  <div class="pagenum">No shadow · no gradient · no blur — 06</div>
+</section>
+
+<!-- ========== §07 DO & DON'T ========== -->
+<section id="dodont">
+  <div class="topbar"><h2>Do &amp; Don't</h2><span class="tb-label">vii. — the register</span></div>
+  <div class="dd">
+    <div class="col">
+      <h3>Do</h3>
+      <ul>
+        <li><span class="mk">i.</span>Commit to single-ink rendering — use opacity for variation, never a different hue.</li>
+        <li><span class="mk">ii.</span>Apply the 4px radial-dot paper texture to every slide.</li>
+        <li><span class="mk">iii.</span>Run Bricolage uppercase 700–800 with negative tracking; Fraunces italic by default.</li>
+        <li><span class="mk">iv.</span>Reach for the italic Fraunces jumbo numeral as the cover anchor.</li>
+        <li><span class="mk">v.</span>Pair every edition badge with its italic "Edition N." label.</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3>Don't</h3>
+      <ul>
+        <li><span class="mk">i.</span>Don't introduce a second ink colour — it shatters the printed-program register.</li>
+        <li><span class="mk">ii.</span>Don't fill any shape — cards, pills, badges, tags are outline-only.</li>
+        <li><span class="mk">iii.</span>Don't use box-shadow, gradient, or blur. The system is flat printed paper.</li>
+        <li><span class="mk">iv.</span>Don't run Bricolage in sentence case, or Fraunces roman by default.</li>
+        <li><span class="mk">v.</span>Don't use medium radii (4–12px) — only 999px, 50%, or 0.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="pagenum">One ink, soaked into paper — 07</div>
+</section>
+
+<!-- ========== §08 CJK ========== -->
+<section id="cjk">
+  <div class="topbar"><h2>中文</h2><span class="tb-label">viii. — CJK · Strategy A</span></div>
+  <div class="cjk-grid">
+    <div>
+      <h2 class="cjk-head">长桌之上<br>共享一席</h2>
+      <p class="cjk-body">中文整体切换到思源宋体:展示用 700 字重承载 Bricolage 的分量,正文用 400 字重。系统身份不依赖具体拉丁字面,而在于单墨、描边形状词汇与放射点纸纹 —— 全部原样保留。</p>
+    </div>
+    <div class="cjk-num">秋</div>
+  </div>
+
+  <div class="cjk-pair">
+    <div class="cp hei"><div class="role">Display · 96–180px</div><div class="face">思源宋体</div><div class="meta">Noto Serif SC · 700</div></div>
+    <div class="cp song"><div class="role">Body · metadata</div><div class="face">思源宋体</div><div class="meta">Noto Serif SC · 400</div></div>
+    <div class="cp song"><div class="role">Hero numeral · 480px</div><div class="face">春 / 秋 / 三</div><div class="meta">用汉字序数或季节字</div></div>
+  </div>
+
+  <div class="cjk-note">
+    <p class="h">每一段中文都要做的调整</p>
+    <ul>
+      <li>斜体不适用于中文(汉字无斜体):Fraunces 斜体的每个角色都变成思源宋体 400 正排,暖意来自宋朝笔形本身。</li>
+      <li>放宽行高:展示提到 1.0–1.1,正文提到 1.55–1.65;去掉负字距,设为 letter-spacing 0。</li>
+      <li>中文不做 text-transform: uppercase —— 源文件里每个 Bricolage 展示元素都是大写,需在中文段落上移除。</li>
+      <li>使用全角标点(,。:;「」),标题结尾不加句号;中英文边界加盘古之白:「2026 年 5 月」。</li>
+      <li>描边形状词汇(胶囊、版次圆徽、方标签、描边卡)与 32% 内分隔在中文里完全不变 —— 圆徽内写「第 03 期」即可。</li>
+    </ul>
+  </div>
+  <div class="pagenum">单墨与描边语汇原样保留 — 08</div>
+</section>
+
+<!-- ========== CLOSE ========== -->
+<section class="close" id="close">
+  <div class="ed-row"><span class="ed-badge">∞</span><span class="ed-label">Edition 01 · Fin.</span></div>
+  <h2>Long Table</h2>
+  <p class="sign">pull up a chair</p>
+  <br>
+  <a class="back" href="index.html">← Back to index</a>
+</section>
+
+<script>
+(function () {
+  var progress = document.getElementById('progress');
+  var counter = document.getElementById('counter');
+  var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+  var total = ids.length;
+  function onScroll() {
+    var h = document.documentElement;
+    var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+    var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+    for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+    if (scrolled > 0.99) idx = total - 1;
+    counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>

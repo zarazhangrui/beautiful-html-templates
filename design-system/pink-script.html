@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pink Script — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's three faces: DM Serif Display (script/editorial) + Inter (body) + JetBrains Mono (chrome) -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- CJK pairing for §08 (all on Google Fonts — never split to cn-fontsource) -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;900&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #060507; --ink-violet: #0F0D11;
+      --paper: #F5EDF1; --pink: #ED3D8C; --pink-light: #FF66A8; --pink-deep: #B81D67;
+      --line-pink: rgba(237,61,140,0.32); --mute: rgba(245,237,241,0.55); --hair: rgba(245,237,241,0.14);
+      --f-serif: 'DM Serif Display', serif;
+      --f-body: 'Inter', system-ui, sans-serif;
+      --f-mono: 'JetBrains Mono', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: radial-gradient(ellipse 90% 70% at 28% 22%, #1A1218 0%, #0A0709 55%, #050306 100%);
+      background-attachment: fixed; color: var(--paper);
+      font-family: var(--f-body); -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Atmospheric layers — film grain + hairline editorial frame ===== */
+    .film-grain { position: fixed; inset: 0; pointer-events: none; z-index: 250; opacity: 0.08; mix-blend-mode: screen;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+    .hairline-frame { position: fixed; inset: 24px; border: 1px solid var(--hair); pointer-events: none; z-index: 240; }
+
+    /* ===== Persistent chrome — runner (top) + footer (bottom) ===== */
+    .progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--pink); z-index: 300; box-shadow: 0 0 12px rgba(237,61,140,0.6); }
+    .runner { position: fixed; top: 40px; left: 56px; right: 56px; z-index: 260; display: flex; justify-content: space-between; align-items: baseline;
+      font-family: var(--f-mono); font-size: clamp(11px,1vw,14px); letter-spacing: 0.14em; text-transform: uppercase; }
+    .runner .brand { color: var(--pink); text-decoration: none; }
+    .runner .brand:hover { color: var(--pink-light); }
+    .runner .sect { color: var(--mute); }
+    .footer { position: fixed; bottom: 40px; left: 56px; right: 56px; z-index: 260; display: flex; justify-content: space-between; align-items: baseline;
+      font-family: var(--f-mono); font-size: clamp(11px,1vw,14px); letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); }
+    .footer .pg em { color: var(--pink); font-style: normal; }
+
+    /* ===== Type ===== */
+    .script { font-family: var(--f-serif); color: var(--pink); line-height: 1.0; letter-spacing: -0.015em; padding-bottom: 0.1em; text-shadow: 0 0 70px rgba(237,61,140,0.28); }
+    .script-cover { font-size: clamp(72px,16vw,240px); }
+    .script-section { font-size: clamp(120px,22vw,340px); line-height: 0.82; text-shadow: 0 0 110px rgba(237,61,140,0.24); }
+    .serif-h { font-family: var(--f-serif); color: var(--paper); line-height: 1.06; padding-bottom: 0.08em; }
+    .serif-h2 { font-size: clamp(40px,7vw,116px); }
+    .serif-quote { font-size: clamp(32px,5vw,84px); }
+    .serif-stat { font-family: var(--f-serif); color: var(--pink); font-size: clamp(48px,7vw,104px); line-height: 0.9; }
+    .serif-h em, .serif-cta em { color: var(--pink); font-style: normal; }
+    .body { font-family: var(--f-body); font-weight: 300; font-size: clamp(15px,1.4vw,21px); line-height: 1.55; color: var(--paper); }
+    .body-muted { color: var(--mute); }
+    .kicker { font-family: var(--f-mono); font-weight: 400; font-size: clamp(12px,1.1vw,16px); letter-spacing: 0.16em; text-transform: uppercase; color: var(--pink); }
+    .mono-label { font-family: var(--f-mono); font-size: clamp(11px,1vw,14px); letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); }
+
+    /* ===== Sections ===== */
+    section, header, footer.close { position: relative; padding: clamp(96px,13vh,150px) clamp(40px,7vw,96px); }
+    .wrap { max-width: 1180px; margin: 0 auto; width: 100%; }
+    .sec-head { margin-bottom: clamp(32px,5vh,56px); }
+    .sec-head .kicker { display: block; margin-bottom: 18px; }
+    .sec-head .body { max-width: 60ch; margin-top: 18px; }
+    .pink-rule { height: 1px; background: var(--pink); opacity: 0.45; margin: 18px 0; }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+    .hero .kicker { margin-bottom: 22px; }
+    .hero .script-cover { margin: 6px 0 4px; }
+    .hero-sub { font-family: var(--f-body); font-weight: 300; font-size: clamp(17px,1.8vw,26px); line-height: 1.5; color: var(--mute); max-width: 46ch; margin-top: 18px; }
+    .toc { margin-top: clamp(36px,5vh,60px); display: flex; flex-direction: column; max-width: 760px; }
+    .toc a { display: grid; grid-template-columns: 70px 1fr; gap: 24px; align-items: baseline; text-decoration: none; padding: 16px 0; border-top: 1px solid var(--hair); }
+    .toc a:last-child { border-bottom: 1px solid var(--hair); }
+    .toc .t-num { font-family: var(--f-serif); font-size: clamp(28px,3vw,52px); color: var(--pink); line-height: 1; }
+    .toc .t-title { font-family: var(--f-serif); font-size: clamp(22px,2.4vw,40px); color: var(--paper); line-height: 1.05; }
+    .toc a:hover .t-title { color: var(--pink); }
+
+    /* ===== grids / cards ===== */
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: clamp(28px,3.5vw,52px); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,3.5vw,52px); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: clamp(24px,3vw,40px); }
+    .callout-rail { border-left: 1px solid var(--pink); padding-left: 24px; }
+
+    /* ===== §02 colours ===== */
+    .sw-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; }
+    .sw { min-height: 130px; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; border: 1px solid var(--hair); }
+    .sw .sw-name { font-family: var(--f-serif); font-size: 22px; }
+    .sw .sw-hex { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.06em; margin-top: 4px; color: var(--mute); }
+
+    /* ===== §03 typography ===== */
+    .scale-stack { display: flex; flex-direction: column; }
+    .scale-row { display: grid; grid-template-columns: 230px 1fr; gap: 28px; align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--hair); }
+    .scale-row:last-child { border-bottom: none; }
+    .sm { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); }
+    .sm b { display: block; color: var(--paper); margin-bottom: 4px; }
+
+    /* ===== §04 ===== */
+    .comp { margin-bottom: 44px; }
+    .comp-h { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--pink); margin-bottom: 20px; }
+    .stat-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 24px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid var(--hair); }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-row .sr-fig sup { font-size: 0.4em; color: var(--paper); vertical-align: super; }
+    .pill { display: inline-block; font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 16px; }
+    .pill-outline { border: 1px solid var(--pink); color: var(--pink); }
+    .pill-solid { background: var(--pink); color: var(--ink); border: 1px solid var(--pink); font-weight: 500; }
+    .pill-dim { border: 1px solid var(--hair); color: var(--mute); }
+    .chart-wrap { position: relative; height: 240px; border-left: 1px solid var(--line-pink); border-bottom: 1px solid var(--line-pink); }
+    .chart-svg { width: 100%; height: 100%; display: block; }
+    .matrix { width: 100%; border-collapse: collapse; }
+    .matrix th, .matrix td { text-align: left; padding: 14px 20px; border-bottom: 1px solid var(--line-pink); font-family: var(--f-body); font-weight: 300; font-size: clamp(13px,1.2vw,17px); }
+    .matrix th { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--pink); font-weight: 400; }
+    .matrix .lbl { font-family: var(--f-serif); color: var(--paper); }
+    .matrix .us { background: rgba(237,61,140,0.08); }
+
+    /* ===== §07 ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,4vw,56px); }
+    .dd-list { list-style: none; margin-top: 14px; }
+    .dd-list li { font-family: var(--f-body); font-weight: 300; font-size: clamp(14px,1.3vw,18px); line-height: 1.6; padding: 0.5rem 0 0.5rem 1.6rem; position: relative; }
+    .dd-list li::before { position: absolute; left: 0; font-family: var(--f-serif); }
+    .do .dd-list li::before { content: "+"; color: var(--pink); }
+    .dont .dd-list li::before { content: "—"; color: var(--mute); }
+
+    /* ===== §08 cjk ===== */
+    .cjk-display { font-family: 'Noto Serif SC', var(--f-serif); font-weight: 900; font-size: clamp(48px,8vw,120px); line-height: 1.2; color: var(--pink); text-shadow: 0 0 70px rgba(237,61,140,0.28); }
+    .cjk-body { font-family: 'Noto Serif SC', serif; font-weight: 400; font-size: clamp(15px,1.4vw,19px); line-height: 1.85; color: var(--paper); margin-top: 16px; }
+    .cjk-label { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--pink); margin-top: 16px; }
+
+    /* ===== close ===== */
+    .close { min-height: 86vh; display: flex; flex-direction: column; justify-content: center; }
+    .serif-cta { font-family: var(--f-serif); color: var(--paper); font-size: clamp(44px,7vw,120px); line-height: 1.04; padding-bottom: 0.08em; }
+    .close .body { max-width: 42ch; margin-top: 18px; }
+    .close-links { margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .close-links a { text-decoration: none; font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 11px 20px; border: 1px solid var(--pink); color: var(--pink); }
+    .close-links a:hover { background: var(--pink); color: var(--ink); }
+
+    @media (max-width: 920px) {
+      .grid-3, .grid-2, .grid-4, .sw-grid, .dodont { grid-template-columns: 1fr; }
+      .scale-row, .stat-row { grid-template-columns: 1fr; gap: 8px; }
+      .runner, .footer { left: 28px; right: 28px; }
+    }
+    @media (max-width: 560px) { .grid-4, .sw-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <div class="film-grain"></div>
+  <div class="hairline-frame"></div>
+  <div class="runner">
+    <a class="brand" href="index.html">Pink Script &mdash; &larr; Index</a>
+    <span class="sect" id="sect">Design System</span>
+  </div>
+  <div class="footer">
+    <span>After Hours / 2026</span>
+    <span class="pg"><em id="pg">01</em> / 10</span>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <span class="kicker">After Hours &mdash; Design System Specification</span>
+    <h1 class="script script-cover">Pink<br>Script</h1>
+    <p class="hero-sub">A nocturnal couture editorial system &mdash; hot fuchsia ink on dim warm-black paper, soft film grain, a hairline interior frame, and DM Serif Display script at editorial scale.</p>
+    <nav class="toc">
+      <a href="#overview"><span class="t-num">01</span><span class="t-title">Overview</span></a>
+      <a href="#colours"><span class="t-num">02</span><span class="t-title">Colours</span></a>
+      <a href="#typography"><span class="t-num">03</span><span class="t-title">Typography</span></a>
+      <a href="#components"><span class="t-num">04</span><span class="t-title">Components</span></a>
+      <a href="#layout"><span class="t-num">05</span><span class="t-title">Layout</span></a>
+      <a href="#depth"><span class="t-num">06</span><span class="t-title">Depth &amp; Shape</span></a>
+      <a href="#dodont"><span class="t-num">07</span><span class="t-title">Do &amp; Don't</span></a>
+      <a href="#cjk"><span class="t-num">08</span><span class="t-title">中文 / CJK</span></a>
+    </nav>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section id="overview">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">01 — Overview</span>
+        <h2 class="serif-h serif-h2">A Late-Night <em>Lookbook</em></h2>
+        <p class="body body-muted">Pink Script is a nocturnal couture editorial system built on a single atmospheric premise: a deep warm-black surface lit from the upper-left, a film-grain overlay, and a hairline interior frame. Over it, oversized DM Serif Display in hot fuchsia anchors every slide. Closer to a Maison's seasonal lookbook than a startup deck.</p>
+      </div>
+      <div class="grid-4">
+        <div class="callout-rail"><div class="serif-stat" style="font-size:clamp(36px,4vw,64px)">Hi</div><span class="mono-label" style="display:block;margin-top:8px">Formality</span></div>
+        <div class="callout-rail"><div class="serif-stat" style="font-size:clamp(36px,4vw,64px)">Low</div><span class="mono-label" style="display:block;margin-top:8px">Density</span></div>
+        <div class="callout-rail"><div class="serif-stat" style="font-size:clamp(36px,4vw,64px)">Dark</div><span class="mono-label" style="display:block;margin-top:8px">Scheme</span></div>
+        <div class="callout-rail"><div class="serif-stat" style="font-size:clamp(36px,4vw,64px)">09</div><span class="mono-label" style="display:block;margin-top:8px">Slides</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section id="colours">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">02 — Colours</span>
+        <h2 class="serif-h serif-h2">Monochromatically <em>Pink</em></h2>
+        <p class="body body-muted">One signature: hot fuchsia against deep warm-black, with pearl paper-blush as the editorial ink. The pink is the entire accent system &mdash; script colour, kicker, rule, pill, inline emphasis, and the soft halo behind hero scripts. No second chromatic accent.</p>
+      </div>
+      <div class="sw-grid">
+        <div class="sw" style="background:#060507"><div class="sw-name">Ink Deep</div><div class="sw-hex">#060507</div></div>
+        <div class="sw" style="background:#0F0D11"><div class="sw-name">Ink Violet</div><div class="sw-hex">#0F0D11</div></div>
+        <div class="sw" style="background:var(--pink);color:var(--ink)"><div class="sw-name" style="color:var(--ink)">Pink</div><div class="sw-hex" style="color:rgba(6,5,7,0.7)">#ED3D8C</div></div>
+        <div class="sw" style="background:var(--paper);color:var(--ink)"><div class="sw-name" style="color:var(--ink)">Paper Blush</div><div class="sw-hex" style="color:rgba(6,5,7,0.6)">#F5EDF1</div></div>
+        <div class="sw" style="background:var(--pink-light);color:var(--ink)"><div class="sw-name" style="color:var(--ink)">Pink Light</div><div class="sw-hex" style="color:rgba(6,5,7,0.6)">#FF66A8</div></div>
+        <div class="sw" style="background:var(--pink-deep)"><div class="sw-name">Pink Deep</div><div class="sw-hex">#B81D67</div></div>
+        <div class="sw" style="background:var(--line-pink)"><div class="sw-name">Line Pink</div><div class="sw-hex">pink · 32%</div></div>
+        <div class="sw" style="background:var(--mute);color:var(--ink)"><div class="sw-name" style="color:var(--ink)">Mute Paper</div><div class="sw-hex" style="color:rgba(6,5,7,0.6)">paper · 55%</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section id="typography">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">03 — Typography</span>
+        <h2 class="serif-h serif-h2">Three Editorial <em>Voices</em></h2>
+        <p class="body body-muted"><strong style="font-weight:400">DM Serif Display</strong> carries every script &amp; editorial moment from 32px to 600px (script = pink, headline = paper). <strong style="font-weight:400">Inter 300</strong> is the calm prose voice. <strong style="font-weight:400">JetBrains Mono</strong> is the boutique-catalog metadata. Italic is never used &mdash; &lt;em&gt; is repurposed as a pink colour switch.</p>
+      </div>
+      <div class="scale-stack">
+        <div class="scale-row"><div class="sm"><b>script-cover · DM Serif</b>280px · pink + halo</div><div><span class="script" style="font-size:clamp(48px,7vw,100px)">Script</span></div></div>
+        <div class="scale-row"><div class="sm"><b>serif-h2 · DM Serif</b>132px · paper</div><div><span class="serif-h" style="font-size:clamp(34px,4.5vw,72px)">Headline <em>Word</em></span></div></div>
+        <div class="scale-row"><div class="sm"><b>serif-stat · DM Serif</b>116px · pink</div><div><span class="serif-stat" style="font-size:clamp(40px,5vw,80px)">94<sup>%</sup></span></div></div>
+        <div class="scale-row"><div class="sm"><b>body · Inter 300</b>24px</div><div><span class="body">Ultra-light geometric sans, the calm prose voice.</span></div></div>
+        <div class="scale-row"><div class="sm"><b>kicker · JetBrains Mono</b>22px · 0.14em · pink</div><div><span class="kicker">Pink Kicker Eyebrow</span></div></div>
+        <div class="scale-row"><div class="sm"><b>mono-label · JetBrains Mono</b>22px · muted</div><div><span class="mono-label">Runner / Footer Metadata</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section id="components">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">04 — Components</span>
+        <h2 class="serif-h serif-h2">The Couture <em>Kit</em></h2>
+        <p class="body body-muted">Every block below is rendered with the template's <strong style="font-weight:400">actual CSS</strong> &mdash; not a mockup. Pink scripts with halos, stat rows, pills, the comparison matrix, and a pink-line chart.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Stat rows — pink serif figure + paper superscript</div>
+        <div class="stat-row"><div class="sr-fig serif-stat" style="font-size:clamp(40px,5vw,84px)">$12.4<sup>M</sup></div><div><span class="kicker">Annual Recurring Revenue</span><p class="body body-muted" style="margin-top:8px">Net revenue retention of 118% driven by expansion.</p></div></div>
+        <div class="stat-row"><div class="sr-fig serif-stat" style="font-size:clamp(40px,5vw,84px)">340<sup>%</sup></div><div><span class="kicker">YoY Growth</span><p class="body body-muted" style="margin-top:8px">From $2.7M to $12M ARR in 24 months.</p></div></div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Pills — outline (default), solid (featured), dim</div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+          <span class="pill pill-outline">Outline</span>
+          <span class="pill pill-solid">Featured</span>
+          <span class="pill pill-dim">Dim</span>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Comparison matrix — pink-32% dividers, soft pink 'us' wash</div>
+        <table class="matrix">
+          <thead><tr><th>Feature</th><th>Us</th><th>Legacy</th><th>DIY</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Editorial scale</td><td class="us">Yes</td><td>No</td><td>Part</td></tr>
+            <tr><td class="lbl">Single accent</td><td class="us">Yes</td><td>Part</td><td>No</td></tr>
+            <tr><td class="lbl">Film grain</td><td class="us">Yes</td><td>No</td><td>No</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Chart — 3px pink primary line, dashed paper secondary</div>
+        <div class="chart-wrap">
+          <svg class="chart-svg" viewBox="0 0 600 240" preserveAspectRatio="none">
+            <polyline class="cl-sec" points="20,180 160,150 300,160 440,110 580,90" fill="none" stroke="rgba(245,237,241,0.4)" stroke-width="2" stroke-dasharray="6 6"/>
+            <polyline class="cl-pri" points="20,200 160,160 300,120 440,80 580,30" fill="none" stroke="#ED3D8C" stroke-width="3" stroke-dasharray="900" stroke-dashoffset="900"/>
+            <circle cx="580" cy="30" r="6" fill="#ED3D8C"/><circle cx="580" cy="30" r="12" fill="none" stroke="#ED3D8C" stroke-opacity="0.5" stroke-width="1.5"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section id="layout">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">05 — Layout</span>
+        <h2 class="serif-h serif-h2">One Hero <em>Moment</em></h2>
+        <p class="body body-muted">A single oversized script anchors the slide, with the rest as generous negative space punctuated by a runner, a kicker, a paragraph, and a footer. The hero takes 60–70% of the canvas; supporting copy orbits the margin. Cramming equal-weight regions breaks the late-night feeling.</p>
+      </div>
+      <div class="grid-3">
+        <div class="callout-rail"><div class="serif-h" style="font-size:clamp(22px,2.4vw,34px)">Runner</div><p class="body body-muted" style="margin-top:8px;font-size:15px">Top chrome — pink brand left, muted section right.</p></div>
+        <div class="callout-rail"><div class="serif-h" style="font-size:clamp(22px,2.4vw,34px)">Frame</div><p class="body body-muted" style="margin-top:8px;font-size:15px">1px paper-blush hairline, inset 36px, every slide.</p></div>
+        <div class="callout-rail"><div class="serif-h" style="font-size:clamp(22px,2.4vw,34px)">Footer</div><p class="body body-muted" style="margin-top:8px;font-size:15px">Bottom chrome — source left, page-position right.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH ============ -->
+  <section id="depth">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">06 — Depth &amp; Shape</span>
+        <h2 class="serif-h serif-h2">Atmospheric, Not <em>Structural</em></h2>
+        <p class="body body-muted">Zero box-shadows. Depth comes from three layers: the off-center radial surface (a studio softbox catching one corner), the film-grain overlay, and the pink halo text-shadow on hero scripts. Every shape is a 0-radius rectangle; every rule is 1px.</p>
+      </div>
+      <div class="grid-3">
+        <div style="border:1px solid var(--hair);padding:28px;min-height:120px;display:flex;align-items:flex-end"><span class="mono-label">Radial surface</span></div>
+        <div style="border:1px solid var(--hair);padding:28px;min-height:120px;display:flex;align-items:flex-end"><span class="mono-label">Film grain · screen 8%</span></div>
+        <div style="border:1px solid var(--hair);padding:28px;min-height:120px;display:flex;align-items:center;justify-content:center"><span class="script" style="font-size:clamp(40px,5vw,72px)">glow</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section id="dodont">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">07 — Do &amp; Don't</span>
+        <h2 class="serif-h serif-h2">Hold The <em>Register</em></h2>
+      </div>
+      <div class="dodont">
+        <div class="do">
+          <h3 class="serif-h" style="font-size:clamp(26px,3vw,44px)">Do</h3>
+          <ul class="dd-list">
+            <li>Apply the radial surface, film grain, and hairline frame to every slide.</li>
+            <li>Set hero scripts in pink with the halo text-shadow.</li>
+            <li>Use DM Serif for editorial, Inter 300 for body, Mono for chrome.</li>
+            <li>Switch one headline word to pink via &lt;em&gt;; keep kickers pink.</li>
+            <li>Let one hero moment dominate with generous negative space.</li>
+          </ul>
+        </div>
+        <div class="dont">
+          <h3 class="serif-h" style="font-size:clamp(26px,3vw,44px)">Don't</h3>
+          <ul class="dd-list">
+            <li>Omit the film grain or interior frame, or add a box-shadow.</li>
+            <li>Introduce a second chromatic accent beyond pink.</li>
+            <li>Put body in DM Serif, or display in Inter.</li>
+            <li>Round any element, or use a 2px+ rule.</li>
+            <li>Crowd the slide with multiple equal-weight regions.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section id="cjk">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">08 — 中文 / CJK</span>
+        <h2 class="serif-h serif-h2">Couture, In <em>Chinese</em></h2>
+        <p class="body body-muted">The couture identity rests on DM Serif Display's visual mass &mdash; matched in Chinese by <strong style="font-weight:400">思源宋体 Noto Serif SC at weight 900</strong> (anything lighter disappears against the pink-glow + dark paper). The pink halo and &lt;em&gt; switch transfer unchanged.</p>
+      </div>
+      <div class="grid-2" style="align-items:start">
+        <div>
+          <div class="cjk-display">粉色手记</div>
+          <div class="cjk-body">深暖黑的纸面，左上柔光，胶片颗粒与一道发丝般的内框 —— 思源宋体 900 在热粉色与暗底之间承载夜场杂志的编辑气场。中文 letter-spacing 归零，正文用思源宋体 400。盘古之白：使用 Claude、2026 年。</div>
+          <div class="cjk-label">思源宋体 Noto Serif SC · 900 / 400</div>
+        </div>
+        <div class="callout-rail">
+          <span class="kicker">Pairing</span>
+          <p class="body" style="margin-top:14px;line-height:2">Display → 思源宋体 900<br>Body → 思源宋体 400<br>Chrome → Noto Sans SC<br>Halo → keep on every CJK script</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close" id="close">
+    <div class="wrap">
+      <span class="kicker">End of Deck</span>
+      <h2 class="serif-cta">After <em>Hours</em>.</h2>
+      <p class="body body-muted">One of 34 systems in Beautiful HTML Templates. Nocturnal, intentional, a little luxe.</p>
+      <div class="close-links">
+        <a href="index.html">&larr; All Systems</a>
+        <a href="../templates/pink-script/template.html">Open Live Deck</a>
+        <a href="../templates/pink-script/design.md">design.md</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var pg = document.getElementById('pg');
+      var sect = document.getElementById('sect');
+      var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+      var names = ['Cover','Overview','Colours','Typography','Components','Layout','Depth','Do & Don't','CJK','Close'];
+      var total = ids.length;
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+        for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+        if (scrolled > 0.99) idx = total - 1;
+        pg.textContent = String(idx + 1).padStart(2, '0');
+        sect.textContent = names[idx];
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+      // draw chart line on view
+      var pri = document.querySelector('.cl-pri');
+      if (pri && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { pri.style.transition = 'stroke-dashoffset 1.2s ease'; pri.style.strokeDashoffset = '0'; io.unobserve(e.target); } }); }, { threshold: 0.3 });
+        io.observe(pri);
+      } else if (pri) { pri.style.strokeDashoffset = '0'; }
+    })();
+  </script>
+</body>
+</html>

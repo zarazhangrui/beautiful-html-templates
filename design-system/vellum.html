@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vellum — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's three faces: Cormorant italic (display), DM Sans (body), Courier Prime (mono) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500&family=DM+Sans:wght@400;500&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <!-- CJK pairing, loaded only for the live Chinese specimen in §08 -->
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #2a3870;
+      --navy-alt: #343f80;
+      --navy-deep: #1f2858;
+      --navy-mid: #34407a;
+      --yellow: #e8d85c;
+      --yellow-2: rgba(232,216,92,0.62);
+      --yellow-3: rgba(232,216,92,0.32);
+      --emphasis: #f5e168;
+      --teal: #3a7878;
+      --border: rgba(232,216,92,0.20);
+
+      --f-serif: 'Cormorant Garamond', 'LXGW WenKai TC', Georgia, serif;
+      --f-body: 'DM Sans', system-ui, sans-serif;
+      --f-mono: 'Courier Prime', 'Courier New', monospace;
+
+      --sz-display: clamp(60px, 11vw, 200px);
+      --sz-h1:      clamp(44px, 7vw, 128px);
+      --sz-qmark:   clamp(54px, 7vw, 128px);
+      --sz-stat:    clamp(40px, 5.5vw, 100px);
+      --sz-h2:      clamp(30px, 4vw, 72px);
+      --sz-quote:   clamp(24px, 3.2vw, 56px);
+      --sz-h3:      clamp(19px, 2.4vw, 42px);
+      --sz-lead:    clamp(15px, 1.5vw, 22px);
+      --sz-pin:     clamp(12px, 1.15vw, 16px);
+      --sz-body:    clamp(13px, 1.05vw, 16px);
+      --sz-cap:     clamp(11px, 0.9vw, 13px);
+      --sz-label:   clamp(10px, 0.78vw, 12px);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--navy);
+      font-family: var(--f-body);
+      color: var(--yellow);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Italic-serif headline faces (italic is the DEFAULT, not emphasis) ===== */
+    .disp, .h1, .h2, .h3, .qtext, .stat-val {
+      font-family: var(--f-serif); font-style: italic; font-weight: 400; color: var(--yellow);
+    }
+    .disp { font-size: var(--sz-display); line-height: 0.92; letter-spacing: -0.01em; }
+    .h1   { font-size: var(--sz-h1); line-height: 0.95; letter-spacing: -0.01em; }
+    .h2   { font-size: var(--sz-h2); line-height: 1.05; }
+    .h3   { font-size: var(--sz-h3); line-height: 1.15; font-weight: 500; }
+    .qtext{ font-size: var(--sz-quote); line-height: 1.25; }
+    .stat-val { font-size: var(--sz-stat); line-height: 1; letter-spacing: -0.02em; }
+    /* The signature <em> mechanism: italic -> upright roman 600 in brighter yellow */
+    .disp em, .h1 em, .h2 em, .h3 em { font-style: normal; font-weight: 600; color: var(--emphasis); }
+
+    .lead { font-family: var(--f-body); font-size: var(--sz-lead); line-height: 1.6; color: var(--yellow-2); }
+    .body { font-family: var(--f-body); font-size: var(--sz-body); line-height: 1.65; color: var(--yellow-2); }
+    .body em, .lead em { font-style: normal; font-weight: 600; color: var(--emphasis); }
+
+    .kicker { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); }
+    .rule28 { width: 28px; height: 1px; background: var(--teal); margin: 14px auto; }
+
+    /* ===== Persistent chrome ===== */
+    .progress { position: fixed; top: 0; left: 0; height: 1px; width: 0; background: var(--teal); z-index: 200; transition: width 0.15s linear; }
+    .back-link { position: fixed; top: 24px; left: 6vw; z-index: 200; font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal); text-decoration: none; }
+    .back-link:hover { color: var(--yellow); }
+    /* The pin-annotation — the system's signature, fixed bottom-left on every "slide" */
+    .pin {
+      position: fixed; bottom: 4.2vh; left: 6vw; z-index: 200;
+      font-family: var(--f-mono); font-weight: 500; font-size: var(--sz-pin);
+      letter-spacing: 0.01em; color: var(--teal); line-height: 1.5; max-width: 22vw;
+    }
+    .pin .pin-count { color: var(--teal); }
+    .pin .pin-label { color: var(--teal); opacity: 0.8; }
+
+    /* ===== Section scaffold — centered, sparse, monochromatic ===== */
+    section, header, footer { padding: clamp(72px, 12vh, 150px) 6vw; }
+    .wrap { max-width: 1000px; margin: 0 auto; width: 100%; text-align: center; }
+    .wrap-wide { max-width: 1160px; }
+
+    .chrome-bar, .foot-bar { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--yellow-3); }
+    .chrome-bar { border-bottom: 1px solid var(--border); padding-bottom: 14px; margin-bottom: clamp(32px, 5vh, 64px); }
+    .foot-bar { border-top: 1px solid var(--border); padding-top: 14px; margin-top: clamp(40px, 6vh, 72px); }
+
+    .sec-lead { font-family: var(--f-body); font-size: var(--sz-lead); line-height: 1.65; color: var(--yellow-2); max-width: 68ch; margin: clamp(20px,3vh,36px) auto 0; }
+    .sec-lead em { font-style: normal; font-weight: 600; color: var(--emphasis); }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .hero .disp { margin-top: 6px; }
+    .hero-lead { font-family: var(--f-body); font-size: var(--sz-lead); line-height: 1.6; color: var(--yellow-2); max-width: 54ch; margin: clamp(24px,3.5vh,40px) auto 0; }
+
+    /* contents — centered numbered index */
+    .toc { list-style: none; margin: clamp(32px,5vh,60px) auto 0; display: inline-flex; flex-direction: column; gap: 2px; text-align: left; counter-reset: toc; }
+    .toc li { counter-increment: toc; }
+    .toc a { display: flex; align-items: baseline; gap: 1em; text-decoration: none; padding: 9px 0; border-bottom: 1px solid var(--border); min-width: min(420px, 70vw); }
+    .toc a::before { content: counter(toc, decimal-leading-zero); font-family: var(--f-mono); font-size: var(--sz-label); color: var(--teal); width: 2em; flex-shrink: 0; }
+    .toc a span { font-family: var(--f-serif); font-style: italic; font-size: clamp(20px,2vw,28px); color: var(--yellow); }
+    .toc a:hover span { color: var(--emphasis); }
+
+    /* ===== §01 META — pin-stats ===== */
+    .stat-row { display: flex; justify-content: center; flex-wrap: wrap; }
+    .pin-stat { flex: 1; min-width: 150px; padding: clamp(8px,2vh,20px) clamp(16px,3vw,40px); border-right: 1px solid var(--border); text-align: center; }
+    .pin-stat:last-child { border-right: none; }
+    .pin-stat .ps-label { font-family: var(--f-mono); font-size: var(--sz-cap); letter-spacing: 0.04em; text-transform: uppercase; color: var(--yellow-2); margin-top: 12px; }
+    .pin-stat .ps-note { font-family: var(--f-body); font-size: var(--sz-cap); color: var(--yellow-3); margin-top: 8px; line-height: 1.4; }
+
+    /* ===== §02 COLOURS ===== */
+    .sw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: clamp(16px,2vw,28px); text-align: left; }
+    .swatch .sw-chip { height: 90px; border: 1px solid var(--border); }
+    .swatch .sw-name { font-family: var(--f-serif); font-style: italic; font-size: clamp(20px,2vw,28px); color: var(--yellow); margin-top: 12px; }
+    .swatch .sw-hex { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.04em; color: var(--teal); margin-top: 4px; }
+    .swatch .sw-role { font-family: var(--f-body); font-size: var(--sz-cap); color: var(--yellow-2); margin-top: 8px; line-height: 1.5; }
+
+    /* ===== §03 TYPOGRAPHY ===== */
+    .face-row { display: flex; flex-direction: column; gap: clamp(28px,4vh,52px); margin-bottom: clamp(36px,5vh,64px); text-align: left; }
+    .face-block { border-top: 1px solid var(--border); padding-top: clamp(16px,2.5vh,28px); }
+    .fb-name { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal); margin-bottom: clamp(12px,2vh,20px); }
+    .fb-serif { font-family: var(--f-serif); font-style: italic; font-weight: 400; font-size: var(--sz-h1); color: var(--yellow); line-height: 1; }
+    .fb-sans { font-family: var(--f-body); font-size: clamp(22px,2.6vw,40px); color: var(--yellow); line-height: 1.2; }
+    .fb-mono { font-family: var(--f-mono); font-size: clamp(18px,2vw,32px); color: var(--teal); letter-spacing: 0.02em; }
+    .fb-desc { font-family: var(--f-body); font-size: var(--sz-body); line-height: 1.6; color: var(--yellow-2); max-width: 60ch; margin-top: 12px; }
+
+    .scale-list { text-align: left; }
+    .scale-row { display: grid; grid-template-columns: 240px 1fr; gap: 28px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .scale-row:last-child { border-bottom: none; }
+    .sm { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.04em; text-transform: uppercase; color: var(--yellow-3); }
+    .sm b { display: block; color: var(--teal); font-weight: 400; margin-bottom: 3px; }
+    .smp { color: var(--yellow); overflow: hidden; }
+
+    .em-demo { border-top: 1px solid var(--border); padding-top: clamp(20px,3vh,32px); text-align: center; }
+
+    /* ===== §04 COMPONENTS ===== */
+    .comp { margin-bottom: clamp(40px,5.5vh,72px); }
+    .comp-h { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal); margin-bottom: 18px; }
+    .comp-h b { color: var(--yellow-2); font-weight: 400; }
+
+    .num-list { list-style: none; counter-reset: nl; max-width: 620px; margin: 0 auto; text-align: left; }
+    .num-list li { counter-increment: nl; display: grid; grid-template-columns: 2em 1fr; gap: 0.5em; padding: 9px 0; }
+    .num-list li::before { content: counter(nl, decimal-leading-zero); font-family: var(--f-mono); font-size: var(--sz-label); color: var(--teal); padding-top: 0.35em; }
+    .num-list li .nl-body { font-family: var(--f-body); font-size: var(--sz-body); line-height: 1.5; color: var(--yellow); }
+
+    .compare { display: grid; grid-template-columns: 1fr 1fr; }
+    .cmp-panel { padding: clamp(24px,3.5vw,48px); text-align: left; }
+    .cmp-panel.deep { background: var(--navy-deep); }
+    .cmp-panel.mid { background: var(--navy-mid); border-left: 1px solid var(--border); }
+    .cmp-label { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--yellow-2); }
+    .cmp-panel .h3 { margin: 12px 0; }
+    .cmp-body { font-family: var(--f-body); font-size: var(--sz-body); line-height: 1.55; color: var(--yellow-2); }
+
+    .chart { max-width: 640px; margin: 0 auto; }
+    .chart-bars { display: flex; align-items: flex-end; gap: clamp(16px,3vw,44px); height: 190px; }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 10px; }
+    .bar-val { font-family: var(--f-mono); font-size: var(--sz-cap); color: var(--yellow-3); }
+    .bar-col.hi .bar-val { color: var(--yellow); }
+    .bar { width: 100%; background: var(--yellow-3); }
+    .bar-col.hi .bar { background: var(--yellow); }
+    .bar-lbl { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.04em; text-transform: uppercase; color: var(--yellow-3); margin-top: 8px; }
+    .chart-baseline { height: 1px; background: var(--border); }
+
+    .quote-block { text-align: center; max-width: 760px; margin: 0 auto; }
+    .quote-mark { font-family: var(--f-serif); font-style: italic; font-size: var(--sz-qmark); color: var(--teal); line-height: 0.6; }
+    .quote-cite { font-family: var(--f-mono); font-size: var(--sz-cap); letter-spacing: 0.04em; text-transform: uppercase; color: var(--yellow-2); margin-top: 24px; }
+
+    .img-ph { background: rgba(42,56,112,0.4); border: 1px dashed var(--border); min-height: 28vh; display: flex; align-items: center; justify-content: center; }
+    .img-ph span { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.1em; text-transform: uppercase; color: var(--yellow-3); }
+
+    /* ===== §05 LAYOUT ===== */
+    .spec-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .spec-table th, .spec-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    .spec-table th { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal); font-weight: 400; }
+    .spec-table td { font-family: var(--f-body); font-size: var(--sz-body); color: var(--yellow); }
+    .spec-table td.mono-val { font-family: var(--f-mono); color: var(--yellow-2); }
+    .spec-table td.use { color: var(--yellow-2); }
+
+    /* ===== §06 DEPTH ===== */
+    .rule-ladder { max-width: 620px; margin: 0 auto clamp(28px,4vh,48px); text-align: left; }
+    .rl-row { display: grid; grid-template-columns: 220px 1fr; gap: 28px; align-items: center; padding: 18px 0; }
+    .rl-spec { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.04em; text-transform: uppercase; color: var(--yellow-3); }
+    .rl-spec b { display: block; color: var(--teal); font-weight: 400; margin-bottom: 3px; }
+    .rl-1 { height: 1px; background: var(--border); }
+    .rl-1d { height: 0; border-top: 1px dashed var(--border); }
+    .navy-shades { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(12px,1.5vw,20px); }
+    .ns-cell { padding-top: 70px; text-align: center; }
+    .ns-cell .ns-lbl { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.04em; text-transform: uppercase; color: var(--yellow-2); margin-top: 10px; }
+
+    /* ===== §07 DO / DON'T ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,4vw,64px); text-align: left; }
+    .dd-head { font-family: var(--f-serif); font-style: italic; font-size: var(--sz-h3); color: var(--yellow); margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+
+    /* ===== §08 CJK ===== */
+    .cjk-specimen { border-top: 1px solid var(--border); padding-top: clamp(20px,3vh,36px); margin-bottom: clamp(28px,4vh,52px); }
+    .cjk-display { font-family: 'LXGW WenKai TC', 'Noto Serif SC', serif; font-size: var(--sz-h1); line-height: 1.2; color: var(--yellow); }
+    .cjk-body { font-family: 'Noto Serif SC', serif; font-size: var(--sz-lead); line-height: 1.85; color: var(--yellow-2); max-width: 42ch; margin: 18px auto 0; }
+    .cjk-label { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.04em; text-transform: uppercase; color: var(--teal); margin-top: 16px; }
+
+    /* ===== CLOSE ===== */
+    .close { min-height: 86vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .close-sub { font-family: var(--f-body); font-size: var(--sz-lead); color: var(--yellow-2); margin-top: clamp(24px,3.5vh,44px); max-width: 46ch; line-height: 1.6; }
+    .close-links { margin-top: clamp(28px,4vh,52px); display: flex; gap: clamp(20px,3vw,44px); flex-wrap: wrap; justify-content: center; }
+    .close-links a { font-family: var(--f-mono); font-size: var(--sz-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    .close-links a:hover { color: var(--yellow); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 820px) {
+      .scale-row, .rl-row { grid-template-columns: 1fr; gap: 8px; }
+      .compare, .dodont { grid-template-columns: 1fr; }
+      .cmp-panel.mid { border-left: none; border-top: 1px solid var(--border); }
+      .navy-shades { grid-template-columns: 1fr 1fr; }
+      .pin { max-width: 40vw; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <a class="back-link" href="index.html">&larr; Index</a>
+  <div class="pin"><div class="pin-count" id="counter">01 / 10</div><div class="pin-label">Vellum &mdash; design system</div></div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="kicker">Design System Specification &mdash; Beautiful HTML Templates</div>
+    <div class="rule28"></div>
+    <h1 class="disp">Vellum</h1>
+    <p class="hero-lead">An essay pinned to a wall. A single periwinkle field, warm chartreuse italic serif floating centered, and one typed teal note in the corner. Quiet, monochromatic, deeply still.</p>
+    <ol class="toc">
+      <li><a href="#overview"><span>Overview</span></a></li>
+      <li><a href="#colours"><span>Colours</span></a></li>
+      <li><a href="#typography"><span>Typography</span></a></li>
+      <li><a href="#components"><span>Components</span></a></li>
+      <li><a href="#layout"><span>Layout &amp; Spacing</span></a></li>
+      <li><a href="#depth"><span>Depth &amp; Shape</span></a></li>
+      <li><a href="#dodont"><span>Do &amp; Don't</span></a></li>
+      <li><a href="#cjk"><span>中文 / CJK</span></a></li>
+    </ol>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section id="overview" data-counter="Overview">
+    <div class="wrap">
+      <div class="chrome-bar"><span>01 &mdash; Overview</span><span>Vellum / Essay-on-a-wall</span></div>
+      <div class="kicker">The Premise</div>
+      <div class="rule28"></div>
+      <h2 class="h2">A Monochromatic <em>Essay</em>, Pinned</h2>
+      <p class="sec-lead">Vellum is severe and tender at once: every slide is the same deep periwinkle field, with warm chartreuse-yellow <em>italic</em> Cormorant floating centered on it. No alternate surface, no light theme, no second background. The field is the constant; the type and one small teal annotation in the corner are everything else.</p>
+
+      <div class="stat-row" style="margin-top: clamp(40px,6vh,72px);">
+        <div class="pin-stat"><div class="stat-val">High</div><div class="ps-label">Formality</div><div class="ps-note">Scholarly &amp; literary</div></div>
+        <div class="pin-stat"><div class="stat-val">Low</div><div class="ps-label">Density</div><div class="ps-note">Sparse, centered, breathing</div></div>
+        <div class="pin-stat"><div class="stat-val">Mono</div><div class="ps-label">Scheme</div><div class="ps-note">One navy field, no inversion</div></div>
+        <div class="pin-stat"><div class="stat-val">09</div><div class="ps-label">Slides</div><div class="ps-note">Read like a folio</div></div>
+      </div>
+      <div class="foot-bar"><span>Gallery wall &times; archive folder</span><span>Zero motion</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section id="colours" data-counter="Colours">
+    <div class="wrap wrap-wide">
+      <div class="chrome-bar"><span>02 &mdash; Colours</span><span>One field, two accents</span></div>
+      <div class="kicker">The Palette</div>
+      <div class="rule28"></div>
+      <h2 class="h2">One Field, Two Accents</h2>
+      <p class="sec-lead">The navy field is constant; the yellow is the type at three opacity tiers. The brighter <em>emphasis</em> yellow flags emphasis inside headlines, and a single dusty teal carries the annotation voice &mdash; nothing else.</p>
+
+      <div class="sw-grid" style="margin-top: clamp(36px,5vh,60px);">
+        <div class="swatch"><div class="sw-chip" style="background:#2a3870"></div><div class="sw-name">Navy</div><div class="sw-hex">#2A3870</div><div class="sw-role">Deep periwinkle. The single field across every slide.</div></div>
+        <div class="swatch"><div class="sw-chip" style="background:#e8d85c"></div><div class="sw-name">Yellow</div><div class="sw-hex">#E8D85C</div><div class="sw-role">Warm chartreuse. The primary type colour.</div></div>
+        <div class="swatch"><div class="sw-chip" style="background:rgba(232,216,92,0.62)"></div><div class="sw-name">Yellow 62%</div><div class="sw-hex">rgba · .62</div><div class="sw-role">Secondary text &mdash; lead &amp; descriptions.</div></div>
+        <div class="swatch"><div class="sw-chip" style="background:rgba(232,216,92,0.32)"></div><div class="sw-name">Yellow 32%</div><div class="sw-hex">rgba · .32</div><div class="sw-role">Tertiary &mdash; captions, default chart bars.</div></div>
+        <div class="swatch"><div class="sw-chip" style="background:#f5e168"></div><div class="sw-name">Emphasis</div><div class="sw-hex">#F5E168</div><div class="sw-role">Brighter yellow &mdash; only for &lt;em&gt; in headlines.</div></div>
+        <div class="swatch"><div class="sw-chip" style="background:#3a7878"></div><div class="sw-name">Teal</div><div class="sw-hex">#3A7878</div><div class="sw-role">The annotation voice: pin-notes, kickers, quote-mark.</div></div>
+        <div class="swatch"><div class="sw-chip" style="background:#1f2858"></div><div class="sw-name">Navy Deep</div><div class="sw-hex">#1F2858</div><div class="sw-role">Left compare panel only.</div></div>
+        <div class="swatch"><div class="sw-chip" style="background:#34407a"></div><div class="sw-name">Navy Mid</div><div class="sw-hex">#34407A</div><div class="sw-role">Right compare panel only.</div></div>
+      </div>
+      <div class="foot-bar"><span>No semantic colour roles</span><span>One hue + two accents</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section id="typography" data-counter="Typography">
+    <div class="wrap wrap-wide">
+      <div class="chrome-bar"><span>03 &mdash; Typography</span><span>Italic serif &middot; sans &middot; typed mono</span></div>
+      <div class="kicker">Three Faces</div>
+      <div class="rule28"></div>
+      <h2 class="h2">Italic Is The <em>Default</em></h2>
+
+      <div class="face-row" style="margin-top: clamp(32px,5vh,60px);">
+        <div class="face-block">
+          <div class="fb-name">Cormorant Garamond &middot; italic 400 &middot; personality</div>
+          <div class="fb-serif">Considered &amp; intimate</div>
+          <div class="fb-desc">An old-style serif with an expressive italic axis. Carries every headline, numeral, and quote &mdash; in <em>italic</em> at weight 400, never roman. Italic at display scale against the periwinkle field is the system's defining moment.</div>
+        </div>
+        <div class="face-block">
+          <div class="fb-name">DM Sans &middot; 400 &middot; the quiet substance</div>
+          <div class="fb-sans">Body recedes behind the serif.</div>
+          <div class="fb-desc">A clean humanist grotesque for body and lead paragraphs. It is the substance, not the voice &mdash; meant to recede so the italic headlines lead the eye.</div>
+        </div>
+        <div class="face-block">
+          <div class="fb-name">Courier Prime &middot; the typed-note voice</div>
+          <div class="fb-mono">03 / 09 &mdash; pinned to the wall</div>
+          <div class="fb-desc">A typewriter monospace carrying chrome labels, slide counters, list counters, and the pin-note signature. The typed-mono beside italic-serif is the system's most distinctive combination.</div>
+        </div>
+      </div>
+
+      <div class="kicker" style="text-align:left">Type Scale &mdash; rendered at real size</div>
+      <div class="rule28" style="margin-left:0"></div>
+      <div class="scale-list">
+        <div class="scale-row"><div class="sm"><b>display</b>Cormorant italic 400 · 11vw</div><div class="smp"><span class="disp">Vellum</span></div></div>
+        <div class="scale-row"><div class="sm"><b>h1</b>Cormorant italic 400 · 7vw</div><div class="smp"><span class="h1">Statement</span></div></div>
+        <div class="scale-row"><div class="sm"><b>stat-value</b>Cormorant italic 400 · 5.5vw</div><div class="smp"><span class="stat-val">340%</span></div></div>
+        <div class="scale-row"><div class="sm"><b>h2</b>Cormorant italic 400 · 4vw</div><div class="smp"><span class="h2">Section Headline</span></div></div>
+        <div class="scale-row"><div class="sm"><b>h3</b>Cormorant italic 500 · 2.4vw</div><div class="smp"><span class="h3">Sub-headline</span></div></div>
+        <div class="scale-row"><div class="sm"><b>lead</b>DM Sans 400 · 1.5vw</div><div class="smp"><span class="lead">A lead paragraph in quiet DM Sans.</span></div></div>
+        <div class="scale-row"><div class="sm"><b>pin-note</b>Courier Prime 500 · 1.15vw · teal</div><div class="smp"><span style="font-family:var(--f-mono);font-size:var(--sz-pin);color:var(--teal)">04 / 09 &mdash; pinned</span></div></div>
+        <div class="scale-row"><div class="sm"><b>label</b>Courier Prime 400 · 0.72vw</div><div class="smp"><span style="font-family:var(--f-mono);font-size:var(--sz-label);letter-spacing:0.06em;text-transform:uppercase;color:var(--yellow-3)">Chrome Label</span></div></div>
+      </div>
+
+      <div class="em-demo" style="margin-top: clamp(28px,4vh,48px);">
+        <div class="kicker">The &lt;em&gt; mechanism &mdash; italic inverts to roman</div>
+        <h3 class="h2" style="margin-top:16px">Italic by default, <em>roman for emphasis</em></h3>
+      </div>
+      <div class="foot-bar"><span>Italic = identity &middot; roman = emphasis</span><span>Three faces, no more</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section id="components" data-counter="Components">
+    <div class="wrap wrap-wide">
+      <div class="chrome-bar"><span>04 &mdash; Components</span><span>Rendered with the template's actual CSS</span></div>
+      <div class="kicker">Live Parts</div>
+      <div class="rule28"></div>
+      <h2 class="h2">Live Parts</h2>
+
+      <div class="comp" style="margin-top: clamp(36px,5vh,60px);">
+        <div class="comp-h"><b>Numbered list</b> &mdash; Courier counters in teal, never bullets</div>
+        <ol class="num-list">
+          <li><span class="nl-body">Italic Cormorant carries every headline at every scale.</span></li>
+          <li><span class="nl-body">DM Sans recedes into the quiet body role.</span></li>
+          <li><span class="nl-body">Courier Prime is the typed annotation voice.</span></li>
+        </ol>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h"><b>Pin-stats</b> &mdash; italic numeral, mono caption, 1px hairline divider</div>
+        <div class="stat-row">
+          <div class="pin-stat"><div class="stat-val">$12.4M</div><div class="ps-label">Recurring Revenue</div></div>
+          <div class="pin-stat"><div class="stat-val">94%</div><div class="ps-label">Gross Retention</div></div>
+          <div class="pin-stat"><div class="stat-val">4.2&times;</div><div class="ps-label">LTV / CAC</div></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h"><b>Compare panels</b> &mdash; navy-deep &amp; navy-mid, the only two-shade moment</div>
+        <div class="compare">
+          <div class="cmp-panel deep">
+            <div class="cmp-label">Before</div>
+            <h3 class="h3">The scattered draft</h3>
+            <p class="cmp-body">Research lived in twelve documents, none of them speaking to each other.</p>
+          </div>
+          <div class="cmp-panel mid">
+            <div class="cmp-label">After</div>
+            <h3 class="h3">The pinned essay</h3>
+            <p class="cmp-body">One synthesis, centered on the wall, read one page at a time.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h"><b>Chart</b> &mdash; yellow-3 default bars, one full-yellow accent, 1px baseline</div>
+        <div class="chart">
+          <div class="chart-bars">
+            <div class="bar-col"><span class="bar-val">2.7</span><div class="bar" data-h="34%" style="height:0"></div><span class="bar-lbl">FY22</span></div>
+            <div class="bar-col"><span class="bar-val">5.1</span><div class="bar" data-h="52%" style="height:0"></div><span class="bar-lbl">FY23</span></div>
+            <div class="bar-col"><span class="bar-val">8.9</span><div class="bar" data-h="74%" style="height:0"></div><span class="bar-lbl">FY24</span></div>
+            <div class="bar-col hi"><span class="bar-val">12.4</span><div class="bar" data-h="100%" style="height:0"></div><span class="bar-lbl">FY25</span></div>
+          </div>
+          <div class="chart-baseline"></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h"><b>Quote</b> &mdash; 7vw teal quote-mark above a centered italic pull-quote</div>
+        <div class="quote-block">
+          <div class="quote-mark">&ldquo;</div>
+          <p class="qtext">The empty field around the words is not negative space. It is wall.</p>
+          <div class="quote-cite">&mdash; The Vellum premise</div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h"><b>Image placeholder</b> &mdash; 1px dashed slot with centered mono label</div>
+        <div class="img-ph"><span>Image Placeholder</span></div>
+      </div>
+      <div class="foot-bar"><span>Flat &middot; still &middot; centered</span><span>04 / Components</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section id="layout" data-counter="Layout">
+    <div class="wrap">
+      <div class="chrome-bar"><span>05 &mdash; Layout</span><span>Centered &middot; sparse</span></div>
+      <div class="kicker">Pinned &amp; Centered</div>
+      <div class="rule28"></div>
+      <h2 class="h2">Centered, With <em>Air</em></h2>
+      <p class="sec-lead">Content rarely fills more than 70% of width or 60% of height &mdash; the remaining navy is the pinned-wall context. Every layout centers; the pin-annotation in the bottom-left corner is the one element present on every slide.</p>
+      <table class="spec-table" style="margin-top: clamp(32px,5vh,56px);">
+        <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td class="mono-val">pad-x</td><td class="mono-val">6vw</td><td class="use">Horizontal slide padding</td></tr>
+          <tr><td class="mono-val">pad-y</td><td class="mono-val">6vh</td><td class="use">Vertical slide padding (1.2&times; on quotes)</td></tr>
+          <tr><td class="mono-val">gap-lg</td><td class="mono-val">5vh</td><td class="use">Between major sections</td></tr>
+          <tr><td class="mono-val">gap-md</td><td class="mono-val">3vh</td><td class="use">Between related elements</td></tr>
+          <tr><td class="mono-val">pin offset</td><td class="mono-val">~0.9 &times; pad-y</td><td class="use">Pin-annotation from bottom-left</td></tr>
+          <tr><td class="mono-val">content</td><td class="mono-val">55&ndash;80%</td><td class="use">Centered content width</td></tr>
+        </tbody>
+      </table>
+      <div class="foot-bar"><span>~70% max fill</span><span>The field is structural</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH & SHAPE ============ -->
+  <section id="depth" data-counter="Depth">
+    <div class="wrap">
+      <div class="chrome-bar"><span>06 &mdash; Depth &amp; Shape</span><span>Completely flat &middot; still</span></div>
+      <div class="kicker">No Elevation, No Motion</div>
+      <div class="rule28"></div>
+      <h2 class="h2">Completely <em>Flat</em></h2>
+      <p class="sec-lead">No drop shadows. No rounded corners. No gradients. Differentiation comes only from <em>navy-family shifts</em>, 1px hairlines at 20% yellow, and the three yellow opacity tiers. The deck does not move &mdash; transitions are zero duration.</p>
+
+      <div class="rule-ladder" style="margin-top: clamp(32px,5vh,56px);">
+        <div class="rl-row"><div class="rl-spec"><b>1px solid</b>20% yellow &mdash; chrome, dividers, baselines</div><div class="rl-1"></div></div>
+        <div class="rl-row"><div class="rl-spec"><b>1px dashed</b>20% yellow &mdash; image placeholder slots</div><div class="rl-1d"></div></div>
+      </div>
+
+      <div class="kicker">Differentiation comes from navy-family shifts, not elevation</div>
+      <div class="rule28" style="margin-left:auto;margin-right:auto"></div>
+      <div class="navy-shades">
+        <div class="ns-cell" style="background:#1f2858"><div class="ns-lbl">Navy Deep</div></div>
+        <div class="ns-cell" style="background:#2a3870"><div class="ns-lbl">Navy</div></div>
+        <div class="ns-cell" style="background:#34407a"><div class="ns-lbl">Navy Mid</div></div>
+        <div class="ns-cell" style="background:#343f80"><div class="ns-lbl">Navy Alt</div></div>
+      </div>
+      <div class="foot-bar"><span>Every line is 1px</span><span>Read like a folio, no transition</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section id="dodont" data-counter="Do &amp; Don't">
+    <div class="wrap wrap-wide">
+      <div class="chrome-bar"><span>07 &mdash; Do &amp; Don't</span><span>Hold the register</span></div>
+      <div class="kicker">Hold The Register</div>
+      <div class="rule28"></div>
+      <h2 class="h2">Hold The <em>Register</em></h2>
+      <div class="dodont" style="margin-top: clamp(36px,5vh,60px);">
+        <div class="do-col">
+          <div class="dd-head">Do</div>
+          <ol class="num-list" style="margin:0">
+            <li><span class="nl-body">Fill every slide with the single navy field &mdash; there is no light alternate.</span></li>
+            <li><span class="nl-body">Render every headline in italic Cormorant 400, in yellow.</span></li>
+            <li><span class="nl-body">Place a teal pin-annotation in the bottom-left corner of every slide.</span></li>
+            <li><span class="nl-body">Use &lt;em&gt; as upright roman 600 in emphasis-yellow.</span></li>
+            <li><span class="nl-body">Number lists with Courier counters in teal; center all content.</span></li>
+          </ol>
+        </div>
+        <div class="dont-col">
+          <div class="dd-head">Don't</div>
+          <ol class="num-list" style="margin:0">
+            <li><span class="nl-body">Introduce a second background colour or a light theme.</span></li>
+            <li><span class="nl-body">Render headlines in upright roman, except as &lt;em&gt;.</span></li>
+            <li><span class="nl-body">Add drop shadows, rounded corners, gradients, or motion.</span></li>
+            <li><span class="nl-body">Use yellow on the quote-mark or as a kicker colour.</span></li>
+            <li><span class="nl-body">Use bullet dots or em-dashes, or crowd the field edge-to-edge.</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="foot-bar"><span>Source: design.md</span><span>Canonical</span></div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section id="cjk" data-counter="CJK">
+    <div class="wrap">
+      <div class="chrome-bar"><span>08 &mdash; 中文 / CJK</span><span>Strategy C &middot; literary stack</span></div>
+      <div class="kicker">Handwritten Chartreuse</div>
+      <div class="rule28"></div>
+      <h2 class="h2">A Kaiti On The <em>Wall</em></h2>
+      <p class="sec-lead">Latin stays in Cormorant italic; Chinese drops into <em>霞鹜文楷 LXGW WenKai</em> &mdash; the kaiti's hand-written warmth mirrors Cormorant's intimate italic voice. Against the periwinkle field, the chartreuse kaiti reads as handwritten chartreuse on a gallery wall.</p>
+
+      <div class="cjk-specimen" style="margin-top: clamp(32px,5vh,56px);">
+        <div class="cjk-display">羊皮卷上的随笔</div>
+        <div class="cjk-body">单一的长春花蓝场，居中漂浮的暖黄字，角落里一张打字机便签。霞鹜文楷承载标题的个人语气，思源宋体安静地处理正文。中文引号改用「」，与 teal 引号字形呼应。盘古之白：在中文与 Latin 之间留一个空格，如 使用 Claude、2026 年。</div>
+        <div class="cjk-label">霞鹜文楷 LXGW WenKai &middot; 思源宋体 Noto Serif SC</div>
+      </div>
+
+      <table class="spec-table">
+        <thead><tr><th>Role</th><th>Latin (default)</th><th>Chinese counterpart</th></tr></thead>
+        <tbody>
+          <tr><td class="use">Display / h1 / h2 / quote</td><td class="mono-val">Cormorant italic 400</td><td>霞鹜文楷 LXGW WenKai</td></tr>
+          <tr><td class="use">Body / lead</td><td class="mono-val">DM Sans 400</td><td>思源宋体 Noto Serif SC</td></tr>
+          <tr><td class="use">Pin-note / chrome</td><td class="mono-val">Courier Prime</td><td>+ Noto Sans Mono CJK fallback</td></tr>
+        </tbody>
+      </table>
+      <p class="body" style="max-width:68ch;margin:20px auto 0;">The italic-to-roman &lt;em&gt; mechanism has no CJK equivalent (kaiti has no italic axis) &mdash; substitute Noto Serif SC 700 in emphasis-yellow. Quote glyphs become full-width corner brackets 「 」 in teal. Keep pin-notes in Latin where possible; it reads as deliberate in Chinese gallery design.</p>
+      <div class="foot-bar"><span>Strategy C &middot; literary stack</span><span>Locale: zh</span></div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close">
+    <div class="kicker">End of Folio</div>
+    <div class="rule28"></div>
+    <h1 class="h1">Vellum</h1>
+    <p class="close-sub">One of 34 systems in Beautiful HTML Templates. Quiet, monochromatic, deeply still.</p>
+    <div class="close-links">
+      <a href="index.html">&larr; All Systems</a>
+      <a href="../templates/vellum/template.html">Open Live Deck</a>
+      <a href="../templates/vellum/design.md">design.md</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var counter = document.getElementById('counter');
+      var sections = Array.prototype.slice.call(document.querySelectorAll('[data-counter]'));
+      var total = sections.length + 2; // hero + 8 + close = 10
+
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var idx = 1, mid = h.scrollTop + window.innerHeight * 0.4;
+        for (var i = 0; i < sections.length; i++) { if (sections[i].offsetTop <= mid) idx = i + 2; }
+        if (scrolled > 0.985) idx = total;
+        counter.textContent = String(idx).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+
+      var bars = Array.prototype.slice.call(document.querySelectorAll('.bar[data-h]'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.style.transition = 'height 0.8s ease'; e.target.style.height = e.target.getAttribute('data-h'); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.3 });
+        bars.forEach(function (b) { io.observe(b); });
+      } else {
+        bars.forEach(function (b) { b.style.height = b.getAttribute('data-h'); });
+      }
+    })();
+  </script>
+</body>
+</html>

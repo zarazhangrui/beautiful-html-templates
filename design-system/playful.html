@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playful — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's two faces: Syne (display) + Space Grotesk (body) -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- CJK pairing for §08: ZCOOL KuaiLe echoes Syne; Noto Sans SC stands in for Yozai (reliable on Google Fonts) -->
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F0C8A0;
+      --bg-alt: #E8B88E;
+      --light: #F7DEC6;
+      --ink: #1A1A1A;
+      --f-disp: 'Syne', sans-serif;
+      --f-body: 'Space Grotesk', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--f-body); -webkit-font-smoothing: antialiased; }
+
+    /* ===== Persistent chrome ===== */
+    .progress { position: fixed; bottom: 0; left: 0; height: 5px; width: 0; background: var(--ink); z-index: 300; }
+    .back-link {
+      position: fixed; top: 20px; left: 22px; z-index: 200; text-decoration: none; color: var(--ink);
+      border: 3px solid var(--ink); background: var(--light); padding: 7px 16px; transform: rotate(-2deg);
+      font-family: var(--f-body); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .counter {
+      position: fixed; bottom: 18px; right: 22px; z-index: 200;
+      border: 2px solid var(--ink); background: var(--bg); padding: 8px 14px;
+      font-family: var(--f-disp); font-weight: 800; font-size: 0.9rem;
+    }
+
+    /* ===== Type ===== */
+    .display-hero { font-family: var(--f-disp); font-weight: 800; font-size: clamp(3rem,9vw,7rem); line-height: 0.9; letter-spacing: -0.03em; }
+    .display { font-family: var(--f-disp); font-weight: 800; font-size: clamp(2.6rem,7vw,5.5rem); line-height: 0.9; letter-spacing: -0.02em; }
+    .headline { font-family: var(--f-disp); font-weight: 700; font-size: clamp(2.2rem,5vw,4rem); line-height: 1; letter-spacing: -0.01em; }
+    .title { font-family: var(--f-disp); font-weight: 700; font-size: clamp(1.6rem,3vw,2.6rem); line-height: 1.1; letter-spacing: -0.01em; }
+    .title-sm { font-family: var(--f-disp); font-weight: 700; font-size: 1.3rem; line-height: 1.2; }
+    .num { font-family: var(--f-disp); font-weight: 800; font-size: clamp(2.5rem,5vw,4rem); line-height: 1; letter-spacing: -0.02em; }
+    .body { font-family: var(--f-body); font-weight: 400; font-size: clamp(1rem,1.2vw,1.12rem); line-height: 1.7; }
+    .body strong { font-weight: 700; }
+    .body-md { font-family: var(--f-body); font-weight: 500; font-size: 1.15rem; line-height: 1.6; }
+    .eyebrow { font-family: var(--f-body); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; }
+
+    /* ===== Sections ===== */
+    section, header, footer { position: relative; overflow: hidden; padding: clamp(48px,6vw,84px) clamp(28px,5vw,80px); }
+    .wrap { max-width: 1140px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+    .sec-head { margin-bottom: clamp(32px,4vw,52px); max-width: 64ch; }
+    .sec-head .eyebrow { display: block; margin-bottom: 12px; }
+    .sec-head .body { margin-top: 14px; }
+
+    /* ===== Signature: double-stroke offset border ===== */
+    .rough { position: relative; border: 3px solid var(--ink); background: var(--bg); padding: clamp(1.5rem,2.5vw,2rem) clamp(1.5rem,3vw,2.4rem); }
+    .rough::before { content: ""; position: absolute; top: 7px; left: 7px; width: 100%; height: 100%; border: 2px solid var(--ink); z-index: -1; pointer-events: none; }
+    .rough.light { background: var(--light); }
+    .filled { background: var(--ink); color: var(--bg); border: 3px solid var(--ink); padding: clamp(1.5rem,2.5vw,2rem) clamp(1.5rem,3vw,2.4rem); }
+    .filled .title, .filled .title-sm, .filled .num, .filled .headline { color: var(--bg); }
+
+    /* ===== blobs + scribbles + ghost ===== */
+    .ghost-blob { position: absolute; background: var(--ink); opacity: 0.07; border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; z-index: 0; pointer-events: none; }
+    .scribble { position: absolute; z-index: 1; pointer-events: none; }
+    .scribble svg { stroke: var(--ink); stroke-width: 2; fill: none; stroke-linecap: round; }
+    .blob-frame { border: 3px solid var(--ink); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; display: flex; align-items: center; justify-content: center; }
+    .blob-pebble { border: 3px solid var(--ink); border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; display: flex; align-items: center; justify-content: center; }
+    .blob-fill { background: var(--ink); border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; align-items: center; }
+    .hero-inner { max-width: 900px; }
+    .hero .display-hero { margin: 14px 0 20px; }
+    .hero-sub { font-family: var(--f-body); font-weight: 500; font-size: clamp(1.05rem,1.5vw,1.3rem); line-height: 1.6; max-width: 50ch; }
+    .contents { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 36px; }
+    .contents a { text-decoration: none; color: var(--ink); }
+    .contents .chip { font-family: var(--f-disp); font-weight: 700; font-size: 1rem; padding: 0.7rem 1.3rem; display: block; }
+    .contents a:nth-child(odd) .chip { transform: rotate(-2deg); }
+    .contents a:nth-child(even) .chip { transform: rotate(2deg); }
+    .contents a:hover .chip { background: var(--ink); color: var(--bg); }
+
+    /* ===== grids ===== */
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: clamp(28px,3.5vw,52px); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,3.5vw,52px); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: clamp(24px,3vw,44px); }
+    .r-odd { transform: rotate(-2deg); } .r-even { transform: rotate(2deg); }
+
+    .step-node { width: 64px; height: 64px; border: 3px solid var(--ink); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--f-disp); font-weight: 800; font-size: 1.5rem; background: var(--bg); }
+    .step-node.fill { background: var(--ink); color: var(--bg); }
+    .avatar { width: 56px; height: 56px; background: var(--ink); border-radius: 50%; }
+    .tag-pill { display: inline-block; background: var(--ink); color: var(--bg); padding: 0.4rem 0.8rem; font-family: var(--f-body); font-weight: 600; font-size: 0.75rem; }
+
+    /* ===== §02 colours ===== */
+    .sw-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: clamp(24px,3vw,44px); }
+    .sw { min-height: 120px; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.3rem; }
+    .sw .sw-name { font-family: var(--f-disp); font-weight: 800; font-size: 1.2rem; }
+    .sw .sw-hex { font-family: var(--f-body); font-size: 0.82rem; margin-top: 4px; }
+
+    /* ===== §03 typography ===== */
+    .face-row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,3.5vw,52px); margin-bottom: 36px; }
+    .fc-syne { font-family: var(--f-disp); font-weight: 800; font-size: clamp(2.6rem,5vw,4.2rem); line-height: 0.95; letter-spacing: -0.02em; }
+    .fc-grotesk { font-family: var(--f-body); font-weight: 500; font-size: clamp(1.4rem,2.2vw,2rem); line-height: 1.3; }
+    .fc-name { font-family: var(--f-body); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 14px; }
+    .fc-desc { font-family: var(--f-body); font-size: 0.95rem; line-height: 1.55; margin-top: 8px; }
+    .scale-stack { display: flex; flex-direction: column; gap: 14px; }
+    .scale-row { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: baseline; padding: 1rem 1.5rem; }
+    .sm { font-family: var(--f-body); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.75; }
+    .sm b { display: block; opacity: 1; margin-bottom: 3px; }
+
+    /* ===== §04 ===== */
+    .comp { margin-bottom: 44px; }
+    .comp-h { font-family: var(--f-body); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 20px; opacity: 0.8; }
+    .bar-chart { display: flex; align-items: flex-end; gap: clamp(16px,2.5vw,36px); height: 180px; border-left: 3px solid var(--ink); border-bottom: 3px solid var(--ink); padding: 0 16px; }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 8px; }
+    .bar { width: 100%; height: 0; transition: height 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .bar.solid { background: var(--ink); }
+    .bar.outline { border: 3px solid var(--ink); background: transparent; }
+    .bar-lbl { font-family: var(--f-body); font-size: 0.8rem; }
+
+    /* ===== §07 ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,3.5vw,52px); }
+    .dd-list { list-style: none; margin-top: 14px; }
+    .dd-list li { font-family: var(--f-body); font-size: 1rem; line-height: 1.5; padding: 0.6rem 0 0.6rem 1.8rem; position: relative; }
+    .do .dd-list li::before { content: "✓"; position: absolute; left: 0; font-family: var(--f-disp); font-weight: 800; }
+    .dont .dd-list li::before { content: "✗"; position: absolute; left: 0; font-family: var(--f-disp); font-weight: 800; }
+    .filled .dd-list li::before { color: var(--bg); }
+
+    /* ===== §08 cjk ===== */
+    .cjk-display { font-family: 'ZCOOL KuaiLe', var(--f-disp); font-size: clamp(2.4rem,4.5vw,3.8rem); line-height: 1.25; }
+    .cjk-body { font-family: 'Noto Sans SC', var(--f-body); font-weight: 400; font-size: clamp(1rem,1.3vw,1.15rem); line-height: 1.85; margin-top: 14px; }
+    .cjk-label { font-family: var(--f-body); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 14px; opacity: 0.8; }
+
+    /* ===== close ===== */
+    .close { min-height: 84vh; display: flex; align-items: center; }
+    .close-inner { max-width: 760px; }
+    .close .display { margin: 12px 0 18px; }
+    .close-links { margin-top: 28px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .close-links a { text-decoration: none; color: var(--ink); }
+    .close-links .chip { font-family: var(--f-disp); font-weight: 700; font-size: 0.95rem; padding: 0.7rem 1.3rem; display: block; }
+
+    /* ===== responsive ===== */
+    @media (max-width: 900px) {
+      .grid-3, .grid-4, .sw-grid, .face-row, .dodont, .grid-2 { grid-template-columns: 1fr; }
+      .scale-row { grid-template-columns: 1fr; gap: 8px; }
+      .scribble, .ghost-blob { display: none; }
+    }
+    @media (max-width: 560px) { .grid-4, .sw-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <a class="back-link" href="index.html">&larr; Index</a>
+  <div class="counter" id="counter">01 / 10</div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="ghost-blob" style="width:520px;height:480px;top:-80px;right:-100px"></div>
+    <div class="scribble" style="top:12%;left:5%"><svg width="90" height="40" viewBox="0 0 90 40"><path d="M2 20 Q 14 2, 26 20 T 50 20 T 74 20 T 88 20"/></svg></div>
+    <div class="scribble" style="bottom:14%;right:8%"><svg width="70" height="70" viewBox="0 0 70 70"><path d="M35 4 L43 27 L67 27 L48 42 L55 65 L35 50 L15 65 L22 42 L3 27 L27 27 Z"/></svg></div>
+    <div class="blob-frame" style="position:absolute;width:120px;height:120px;bottom:18%;left:9%"><div class="blob-fill" style="width:60px;height:60px"></div></div>
+    <div class="wrap hero-inner">
+      <span class="eyebrow">Design System Specification</span>
+      <h1 class="display-hero">Playful</h1>
+      <p class="hero-sub">A warm, hand-crafted editorial system &mdash; peach-clay canvas, charcoal ink, double-stroke borders, organic blobs, and scribbled doodles. Studio sketchbook, not corporate pitch.</p>
+      <nav class="contents">
+        <a href="#overview"><span class="chip rough">01 Overview</span></a>
+        <a href="#colours"><span class="chip rough light">02 Colours</span></a>
+        <a href="#typography"><span class="chip rough">03 Typography</span></a>
+        <a href="#components"><span class="chip rough light">04 Components</span></a>
+        <a href="#layout"><span class="chip rough">05 Layout</span></a>
+        <a href="#depth"><span class="chip rough light">06 Depth</span></a>
+        <a href="#dodont"><span class="chip rough">07 Do &amp; Don't</span></a>
+        <a href="#cjk"><span class="chip rough light">08 中文 / CJK</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section id="overview">
+    <div class="scribble" style="top:10%;right:7%"><svg width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="34"/><circle cx="40" cy="40" r="22"/></svg></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">01 — Overview</span>
+        <h2 class="headline">Ink On Clay Paper</h2>
+        <p class="body">Playful commits fully to a <strong>one-colour discipline</strong>: charcoal ink on a peach-clay canvas, nothing else. Expressiveness comes from shape, weight, rotation, and hand-drawn marks &mdash; not from palette variety. Confident but warm; structured but loose.</p>
+      </div>
+      <div class="grid-4">
+        <div class="rough r-odd"><div class="num">Low</div><div class="title-sm" style="margin-top:6px">Formality</div></div>
+        <div class="rough r-even light"><div class="num">Med</div><div class="title-sm" style="margin-top:6px">Density</div></div>
+        <div class="rough r-odd"><div class="num">Warm</div><div class="title-sm" style="margin-top:6px">Scheme</div></div>
+        <div class="filled r-even"><div class="num">10</div><div class="title-sm" style="margin-top:6px">Slides</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section id="colours">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">02 — Colours</span>
+        <h2 class="headline">Monochrome Warmth</h2>
+        <p class="body">One ink, one surface, two tonal siblings of the canvas. There is no &ldquo;primary vs secondary colour&rdquo; &mdash; every decision is a binary between <strong>peach canvas</strong> and <strong>charcoal ink</strong>, modulated by opacity, scale, and shape.</p>
+      </div>
+      <div class="sw-grid">
+        <div class="rough sw r-odd" style="background:var(--bg)"><div class="sw-name">Background</div><div class="sw-hex">#F0C8A0 — peach clay</div></div>
+        <div class="rough sw r-even" style="background:var(--bg-alt)"><div class="sw-name">BG Alt</div><div class="sw-hex">#E8B88E — image fill</div></div>
+        <div class="rough sw r-odd" style="background:var(--light)"><div class="sw-name">Light</div><div class="sw-hex">#F7DEC6 — gentle lift</div></div>
+        <div class="sw r-even" style="background:var(--ink);color:var(--bg);border:3px solid var(--ink)"><div class="sw-name" style="color:var(--bg)">Ink</div><div class="sw-hex" style="color:var(--bg)">#1A1A1A — charcoal</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section id="typography">
+    <div class="scribble" style="bottom:8%;left:6%"><svg width="100" height="30" viewBox="0 0 100 30"><path d="M2 15 H 84 M 72 4 L 86 15 L 72 26"/></svg></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">03 — Typography</span>
+        <h2 class="headline">Expressive + Reliable</h2>
+        <p class="body">Syne is the personality &mdash; a quirky humanist display sans at weight 700–800 with tight negative tracking. Space Grotesk is the workhorse &mdash; steady, neutral, at 400–500. The rhythm is <strong>Syne headline + Space Grotesk body</strong>, repeated with discipline.</p>
+      </div>
+      <div class="face-row">
+        <div class="rough r-odd"><div class="fc-syne">Syne</div><div class="fc-name">Display · 700–800</div><div class="fc-desc">Quirky humanist proportions, narrow apertures. Every headline, statement, numeral, vertical label. Always negative-tracked.</div></div>
+        <div class="rough r-even light"><div class="fc-grotesk">Space Grotesk</div><div class="fc-name">Body · 400–600</div><div class="fc-desc">Clean geometric sans with friendly warmth. Every paragraph, label, and caption. A reliable grid under the expressive display.</div></div>
+      </div>
+      <div class="rough scale-stack" style="padding:1.5rem 2rem">
+        <div class="scale-row"><div class="sm"><b>display-hero · Syne 800</b>4–9rem · -0.03em</div><div class="display-hero" style="font-size:clamp(2.4rem,4vw,3.4rem)">Playful</div></div>
+        <div class="scale-row"><div class="sm"><b>headline · Syne 700</b>2.5–5rem</div><div class="headline" style="font-size:clamp(1.8rem,3vw,2.6rem)">Section Headline</div></div>
+        <div class="scale-row"><div class="sm"><b>number · Syne 800</b>2–7rem</div><div class="num" style="font-size:clamp(2rem,3.5vw,3rem)">340%</div></div>
+        <div class="scale-row"><div class="sm"><b>body · Space Grotesk 400</b>1–1.1rem</div><div class="body" style="margin:0">Steady geometric body at line-height 1.7.</div></div>
+        <div class="scale-row"><div class="sm"><b>eyebrow · Space Grotesk 600</b>0.85rem · 0.15em caps</div><div class="eyebrow">Section Eyebrow</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section id="components">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">04 — Components</span>
+        <h2 class="headline">The Hand-Drawn Kit</h2>
+        <p class="body">Every block below is rendered with the template's <strong>actual CSS</strong> &mdash; not a mockup. Double-stroke borders, organic blobs, scribbles, and the outlined-vs-inverted card pairing.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Rough-box vs filled — the outlined / inverted pairing</div>
+        <div class="grid-3">
+          <div class="rough r-odd"><div class="title-sm">Outlined</div><div class="body" style="margin-top:8px">3px border + a 7px offset ghost border via ::before. The canvas shows through.</div></div>
+          <div class="rough r-even light"><div class="title-sm">Light fill</div><div class="body" style="margin-top:8px">Same double stroke on the lighter tonal sibling for gentle layering.</div></div>
+          <div class="filled r-odd"><div class="title-sm">Inverted</div><div class="body" style="margin-top:8px;color:var(--bg);opacity:0.9">Charcoal fill, peach text. The emphasis device — reserve for the anchor cell.</div></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Blob frames, step nodes &amp; tags</div>
+        <div class="grid-3" style="align-items:center">
+          <div class="rough r-even" style="display:flex;gap:20px;align-items:center;justify-content:center">
+            <div class="blob-frame" style="width:90px;height:90px"><div class="blob-fill" style="width:46px;height:46px"></div></div>
+            <div class="blob-pebble" style="width:90px;height:70px"></div>
+          </div>
+          <div class="rough r-odd light" style="display:flex;gap:16px;align-items:center;justify-content:center">
+            <div class="step-node">1</div>
+            <div class="step-node fill">2</div>
+            <div class="step-node">3</div>
+          </div>
+          <div class="rough r-even" style="display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap">
+            <div class="avatar"></div>
+            <span class="tag-pill">Category</span>
+            <span class="tag-pill">Tag</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Bar chart — solid &amp; outlined charcoal, no colour</div>
+        <div class="rough r-odd">
+          <div class="bar-chart">
+            <div class="bar-col"><div class="bar solid" data-h="40%"></div><div class="bar-lbl">FY22</div></div>
+            <div class="bar-col"><div class="bar outline" data-h="56%"></div><div class="bar-lbl">FY23</div></div>
+            <div class="bar-col"><div class="bar solid" data-h="74%"></div><div class="bar-lbl">FY24</div></div>
+            <div class="bar-col"><div class="bar outline" data-h="100%"></div><div class="bar-lbl">FY25</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section id="layout">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">05 — Layout</span>
+        <h2 class="headline">One Moment, Breathing</h2>
+        <p class="body">Each slide is anchored by a single dominant element &mdash; a statement, a chart, a roster &mdash; surrounded by deliberate breathing room and one or two scribbles. The system reads as expensive when sparse and broken when dense.</p>
+      </div>
+      <div class="grid-2">
+        <div class="rough r-odd">
+          <div class="title">Padding &amp; gap</div>
+          <div class="body" style="margin-top:12px">pad-slide 3–5rem · pad-card 1.5–3rem · gap 1.5 / 2 / 3rem. Generous on cover &amp; closing; tighter inside cards.</div>
+        </div>
+        <div class="filled r-even">
+          <div class="title">One dominant element</div>
+          <div class="body" style="margin-top:12px;color:var(--bg);opacity:0.9">A single substantive moment per slide, plus one or two SVG scribbles in the negative space. Never wall-to-wall.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH ============ -->
+  <section id="depth">
+    <div class="ghost-blob" style="width:420px;height:380px;bottom:-60px;left:-80px"></div>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">06 — Depth &amp; Shape</span>
+        <h2 class="headline">Drawn, Not Rendered</h2>
+        <p class="body">No web shadows. Depth is the <strong>double-stroke offset border</strong>, small ±3&deg; rotations (alternating direction), and ink-density contrast. Corners are sharp, perfectly round, or organically blob-shaped &mdash; never a generic medium radius.</p>
+      </div>
+      <div class="grid-4">
+        <div class="rough r-odd"><div class="title-sm">Double stroke</div><div class="body" style="margin-top:6px;font-size:0.9rem">3px + 7px offset</div></div>
+        <div class="rough r-even"><div class="title-sm">Rotation</div><div class="body" style="margin-top:6px;font-size:0.9rem">±0.5–3°, alternating</div></div>
+        <div class="blob-frame r-odd" style="min-height:110px;padding:1rem"><div class="title-sm">Blob radius</div></div>
+        <div class="rough r-even" style="opacity:1"><div class="title-sm">Ghost blob</div><div class="body" style="margin-top:6px;font-size:0.9rem">charcoal @ 0.07</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section id="dodont">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">07 — Do &amp; Don't</span>
+        <h2 class="headline">Keep It Hand-Touched</h2>
+      </div>
+      <div class="dodont">
+        <div class="rough do r-odd">
+          <div class="title">Do</div>
+          <ul class="dd-list">
+            <li>Use Syne for display, Space Grotesk for body; negative-track every Syne element.</li>
+            <li>Apply the double-stroke offset border to every primary card.</li>
+            <li>Keep charcoal as the only ink; reach for bg-alt for a distinct surface.</li>
+            <li>Add a scribble to a corner of every slide; rotate cards ±0.5–3°, alternating.</li>
+            <li>Let one dominant element breathe; reserve the inverted card for the anchor.</li>
+          </ul>
+        </div>
+        <div class="filled dont r-even">
+          <div class="title">Don't</div>
+          <ul class="dd-list">
+            <li>Introduce a third colour or a chromatic chart palette.</li>
+            <li>Use blurred box-shadow, or medium radii (4/8/12px).</li>
+            <li>Set headlines in Space Grotesk, or body in Syne.</li>
+            <li>Rotate past ±3°, or rotate every element the same direction.</li>
+            <li>Crowd the canvas, or use italic / underline for emphasis.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section id="cjk">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">08 — 中文 / CJK</span>
+        <h2 class="headline">Warm, In Chinese</h2>
+        <p class="body">The transfer is exceptionally strong: <strong>站酷快乐体 ZCOOL KuaiLe</strong> carries the same quirky independent-studio voice as Syne, and <strong>悠哉字体 Yozai</strong> mirrors Space Grotesk's warmth. Drop the negative tracking on CJK display &mdash; the rounded faces are designed on a square em-box.</p>
+      </div>
+      <div class="grid-2" style="align-items:start">
+        <div class="rough r-odd">
+          <div class="cjk-display">趣味系统</div>
+          <div class="cjk-body">单一暖色画布、炭黑墨色、双线手绘边框、有机色块与随手涂鸦 —— 全部与字母无关，在中文里同样成立。站酷快乐体承载标题的圆润个性，悠哉字体处理正文。盘古之白：使用 Claude、2026 年。</div>
+          <div class="cjk-label">站酷快乐体 · 悠哉字体 Yozai</div>
+        </div>
+        <div class="filled r-even">
+          <div class="title" style="margin-bottom:12px">Pairing</div>
+          <div class="body" style="color:var(--bg);opacity:0.92;line-height:2">Display → 站酷快乐体<br>Body → 悠哉字体 Yozai<br>Tracking → 0 on CJK<br>Line-height → display 1.2, body 1.8</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close" id="close">
+    <div class="scribble" style="top:18%;right:10%"><svg width="80" height="40" viewBox="0 0 80 40"><path d="M2 20 Q 14 2, 26 20 T 50 20 T 74 20"/></svg></div>
+    <div class="ghost-blob" style="width:480px;height:420px;bottom:-90px;right:-90px"></div>
+    <div class="wrap close-inner">
+      <span class="eyebrow">That's a wrap</span>
+      <h2 class="display">Playful</h2>
+      <p class="body" style="max-width:46ch">One of 34 systems in Beautiful HTML Templates. Confident but human, structured but loose.</p>
+      <div class="close-links">
+        <a href="index.html"><span class="chip rough">&larr; All Systems</span></a>
+        <a href="../templates/playful/template.html"><span class="chip rough light">Open Live Deck</span></a>
+        <a href="../templates/playful/design.md"><span class="chip filled" style="border:3px solid var(--ink)">design.md</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var counter = document.getElementById('counter');
+      var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+      var total = ids.length;
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+        for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+        if (scrolled > 0.99) idx = total - 1;
+        counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+      var bars = Array.prototype.slice.call(document.querySelectorAll('.bar[data-h]'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.style.height = e.target.getAttribute('data-h'); io.unobserve(e.target); } }); }, { threshold: 0.4 });
+        bars.forEach(function (b) { io.observe(b); });
+      } else { bars.forEach(function (b) { b.style.height = b.getAttribute('data-h'); }); }
+    })();
+  </script>
+</body>
+</html>

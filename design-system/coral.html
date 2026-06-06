@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coral — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's two faces: Bebas Neue (display) + Inter (body) -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- CJK pairing for §08: ZCOOL XiaoWei echoes Bebas's condensed display; Noto Sans SC stands in for Yozai -->
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --coral: #E85D5D; --coral-dark: #D44A4A;
+      --cream: #F5F0E8; --cream-dark: #E8E0D4;
+      --ink: #1A1A1A; --gray: #6B6B6B; --light-gray: #B0B0B0; --white: #FFFFFF;
+      --f-disp: 'Bebas Neue', sans-serif;
+      --f-body: 'Inter', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--cream); color: var(--ink); font-family: var(--f-body); -webkit-font-smoothing: antialiased; }
+
+    /* ===== Persistent chrome ===== */
+    .progress { position: fixed; top: 0; left: 0; height: 5px; width: 0; background: var(--coral); z-index: 300; }
+    .back-link {
+      position: fixed; top: 18px; left: 22px; z-index: 200; text-decoration: none;
+      background: var(--ink); color: var(--cream); padding: 9px 16px;
+      font-family: var(--f-body); font-weight: 700; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; }
+    .back-link:hover { background: var(--coral); }
+    .counter {
+      position: fixed; bottom: 18px; right: 22px; z-index: 200;
+      background: var(--ink); color: var(--cream); padding: 7px 16px;
+      font-family: var(--f-disp); font-size: 20px; letter-spacing: 2px; }
+
+    /* ===== Type ===== */
+    .hero-title { font-family: var(--f-disp); font-size: clamp(56px,10vw,140px); line-height: 0.9; letter-spacing: 4px; }
+    .jumbo { font-family: var(--f-disp); font-size: clamp(70px,14vw,180px); line-height: 1; letter-spacing: 10px; }
+    .display-statement { font-family: var(--f-disp); font-size: clamp(42px,7vw,96px); line-height: 1; letter-spacing: 2px; }
+    .section-headline { font-family: var(--f-disp); font-size: clamp(40px,6vw,80px); line-height: 1; letter-spacing: 2px; }
+    .column-title { font-family: var(--f-disp); font-size: clamp(32px,5vw,64px); line-height: 1; letter-spacing: 2px; }
+    .stat-numeral { font-family: var(--f-disp); font-size: clamp(44px,6vw,84px); line-height: 1; letter-spacing: 1px; }
+    .card-title { font-family: var(--f-disp); font-size: clamp(24px,2.5vw,36px); line-height: 1.1; letter-spacing: 1px; }
+    .body { font-family: var(--f-body); font-weight: 400; font-size: clamp(15px,1.3vw,19px); line-height: 1.7; color: var(--gray); }
+    .body-light { font-family: var(--f-body); font-weight: 300; font-size: clamp(20px,2.5vw,34px); line-height: 1.5; }
+    .eyebrow { font-family: var(--f-body); font-weight: 700; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--coral); }
+    .label { font-family: var(--f-body); font-weight: 600; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gray); }
+
+    /* ===== Surfaces ===== */
+    section, header, footer { position: relative; }
+    .s-cream { background: var(--cream); color: var(--ink); }
+    .s-ink { background: var(--ink); color: var(--cream); }
+    .s-coral { background: var(--coral); color: var(--ink); }
+    .s-ink .body { color: var(--cream); } .s-coral .body { color: var(--ink); }
+    .s-ink .eyebrow { color: var(--coral); } .s-coral .eyebrow { color: var(--ink); }
+    .s-ink .section-headline, .s-ink .column-title, .s-ink .hero-title { color: var(--cream); }
+    /* 45° diagonal hatch on coral regions */
+    .hatch::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(0,0,0,0.06) 20px, rgba(0,0,0,0.06) 40px); }
+
+    .pad { padding: clamp(48px,7vh,90px) clamp(40px,8vw,100px); }
+    .wrap { max-width: 1200px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+    .sec-head { margin-bottom: clamp(32px,4vh,52px); }
+    .sec-head .eyebrow { display: block; margin-bottom: 14px; }
+    .accent-line { width: 80px; height: 4px; background: var(--coral); margin: 16px 0; }
+    .sec-head .body { max-width: 60ch; margin-top: 16px; }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1.4fr 1fr; }
+    .hero-left { display: flex; flex-direction: column; justify-content: center; padding: clamp(48px,7vh,90px) clamp(40px,6vw,80px); }
+    .hero-left .eyebrow { margin-bottom: 20px; }
+    .hero-title-wrap { margin: 6px 0 10px; }
+    .title-rule { width: 100%; height: 3px; background: rgba(26,26,26,0.15); margin: 22px 0; }
+    .hero-sub { font-family: var(--f-body); font-weight: 300; font-size: clamp(17px,1.8vw,24px); line-height: 1.5; color: var(--ink); max-width: 44ch; }
+    .hero-right { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; position: relative; overflow: hidden; }
+    .giant-mark { font-family: var(--f-disp); font-size: clamp(180px,26vw,340px); line-height: 0.8; color: rgba(0,0,0,0.32); position: relative; z-index: 2; }
+    .contents { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 12px; }
+    .contents a { text-decoration: none; }
+    .contents .chip { display: flex; align-items: baseline; gap: 8px; background: var(--white); border-left: 4px solid var(--coral); padding: 8px 16px; }
+    .contents .chip .c-n { font-family: var(--f-disp); font-size: 20px; color: var(--coral); letter-spacing: 1px; }
+    .contents .chip .c-t { font-family: var(--f-body); font-weight: 600; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink); }
+    .contents a:hover .chip { background: var(--ink); } .contents a:hover .c-t { color: var(--cream); }
+
+    /* ===== cards / tiles ===== */
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .card { background: var(--white); padding: clamp(24px,3vh,38px); border-top: 5px solid var(--coral); }
+    .s-ink .card, .s-coral .card { color: var(--ink); }
+    .card-icon { width: 48px; height: 48px; background: var(--coral); color: var(--white); font-family: var(--f-disp); font-size: 24px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .sidebar-item { background: var(--white); padding: 20px 24px; border-left: 4px solid var(--coral); }
+    .sidebar-item .stat-numeral { color: var(--ink); } .sidebar-item .label { display: block; margin-top: 4px; }
+
+    /* ===== §02 colours ===== */
+    .sw-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; border: 1px solid rgba(26,26,26,0.1); }
+    .sw { min-height: 150px; display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; border: 1px solid rgba(26,26,26,0.1); }
+    .sw .sw-name { font-family: var(--f-disp); font-size: 22px; letter-spacing: 1px; }
+    .sw .sw-hex { font-family: var(--f-body); font-size: 11px; letter-spacing: 1px; margin-top: 4px; }
+
+    /* ===== §03 typography ===== */
+    .scale-stack { display: flex; flex-direction: column; }
+    .scale-row { display: grid; grid-template-columns: 230px 1fr; gap: 28px; align-items: baseline; padding: 18px 0; border-bottom: 1px solid rgba(26,26,26,0.1); }
+    .scale-row:last-child { border-bottom: none; }
+    .sm { font-family: var(--f-body); font-weight: 600; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); }
+    .sm b { display: block; color: var(--ink); margin-bottom: 4px; }
+
+    /* ===== §04 ===== */
+    .comp { margin-bottom: 40px; }
+    .comp-h { font-family: var(--f-body); font-weight: 700; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--coral); margin-bottom: 18px; }
+    .bar-chart { display: flex; flex-direction: column; gap: 14px; }
+    .bar-track { display: flex; align-items: center; gap: 14px; }
+    .bar-track .bk { font-family: var(--f-body); font-weight: 600; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; width: 60px; color: var(--gray); }
+    .bar-out { flex: 1; height: 28px; background: rgba(26,26,26,0.06); }
+    .bar-fill { height: 100%; background: var(--coral); width: 0; transition: width 0.9s cubic-bezier(0.16,1,0.3,1); display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; font-family: var(--f-disp); font-size: 16px; color: var(--white); letter-spacing: 1px; }
+    .bar-fill.dk { background: var(--coral-dark); }
+    .bg-numeral { font-family: var(--f-disp); font-size: clamp(100px,15vw,180px); color: rgba(0,0,0,0.12); line-height: 0.8; position: absolute; top: 10px; right: 20px; z-index: 0; }
+
+    /* ===== §07 ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .dd-list { list-style: none; margin-top: 14px; }
+    .dd-list li { font-family: var(--f-body); font-size: 15px; line-height: 1.6; padding: 0.5rem 0 0.5rem 1.6rem; position: relative; }
+    .do .dd-list li::before { content: "+"; position: absolute; left: 0; font-family: var(--f-disp); font-size: 20px; color: var(--coral); }
+    .dont .dd-list li::before { content: "×"; position: absolute; left: 0; font-family: var(--f-disp); font-size: 20px; color: var(--coral); }
+    .s-ink .dd-list li { color: var(--cream); }
+
+    /* ===== §08 cjk ===== */
+    .cjk-display { font-family: 'ZCOOL XiaoWei', var(--f-disp); font-size: clamp(40px,6vw,84px); line-height: 1.15; letter-spacing: 0; }
+    .cjk-body { font-family: 'Noto Sans SC', var(--f-body); font-weight: 400; font-size: clamp(15px,1.3vw,18px); line-height: 1.8; margin-top: 16px; }
+    .cjk-label { font-family: var(--f-body); font-weight: 700; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--coral); margin-top: 16px; }
+
+    /* ===== close ===== */
+    .close { min-height: 84vh; display: flex; flex-direction: column; justify-content: center; }
+    .close .body-light { max-width: 40ch; margin-top: 20px; }
+    .close-links { margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .close-links a { text-decoration: none; background: var(--cream); color: var(--ink); padding: 11px 22px; font-family: var(--f-body); font-weight: 700; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; }
+    .close-links a:hover { background: var(--coral); color: var(--ink); }
+
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; } .hero-right { min-height: 280px; }
+      .grid-3, .grid-4, .sw-grid, .dodont, .grid-2 { grid-template-columns: 1fr; }
+      .scale-row { grid-template-columns: 1fr; gap: 8px; }
+    }
+    @media (max-width: 560px) { .grid-4, .sw-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="progress" id="progress"></div>
+  <a class="back-link" href="index.html">&larr; Index</a>
+  <div class="counter" id="counter">01 / 10</div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="hero-left s-cream">
+      <span class="eyebrow">Design System Specification</span>
+      <div class="hero-title-wrap"><span class="hero-title">Coral</span></div>
+      <div class="title-rule"></div>
+      <p class="hero-sub">A bold magazine-poster system &mdash; coral fire, ink black, and warm cream meeting at hard edges, animated by oversized Bebas Neue caps and a constant 45&deg; diagonal hatch.</p>
+      <nav class="contents">
+        <a href="#overview"><div class="chip"><span class="c-n">01</span><span class="c-t">Overview</span></div></a>
+        <a href="#colours"><div class="chip"><span class="c-n">02</span><span class="c-t">Colours</span></div></a>
+        <a href="#typography"><div class="chip"><span class="c-n">03</span><span class="c-t">Type</span></div></a>
+        <a href="#components"><div class="chip"><span class="c-n">04</span><span class="c-t">Components</span></div></a>
+        <a href="#layout"><div class="chip"><span class="c-n">05</span><span class="c-t">Layout</span></div></a>
+        <a href="#depth"><div class="chip"><span class="c-n">06</span><span class="c-t">Depth</span></div></a>
+        <a href="#dodont"><div class="chip"><span class="c-n">07</span><span class="c-t">Do/Don't</span></div></a>
+        <a href="#cjk"><div class="chip"><span class="c-n">08</span><span class="c-t">中文</span></div></a>
+      </nav>
+    </div>
+    <div class="hero-right s-coral hatch">
+      <span class="giant-mark">C</span>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section class="s-cream pad" id="overview">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">01 — Overview</span>
+        <h2 class="section-headline">Solid Color Planes</h2>
+        <div class="accent-line"></div>
+        <p class="body">The defining premise is <strong>solid colour planes meeting at hard edges</strong>: a single slide splits into coral + cream + ink regions, each a flat surface holding a self-contained composition. There are no gradient transitions &mdash; the meeting point of two colours <em>is</em> the layout. A sports-magazine cover, not a literary catalogue.</p>
+      </div>
+      <div class="grid-4">
+        <div class="sidebar-item"><div class="stat-numeral">Med</div><span class="label">Formality</span></div>
+        <div class="sidebar-item"><div class="stat-numeral">Med</div><span class="label">Density</span></div>
+        <div class="sidebar-item"><div class="stat-numeral">Mixed</div><span class="label">Scheme</span></div>
+        <div class="sidebar-item"><div class="stat-numeral">10</div><span class="label">Slides</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section class="s-ink pad" id="colours">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">02 — Colours</span>
+        <h2 class="section-headline">Three Surfaces, One Fire</h2>
+        <div class="accent-line"></div>
+        <p class="body">Coral is both <em>the</em> accent (4–5px borders, 48px icon squares, timeline dots) and an entire environment (a full coral plane). Cream is the magazine paper; ink is the strongest surface. On coral, headlines are always ink &mdash; never white.</p>
+      </div>
+      <div class="sw-grid">
+        <div class="sw" style="background:var(--coral);color:var(--ink)"><div class="sw-name">Coral</div><div class="sw-hex">#E85D5D</div></div>
+        <div class="sw" style="background:var(--coral-dark);color:var(--white)"><div class="sw-name">Coral Dark</div><div class="sw-hex">#D44A4A</div></div>
+        <div class="sw" style="background:var(--cream);color:var(--ink)"><div class="sw-name">Cream</div><div class="sw-hex">#F5F0E8</div></div>
+        <div class="sw" style="background:var(--cream-dark);color:var(--ink)"><div class="sw-name">Cream Dark</div><div class="sw-hex">#E8E0D4</div></div>
+        <div class="sw" style="background:var(--ink);color:var(--cream)"><div class="sw-name">Ink</div><div class="sw-hex">#1A1A1A</div></div>
+        <div class="sw" style="background:var(--gray);color:var(--white)"><div class="sw-name">Gray</div><div class="sw-hex">#6B6B6B</div></div>
+        <div class="sw" style="background:var(--light-gray);color:var(--ink)"><div class="sw-name">Light Gray</div><div class="sw-hex">#B0B0B0</div></div>
+        <div class="sw" style="background:var(--white);color:var(--ink)"><div class="sw-name">White</div><div class="sw-hex">#FFFFFF</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section class="s-cream pad" id="typography">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">03 — Typography</span>
+        <h2 class="section-headline">Bebas Declares, Inter Explains</h2>
+        <div class="accent-line"></div>
+        <p class="body"><strong>Bebas Neue</strong> &mdash; tall condensed caps, single weight 400, heavy 1–12px tracking, always uppercase &mdash; carries every headline, stat, and title as an architectural element. <strong>Inter</strong> carries every body, label, and attribution across weights 300–700.</p>
+      </div>
+      <div class="grid-2" style="margin-bottom:40px">
+        <div class="card"><div class="jumbo" style="font-size:clamp(56px,8vw,110px)">Bebas</div><span class="label" style="display:block;margin-top:10px">Display · uppercase · 1–12px tracking</span></div>
+        <div class="card"><div style="font-family:var(--f-body);font-weight:300;font-size:clamp(36px,5vw,64px)">Inter</div><span class="label" style="display:block;margin-top:10px">Body · 300 / 400 / 600 / 700</span></div>
+      </div>
+      <div class="scale-stack">
+        <div class="scale-row"><div class="sm"><b>hero-title · Bebas</b>120px · 4px track</div><div><span class="hero-title" style="font-size:clamp(40px,6vw,72px)">Coral</span></div></div>
+        <div class="scale-row"><div class="sm"><b>jumbo · Bebas</b>80–200px · 12px track</div><div><span class="jumbo" style="font-size:clamp(40px,6vw,80px)">Fire</span></div></div>
+        <div class="scale-row"><div class="sm"><b>section-headline · Bebas</b>40–80px · 2px</div><div><span class="section-headline" style="font-size:clamp(30px,4vw,52px)">Section Head</span></div></div>
+        <div class="scale-row"><div class="sm"><b>stat-numeral · Bebas</b>48–96px</div><div><span class="stat-numeral" style="color:var(--coral)">340%</span></div></div>
+        <div class="scale-row"><div class="sm"><b>body · Inter 400</b>15–20px</div><div><span class="body" style="margin:0">Standard paragraph body at line-height 1.7.</span></div></div>
+        <div class="scale-row"><div class="sm"><b>body-light · Inter 300</b>pull quotes</div><div><span class="body-light" style="font-size:clamp(18px,2vw,26px)">A lighter voice break.</span></div></div>
+        <div class="scale-row"><div class="sm"><b>section-label · Inter 700</b>12px · 4px caps</div><div><span class="eyebrow">Section Eyebrow</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section class="s-cream pad" id="components">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">04 — Components</span>
+        <h2 class="section-headline">The Poster Kit</h2>
+        <div class="accent-line"></div>
+        <p class="body">Every block below is rendered with the template's <strong>actual CSS</strong> &mdash; not a mockup. Coral-bordered cards, 45&deg; hatch, wallpaper numerals, and ink-on-fire headlines.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Column cards — 5px coral top border, 48px icon square</div>
+        <div class="grid-3">
+          <div class="card"><div class="card-icon">A</div><div class="card-title">Strategy</div><p class="body" style="font-size:14px;margin-top:8px">Market analysis and roadmaps bridging ambition with milestones.</p><div class="stat-numeral" style="color:var(--coral);margin-top:14px">01</div></div>
+          <div class="card"><div class="card-icon">B</div><div class="card-title">Build</div><p class="body" style="font-size:14px;margin-top:8px">Scalable architecture and APIs that grow with demand.</p><div class="stat-numeral" style="color:var(--coral);margin-top:14px">02</div></div>
+          <div class="card"><div class="card-icon">C</div><div class="card-title">Grow</div><p class="body" style="font-size:14px;margin-top:8px">Activation, retention, and expansion across geographies.</p><div class="stat-numeral" style="color:var(--coral);margin-top:14px">03</div></div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Coral region — 45° hatch + wallpaper numeral + ink-on-fire</div>
+        <div class="s-coral hatch" style="padding:clamp(32px,5vh,56px) clamp(32px,5vw,60px);position:relative;overflow:hidden">
+          <span class="bg-numeral">01</span>
+          <div style="position:relative;z-index:2">
+            <span class="eyebrow">The signature plane</span>
+            <h3 class="column-title" style="margin-top:10px">Fire On Paper</h3>
+            <p class="body" style="max-width:46ch;margin-top:12px">A full coral plane with the 45&deg; diagonal hatch overlay. Headlines and body stay ink &mdash; never white &mdash; and an oversized numeral sits behind at 12% opacity.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Bar chart — coral primary, coral-dark comparison</div>
+        <div class="card">
+          <div class="bar-chart">
+            <div class="bar-track"><span class="bk">FY22</span><div class="bar-out"><div class="bar-fill" data-w="38%">2.7</div></div></div>
+            <div class="bar-track"><span class="bk">FY23</span><div class="bar-out"><div class="bar-fill dk" data-w="56%">5.1</div></div></div>
+            <div class="bar-track"><span class="bk">FY24</span><div class="bar-out"><div class="bar-fill" data-w="78%">8.9</div></div></div>
+            <div class="bar-track"><span class="bk">FY25</span><div class="bar-out"><div class="bar-fill" data-w="100%">12.4</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section class="s-ink pad" id="layout">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">05 — Layout</span>
+        <h2 class="section-headline">Region Splits</h2>
+        <div class="accent-line"></div>
+        <p class="body">The primary move is multi-surface composition &mdash; slides split into regions of solid colour, the boundary between them defining the layout. Each region holds a self-contained composition, fully populated within its boundary.</p>
+      </div>
+      <div class="grid-3">
+        <div style="display:grid;grid-template-rows:32% 68%;min-height:160px;border:1px solid rgba(245,240,232,0.2)"><div class="s-coral hatch" style="position:relative"></div><div class="s-cream" style="display:flex;align-items:flex-end;padding:14px"><span class="label" style="color:var(--ink)">32 / 68 cover</span></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;min-height:160px;border:1px solid rgba(245,240,232,0.2)"><div class="s-coral hatch" style="position:relative"></div><div class="s-ink" style="display:flex;align-items:flex-end;padding:14px;border-left:1px solid rgba(245,240,232,0.2)"><span class="label">coral / ink split</span></div></div>
+        <div style="display:grid;grid-template-columns:40% 60%;min-height:160px;border:1px solid rgba(245,240,232,0.2)"><div class="s-coral hatch" style="position:relative"></div><div class="s-cream" style="display:flex;align-items:flex-end;padding:14px"><span class="label" style="color:var(--ink)">40 / 60 quote</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH ============ -->
+  <section class="s-cream pad" id="depth">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">06 — Depth &amp; Shape</span>
+        <h2 class="section-headline">Flat, Hard Edges</h2>
+        <div class="accent-line"></div>
+        <p class="body">No drop shadows, no rounded surfaces, no soft elevations. Hierarchy comes from <strong>hard colour region boundaries</strong>, accent borders (5px coral top, 4px coral left), the 45&deg; hatch, and oversized decorative typography. Only nav dots and timeline nodes are circles.</p>
+      </div>
+      <div class="grid-4">
+        <div class="card"><div class="card-title">5px top</div><p class="body" style="font-size:13px;margin-top:6px">Card coral border</p></div>
+        <div class="sidebar-item"><div class="card-title">4px left</div><p class="body" style="font-size:13px;margin-top:6px">Sidebar coral border</p></div>
+        <div class="s-coral hatch" style="position:relative;padding:24px;min-height:90px;display:flex;align-items:flex-end"><span class="label" style="color:var(--ink)">45° hatch</span></div>
+        <div style="background:var(--white);padding:24px;min-height:90px;display:flex;align-items:flex-end;position:relative;overflow:hidden"><span style="font-family:var(--f-disp);font-size:90px;color:rgba(0,0,0,0.12);position:absolute;top:-10px;right:6px">7</span><span class="label" style="position:relative">12% numeral</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section class="s-ink pad" id="dodont">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">07 — Do &amp; Don't</span>
+        <h2 class="section-headline">Hold The Fire</h2>
+        <div class="accent-line"></div>
+      </div>
+      <div class="dodont">
+        <div class="do">
+          <h3 class="column-title">Do</h3>
+          <ul class="dd-list">
+            <li>Compose slides as multi-surface region splits meeting at hard edges.</li>
+            <li>Set every Bebas element uppercase with 1–12px letter-spacing.</li>
+            <li>Render headlines ink-on-coral — never white on coral.</li>
+            <li>Apply the 45° hatch to coral regions; add 12% wallpaper numerals.</li>
+            <li>Use the 5px coral top / 4px coral left borders as the only card chrome.</li>
+          </ul>
+        </div>
+        <div class="dont">
+          <h3 class="column-title">Don't</h3>
+          <ul class="dd-list">
+            <li>Render Bebas in sentence case, or without letter-spacing.</li>
+            <li>Introduce a fourth surface colour or a second accent.</li>
+            <li>Add drop shadows, rounded rectangles, or soft gradients.</li>
+            <li>Render headlines in gray, or pair Bebas with another body sans.</li>
+            <li>Leave a coral region sparse — fill it or add wallpaper type.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section class="s-cream pad" id="cjk">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">08 — 中文 / CJK</span>
+        <h2 class="section-headline">Poster, In Chinese</h2>
+        <div class="accent-line"></div>
+        <p class="body"><strong>站酷小薇体 ZCOOL XiaoWei</strong> carries the architectural-display register Bebas provides for Latin; <strong>悠哉字体 Yozai</strong> mirrors Inter's warmth. Bebas's "uppercase + tracking" rule is meaningless for Hanzi &mdash; drop both and let the face stand on size alone.</p>
+      </div>
+      <div class="grid-2" style="align-items:stretch">
+        <div class="s-coral hatch" style="position:relative;overflow:hidden;padding:clamp(28px,4vh,44px) clamp(28px,4vw,48px)">
+          <span class="bg-numeral">08</span>
+          <div style="position:relative;z-index:2">
+            <div class="cjk-display">珊瑚海报系统</div>
+            <div class="cjk-body" style="color:var(--ink)">三种表面 —— 珊瑚红、墨黑、暖奶油 —— 以硬边相接，配合 45&deg; 斜线纹理与超大装饰字。站酷小薇体承载标题，在珊瑚面上同样保持墨色而非白色。盘古之白：使用 Claude、2026 年。</div>
+            <div class="cjk-label" style="color:var(--ink)">站酷小薇体 · 悠哉字体 Yozai</div>
+          </div>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column;justify-content:center">
+          <div class="card-title">Pairing</div>
+          <p class="body" style="margin-top:14px;line-height:2">Display → 站酷小薇体<br>Body → 悠哉字体 Yozai<br>Tracking → 0 on CJK<br>Numerals → keep Latin (01, 02)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <footer class="close s-coral hatch pad" id="close">
+    <div class="wrap" style="text-align:center">
+      <span class="eyebrow" style="color:var(--ink)">End of Deck</span>
+      <h2 class="jumbo" style="margin-top:10px">Coral</h2>
+      <p class="body-light" style="margin:18px auto 0;color:var(--ink)">One of 34 systems in Beautiful HTML Templates. Warm, graphic, magazine-loud.</p>
+      <div class="close-links" style="justify-content:center">
+        <a href="index.html">&larr; All Systems</a>
+        <a href="../templates/coral/template.html">Open Live Deck</a>
+        <a href="../templates/coral/design.md">design.md</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var counter = document.getElementById('counter');
+      var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+      var total = ids.length;
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+        for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+        if (scrolled > 0.99) idx = total - 1;
+        counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+      var bars = Array.prototype.slice.call(document.querySelectorAll('.bar-fill[data-w]'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.style.width = e.target.getAttribute('data-w'); io.unobserve(e.target); } }); }, { threshold: 0.4 });
+        bars.forEach(function (b) { io.observe(b); });
+      } else { bars.forEach(function (b) { b.style.width = b.getAttribute('data-w'); }); }
+    })();
+  </script>
+</body>
+</html>

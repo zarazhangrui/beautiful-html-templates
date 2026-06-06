@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sakura Chroma — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Albert+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@500;700&family=ZCOOL+XiaoWei&family=LXGW+WenKai+TC&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1E6CB;
+    --paper-dk:#E5D6B0;
+    --ink:#3A2516;
+    --red:#E5392A;
+    --pink:#E54489;
+    --orange:#F09131;
+    --yellow:#F0BC2A;
+    --green:#3D9F47;
+    --blue:#3F8BC4;
+    --disp:'Big Shoulders Display','ZCOOL XiaoWei',sans-serif;
+    --body:'Albert Sans','LXGW WenKai TC',sans-serif;
+    --mono:'JetBrains Mono','LXGW WenKai TC',ui-monospace,monospace;
+    --jp:'Noto Sans JP',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* halftone-dot paper texture — required */
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:60;opacity:.16;
+    background-image:radial-gradient(circle at 1px 1px, rgba(58,37,22,0.55) 1px, transparent 1.6px);background-size:4px 4px;}
+  ::selection{background:var(--red);color:var(--paper);}
+
+  /* ---------- fixed chrome ---------- */
+  #progress{position:fixed;top:0;left:0;height:4px;width:0%;background:var(--red);z-index:100;}
+  .chrome{position:fixed;z-index:99;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.06em;}
+  #backlink a{color:var(--ink);background:var(--paper);text-decoration:none;border:1.5px solid var(--ink);padding:8px 16px;display:inline-block;text-transform:uppercase;}
+  #backlink{top:22px;left:24px;}
+  #counter{top:24px;right:24px;color:var(--ink);}
+
+  /* ---------- layout primitives ---------- */
+  section{max-width:1300px;margin:0 auto;padding:clamp(78px,9vw,120px) clamp(24px,5vw,72px) clamp(72px,8vw,100px);position:relative;overflow:hidden;}
+  .topbar-rule{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;border-bottom:1.5px solid var(--ink);padding-bottom:clamp(14px,1.6vw,22px);margin-bottom:clamp(34px,4.4vw,56px);flex-wrap:wrap;}
+  h2{font-family:var(--disp);font-weight:900;font-size:clamp(50px,8.4vw,120px);line-height:0.88;letter-spacing:-0.02em;text-transform:uppercase;color:var(--ink);}
+  h2 em{font-style:normal;color:var(--red);}
+  .micro{font-family:var(--body);font-weight:700;font-size:clamp(12px,1vw,15px);letter-spacing:0.2em;text-transform:uppercase;color:var(--ink);}
+  .lede{font-family:var(--body);font-weight:400;font-size:clamp(17px,1.8vw,24px);line-height:1.5;max-width:54ch;color:var(--ink);}
+  .pagenum{font-family:var(--mono);font-weight:400;font-size:13px;letter-spacing:0.06em;color:var(--ink);text-align:right;margin-top:clamp(44px,5.5vw,72px);}
+
+  /* decorations */
+  .ribbon{position:absolute;width:170%;left:-35%;display:flex;flex-direction:column;gap:0;pointer-events:none;z-index:0;transform:rotate(-22deg);}
+  .ribbon i{height:clamp(14px,2vw,30px);display:block;}
+  .petals{display:flex;align-items:center;}
+  .petals i{width:clamp(26px,3vw,46px);aspect-ratio:1;border-radius:50%;display:inline-block;margin-left:-14px;}
+  .petals i:first-child{margin-left:0;}
+  .seal{position:relative;width:clamp(70px,8vw,120px);aspect-ratio:1;display:grid;place-items:center;flex:none;}
+  .seal-bg{position:absolute;inset:0;background:var(--ink);clip-path:polygon(50% 0%,60.4% 11.4%,75% 6.7%,78.3% 21.7%,93.3% 25%,88.6% 39.6%,100% 50%,88.6% 60.4%,93.3% 75%,78.3% 78.3%,75% 93.3%,60.4% 88.6%,50% 100%,39.6% 88.6%,25% 93.3%,21.7% 78.3%,6.7% 75%,11.4% 60.4%,0% 50%,11.4% 39.6%,6.7% 25%,21.7% 21.7%,25% 6.7%,39.6% 11.4%);}
+  .seal-tx{position:relative;color:var(--paper);font-family:var(--disp);font-weight:900;font-size:clamp(20px,2.4vw,38px);line-height:0.85;text-align:center;}
+  .stamp{display:inline-block;background:var(--red);color:var(--paper);font-family:var(--disp);font-weight:900;font-size:clamp(18px,1.8vw,28px);letter-spacing:0.02em;text-transform:uppercase;padding:8px 18px;transform:rotate(-3deg);}
+  .nb-check{width:clamp(16px,1.2vw,20px);aspect-ratio:1;border:2px solid var(--ink);display:inline-grid;place-items:center;font-family:var(--disp);font-weight:900;font-size:0.9em;line-height:1;flex:none;}
+  .nb-check.on{background:var(--ink);color:var(--paper);}
+
+  /* ---------- hero ---------- */
+  .hero{padding-top:clamp(84px,10vw,140px);}
+  .hero .ribbon{top:-6%;height:auto;}
+  .hero .topbar-rule{position:relative;z-index:2;}
+  .hero-main{position:relative;z-index:2;}
+  .hero .hero-top{display:flex;align-items:center;gap:20px;margin-bottom:clamp(20px,2.4vw,30px);flex-wrap:wrap;}
+  h1{font-family:var(--disp);font-weight:900;font-size:clamp(74px,15vw,250px);line-height:0.82;letter-spacing:-0.025em;text-transform:uppercase;color:var(--ink);}
+  h1 em{font-style:normal;color:var(--red);}
+  .hero .jp{font-family:var(--jp);font-weight:700;font-size:clamp(16px,1.6vw,24px);color:var(--ink);letter-spacing:0.1em;}
+  .hero-lede{font-family:var(--body);font-weight:400;font-size:clamp(18px,2vw,26px);line-height:1.5;max-width:46ch;margin-top:clamp(22px,2.6vw,34px);}
+  .hero .stamp-row{display:flex;gap:16px;align-items:center;margin-top:clamp(24px,3vw,40px);flex-wrap:wrap;}
+
+  .nav{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(52px,6.5vw,90px);position:relative;z-index:2;}
+  .nav a{text-decoration:none;color:var(--ink);background:var(--paper);border:1.5px solid var(--ink);overflow:hidden;display:flex;flex-direction:column;transition:transform .14s ease;}
+  .nav a:hover{transform:translateY(-4px);}
+  .nav .n-strip{height:clamp(16px,2vw,28px);}
+  .nav .n-in{padding:clamp(16px,1.8vw,24px) clamp(14px,1.6vw,20px);display:flex;flex-direction:column;justify-content:space-between;flex:1;min-height:clamp(118px,12vw,156px);}
+  .nav .n-num{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.06em;}
+  .nav .n-ttl{font-family:var(--disp);font-weight:900;font-size:clamp(24px,2.8vw,42px);line-height:0.9;text-transform:uppercase;}
+
+  /* ---------- §01 overview ---------- */
+  .ov-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(24px,3vw,48px);margin-top:clamp(40px,5vw,64px);align-items:center;}
+  .ov-grid p{font-family:var(--body);font-weight:400;font-size:clamp(16px,1.5vw,21px);line-height:1.55;}
+  .ov-grid p+p{margin-top:16px;}
+  .ov-petals{display:flex;justify-content:center;}
+  .ov-petals .petals i{width:clamp(50px,7vw,100px);margin-left:-26px;}
+
+  /* ---------- §02 colours ---------- */
+  .swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,20px);margin-top:clamp(40px,5vw,64px);}
+  .sw{border:1.5px solid var(--ink);overflow:hidden;}
+  .sw .chip{height:clamp(90px,11vw,140px);}
+  .sw .meta{padding:12px 14px 16px;background:var(--paper);border-top:1.5px solid var(--ink);}
+  .sw .nm{font-family:var(--disp);font-weight:900;font-size:clamp(18px,1.8vw,26px);text-transform:uppercase;line-height:0.9;}
+  .sw .hex{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:0.04em;margin-top:6px;}
+
+  /* ---------- §03 typography ---------- */
+  .type-stack{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .type-card{border:1.5px solid var(--ink);background:var(--paper);overflow:hidden;}
+  .type-card .tc-strip{height:clamp(14px,1.8vw,24px);}
+  .type-card .tc-in{padding:clamp(22px,2.4vw,34px);}
+  .type-card .tlab{font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:0.04em;margin-bottom:16px;}
+  .type-card .disp-spec{font-family:var(--disp);font-weight:900;font-size:clamp(48px,6vw,96px);line-height:0.85;text-transform:uppercase;}
+  .type-card .disp-spec em{font-style:normal;color:var(--red);}
+  .type-card .body-spec{font-family:var(--body);font-weight:400;font-size:clamp(18px,1.8vw,26px);line-height:1.4;}
+  .type-card .mono-spec{font-family:var(--mono);font-weight:400;font-size:clamp(14px,1.3vw,18px);line-height:1.6;}
+  .type-card .jp-spec{font-family:var(--jp);font-weight:700;font-size:clamp(34px,4vw,60px);line-height:1;}
+
+  /* ---------- §04 components ---------- */
+  .comp{margin-top:clamp(34px,4.2vw,54px);}
+  .comp .clabel{font-family:var(--body);font-weight:700;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink);margin-bottom:18px;}
+  .comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);}
+  .pcard{border:1.5px solid var(--ink);background:var(--paper);overflow:hidden;display:flex;flex-direction:column;}
+  .pcard .ptop{height:clamp(18px,2vw,30px);}
+  .pcard .pin{padding:clamp(16px,1.8vw,24px);flex:1;}
+  .pcard .pn{font-family:var(--disp);font-weight:900;font-size:clamp(24px,2.4vw,38px);text-transform:uppercase;line-height:0.9;}
+  .pcard .pd{font-family:var(--body);font-weight:400;font-size:clamp(13px,1.1vw,15px);line-height:1.4;margin:8px 0 14px;}
+  .pcard .specs{border-top:1px solid rgba(58,37,22,0.3);padding-top:12px;}
+  .pcard .specs div{display:flex;justify-content:space-between;font-family:var(--mono);font-weight:400;font-size:12px;padding:3px 0;}
+  .checklist{display:flex;flex-wrap:wrap;gap:18px;align-items:center;}
+  .checklist span{display:inline-flex;align-items:center;gap:8px;font-family:var(--body);font-weight:700;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .chip{font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--paper);padding:4px 12px;}
+  .eq{display:flex;gap:clamp(8px,1.2vw,16px);align-items:flex-end;}
+  .eq .col{display:flex;flex-direction:column-reverse;gap:4px;flex:1;max-width:60px;}
+  .eq .col i{height:18px;background:rgba(58,37,22,0.1);border:1px solid rgba(58,37,22,0.22);display:block;}
+  .deco-row{display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,50px);align-items:center;}
+
+  /* ---------- §05 layout ---------- */
+  .lay-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .lay-card{border:1.5px solid var(--ink);background:var(--paper);padding:clamp(22px,2.4vw,34px);}
+  .lay-card .h{font-family:var(--disp);font-weight:900;font-size:clamp(22px,2.2vw,32px);text-transform:uppercase;line-height:0.9;margin-bottom:10px;}
+  .lay-card p{font-family:var(--body);font-weight:400;font-size:clamp(14px,1.1vw,16px);line-height:1.5;}
+  .ledger{margin-top:clamp(30px,3.6vw,48px);border-top:1.5px solid var(--ink);}
+  .ledger .lr{display:grid;grid-template-columns:90px 1.4fr 0.8fr auto;gap:clamp(12px,2vw,28px);align-items:center;border-bottom:1px solid rgba(58,37,22,0.22);padding:clamp(11px,1.3vh,16px) 0;}
+  .ledger .lr .d{font-family:var(--mono);font-weight:400;font-size:13px;}
+  .ledger .lr .t{font-family:var(--disp);font-weight:900;font-size:clamp(18px,1.6vw,26px);text-transform:uppercase;line-height:0.9;}
+  .ledger .lr .e{font-family:var(--body);font-weight:400;font-size:14px;}
+
+  /* ---------- §06 depth ---------- */
+  .depth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .depth-grid .dc{border:1.5px solid var(--ink);background:var(--paper);padding:clamp(22px,2.6vw,36px);min-height:clamp(200px,22vw,280px);display:flex;flex-direction:column;}
+  .depth-grid .dc .dn{font-family:var(--disp);font-weight:900;font-size:clamp(36px,4vw,60px);color:var(--red);line-height:0.85;}
+  .depth-grid .dc .dh{font-family:var(--disp);font-weight:900;font-size:clamp(20px,2vw,28px);text-transform:uppercase;line-height:0.9;margin:14px 0 12px;}
+  .depth-grid .dc p{font-family:var(--body);font-weight:400;font-size:clamp(14px,1.1vw,16px);line-height:1.5;}
+  .qbody{background:var(--paper);border:1.5px solid var(--ink);box-shadow:8px 8px 0 var(--ink);padding:clamp(22px,2.6vw,40px) clamp(26px,2.8vw,48px);margin-top:clamp(16px,2vw,24px);position:relative;z-index:2;}
+  .qbody .qt{font-family:var(--disp);font-weight:900;font-size:clamp(28px,4vw,64px);text-transform:uppercase;line-height:0.92;}
+  .qbody .qt em{font-style:normal;color:var(--blue);}
+
+  /* ---------- §07 do & don't ---------- */
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .dd .col{border:1.5px solid var(--ink);overflow:hidden;}
+  .dd .col .col-strip{height:clamp(14px,1.8vw,24px);}
+  .dd .do .col-strip{background:var(--green);} .dd .dont .col-strip{background:var(--red);}
+  .dd .col .col-in{padding:clamp(24px,2.8vw,38px);}
+  .dd .col h3{font-family:var(--disp);font-weight:900;font-size:clamp(30px,3.6vw,52px);text-transform:uppercase;line-height:0.9;margin-bottom:18px;}
+  .dd ul{list-style:none;}
+  .dd li{font-family:var(--body);font-weight:400;font-size:clamp(15px,1.4vw,18px);line-height:1.4;padding:13px 0;border-bottom:1px solid rgba(58,37,22,0.22);display:flex;gap:12px;}
+  .dd li:last-child{border-bottom:none;}
+  .dd li .mk{font-family:var(--disp);font-weight:900;flex:none;}
+  .dd .do .mk{color:var(--green);} .dd .dont .mk{color:var(--red);}
+
+  /* ---------- §08 cjk ---------- */
+  .cjk-head{font-family:'ZCOOL XiaoWei','Big Shoulders Display',serif;font-weight:400;font-size:clamp(54px,11vw,150px);line-height:1.2;letter-spacing:0;color:var(--ink);}
+  .cjk-head em{font-style:normal;color:var(--red);}
+  .cjk-body{font-family:'LXGW WenKai TC',serif;font-weight:400;font-size:clamp(17px,1.8vw,22px);line-height:1.8;color:var(--ink);max-width:42ch;margin-top:clamp(26px,3.2vw,42px);}
+  .cjk-pair{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .cjk-pair .cp{border:1.5px solid var(--ink);overflow:hidden;}
+  .cjk-pair .cp .cp-strip{height:clamp(14px,1.8vw,22px);}
+  .cjk-pair .cp .cp-in{padding:clamp(22px,2.6vw,34px);background:var(--paper);}
+  .cjk-pair .cp .role{font-family:'LXGW WenKai TC',serif;font-weight:400;font-size:13px;color:var(--ink);opacity:.75;}
+  .cjk-pair .cp .face{font-size:clamp(34px,4vw,54px);margin:12px 0 8px;line-height:1.1;color:var(--ink);}
+  .cjk-pair .cp.xw .face{font-family:'ZCOOL XiaoWei',serif;}
+  .cjk-pair .cp.wk .face{font-family:'LXGW WenKai TC',serif;}
+  .cjk-pair .cp .meta{font-family:var(--mono);font-weight:400;font-size:12px;color:var(--ink);opacity:.7;}
+  .cjk-note{border:1.5px solid var(--ink);background:var(--paper);padding:clamp(26px,3.2vw,44px);margin-top:clamp(40px,5vw,64px);}
+  .cjk-note .h{font-family:'ZCOOL XiaoWei',serif;font-weight:400;font-size:clamp(26px,3.2vw,46px);color:var(--ink);margin-bottom:18px;}
+  .cjk-note ul{list-style:none;}
+  .cjk-note li{font-family:'LXGW WenKai TC',serif;font-weight:400;font-size:clamp(15px,1.6vw,19px);line-height:1.75;color:var(--ink);padding:11px 0;border-bottom:1px solid rgba(58,37,22,0.22);}
+  .cjk-note li:last-child{border-bottom:none;}
+
+  /* ---------- close ---------- */
+  .close{max-width:none;text-align:center;padding:clamp(96px,12vw,170px) clamp(24px,5vw,72px);border-top:1.5px solid var(--ink);}
+  .close .ribbon{top:18%;}
+  .close-main{position:relative;z-index:2;}
+  .close .seal{margin:0 auto clamp(16px,2vw,26px);}
+  .close h2{font-size:clamp(56px,12vw,180px);}
+  .close .jp{font-family:var(--jp);font-weight:700;font-size:clamp(16px,1.6vw,22px);letter-spacing:0.1em;margin-top:14px;}
+  .close .back{display:inline-block;margin-top:clamp(26px,3.2vw,42px);font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;color:var(--paper);background:var(--ink);padding:13px 30px;text-decoration:none;}
+
+  @media(max-width:900px){
+    .nav,.comp-grid,.swatches,.type-stack,.lay-grid,.depth-grid,.cjk-pair,.dd,.ov-grid{grid-template-columns:1fr;}
+    .nav,.swatches{grid-template-columns:repeat(2,1fr);}
+    .comp-grid,.lay-grid,.depth-grid,.cjk-pair{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="chrome" id="backlink"><a href="index.html">← Index</a></div>
+<div class="chrome" id="counter">01 / 10</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="top">
+  <div class="ribbon"><i style="background:var(--pink)"></i><i style="background:var(--orange)"></i><i style="background:var(--yellow)"></i><i style="background:var(--green)"></i><i style="background:var(--blue)"></i></div>
+  <div class="topbar-rule"><span class="micro">Sakura Chroma · Catalogue</span><span class="micro">Vol. 08 — 1976</span></div>
+  <div class="hero-main">
+    <div class="hero-top">
+      <span class="petals"><i style="background:var(--red)"></i><i style="background:var(--pink)"></i><i style="background:var(--orange)"></i><i style="background:var(--green)"></i><i style="background:var(--blue)"></i></span>
+      <span class="jp">サクラ・クロマ</span>
+    </div>
+    <h1>Sakura<br><em>Chroma</em></h1>
+    <p class="hero-lede">A cassette-package editorial system — warm cream paper, a six-colour primary palette, condensed industrial display type, and a back-page-catalogue personality.</p>
+    <div class="stamp-row">
+      <span class="stamp">Limited</span>
+      <span class="seal"><span class="seal-bg"></span><span class="seal-tx">SC</span></span>
+      <span class="micro">As seen on the B-side</span>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <a href="#overview"><span class="n-strip" style="background:var(--red)"></span><span class="n-in"><span class="n-num">01</span><span class="n-ttl">Overview</span></span></a>
+    <a href="#colours"><span class="n-strip" style="background:var(--pink)"></span><span class="n-in"><span class="n-num">02</span><span class="n-ttl">Colour</span></span></a>
+    <a href="#typography"><span class="n-strip" style="background:var(--orange)"></span><span class="n-in"><span class="n-num">03</span><span class="n-ttl">Type</span></span></a>
+    <a href="#components"><span class="n-strip" style="background:var(--yellow)"></span><span class="n-in"><span class="n-num">04</span><span class="n-ttl">Parts</span></span></a>
+    <a href="#layout"><span class="n-strip" style="background:var(--green)"></span><span class="n-in"><span class="n-num">05</span><span class="n-ttl">Layout</span></span></a>
+    <a href="#depth"><span class="n-strip" style="background:var(--blue)"></span><span class="n-in"><span class="n-num">06</span><span class="n-ttl">Depth</span></span></a>
+    <a href="#dodont"><span class="n-strip" style="background:var(--red)"></span><span class="n-in"><span class="n-num">07</span><span class="n-ttl">Do &amp; Don't</span></span></a>
+    <a href="#cjk"><span class="n-strip" style="background:var(--pink)"></span><span class="n-in"><span class="n-num">08</span><span class="n-ttl">中文</span></span></a>
+  </nav>
+</section>
+
+<!-- ========== §01 OVERVIEW ========== -->
+<section id="overview">
+  <div class="topbar-rule"><h2>The <em>cassette.</em></h2><span class="micro">§ 01 — Premise</span></div>
+  <div class="ov-grid">
+    <div>
+      <p>Every slide is a printed product page from a small Japanese audio-products catalogue. The visual metaphor is total: petal-cluster blob marks, diagonal multi-colour ribbon bands, 12-point starburst seals, red rectangular stamps, mono-font spec rows, and equalizer-style bar charts.</p>
+      <p>Everything reads as if pulled from the back-page spread of a 1970s consumer-audio brochure — warm, hand-curated, industrially typeset.</p>
+    </div>
+    <div class="ov-petals"><span class="petals"><i style="background:var(--red)"></i><i style="background:var(--pink)"></i><i style="background:var(--orange)"></i><i style="background:var(--yellow)"></i><i style="background:var(--green)"></i></span></div>
+  </div>
+  <div class="pagenum">01 / 10</div>
+</section>
+
+<!-- ========== §02 COLOURS ========== -->
+<section id="colours">
+  <div class="topbar-rule"><h2>Six <em>primaries.</em></h2><span class="micro">§ 02 — Palette</span></div>
+  <p class="lede">A warm cream paper canvas, dark warm-brown ink, and six primaries used as bold flat blocks, ribbons, and product-strip accents — like a Pantone tab on a record sleeve.</p>
+
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:var(--red)"></div><div class="meta"><div class="nm">Red</div><div class="hex">#E5392A</div></div></div>
+    <div class="sw"><div class="chip" style="background:var(--pink)"></div><div class="meta"><div class="nm">Pink</div><div class="hex">#E54489</div></div></div>
+    <div class="sw"><div class="chip" style="background:var(--orange)"></div><div class="meta"><div class="nm">Orange</div><div class="hex">#F09131</div></div></div>
+    <div class="sw"><div class="chip" style="background:var(--yellow)"></div><div class="meta"><div class="nm">Yellow</div><div class="hex">#F0BC2A</div></div></div>
+    <div class="sw"><div class="chip" style="background:var(--green)"></div><div class="meta"><div class="nm">Green</div><div class="hex">#3D9F47</div></div></div>
+    <div class="sw"><div class="chip" style="background:var(--blue)"></div><div class="meta"><div class="nm">Blue</div><div class="hex">#3F8BC4</div></div></div>
+    <div class="sw"><div class="chip" style="background:var(--paper);border-bottom:1.5px solid var(--ink)"></div><div class="meta"><div class="nm">Paper</div><div class="hex">#F1E6CB</div></div></div>
+    <div class="sw"><div class="chip" style="background:var(--ink)"></div><div class="meta"><div class="nm">Ink</div><div class="hex">#3A2516</div></div></div>
+  </div>
+  <div class="pagenum">02 / 10</div>
+</section>
+
+<!-- ========== §03 TYPOGRAPHY ========== -->
+<section id="typography">
+  <div class="topbar-rule"><h2>Four <em>faces.</em></h2><span class="micro">§ 03 — Type</span></div>
+  <div class="type-stack">
+    <div class="type-card"><div class="tc-strip" style="background:var(--red)"></div><div class="tc-in"><div class="tlab">Big Shoulders Display · 900 · condensed</div><div class="disp-spec">Hi-<em>Fi</em></div></div></div>
+    <div class="type-card"><div class="tc-strip" style="background:var(--blue)"></div><div class="tc-in"><div class="tlab">Albert Sans · 400/700 · body</div><div class="body-spec">A clean modern sans for body copy and emphasis — the readable counterweight to the loud display.</div></div></div>
+    <div class="type-card"><div class="tc-strip" style="background:var(--green)"></div><div class="tc-in"><div class="tlab">JetBrains Mono · spec rows</div><div class="mono-spec">TYPE — IV · 90μs<br>BIAS — HIGH · DOLBY-B<br>LENGTH — C-60 STEREO</div></div></div>
+    <div class="type-card"><div class="tc-strip" style="background:var(--pink)"></div><div class="tc-in"><div class="tlab">Noto Sans JP · kanji micro-accents</div><div class="jp-spec">桜彩 ・ 高音質</div></div></div>
+  </div>
+  <div class="pagenum">03 / 10</div>
+</section>
+
+<!-- ========== §04 COMPONENTS ========== -->
+<section id="components">
+  <div class="topbar-rule"><h2>The <em>parts.</em></h2><span class="micro">§ 04 — Components</span></div>
+
+  <div class="comp">
+    <p class="clabel">Product cards — colour topstrip + name + mono spec rows</p>
+    <div class="comp-grid">
+      <div class="pcard"><div class="ptop" style="background:var(--red)"></div><div class="pin"><div class="pn">Type IV</div><div class="pd">Metal-position, high-bias, the flagship of the line.</div><div class="specs"><div><span>BIAS</span><span>70μs</span></div><div><span>SNR</span><span>+6dB</span></div></div></div></div>
+      <div class="pcard"><div class="ptop" style="background:var(--blue)"></div><div class="pin"><div class="pn">Type II</div><div class="pd">Chrome-position, the everyday workhorse.</div><div class="specs"><div><span>BIAS</span><span>70μs</span></div><div><span>SNR</span><span>+3dB</span></div></div></div></div>
+      <div class="pcard"><div class="ptop" style="background:var(--green)"></div><div class="pin"><div class="pn">Type I</div><div class="pd">Normal-position, warm and forgiving.</div><div class="specs"><div><span>BIAS</span><span>120μs</span></div><div><span>SNR</span><span>+0dB</span></div></div></div></div>
+    </div>
+  </div>
+
+  <div class="comp">
+    <p class="clabel">Spec checklist — × checkbox (never a checkmark) · chips · stamps · seals</p>
+    <div class="deco-row">
+      <div class="checklist">
+        <span><span class="nb-check on">×</span>Color</span>
+        <span><span class="nb-check on">×</span>Stereo</span>
+        <span><span class="nb-check">&nbsp;</span>Lo-Fi</span>
+        <span><span class="nb-check on">×</span>LP</span>
+      </div>
+      <div class="chips">
+        <span class="chip" style="background:var(--red)">New</span>
+        <span class="chip" style="background:var(--blue)">Reissue</span>
+        <span class="chip" style="background:var(--green)">Stock</span>
+      </div>
+      <span class="stamp">Complete</span>
+      <span class="seal"><span class="seal-bg"></span><span class="seal-tx">A1</span></span>
+    </div>
+  </div>
+
+  <div class="comp">
+    <p class="clabel">Equalizer bar chart — 6 segments per column, VU-meter fill</p>
+    <div class="eq" id="eq"></div>
+  </div>
+  <div class="pagenum">04 / 10</div>
+</section>
+
+<!-- ========== §05 LAYOUT ========== -->
+<section id="layout">
+  <div class="topbar-rule"><h2>The <em>page.</em></h2><span class="micro">§ 05 — Layout</span></div>
+  <p class="lede">A fluid 100vw × 100vh canvas with a generous frame inset. Section headers use the topbar-rule; every content slide carries a mono page number bottom-right.</p>
+
+  <div class="lay-grid">
+    <div class="lay-card"><div class="h">Topbar rule</div><p>A Big Shoulders 900 title (with optional red em) aligned-end with a tracked-caps label, sealed by a 1.5px ink rule.</p></div>
+    <div class="lay-card"><div class="h">Frame inset</div><p>A generous edge inset frames the page; ribbons bleed off the opposite edge for the diagonal sweep.</p></div>
+    <div class="lay-card"><div class="h">Page number</div><p>Mono, formatted NN / TT, bottom-right — required on every content slide.</p></div>
+  </div>
+
+  <div class="ledger">
+    <div class="lr"><span class="d">1976.04</span><span class="t">Spring Line</span><span class="e">First press</span><span class="chip" style="background:var(--orange)">A-side</span></div>
+    <div class="lr"><span class="d">1976.09</span><span class="t">Autumn Line</span><span class="e">Reissue</span><span class="chip" style="background:var(--pink)">B-side</span></div>
+    <div class="lr"><span class="d">1977.01</span><span class="t">Winter Line</span><span class="e">Limited</span><span class="chip" style="background:var(--blue)">Bonus</span></div>
+  </div>
+  <div class="pagenum">05 / 10</div>
+</section>
+
+<!-- ========== §06 DEPTH ========== -->
+<section id="depth">
+  <div class="ribbon" style="top:auto;bottom:8%;opacity:.9"><i style="background:var(--pink)"></i><i style="background:var(--orange)"></i><i style="background:var(--yellow)"></i><i style="background:var(--green)"></i><i style="background:var(--blue)"></i></div>
+  <div class="topbar-rule" style="position:relative;z-index:2"><h2>Flat <em>print.</em></h2><span class="micro">§ 06 — Depth</span></div>
+  <div class="depth-grid">
+    <div class="dc"><div class="dn">a.</div><div class="dh">Halftone grain</div><p>A 4px radial-dot texture at 16% anchors every flat colour block in the print register.</p></div>
+    <div class="dc"><div class="dn">b.</div><div class="dh">Hard offset</div><p>The quote box carries a single hard 8px ink offset shadow — paper sitting on top of the ribbons.</p></div>
+    <div class="dc"><div class="dn">c.</div><div class="dh">Ribbon depth</div><p>Diagonal colour ribbons sweep behind paper callouts, layering the page like a printed sleeve.</p></div>
+  </div>
+  <div class="qbody"><div class="qt">Warm but <em>disciplined</em> — playful but tightly typeset.</div></div>
+  <div class="pagenum" style="position:relative;z-index:2">06 / 10</div>
+</section>
+
+<!-- ========== §07 DO & DON'T ========== -->
+<section id="dodont">
+  <div class="topbar-rule"><h2>House <em>rules.</em></h2><span class="micro">§ 07 — Do &amp; Don't</span></div>
+  <div class="dd">
+    <div class="col do"><div class="col-strip"></div><div class="col-in">
+      <h3>Do</h3>
+      <ul>
+        <li><span class="mk">+</span>Keep the halftone-dot texture on every slide — it's the print register.</li>
+        <li><span class="mk">+</span>Run display in Big Shoulders 900 condensed, in brown with red em-emphasis.</li>
+        <li><span class="mk">+</span>Use the six primaries as bold flat blocks, ribbons, and topstrips.</li>
+        <li><span class="mk">+</span>Fill checked boxes with a cream × — never a checkmark.</li>
+        <li><span class="mk">+</span>Reach for ribbons, petal clusters, and starburst seals as anchors.</li>
+      </ul>
+    </div></div>
+    <div class="col dont"><div class="col-strip"></div><div class="col-in">
+      <h3>Don't</h3>
+      <ul>
+        <li><span class="mk">–</span>Don't drop the grain — flat colour blocks lose the printed feel.</li>
+        <li><span class="mk">–</span>Don't set body in the condensed display face — that's Albert Sans's job.</li>
+        <li><span class="mk">–</span>Don't keep negative tracking on CJK — it collides the glyphs.</li>
+        <li><span class="mk">–</span>Don't use soft or blurred shadows — depth is the single hard offset.</li>
+        <li><span class="mk">–</span>Don't make petals ellipses — they're always perfect circles.</li>
+      </ul>
+    </div></div>
+  </div>
+  <div class="pagenum">07 / 10</div>
+</section>
+
+<!-- ========== §08 CJK ========== -->
+<section id="cjk">
+  <div class="topbar-rule"><h2 class="cjk-head" style="font-size:clamp(40px,6vw,80px)">中文 / CJK</h2><span class="micro">§ 08 — Strategy A</span></div>
+  <h2 class="cjk-head">樱花<em>色谱</em></h2>
+  <p class="cjk-body">展示与封印用站酷小薇体(优雅高对比的中文展示体,呼应 Big Shoulders 的竖向压缩与花瓣的柔美),正文用霞鹜文楷。两者都在 Google Fonts —— 切勿用 cn-fontsource 等 CDN。行内 em 变红/蓝的色彩强调在中文里同样成立。</p>
+
+  <div class="cjk-pair">
+    <div class="cp xw"><div class="cp-strip" style="background:var(--red)"></div><div class="cp-in"><div class="role">Display · 封印 · 印章</div><div class="face">站酷小薇</div><div class="meta">ZCOOL XiaoWei</div></div></div>
+    <div class="cp wk"><div class="cp-strip" style="background:var(--blue)"></div><div class="cp-in"><div class="role">Body · 微标签</div><div class="face">霞鹜文楷</div><div class="meta">LXGW WenKai TC</div></div></div>
+    <div class="cp wk"><div class="cp-strip" style="background:var(--green)"></div><div class="cp-in"><div class="role">Spec · 规格</div><div class="face">霞鹜文楷</div><div class="meta">或纯拉丁保留 Mono</div></div></div>
+  </div>
+
+  <div class="cjk-note">
+    <p class="h">每段中文都要做的调整</p>
+    <ul>
+      <li>Big Shoulders 的负字距(-0.012 至 -0.025em)在中文必须归零 —— 站酷小薇本身已压缩,负字距会撞字。</li>
+      <li>放宽行高:正文 1.75–1.85,展示 1.15–1.25;中文不做 uppercase。</li>
+      <li>字距大写微标签无中文对应:中文标签字距归零,靠棕墨色 + 粗字重承载分类信号;中英混排时拉丁部分保留 0.16em+。</li>
+      <li>使用全角标点(,。:;「」),标题结尾不加句号;中英文边界加盘古之白:「使用 Claude」。</li>
+      <li>缎带、花瓣、星爆封印、红印章、彩色顶条 —— 与语言无关,全部原样保留。</li>
+    </ul>
+  </div>
+  <div class="pagenum">08 / 10</div>
+</section>
+
+<!-- ========== CLOSE ========== -->
+<section class="close" id="close">
+  <div class="ribbon"><i style="background:var(--pink)"></i><i style="background:var(--orange)"></i><i style="background:var(--yellow)"></i><i style="background:var(--green)"></i><i style="background:var(--blue)"></i></div>
+  <div class="close-main">
+    <span class="seal"><span class="seal-bg"></span><span class="seal-tx">完</span></span>
+    <h2>Sakura<br><em>Chroma</em></h2>
+    <div class="jp">サクラ・クロマ ・ 完</div>
+    <br>
+    <a class="back" href="index.html">← Back to index</a>
+  </div>
+</section>
+
+<script>
+(function () {
+  // build EQ bars
+  var eq = document.getElementById('eq');
+  if (eq) {
+    var cols = [4,6,3,5,2,6,4,5,3,6];
+    var colors = ['var(--red)','var(--pink)','var(--orange)','var(--yellow)','var(--green)','var(--blue)'];
+    cols.forEach(function (on, ci) {
+      var col = document.createElement('div'); col.className = 'col';
+      for (var s = 0; s < 6; s++) {
+        var seg = document.createElement('i');
+        if (s < on) seg.style.background = colors[ci % colors.length];
+        col.appendChild(seg);
+      }
+      eq.appendChild(col);
+    });
+  }
+
+  var progress = document.getElementById('progress');
+  var counter = document.getElementById('counter');
+  var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+  var total = ids.length;
+  function onScroll() {
+    var h = document.documentElement;
+    var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+    var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+    for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+    if (scrolled > 0.99) idx = total - 1;
+    counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>

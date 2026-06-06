@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>People's Platform — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Caveat+Brush&family=Archivo+Narrow:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#2C2CDC;
+    --blue-deep:#1B1BB0;
+    --orange:#F2A03A;
+    --orange-deep:#E89321;
+    --red:#E83A2A;
+    --red-deep:#B7281C;
+    --cream:#F4E9D6;
+    --paper:#F5F2EA;
+    --ink:#0E0E14;
+    --slab:'Alfa Slab One','Noto Serif SC',serif;
+    --script:'Caveat Brush',cursive;
+    --narrow:'Archivo Narrow','Noto Sans SC',sans-serif;
+    --mono:'DM Mono','Noto Sans SC',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:var(--narrow);
+    font-weight:500;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* grain overlay — screen-print halftone, on every surface */
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:50;mix-blend-mode:multiply;opacity:.5;
+    background-image:radial-gradient(var(--ink) 0.5px, transparent 0.6px), radial-gradient(var(--ink) 0.5px, transparent 0.6px);
+    background-size:3px 3px, 5px 5px;background-position:0 0, 1px 1px;}
+  ::selection{background:var(--blue);color:var(--cream);}
+
+  /* depth — stacked red text-shadow tiers */
+  .sh-sm{text-shadow:3px 3px 0 var(--red);}
+  .sh-md{text-shadow:6px 6px 0 var(--red);}
+  .sh-lg{text-shadow:10px 10px 0 var(--red),20px 20px 0 var(--red-deep);}
+  .sh-jumbo{text-shadow:12px 12px 0 var(--red),24px 24px 0 var(--red-deep);}
+  .bsh{box-shadow:6px 6px 0 var(--red);}
+  .bsh-lg{box-shadow:8px 8px 0 var(--red);}
+
+  /* ---------- fixed chrome ---------- */
+  #progress{position:fixed;top:0;left:0;height:5px;width:0%;background:var(--blue);z-index:100;}
+  .chrome{position:fixed;z-index:99;font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:0.16em;text-transform:uppercase;}
+  #backlink{top:20px;left:24px;}
+  #backlink a{color:var(--cream);background:var(--ink);text-decoration:none;padding:9px 18px;display:inline-block;border:3px solid var(--ink);}
+  #counter{top:20px;right:24px;color:var(--ink);background:var(--orange);padding:9px 16px;border:3px solid var(--ink);letter-spacing:0.14em;}
+
+  /* ---------- layout primitives ---------- */
+  section{max-width:1300px;margin:0 auto;padding:clamp(80px,10vw,128px) clamp(24px,5vw,90px) clamp(64px,7vw,96px);position:relative;}
+  .label{font-family:var(--mono);font-weight:500;font-size:clamp(13px,1.3vw,22px);letter-spacing:0.18em;text-transform:uppercase;color:var(--blue);}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;border-bottom:6px solid var(--ink);padding-bottom:clamp(18px,2.2vw,28px);margin-bottom:clamp(36px,4.6vw,60px);flex-wrap:wrap;}
+  h2{font-family:var(--slab);font-weight:400;font-size:clamp(46px,9vw,150px);line-height:0.86;text-transform:uppercase;letter-spacing:0.005em;color:var(--ink);}
+  .lede{font-family:var(--narrow);font-weight:500;font-size:clamp(18px,2vw,30px);line-height:1.4;max-width:46ch;color:var(--ink);}
+  .underline-rule{height:14px;width:30%;min-width:120px;background:var(--ink);margin-top:clamp(22px,2.6vw,34px);}
+  .ribbon{background:var(--orange);border-top:6px solid var(--ink);margin-top:clamp(46px,6vw,76px);padding:16px 0;overflow:hidden;white-space:nowrap;font-family:var(--mono);font-weight:500;font-size:14px;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink);}
+
+  /* ---------- hero ---------- */
+  .hero{padding-top:clamp(92px,11vw,150px);}
+  .hero .label{margin-bottom:clamp(18px,2.4vw,30px);}
+  h1{font-family:var(--slab);font-weight:400;font-size:clamp(60px,14vw,210px);line-height:0.84;text-transform:uppercase;letter-spacing:0.005em;color:var(--ink);}
+  .hero .script{font-family:var(--script);font-weight:400;font-size:clamp(40px,6.5vw,104px);line-height:0.9;color:var(--blue);text-transform:lowercase;display:inline-block;transform:rotate(-4deg);margin:clamp(6px,1vw,14px) 0;}
+  .hero-lede{font-family:var(--narrow);font-weight:500;font-size:clamp(18px,2vw,30px);line-height:1.4;max-width:44ch;margin-top:clamp(20px,2.4vw,32px);border-left:4px solid var(--ink);padding-left:20px;}
+  .hero .cta-row{display:flex;flex-wrap:wrap;gap:16px;margin-top:clamp(28px,3.4vw,44px);}
+  .cta{font-family:var(--slab);font-weight:400;font-size:clamp(20px,2vw,30px);text-transform:uppercase;letter-spacing:0.02em;color:var(--cream);background:var(--blue);border:6px solid var(--ink);padding:12px 28px;display:inline-block;text-decoration:none;}
+  .cta.alt{background:var(--orange);color:var(--ink);}
+
+  .nav{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(50px,6vw,84px);}
+  .nav a{text-decoration:none;color:var(--ink);background:var(--paper);border:6px solid var(--ink);padding:clamp(18px,2vw,26px) clamp(16px,1.6vw,22px);min-height:clamp(150px,15vw,196px);display:flex;flex-direction:column;justify-content:space-between;transition:transform .12s ease;}
+  .nav a:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--red);}
+  .nav a:nth-child(4n+1){background:var(--blue);color:var(--cream);}
+  .nav a:nth-child(4n+1) .n-ttl{color:var(--cream);}
+  .nav .n-num{font-family:var(--slab);font-weight:400;font-size:clamp(40px,5vw,80px);line-height:0.85;color:var(--orange);text-shadow:4px 4px 0 var(--red);}
+  .nav .n-ttl{font-family:var(--slab);font-weight:400;font-size:clamp(20px,2.2vw,34px);line-height:0.9;text-transform:uppercase;color:var(--ink);}
+  .nav .n-sub{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;margin-top:4px;opacity:.8;}
+
+  /* ---------- §01 overview / pillars ---------- */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:clamp(40px,5vw,64px);border:6px solid var(--ink);}
+  .pillar{padding:clamp(26px,3vw,46px) clamp(22px,2.4vw,36px);border-right:6px solid var(--ink);}
+  .pillar:last-child{border-right:none;}
+  .pillar.alt{background:var(--blue);color:var(--cream);}
+  .pillar .p-num{font-family:var(--slab);font-weight:400;font-size:clamp(64px,9vw,180px);line-height:0.8;color:var(--orange);text-shadow:6px 6px 0 var(--red);}
+  .pillar .p-h{font-family:var(--slab);font-weight:400;font-size:clamp(24px,2.6vw,40px);line-height:0.95;text-transform:uppercase;margin:18px 0 12px;}
+  .pillar.alt .p-h{color:var(--cream);}
+  .pillar p{font-family:var(--narrow);font-weight:500;font-size:clamp(15px,1.2vw,18px);line-height:1.4;}
+  .pillar .p-tag{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;border-top:3px solid currentColor;padding-top:14px;margin-top:18px;display:inline-block;}
+
+  /* ---------- §02 colours ---------- */
+  .roles{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .role{border:6px solid var(--ink);min-height:clamp(180px,20vw,240px);display:flex;flex-direction:column;justify-content:space-between;padding:clamp(20px,2.2vw,30px);}
+  .role .r-name{font-family:var(--slab);font-weight:400;font-size:clamp(24px,2.6vw,40px);text-transform:uppercase;line-height:0.9;}
+  .role .r-meta{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;margin-top:8px;}
+  .colour-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(12px,1.6vw,20px);margin-top:clamp(16px,2vw,24px);}
+  .cs{border:6px solid var(--ink);}
+  .cs .swatch{height:clamp(70px,9vw,120px);}
+  .cs .nm{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:10px;background:var(--cream);}
+  .red-demo{margin-top:clamp(30px,3.6vw,48px);border:6px solid var(--ink);background:var(--paper);padding:clamp(26px,3vw,44px);}
+  .red-demo .rd-big{font-family:var(--slab);font-weight:400;font-size:clamp(48px,8vw,120px);text-transform:uppercase;line-height:0.85;color:var(--orange);}
+  .red-demo .rd-cap{font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:var(--red-deep);margin-top:20px;}
+
+  /* ---------- §03 typography ---------- */
+  .type-stack{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .type-card{border:6px solid var(--ink);padding:clamp(24px,2.8vw,40px);background:var(--paper);}
+  .type-card.blue{background:var(--blue);color:var(--cream);}
+  .type-card .tlab{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;margin-bottom:18px;}
+  .type-card .slab-spec{font-family:var(--slab);font-weight:400;font-size:clamp(48px,6vw,104px);line-height:0.82;text-transform:uppercase;color:var(--orange);}
+  .type-card .script-spec{font-family:var(--script);font-weight:400;font-size:clamp(48px,7vw,108px);line-height:0.85;color:var(--cream);text-transform:lowercase;transform:rotate(-3deg);display:inline-block;}
+  .type-card .narrow-spec{font-family:var(--narrow);font-weight:500;font-size:clamp(18px,1.8vw,26px);line-height:1.4;}
+  .type-card .mono-spec{font-family:var(--mono);font-weight:500;font-size:clamp(14px,1.3vw,20px);letter-spacing:0.18em;text-transform:uppercase;}
+
+  /* ---------- §04 components ---------- */
+  .comp{margin-top:clamp(34px,4.2vw,54px);}
+  .comp .clabel{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--blue);margin-bottom:18px;}
+  .comp-row{display:flex;flex-wrap:wrap;gap:clamp(18px,2.4vw,40px);align-items:center;}
+  .stamp-rect{font-family:var(--slab);font-weight:400;font-size:clamp(18px,1.8vw,28px);text-transform:uppercase;letter-spacing:0.04em;background:var(--blue);color:var(--orange);border:5px solid var(--cream);padding:16px 30px;transform:rotate(-3deg);box-shadow:6px 6px 0 var(--red);}
+  .stamp-circle{width:clamp(120px,14vw,180px);height:clamp(120px,14vw,180px);border-radius:50%;background:var(--cream);border:6px solid var(--orange);box-shadow:8px 8px 0 var(--red);transform:rotate(-9deg);display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--slab);font-weight:400;font-size:clamp(14px,1.4vw,20px);text-transform:uppercase;line-height:1;color:var(--ink);}
+  .tdot{width:clamp(46px,5vw,60px);height:clamp(46px,5vw,60px);border-radius:50%;background:var(--orange);border:6px solid var(--ink);box-shadow:6px 6px 0 var(--red);}
+  .tdot.alt{background:var(--blue);}
+  .avatar{width:clamp(90px,10vw,120px);height:clamp(90px,10vw,120px);border-radius:50%;background:var(--blue);border:6px solid var(--blue);box-shadow:6px 6px 0 var(--red);}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);}
+  .kpi{border:5px solid var(--ink);background:var(--paper);padding:clamp(22px,2.4vw,32px);}
+  .kpi:nth-child(2){background:var(--blue);color:var(--cream);}
+  .kpi .kv{font-family:var(--slab);font-weight:400;font-size:clamp(48px,6vw,88px);line-height:0.85;text-transform:uppercase;color:var(--orange);text-shadow:5px 5px 0 var(--red);}
+  .kpi .kl{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;margin-top:10px;}
+  .bullets{list-style:none;margin-top:clamp(20px,2.4vw,32px);}
+  .bullets li{position:relative;padding-left:48px;font-family:var(--narrow);font-weight:500;font-size:clamp(17px,1.6vw,24px);line-height:1.3;margin-bottom:18px;}
+  .bullets li::before{content:'';position:absolute;left:0;top:0.25em;width:22px;height:22px;background:var(--red);border-radius:4px;transform:rotate(45deg);}
+  .bullets li:nth-child(even)::before{background:var(--orange);}
+
+  /* ---------- §05 layout ---------- */
+  .frame-demo{position:relative;background:var(--blue);border:6px solid var(--ink);padding:clamp(40px,5vw,70px);margin-top:clamp(40px,5vw,64px);min-height:clamp(220px,26vw,330px);display:flex;flex-direction:column;justify-content:center;}
+  .frame-demo::before{content:'';position:absolute;inset:18px;border:6px solid var(--cream);pointer-events:none;}
+  .frame-demo .fd-h{font-family:var(--slab);font-weight:400;font-size:clamp(32px,4.4vw,72px);text-transform:uppercase;color:var(--cream);line-height:0.9;position:relative;}
+  .frame-demo .fd-p{font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:0.16em;text-transform:uppercase;color:var(--orange);margin-top:16px;position:relative;}
+  .border-ladder{margin-top:clamp(30px,3.6vw,48px);display:flex;flex-direction:column;gap:20px;}
+  .bl{display:flex;align-items:center;gap:18px;}
+  .bl .lab{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;flex:none;width:180px;}
+  .bl .ln{flex:1;background:var(--ink);}
+
+  /* ---------- §06 depth ---------- */
+  .depth-feature{border:6px solid var(--ink);background:var(--paper);padding:clamp(40px,5vw,72px);margin-top:clamp(40px,5vw,64px);text-align:center;}
+  .depth-feature .df-word{font-family:var(--slab);font-weight:400;font-size:clamp(70px,13vw,200px);line-height:0.85;text-transform:uppercase;color:var(--orange);}
+  .depth-feature .df-cap{font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-top:28px;}
+  .tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,20px);margin-top:clamp(16px,2vw,24px);}
+  .tier{border:5px solid var(--ink);background:var(--paper);padding:clamp(20px,2.2vw,30px);text-align:center;}
+  .tier .tw{font-family:var(--slab);font-weight:400;font-size:clamp(34px,4vw,64px);text-transform:uppercase;color:var(--orange);line-height:0.9;}
+  .tier .tl{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;margin-top:16px;}
+
+  /* ---------- §07 do & don't ---------- */
+  .dd{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,1.8vw,24px);margin-top:clamp(40px,5vw,64px);}
+  .dd .col{border:6px solid var(--ink);padding:clamp(24px,2.8vw,40px);}
+  .dd .do{background:var(--paper);} .dd .dont{background:var(--blue);color:var(--cream);}
+  .dd .col h3{font-family:var(--slab);font-weight:400;font-size:clamp(30px,3.6vw,56px);text-transform:uppercase;line-height:0.9;margin-bottom:18px;}
+  .dd .dont h3{color:var(--orange);text-shadow:4px 4px 0 var(--red);}
+  .dd ul{list-style:none;}
+  .dd li{font-family:var(--narrow);font-weight:500;font-size:clamp(15px,1.4vw,19px);line-height:1.35;padding:14px 0;display:flex;gap:14px;}
+  .dd .do li{border-bottom:3px solid var(--ink);}
+  .dd .dont li{border-bottom:3px solid var(--cream);}
+  .dd li:last-child{border-bottom:none!important;}
+  .dd li .mk{font-family:var(--slab);flex:none;font-size:0.9em;}
+  .dd .do .mk{color:var(--blue);} .dd .dont .mk{color:var(--orange);}
+
+  /* ---------- §08 cjk ---------- */
+  .cjk-head{font-family:'Noto Serif SC',serif;font-weight:900;font-size:clamp(50px,10vw,150px);line-height:1.18;letter-spacing:0;color:var(--orange);text-shadow:8px 8px 0 var(--red),16px 16px 0 var(--red-deep);}
+  .cjk-body{font-family:'Noto Sans SC',sans-serif;font-weight:500;font-size:clamp(16px,1.7vw,22px);line-height:1.8;color:var(--ink);max-width:42ch;margin-top:clamp(28px,3.4vw,44px);}
+  .cjk-body .script-en{font-family:var(--script);color:var(--blue);font-size:1.3em;transform:rotate(-3deg);display:inline-block;}
+  .cjk-pair{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,24px);margin-top:clamp(36px,4.6vw,60px);}
+  .cjk-pair .cp{border:6px solid var(--ink);padding:clamp(22px,2.6vw,34px);background:var(--paper);}
+  .cjk-pair .cp .role{font-family:'Noto Sans SC',sans-serif;font-weight:500;font-size:12px;letter-spacing:0.06em;color:var(--blue);}
+  .cjk-pair .cp .face{font-family:'Noto Serif SC',serif;font-size:clamp(34px,4vw,56px);margin:12px 0 8px;line-height:1.1;color:var(--ink);}
+  .cjk-pair .cp.hei .face{font-family:'Noto Sans SC',sans-serif;font-weight:700;}
+  .cjk-pair .cp.song .face{font-family:'Noto Serif SC',serif;font-weight:900;}
+  .cjk-pair .cp .meta{font-family:'Noto Sans SC',sans-serif;font-weight:500;font-size:12px;color:var(--ink);opacity:.7;}
+  .cjk-note{border:6px solid var(--ink);background:var(--blue);color:var(--cream);padding:clamp(26px,3.2vw,46px);margin-top:clamp(36px,4.6vw,60px);}
+  .cjk-note .h{font-family:var(--mono);font-weight:500;font-size:13px;letter-spacing:0.16em;text-transform:uppercase;color:var(--orange);margin-bottom:18px;}
+  .cjk-note ul{list-style:none;}
+  .cjk-note li{font-family:'Noto Sans SC',sans-serif;font-weight:500;font-size:clamp(15px,1.5vw,18px);line-height:1.7;padding:11px 0;border-bottom:3px solid rgba(244,233,214,0.25);}
+  .cjk-note li:last-child{border-bottom:none;}
+
+  /* ---------- close ---------- */
+  .close{max-width:none;padding:clamp(70px,9vw,120px) clamp(24px,5vw,90px);}
+  .close .panel{position:relative;background:var(--blue);border:6px solid var(--ink);padding:clamp(56px,8vw,110px) clamp(30px,5vw,80px);text-align:center;}
+  .close .panel::before{content:'';position:absolute;inset:20px;border:6px solid var(--cream);pointer-events:none;}
+  .close .label{position:relative;color:var(--orange);}
+  .close h2{position:relative;color:var(--orange);font-size:clamp(50px,11vw,160px);text-shadow:10px 10px 0 var(--red),20px 20px 0 var(--red-deep);margin:clamp(20px,2.6vw,36px) 0;}
+  .close .script{position:relative;font-family:var(--script);font-weight:400;font-size:clamp(40px,6vw,90px);color:var(--cream);text-transform:lowercase;transform:rotate(-4deg);display:inline-block;}
+  .close .back{position:relative;display:inline-block;margin-top:clamp(28px,3.4vw,46px);font-family:var(--mono);font-weight:500;font-size:14px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink);background:var(--orange);border:5px solid var(--cream);padding:14px 30px;text-decoration:none;box-shadow:6px 6px 0 var(--red);}
+
+  @media(max-width:900px){
+    .nav,.pillars,.roles,.type-stack,.kpis,.tiers,.dd,.cjk-pair,.colour-strip{grid-template-columns:1fr;}
+    .nav{grid-template-columns:repeat(2,1fr);}
+    .pillars{grid-template-columns:1fr;}
+    .pillar{border-right:none;border-bottom:6px solid var(--ink);}
+    .pillar:last-child{border-bottom:none;}
+    .colour-strip{grid-template-columns:repeat(2,1fr);}
+    .tiers{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="chrome" id="backlink"><a href="index.html">← Index</a></div>
+<div class="chrome" id="counter">01 / 10</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="top">
+  <div class="label">Design System · No. 07 · For everyone</div>
+  <h1 class="sh-lg" style="color:var(--ink);text-shadow:none">People's<br>Platform</h1>
+  <div class="script">a deck for everyone &mdash;</div>
+  <p class="hero-lede">WPA-poster energy: a five-colour palette that reduces to three roles, three load-bearing typefaces, red used only as a shadow, and a grain overlay that makes the whole deck feel screen-printed.</p>
+  <div class="cta-row">
+    <a class="cta" href="#overview">Read the platform</a>
+    <a class="cta alt" href="#colours">See the colours</a>
+  </div>
+
+  <nav class="nav">
+    <a href="#overview"><span class="n-num">01</span><span><span class="n-ttl">Overview</span><span class="n-sub">The premise</span></span></a>
+    <a href="#colours"><span class="n-num">02</span><span><span class="n-ttl">Colour</span><span class="n-sub">5 → 3 roles</span></span></a>
+    <a href="#typography"><span class="n-num">03</span><span><span class="n-ttl">Type</span><span class="n-sub">Four faces</span></span></a>
+    <a href="#components"><span class="n-num">04</span><span><span class="n-ttl">Parts</span><span class="n-sub">Stamps, dots</span></span></a>
+    <a href="#layout"><span class="n-num">05</span><span><span class="n-ttl">Layout</span><span class="n-sub">Frames, gutters</span></span></a>
+    <a href="#depth"><span class="n-num">06</span><span><span class="n-ttl">Depth</span><span class="n-sub">Red shadows</span></span></a>
+    <a href="#dodont"><span class="n-num">07</span><span><span class="n-ttl">Do &amp; Don't</span><span class="n-sub">The rules</span></span></a>
+    <a href="#cjk"><span class="n-num">08</span><span><span class="n-ttl">中文</span><span class="n-sub">CJK</span></span></a>
+  </nav>
+</section>
+
+<!-- ========== §01 OVERVIEW ========== -->
+<section id="overview">
+  <div class="sec-head"><h2>The premise</h2><span class="label">§ 01</span></div>
+  <p class="lede">A WPA-poster-meets-campaign system. Loud, confident, populist — the visual language of a protest placard, a union newsletter, a campaign bus.</p>
+
+  <div class="pillars">
+    <div class="pillar"><div class="p-num">01</div><div class="p-h">Three faces</div><p>Alfa Slab One does the heavy lifting at extreme sizes in pure uppercase.</p><span class="p-tag">Display</span></div>
+    <div class="pillar alt"><div class="p-num">02</div><div class="p-h">One interrupt</div><p>Caveat Brush drops in as a handwritten human voice — lowercase, rotated, warm.</p><span class="p-tag">Script</span></div>
+    <div class="pillar"><div class="p-num">03</div><div class="p-h">Printed feel</div><p>A grain overlay on every slide makes the whole deck read as screen-printed.</p><span class="p-tag">Texture</span></div>
+  </div>
+  <div class="underline-rule"></div>
+</section>
+
+<!-- ========== §02 COLOURS ========== -->
+<section id="colours">
+  <div class="sec-head"><h2>Colour</h2><span class="label">§ 02</span></div>
+  <p class="lede">Five colours that reduce to three functional roles — and red is special: it is a shadow material, never a surface fill.</p>
+
+  <div class="roles">
+    <div class="role" style="background:var(--blue);color:var(--cream)"><div><div class="r-name">Blue</div><div class="r-meta">#2C2CDC</div></div><div class="r-meta">Role — primary surface &amp; fill</div></div>
+    <div class="role" style="background:var(--orange);color:var(--ink)"><div><div class="r-name">Orange</div><div class="r-meta">#F2A03A</div></div><div class="r-meta">Role — accent, numerals, the "face"</div></div>
+    <div class="role" style="background:var(--paper);color:var(--ink)"><div><div class="r-name" style="color:var(--orange);text-shadow:4px 4px 0 var(--red)">Red</div><div class="r-meta">#E83A2A</div></div><div class="r-meta" style="color:var(--red-deep)">Role — SHADOW ONLY · never a fill</div></div>
+  </div>
+
+  <div class="colour-strip">
+    <div class="cs"><div class="swatch" style="background:var(--blue)"></div><div class="nm">Blue · surface</div></div>
+    <div class="cs"><div class="swatch" style="background:var(--orange)"></div><div class="nm">Orange · accent</div></div>
+    <div class="cs"><div class="swatch" style="background:var(--red)"></div><div class="nm">Red · shadow</div></div>
+    <div class="cs"><div class="swatch" style="background:var(--cream)"></div><div class="nm">Cream · border</div></div>
+    <div class="cs"><div class="swatch" style="background:var(--ink)"></div><div class="nm">Ink · text</div></div>
+  </div>
+
+  <div class="red-demo">
+    <div class="rd-big sh-lg">Letterpress</div>
+    <div class="rd-cap">Orange face · red body · red-deep foot — red exists only here, behind the type</div>
+  </div>
+</section>
+
+<!-- ========== §03 TYPOGRAPHY ========== -->
+<section id="typography">
+  <div class="sec-head"><h2>Type</h2><span class="label">§ 03</span></div>
+  <div class="type-stack">
+    <div class="type-card">
+      <div class="tlab">Alfa Slab One · uppercase · extreme scale</div>
+      <div class="slab-spec sh-md">Power</div>
+      <p class="narrow-spec" style="margin-top:18px">The compressed slab does all the heavy lifting — covers, headlines, numerals, quotes. Always uppercase.</p>
+    </div>
+    <div class="type-card blue">
+      <div class="tlab">Caveat Brush · lowercase · rotated</div>
+      <div class="script-spec">the human voice</div>
+      <p class="narrow-spec" style="margin-top:18px">A handwritten interrupt at 64px+, always rotated, never alone — it qualifies a slab headline beside it.</p>
+    </div>
+    <div class="type-card">
+      <div class="tlab">Archivo Narrow · 500 · body &amp; lede</div>
+      <div class="narrow-spec" style="font-size:clamp(20px,2.2vw,32px)">A condensed grotesque carries every paragraph and lede. It never crosses into display.</div>
+    </div>
+    <div class="type-card">
+      <div class="tlab">DM Mono · 24px fixed · 0.16em+</div>
+      <div class="mono-spec">All metadata · labels · tags · sign-offs — one fixed size, uppercase, tracked.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== §04 COMPONENTS ========== -->
+<section id="components">
+  <div class="sec-head"><h2>Parts</h2><span class="label">§ 04</span></div>
+
+  <div class="comp">
+    <p class="clabel">Stamps · dots · avatars — circles &amp; rotation, all with red box-shadow</p>
+    <div class="comp-row">
+      <span class="stamp-rect">Approved</span>
+      <div class="stamp-circle">Of the<br>people</div>
+      <div class="tdot"></div>
+      <div class="tdot alt"></div>
+      <div class="avatar"></div>
+    </div>
+  </div>
+
+  <div class="comp">
+    <p class="clabel">KPI cards — 5px ink border, orange value with red shadow</p>
+    <div class="kpis">
+      <div class="kpi"><div class="kv">94%</div><div class="kl">Turnout</div></div>
+      <div class="kpi"><div class="kv">3×</div><div class="kl">Reach</div></div>
+      <div class="kpi"><div class="kv">12k</div><div class="kl">Signatures</div></div>
+    </div>
+  </div>
+
+  <div class="comp">
+    <p class="clabel">Diamond bullets — 45°-rotated squares, red then orange</p>
+    <ul class="bullets">
+      <li>A rotated square is a diamond; an upright square is just a box.</li>
+      <li>The shape signals hand-crafted, not generic.</li>
+      <li>List markers alternate red and orange down the list.</li>
+    </ul>
+  </div>
+  <div class="ribbon">★ People's Platform ★ Of the people ★ By the people ★ For the people ★ People's Platform ★ Of the people ★ By the people ★</div>
+</section>
+
+<!-- ========== §05 LAYOUT ========== -->
+<section id="layout">
+  <div class="sec-head"><h2>Layout</h2><span class="label">§ 05</span></div>
+  <p class="lede">A 1920×1080 canvas with a 90px gutter. Blue-background slides get the inset frame — a design within a design.</p>
+
+  <div class="frame-demo">
+    <div class="fd-h">The inset frame</div>
+    <div class="fd-p">6px cream border · inset 48px · the poster device</div>
+  </div>
+
+  <div class="border-ladder">
+    <div class="bl"><span class="lab">6px · structural</span><span class="ln" style="height:6px"></span></div>
+    <div class="bl"><span class="lab">5px · secondary</span><span class="ln" style="height:5px"></span></div>
+    <div class="bl"><span class="lab">3px · fine lines</span><span class="ln" style="height:3px"></span></div>
+  </div>
+</section>
+
+<!-- ========== §06 DEPTH ========== -->
+<section id="depth">
+  <div class="sec-head"><h2>Depth</h2><span class="label">§ 06</span></div>
+  <p class="lede">The signature: display text casts layered offset shadows in red, creating a quasi-3D letterpress effect. Scale the offset to the type size.</p>
+
+  <div class="depth-feature">
+    <div class="df-word sh-jumbo">Vote</div>
+    <div class="df-cap">12px red + 24px red-deep — the jumbo tier</div>
+  </div>
+
+  <div class="tiers">
+    <div class="tier"><div class="tw sh-sm">Aa</div><div class="tl">Small · 3px</div></div>
+    <div class="tier"><div class="tw sh-md">Aa</div><div class="tl">Medium · 6px</div></div>
+    <div class="tier"><div class="tw sh-lg">Aa</div><div class="tl">Large · 10+20</div></div>
+    <div class="tier"><div class="tw sh-jumbo">Aa</div><div class="tl">Jumbo · 12+24</div></div>
+  </div>
+</section>
+
+<!-- ========== §07 DO & DON'T ========== -->
+<section id="dodont">
+  <div class="sec-head"><h2>Do &amp; Don't</h2><span class="label">§ 07</span></div>
+  <div class="dd">
+    <div class="col do">
+      <h3>Do</h3>
+      <ul>
+        <li><span class="mk">★</span>Apply the grain overlay to every slide — it's the surface everything prints on.</li>
+        <li><span class="mk">★</span>Use the stacked red text-shadow on all display type; scale the offset to the size.</li>
+        <li><span class="mk">★</span>Keep red exclusively as a shadow colour.</li>
+        <li><span class="mk">★</span>Use Caveat Brush only at 64px+, lowercase, slightly rotated, never alone.</li>
+        <li><span class="mk">★</span>Use 6px borders for major structural divisions.</li>
+      </ul>
+    </div>
+    <div class="col dont">
+      <h3>Don't</h3>
+      <ul>
+        <li><span class="mk">✕</span>Don't use red as a background or text colour — it's shadow material.</li>
+        <li><span class="mk">✕</span>Don't set Alfa Slab One in mixed case — the uppercase lock is its authority.</li>
+        <li><span class="mk">✕</span>Don't round card corners or soften the 6px borders.</li>
+        <li><span class="mk">✕</span>Don't use Archivo Narrow for headlines.</li>
+        <li><span class="mk">✕</span>Don't vary the DM Mono size — 24px is the single fixed label size.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ========== §08 CJK ========== -->
+<section id="cjk">
+  <div class="sec-head"><h2>中文</h2><span class="label">§ 08 · CJK</span></div>
+  <h2 class="cjk-head">人民的<br>平台</h2>
+  <p class="cjk-body">中文整体回退到思源宋体 900(展示)与思源黑体(正文)。红色堆叠投影完美保留 —— 给中文标题套上橙→红→红深的活版凸印,字号切换不损失签名。手写插入声 <span class="script-en">yes!</span> 仍用拉丁 Caveat Brush,因为中文毛笔书法读作庄重仪式而非随性人声。</p>
+
+  <div class="cjk-pair">
+    <div class="cp song"><div class="role">Display · 思源宋体</div><div class="face">人民</div><div class="meta">Noto Serif SC · 900 · 套红影</div></div>
+    <div class="cp hei"><div class="role">Body · 思源黑体</div><div class="face">平台</div><div class="meta">Noto Sans SC · 500</div></div>
+    <div class="cp hei"><div class="role">Label · 元数据</div><div class="face">标签</div><div class="meta">Noto Sans SC · 400 · 字距归零</div></div>
+  </div>
+
+  <div class="cjk-note">
+    <p class="h">每段中文都要做的调整</p>
+    <ul>
+      <li>堆叠红影(橙→红→红深)完美转移:给每个中文展示标题用橙色 + 红影,活版凸印质感不变。</li>
+      <li>毛笔插入声不转移 —— 中文书法读作庄重,留空或用一个拉丁 Caveat Brush 短词(如「yes!」)保留随性插入能量。</li>
+      <li>放宽行高:正文 1.75–1.85,展示 1.15–1.25;字距归零;中文不做 uppercase。</li>
+      <li>使用全角标点(,。:;「」),标题结尾不加句号;中英文边界加盘古之白:「使用 Claude」。</li>
+      <li>菱形项目符、旋转印章、6px 边框、网点纸纹 —— 全部原样保留,与语言无关。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== CLOSE ========== -->
+<section class="close" id="close">
+  <div class="panel">
+    <div class="label">§ Fin · People's Platform</div>
+    <h2>Platform</h2>
+    <div class="script">power to the page</div>
+    <br>
+    <a class="back" href="index.html">← Back to index</a>
+  </div>
+</section>
+
+<script>
+(function () {
+  var progress = document.getElementById('progress');
+  var counter = document.getElementById('counter');
+  var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+  var total = ids.length;
+  function onScroll() {
+    var h = document.documentElement;
+    var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+    var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+    for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+    if (scrolled > 0.99) idx = total - 1;
+    counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>

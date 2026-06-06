@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cobalt Grid — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- The system's three faces: Newsreader (serif) + Hanken Grotesk (body) + DM Mono (chrome) -->
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Hanken+Grotesk:wght@400;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+  <!-- CJK pairing for §08 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F0EBDE; --paper-2: #E6E0CE; --ink: #1F2BE0; --ink-soft: #5560E5;
+      --grid: rgba(31,43,224,0.10); --ink-faint: rgba(31,43,224,0.18);
+      --f-serif: 'Newsreader', 'Noto Serif SC', Georgia, serif;
+      --f-body: 'Hanken Grotesk', 'Noto Serif SC', sans-serif;
+      --f-mono: 'DM Mono', ui-monospace, monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--f-body); -webkit-font-smoothing: antialiased; }
+
+    /* ===== Permanent graph-paper grid (fixed behind everything) ===== */
+    .stage-grid { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: linear-gradient(to right, var(--grid) 1px, transparent 1px), linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+      background-size: clamp(28px,2.2vw,44px) clamp(28px,2.2vw,44px); }
+    /* fixed framing hairlines */
+    .frame-top, .frame-bottom { position: fixed; left: clamp(36px,3.6vw,80px); right: clamp(36px,3.6vw,80px); height: 1.5px; background: var(--ink); z-index: 240; }
+    .frame-top { top: 2.6vh; } .frame-bottom { bottom: 2vh; }
+
+    /* ===== Persistent chrome ===== */
+    .progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--ink); z-index: 300; }
+    .back-link { position: fixed; top: calc(2.6vh + 14px); left: clamp(36px,3.6vw,80px); z-index: 250; text-decoration: none; color: var(--ink);
+      font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.08em; }
+    .back-link:hover { color: var(--ink-soft); }
+    .counter { position: fixed; bottom: clamp(48px,4.8vh,76px); right: clamp(36px,3.6vw,80px); z-index: 250;
+      font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--ink); }
+
+    /* ===== Sections ===== */
+    section, header, footer { position: relative; overflow: hidden; padding: clamp(76px,9vh,120px) clamp(36px,3.6vw,80px) clamp(90px,10vh,130px); }
+    .wrap { max-width: 1240px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+
+    /* pixel-glitch column */
+    .glitch { position: absolute; right: 0; top: 0; bottom: 0; width: clamp(80px,18vw,300px); z-index: 1; pointer-events: none; display: flex; flex-direction: column; opacity: 0.7; }
+    .glitch-step { background: repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 7px); margin-left: auto; }
+    .glitch-step:nth-child(1) { height: 22%; width: 100%; }
+    .glitch-step:nth-child(2) { height: 20%; width: 72%; }
+    .glitch-step:nth-child(3) { height: 26%; width: 88%; }
+    .glitch-step:nth-child(4) { height: 16%; width: 54%; }
+    .glitch-step:nth-child(5) { height: 16%; width: 78%; }
+    .qr { display: grid; grid-template-columns: repeat(8,1fr); grid-template-rows: repeat(8,1fr); gap: 1.5px; background: var(--paper); padding: 4px; box-shadow: 0 0 0 1.5px var(--paper); width: 88px; height: 88px; }
+    .qr i { background: transparent; } .qr i.on { background: var(--ink); }
+
+    /* ===== Type ===== */
+    .micro { font-family: var(--f-body); font-weight: 600; font-size: clamp(12px,0.9vw,14px); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); }
+    .display { font-family: var(--f-serif); font-weight: 400; font-size: clamp(52px,11vw,150px); line-height: 0.92; letter-spacing: -0.008em; color: var(--ink); }
+    .headline { font-family: var(--f-serif); font-weight: 400; font-size: clamp(40px,5vw,84px); line-height: 0.95; color: var(--ink); }
+    .row-headline { font-family: var(--f-serif); font-weight: 400; font-size: clamp(24px,2vw,38px); line-height: 1.05; color: var(--ink); }
+    .ed-callout { font-family: var(--f-serif); font-weight: 400; font-size: clamp(24px,2.6vw,44px); line-height: 1.1; color: var(--ink); }
+    .vbig { font-family: var(--f-serif); font-weight: 400; font-size: clamp(90px,15vw,220px); line-height: 0.92; letter-spacing: -0.015em; color: var(--ink); }
+    .body { font-family: var(--f-body); font-weight: 400; font-size: clamp(14px,0.95vw,15.5px); line-height: 1.5; color: var(--ink); }
+    .body-lede { font-family: var(--f-body); font-weight: 400; font-size: clamp(15px,1vw,18px); line-height: 1.5; color: var(--ink); }
+    .mono-tag { font-family: var(--f-mono); font-size: clamp(12px,0.9vw,14px); letter-spacing: 0.04em; color: var(--ink); }
+
+    .topbar { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; border-bottom: 1.5px solid var(--ink); padding-bottom: clamp(12px,1.4vh,22px); margin-bottom: clamp(24px,3vh,44px); }
+    .sec-head .body-lede { max-width: 64ch; margin-top: 14px; }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+    .hero .glitch { width: clamp(100px,28vw,420px); opacity: 1; }
+    .hero-inner { position: relative; z-index: 2; max-width: 70%; }
+    .hero .display { margin: 12px 0 6px; }
+    .hero-callout { font-family: var(--f-serif); font-weight: 400; font-size: clamp(22px,2.6vw,42px); line-height: 1.15; color: var(--ink); max-width: 18ch; margin-top: 12px; }
+    .toc { margin-top: clamp(30px,4vh,52px); display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0 56px; max-width: 760px; }
+    .toc a { display: grid; grid-template-columns: 52px 1fr; gap: 16px; align-items: baseline; text-decoration: none; padding: 12px 0; border-bottom: 1px solid var(--ink-faint); }
+    .toc .t-num { font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.04em; color: var(--ink); }
+    .toc .t-title { font-family: var(--f-serif); font-weight: 400; font-size: clamp(20px,1.9vw,30px); color: var(--ink); }
+    .toc a:hover .t-title { font-style: italic; }
+
+    /* ===== components ===== */
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: clamp(20px,2.4vw,40px); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px,3vw,56px); }
+    .index-row { display: grid; grid-template-columns: 56px 1fr; gap: 16px; align-items: baseline; padding: clamp(14px,1.6vh,22px) 0; border-bottom: 1px solid var(--ink-faint); }
+    .index-row .ir-num { font-family: var(--f-mono); font-size: 14px; color: var(--ink); }
+    .ledger-row { display: grid; grid-template-columns: 60px 0.8fr 1.6fr 0.6fr; gap: clamp(12px,1.4vw,26px); align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--ink-faint); }
+    .ledger-row.head { border-bottom: 1.5px solid var(--ink); }
+    .ledger-row .lr-name { font-family: var(--f-serif); font-size: clamp(18px,1.5vw,26px); }
+    .ledger-row .lr-meta { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.04em; }
+    .delta::before { content: "↑ "; } .delta.down::before { content: "↓ "; opacity: 0.6; } .delta.flat::before { content: "— "; opacity: 0.6; }
+
+    /* pixel-stack bar chart */
+    .pstack-chart { display: flex; align-items: flex-end; gap: clamp(14px,2vw,36px); border-top: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); padding: 0; }
+    .pstack-col { flex: 1; display: flex; flex-direction: column-reverse; gap: 3px; padding: 10px 0; min-height: 200px; justify-content: flex-start; }
+    .pstack-col .cell { height: 14px; background: var(--grid); }
+    .pstack-col .cell.on { background: var(--ink); }
+    .pstack-labels { display: flex; gap: clamp(14px,2vw,36px); padding-top: 10px; }
+    .pstack-labels span { flex: 1; text-align: center; font-family: var(--f-mono); font-size: 12px; color: var(--ink); }
+
+    /* ===== §02 swatches ===== */
+    .sw-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; border: 1.5px solid var(--ink); }
+    .sw { min-height: 120px; display: flex; flex-direction: column; justify-content: flex-end; padding: 14px; border: 1px solid var(--ink-faint); }
+    .sw-name { font-family: var(--f-serif); font-size: 20px; }
+    .sw-hex { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.04em; margin-top: 4px; }
+
+    /* ===== §03 typography ===== */
+    .scale-stack { display: flex; flex-direction: column; }
+    .scale-row { display: grid; grid-template-columns: 230px 1fr; gap: 28px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--ink-faint); }
+    .scale-row:last-child { border-bottom: none; }
+    .sm { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--ink); }
+    .sm b { display: block; font-family: var(--f-body); font-weight: 600; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+
+    /* ===== §04 ===== */
+    .comp { margin-bottom: 40px; }
+    .comp-h { font-family: var(--f-body); font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); margin-bottom: 18px; }
+
+    /* ===== §07 ===== */
+    .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,4vw,64px); }
+    .dd-list { list-style: none; margin-top: 14px; }
+    .dd-list li { font-family: var(--f-body); font-size: clamp(14px,1vw,16px); line-height: 1.55; color: var(--ink); padding: 10px 0 10px 1.8em; position: relative; border-bottom: 1px solid var(--ink-faint); }
+    .dd-list li:last-child { border-bottom: none; }
+    .do .dd-list li::before { content: "+"; position: absolute; left: 0; font-family: var(--f-mono); }
+    .dont .dd-list li::before { content: "×"; position: absolute; left: 0; font-family: var(--f-mono); opacity: 0.6; }
+
+    /* ===== §08 cjk ===== */
+    .cjk-display { font-family: 'Noto Serif SC', var(--f-serif); font-weight: 700; font-size: clamp(40px,6vw,96px); line-height: 1.1; letter-spacing: 0; color: var(--ink); }
+    .cjk-body { font-family: 'Noto Serif SC', var(--f-body); font-weight: 400; font-size: clamp(15px,1.2vw,17px); line-height: 1.75; color: var(--ink); margin-top: 16px; }
+    .cjk-label { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--ink); margin-top: 16px; }
+
+    /* ===== close (colophon) ===== */
+    .close { min-height: 84vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; text-align: right; }
+    .close .glitch { right: auto; left: 0; }
+    .close-inner { position: relative; z-index: 2; max-width: 70%; }
+    .close-links { margin-top: 28px; display: flex; gap: 24px; flex-wrap: wrap; justify-content: flex-end; }
+    .close-links a { text-decoration: none; font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--ink); border-bottom: 1.5px solid var(--ink); padding-bottom: 4px; }
+    .close-links a:hover { color: var(--ink-soft); }
+
+    @media (max-width: 920px) {
+      .hero-inner, .close-inner { max-width: 100%; }
+      .glitch { display: none; }
+      .grid-3, .grid-2, .sw-row, .dodont, .toc { grid-template-columns: 1fr; }
+      .ledger-row { grid-template-columns: 50px 1fr; gap: 6px 14px; }
+      .scale-row { grid-template-columns: 1fr; gap: 8px; }
+    }
+    @media (max-width: 560px) { .sw-row { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+  <div class="stage-grid"></div>
+  <div class="frame-top"></div>
+  <div class="frame-bottom"></div>
+  <div class="progress" id="progress"></div>
+  <a class="back-link" href="index.html">&larr; INDEX</a>
+  <div class="counter" id="counter">01 / 10</div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="glitch"><div class="glitch-step"></div><div class="glitch-step"></div><div class="glitch-step"></div><div class="glitch-step"></div><div class="glitch-step"></div></div>
+    <div class="hero-inner">
+      <span class="micro">Design System Specification</span>
+      <h1 class="display">Cobalt<br>Grid</h1>
+      <p class="hero-callout">A two-colour trend-report system on permanent graph paper.</p>
+      <nav class="toc">
+        <a href="#overview"><span class="t-num">01</span><span class="t-title">Overview</span></a>
+        <a href="#colours"><span class="t-num">02</span><span class="t-title">Colours</span></a>
+        <a href="#typography"><span class="t-num">03</span><span class="t-title">Typography</span></a>
+        <a href="#components"><span class="t-num">04</span><span class="t-title">Components</span></a>
+        <a href="#layout"><span class="t-num">05</span><span class="t-title">Layout</span></a>
+        <a href="#depth"><span class="t-num">06</span><span class="t-title">Depth &amp; Shape</span></a>
+        <a href="#dodont"><span class="t-num">07</span><span class="t-title">Do &amp; Don't</span></a>
+        <a href="#cjk"><span class="t-num">08</span><span class="t-title">中文 / CJK</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ §01 OVERVIEW ============ -->
+  <section id="overview">
+    <div class="wrap">
+      <div class="topbar"><span class="headline" style="font-size:clamp(32px,3.5vw,56px)">Overview</span><span class="mono-tag">LAB / 01</span></div>
+      <div class="sec-head">
+        <span class="micro">The Premise</span>
+        <p class="body-lede" style="margin-top:12px">A two-colour risograph monograph: cream paper, electric cobalt ink, and a graph-paper grid that lives permanently behind every slide. The reference is WIRED Japan, Shift magazine, and architectural trend reports printed in two-colour riso &mdash; cream + one cobalt.</p>
+      </div>
+      <div class="grid-3" style="margin-top:clamp(24px,3vh,44px)">
+        <div><div class="vbig" style="font-size:clamp(56px,6vw,100px)">Hi</div><span class="micro" style="display:block;margin-top:8px">Formality</span></div>
+        <div><div class="vbig" style="font-size:clamp(56px,6vw,100px)">Med</div><span class="micro" style="display:block;margin-top:8px">Density</span></div>
+        <div><div class="vbig" style="font-size:clamp(56px,6vw,100px)">08</div><span class="micro" style="display:block;margin-top:8px">Slides · Light</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §02 COLOURS ============ -->
+  <section id="colours">
+    <div class="wrap">
+      <div class="topbar"><span class="headline" style="font-size:clamp(32px,3.5vw,56px)">Colours</span><span class="mono-tag">PALETTE / 02</span></div>
+      <div class="sec-head">
+        <span class="micro">Strictly Two-Colour</span>
+        <p class="body-lede" style="margin-top:12px">Cobalt is the <em>only</em> ink &mdash; headlines, body, borders, page numbers, the graph paper, the pixel-glitch, the QR patches. The cream paper is the only surface. Even the chart renders data as cobalt at two opacities. No accent colour exists.</p>
+      </div>
+      <div class="sw-row" style="margin-top:clamp(24px,3vh,40px)">
+        <div class="sw" style="background:#F0EBDE"><div class="sw-name">Paper</div><div class="sw-hex">#F0EBDE</div></div>
+        <div class="sw" style="background:#E6E0CE"><div class="sw-name">Paper 2</div><div class="sw-hex">#E6E0CE</div></div>
+        <div class="sw" style="background:#1F2BE0;color:#F0EBDE"><div class="sw-name" style="color:#F0EBDE">Cobalt Ink</div><div class="sw-hex" style="color:rgba(240,235,222,0.8)">#1F2BE0</div></div>
+        <div class="sw" style="background:#5560E5;color:#F0EBDE"><div class="sw-name" style="color:#F0EBDE">Ink Soft</div><div class="sw-hex" style="color:rgba(240,235,222,0.8)">#5560E5</div></div>
+        <div class="sw" style="background:rgba(31,43,224,0.18)"><div class="sw-name">Ink Faint</div><div class="sw-hex">cobalt 18%</div></div>
+        <div class="sw" style="background:rgba(31,43,224,0.10)"><div class="sw-name">Grid</div><div class="sw-hex">cobalt 10%</div></div>
+        <div class="sw" style="display:flex;align-items:center;justify-content:center;grid-column:span 2"><div class="qr"><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 TYPOGRAPHY ============ -->
+  <section id="typography">
+    <div class="wrap">
+      <div class="topbar"><span class="headline" style="font-size:clamp(32px,3.5vw,56px)">Typography</span><span class="mono-tag">TYPE / 03</span></div>
+      <div class="sec-head">
+        <span class="micro">Serif · Sans · Mono</span>
+        <p class="body-lede" style="margin-top:12px">Newsreader serif carries every display moment at weight 400 &mdash; size asserts hierarchy, not weight. Hanken Grotesk carries body and uppercase labels; DM Mono carries every chrome element. Three faces, strict roles.</p>
+      </div>
+      <div class="scale-stack">
+        <div class="scale-row"><div class="sm"><b>display-hero</b>Newsreader 400 · 18vh</div><div><span class="display" style="font-size:clamp(40px,5vw,72px)">Cobalt</span></div></div>
+        <div class="scale-row"><div class="sm"><b>headline</b>Newsreader 400 · 46–92px</div><div><span class="headline" style="font-size:clamp(28px,3.5vw,48px)">Section Header</span></div></div>
+        <div class="scale-row"><div class="sm"><b>vbig-numeral</b>Newsreader 400 · 240px</div><div><span class="vbig" style="font-size:clamp(48px,6vw,96px)">88</span></div></div>
+        <div class="scale-row"><div class="sm"><b>body</b>Hanken Grotesk 400 · 14–15px</div><div><span class="body" style="margin:0">Standard body copy in Hanken Grotesk, line-height 1.5.</span></div></div>
+        <div class="scale-row"><div class="sm"><b>micro</b>Hanken 600 · UPPER · 0.16em</div><div><span class="micro">Uppercase Lab-Tag</span></div></div>
+        <div class="scale-row"><div class="sm"><b>mono-tag</b>DM Mono · 0.04em</div><div><span class="mono-tag">LAB / NN · 2026</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §04 COMPONENTS ============ -->
+  <section id="components">
+    <div class="glitch" style="opacity:0.5"><div class="glitch-step"></div><div class="glitch-step"></div><div class="glitch-step"></div><div class="glitch-step"></div><div class="glitch-step"></div></div>
+    <div class="wrap">
+      <div class="topbar"><span class="headline" style="font-size:clamp(32px,3.5vw,56px)">Components</span><span class="mono-tag">KIT / 04</span></div>
+      <div class="sec-head"><span class="micro">Rendered With The Actual CSS</span></div>
+
+      <div class="comp">
+        <div class="comp-h">Index list — num-tag + Newsreader row + faint divider</div>
+        <div class="index-row"><span class="ir-num">01</span><div><div class="row-headline">Permanent Grid</div><p class="body" style="margin-top:4px">A 28–44px graph-paper grid sits behind every slide at 10% cobalt.</p></div></div>
+        <div class="index-row"><span class="ir-num">02</span><div><div class="row-headline">Pixel Glitch</div><p class="body" style="margin-top:4px">Stair-stepped scanline columns anchor declarative slides.</p></div></div>
+        <div class="index-row"><span class="ir-num">03</span><div><div class="row-headline">QR Patches</div><p class="body" style="margin-top:4px">8×8 cobalt mosaics punctuate the composition.</p></div></div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Pixel-stack bar chart — grid cells, cobalt on / 10% off</div>
+        <div class="pstack-chart">
+          <div class="pstack-col" data-on="4"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div>
+          <div class="pstack-col" data-on="6"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div>
+          <div class="pstack-col" data-on="8"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div>
+          <div class="pstack-col" data-on="10"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div>
+        </div>
+        <div class="pstack-labels"><span>FY22</span><span>FY23</span><span>FY24</span><span>FY25</span></div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-h">Ledger table — num / name / desc / delta</div>
+        <div class="ledger-row head"><span class="mono-tag">NO.</span><span class="micro" style="font-size:11px">Trend</span><span class="micro" style="font-size:11px">Note</span><span class="micro" style="font-size:11px">Δ</span></div>
+        <div class="ledger-row"><span class="lr-meta">001</span><span class="lr-name">Riso Revival</span><span class="body">Two-colour printing returns to digital decks.</span><span class="lr-meta delta">12%</span></div>
+        <div class="ledger-row"><span class="lr-meta">002</span><span class="lr-name">Grid Paper</span><span class="body">Architectural tracing-paper backgrounds.</span><span class="lr-meta delta down">4%</span></div>
+        <div class="ledger-row"><span class="lr-meta">003</span><span class="lr-name">Pixel Glitch</span><span class="body">Stair-stepped scanline decoration.</span><span class="lr-meta delta flat">0%</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §05 LAYOUT ============ -->
+  <section id="layout">
+    <div class="wrap">
+      <div class="topbar"><span class="headline" style="font-size:clamp(32px,3.5vw,56px)">Layout</span><span class="mono-tag">FRAME / 05</span></div>
+      <div class="sec-head">
+        <span class="micro">The Grid Wants Filling</span>
+        <p class="body-lede" style="margin-top:12px">The top and bottom 1.5px cobalt hairlines frame every slide; the page number sits above the bottom hairline, the nav hint mirrors it. Index, data, and table layouts are dense; manifesto, quote, and colophon leave the grid breathing.</p>
+      </div>
+      <div class="grid-3" style="margin-top:clamp(20px,2.5vh,36px)">
+        <div style="border-top:1.5px solid var(--ink);padding-top:12px"><div class="row-headline" style="font-size:24px">Hairlines</div><p class="body" style="margin-top:6px">Top + bottom 1.5px cobalt frame.</p></div>
+        <div style="border-top:1.5px solid var(--ink);padding-top:12px"><div class="row-headline" style="font-size:24px">Topbar</div><p class="body" style="margin-top:6px">Newsreader header + mono lab-tag.</p></div>
+        <div style="border-top:1.5px solid var(--ink);padding-top:12px"><div class="row-headline" style="font-size:24px">Glitch</div><p class="body" style="margin-top:6px">Scanline column on declarations.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §06 DEPTH ============ -->
+  <section id="depth">
+    <div class="wrap">
+      <div class="topbar"><span class="headline" style="font-size:clamp(32px,3.5vw,56px)">Depth &amp; Shape</span><span class="mono-tag">FLAT / 06</span></div>
+      <div class="sec-head">
+        <span class="micro">Flat, With Structural Rules</span>
+        <p class="body-lede" style="margin-top:12px">No drop shadows, no elevated cards, no rounded surfaces. Depth is the 1.5px cobalt rules, the 1px faint dividers, the 10% graph-paper grid, and the pixel-glitch texture. Border-radius is 0 everywhere &mdash; the system has zero circular elements.</p>
+      </div>
+      <div class="grid-3" style="margin-top:clamp(20px,2.5vh,36px)">
+        <div style="border-top:1.5px solid var(--ink);padding-top:12px"><div class="row-headline" style="font-size:24px">1.5px rule</div><p class="body" style="margin-top:6px">Frame, topbar, chart axis.</p></div>
+        <div style="border-top:1px solid var(--ink-faint);padding-top:12px"><div class="row-headline" style="font-size:24px">1px faint</div><p class="body" style="margin-top:6px">Dense row dividers (18%).</p></div>
+        <div style="border-top:1px solid var(--grid);padding-top:12px"><div class="row-headline" style="font-size:24px">10% grid</div><p class="body" style="margin-top:6px">The permanent canvas tone.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §07 DO / DON'T ============ -->
+  <section id="dodont">
+    <div class="wrap">
+      <div class="topbar"><span class="headline" style="font-size:clamp(32px,3.5vw,56px)">Do &amp; Don't</span><span class="mono-tag">RULES / 07</span></div>
+      <div class="dodont" style="margin-top:clamp(20px,2.5vh,36px)">
+        <div class="do">
+          <div class="row-headline">Do</div>
+          <ul class="dd-list">
+            <li>Keep the graph-paper grid behind every slide — it is the canvas tone.</li>
+            <li>Set every Newsreader element at weight 400 in cobalt.</li>
+            <li>Render labels in Hanken 600 uppercase with 0.16em+ tracking.</li>
+            <li>Use pixel-glitch columns + QR patches as the signature decoration.</li>
+            <li>Render charts as pixel-stack grid cells (cobalt on / 10% off).</li>
+          </ul>
+        </div>
+        <div class="dont">
+          <div class="row-headline">Don't</div>
+          <ul class="dd-list">
+            <li>Introduce a second ink colour — the system is strictly two-colour.</li>
+            <li>Bold a Newsreader headline, or disable the grid.</li>
+            <li>Round any corner — there are zero circular elements.</li>
+            <li>Add drop shadows, elevated cards, or gradients.</li>
+            <li>Use Hanken caps without 0.16em+ tracking.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §08 CJK ============ -->
+  <section id="cjk">
+    <div class="wrap">
+      <div class="topbar"><span class="headline" style="font-size:clamp(32px,3.5vw,56px)">中文 / CJK</span><span class="mono-tag">CJK / 08</span></div>
+      <div class="sec-head">
+        <span class="micro">Strategy A · Single Stack</span>
+        <p class="body-lede" style="margin-top:12px"><em>思源宋体 Noto Serif SC</em> is the natural Hanzi partner for Newsreader &mdash; both quiet literary serifs that hold at display size. The cobalt-on-cream two-colour rule absorbs Chinese with no negotiation; mono chrome stays Latin/digit-only.</p>
+      </div>
+      <div class="grid-2" style="margin-top:clamp(20px,2.5vh,36px);align-items:start">
+        <div>
+          <div class="cjk-display">钴蓝网格</div>
+          <div class="cjk-body">日系趋势报告式的双色系统：暖奶油纸、电光钴蓝墨，方格纸网格永驻每一屏之后。思源宋体 700 承载巨大标题，思源宋体 400 处理正文；像素故障列与 QR 马赛克为签名装饰。盘古之白：2026 年趋势、AI 报告。</div>
+          <div class="cjk-label">思源宋体 700 / 400 · DM Mono chrome</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center"><div class="qr"><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSE (colophon) ============ -->
+  <footer class="close" id="close">
+    <div class="glitch" style="opacity:0.6"><div class="glitch-step" style="margin-left:0;margin-right:auto"></div><div class="glitch-step" style="margin-left:0;margin-right:auto"></div><div class="glitch-step" style="margin-left:0;margin-right:auto"></div><div class="glitch-step" style="margin-left:0;margin-right:auto"></div><div class="glitch-step" style="margin-left:0;margin-right:auto"></div></div>
+    <div class="close-inner">
+      <span class="micro">Colophon</span>
+      <h2 class="display" style="font-size:clamp(48px,8.4vw,140px);margin-top:10px">Cobalt<br>Grid</h2>
+      <p class="body-lede" style="margin-top:14px;margin-left:auto">One of 34 systems in Beautiful HTML Templates. A quietly serious two-colour bulletin.</p>
+      <div class="close-links">
+        <a href="index.html">&larr; All Systems</a>
+        <a href="../templates/cobalt-grid/template.html">Open Live Deck</a>
+        <a href="../templates/cobalt-grid/design.md">design.md</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var progress = document.getElementById('progress');
+      var counter = document.getElementById('counter');
+      var ids = ['top','overview','colours','typography','components','layout','depth','dodont','cjk','close'];
+      var total = ids.length;
+      function onScroll() {
+        var h = document.documentElement;
+        var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+        progress.style.width = (Math.max(0, Math.min(1, scrolled)) * 100) + '%';
+        var mid = h.scrollTop + window.innerHeight * 0.4, idx = 0;
+        for (var i = 0; i < ids.length; i++) { var el = document.getElementById(ids[i]); if (el && el.offsetTop <= mid) idx = i; }
+        if (scrolled > 0.99) idx = total - 1;
+        counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+      // light up pixel-stack cells from the bottom on view
+      var cols = Array.prototype.slice.call(document.querySelectorAll('.pstack-col'));
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) {
+          if (e.isIntersecting) { var on = +e.target.getAttribute('data-on'); var cells = e.target.querySelectorAll('.cell');
+            cells.forEach(function (c, i) { setTimeout(function () { if (i < on) c.classList.add('on'); }, i * 60); }); io.unobserve(e.target); }
+        }); }, { threshold: 0.4 });
+        cols.forEach(function (c) { io.observe(c); });
+      } else { cols.forEach(function (c) { var on = +c.getAttribute('data-on'); c.querySelectorAll('.cell').forEach(function (cell, i) { if (i < on) cell.classList.add('on'); }); }); }
+    })();
+  </script>
+</body>
+</html>
